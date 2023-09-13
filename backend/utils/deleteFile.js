@@ -14,3 +14,17 @@ exports.unlinkProfile = (filename)=>{
   })
 
 }
+
+exports.unlinkAttachement = (filename)=>{
+  const getFileName = path.basename(`assets/attachement/${filename}`)
+
+  fs.exists(`assets/attachement/${filename}`,(exists)=>{ 
+    if (exists && getFileName !== "null") {
+      fs.unlink(`assets/attachement/${filename}`, (err) => {
+        console.log(err)
+        if (err) throw err
+      })
+    }
+  })
+
+}

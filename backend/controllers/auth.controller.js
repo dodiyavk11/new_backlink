@@ -3,7 +3,7 @@ const Models = require("../models")
 const bcrypt = require("bcryptjs")
 const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils")
 const { generateJWTToken, decodeJWTToken } = require("../utils/jwtUtils")
-const { unlinkProfile } = require("../utils/unlinkFile")
+const { unlinkProfile } = require("../utils/deleteFile")
 // const { MomentNormal } = require("../utils/momentUtils")
 const moment = require('moment');
 
