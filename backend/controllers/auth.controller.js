@@ -125,7 +125,7 @@ exports.signIn = async (req, res) => {
         //     checkUser.dataValues.permission = permission
         // }
 
-        const token = generateJWTToken({ userId: checkUser.id }, "1000h")
+        const token = generateJWTToken({ userId: checkUser.id }, "10h")
         delete checkUser.dataValues.password
 
         // //user has no subscribe product than login upto 60 days

@@ -3,4 +3,5 @@ module.exports = (app) => {
   require("./verifyEmail.routes")(app)
   require("./email.routes")(app)
   require("./domaincategory.routes")(app)
+  require("./domain.routes")(app)
 }
