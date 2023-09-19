@@ -1,34 +1,55 @@
 const Models = require("../models");
 const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 
 exports.getDomain = async (req, res) => {
-    try {
-		const domain = await Models.Domains.findAll({
-			include: [
-			{
-			  model: Models.Users, // User model
-			  as: 'user', // Alias defined in the Domain model
-			  attributes: ['firstName', 'lastName', 'email'],
-			},
-			{
-			  model: Models.domain_category, // domain_category model
-			  as: 'category', // Alias defined in the Domain model
-			  attributes: ['name', 'description'],
-			},
-			],
-		});
+  try {
+    const { q } = req.query;
+    const baseQuery = {
+      include: [
+        {
+          model: Models.Users, // User model
+          as: 'user', // Alias defined in the Domain model
+          attributes: ['firstName', 'lastName', 'email'],
+        },
+        {
+          model: Models.domain_category, // domain_category model
+          as: 'category', // Alias defined in the Domain model
+          attributes: ['name', 'description'],
+        },
+      ],
+    };
 
-		const domainsData = domain.map((val) => {
-		  const domainData = val.dataValues;
-		  return domainData;
-		});
+    // Check if the "q" parameter is set and not empty
+    if (q) {
+      baseQuery.where = {
+        [Op.or]: [
+          {
+            '$category.name$': {
+              [Op.like]: `%${q}%`,
+            },
+          },
+          {
+            'domain_name': {
+              [Op.like]: `%${q}%`,
+            },
+          },
+        ],
+      };
+    }
 
-		res.status(200).send({ status: true, message: "Domain fetched successfully", data: domainsData });
-	} catch (err) {
-	  console.error(err);
-	  res.status(500).send({ status: false, message: "Unable to fetch Domain, Please try again later.", data: [], error: err.message });
-	}
+    const domain = await Models.Domains.findAll(baseQuery);
 
+    const domainsData = domain.map((val) => {
+      const domainData = val.dataValues;
+      return domainData;
+    });
+
+    res.status(200).send({ status: true, message: "Domain fetched successfully", data: domainsData });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ status: false, message: "Unable to fetch Domain, Please try again later.", data: [], error: err.message });
+  }
 };
 
 exports.addDomain = async (req, res) => {
@@ -88,7 +109,7 @@ exports.addDomain = async (req, res) => {
 		}
 	} catch (err) {
 		  console.error(err);
-		  res.status(500).send({ status: false, message: "Something went wrong, Please try again.", data: [] });
+		  res.status(500).send({ status: false, message: "Something went wrong, Please try again.", data: [], error: err.message });
 	}
 }
 
@@ -102,7 +123,7 @@ exports.deleteDomain = async (req, res) => {
 	}catch(err)
 	{
 		console.log(err);
-		res.status(500).send({ status: false, message: "Domain failed to delete, Please try again."})
+		res.status(500).send({ status: false, message: "Domain failed to delete, Please try again.", data: [], error: err.message})
 	}
 }
 
@@ -137,7 +158,7 @@ exports.getSingleDoimain = async(req, res) => {
 	}catch(err)
 	{
 		console.log(err)
-		res.status(500).send({ status: false, message: "Something went to wrong"})
+		res.status(500).send({ status: false, message: "Something went to wrong", data: [], error: err.message})
 	}
 }
 exports.editDomain = async(req, res) => {
@@ -217,7 +238,7 @@ exports.editDomain = async(req, res) => {
 		  console.error(err);
 		  res
 		    .status(500)
-		    .send({ status: false, message: "Something went wrong." });
+		    .send({ status: false, message: "Something went wrong." ,data: [],  error: err.message});
 		}
 
 }

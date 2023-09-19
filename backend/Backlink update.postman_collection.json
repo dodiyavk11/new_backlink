@@ -17,26 +17,26 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/C:/Users/rjnag/Downloads/_MG_9993.JPG"
+							"src": "/C:/Users/rjnag/Downloads/default.png"
 						},
 						{
 							"key": "email",
-							"value": "rjnaghera@gmail.com",
+							"value": "test@gmail.com",
 							"type": "text"
 						},
 						{
 							"key": "firstName",
-							"value": "Admin",
+							"value": "Test",
 							"type": "text"
 						},
 						{
 							"key": "lastName",
-							"value": "Admin",
+							"value": "Customer",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "admin",
+							"value": "123456",
 							"type": "text"
 						},
 						{
@@ -77,12 +77,12 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "nagherajayesh2087@gmail.com",
+							"value": "rjnaghera@gmail.com",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "123456",
+							"value": "123123",
 							"type": "text"
 						}
 					]
@@ -308,7 +308,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY5NDU5MDYxNywiZXhwIjoxNjk4MTkwNjE3fQ.BtGqjR_AiqBP1xYCNjZvNqnKNgQDXVbbF9_LFSF0AMg",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NDYwNzA3MCwiZXhwIjoxNjk4MjA3MDcwfQ.p8FRm6BUwiInwEO_8Fu-nnwrSduItyicJPQqCZAPWjk",
 							"type": "string"
 						}
 					]
@@ -316,7 +316,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/emailTemplate/get/6",
+					"raw": "http://localhost:3000/emailTemplate/get/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -325,7 +325,7 @@
 					"path": [
 						"emailTemplate",
 						"get",
-						"6"
+						"2"
 					]
 				}
 			},
@@ -903,6 +903,577 @@
 						"domain_tag",
 						"edit",
 						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Profile get",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTA5NTU2NCwiZXhwIjoxNjk1MTMxNTY0fQ.DAx9KuIL2Ut7EJfYmqrmcnZEOeuxH1WKXU0V5DEGgyA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/account/user/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"account",
+						"user",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTA5NTU2NCwiZXhwIjoxNjk1MTMxNTY0fQ.DAx9KuIL2Ut7EJfYmqrmcnZEOeuxH1WKXU0V5DEGgyA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/rjnag/Downloads/photo.jpeg",
+							"disabled": true
+						},
+						{
+							"key": "firstName",
+							"value": "Admin",
+							"type": "text"
+						},
+						{
+							"key": "lastName",
+							"value": "User",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "rjnaghera@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123123",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "09033389733",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/account/user/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"account",
+						"user",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user profile admin side",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTA5ODg1NSwiZXhwIjoxNjk1MTM0ODU1fQ.CLJJg-YEH1wB3RhscBTOFJXGuevCGHVczBNI8PxBLjs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/account/user/profile/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"account",
+						"user",
+						"profile",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User list admin side",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTA5ODg1NSwiZXhwIjoxNjk1MTM0ODU1fQ.CLJJg-YEH1wB3RhscBTOFJXGuevCGHVczBNI8PxBLjs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/account/user/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"account",
+						"user",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user admin side",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTA5ODg1NSwiZXhwIjoxNjk1MTM0ODU1fQ.CLJJg-YEH1wB3RhscBTOFJXGuevCGHVczBNI8PxBLjs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/account/user/delete/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"account",
+						"user",
+						"delete",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Domain Filter by Domain name and category name",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NDYwNzA3MCwiZXhwIjoxNjk4MjA3MDcwfQ.p8FRm6BUwiInwEO_8Fu-nnwrSduItyicJPQqCZAPWjk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/domain/list?q=.org",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"domain",
+						"list"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": ".org"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Blog Add",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTExNzAzNywiZXhwIjoxNjk1MTUzMDM3fQ.IBJEkRX2q5BEqXLBQP18QKO_0WZca4wk7QJCjwlFDR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"This First blog\",\r\n    \"content\":\"<h1>This is a blog</h1><p>This is a blog.</p>\",\r\n    \"status\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/blog/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blog",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Blog List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTExNzAzNywiZXhwIjoxNjk1MTUzMDM3fQ.IBJEkRX2q5BEqXLBQP18QKO_0WZca4wk7QJCjwlFDR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/blog/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blog",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Blog get by ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTExNzAzNywiZXhwIjoxNjk1MTUzMDM3fQ.IBJEkRX2q5BEqXLBQP18QKO_0WZca4wk7QJCjwlFDR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/blog/get/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blog",
+						"get",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Blog Update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTExNzAzNywiZXhwIjoxNjk1MTUzMDM3fQ.IBJEkRX2q5BEqXLBQP18QKO_0WZca4wk7QJCjwlFDR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"This First blog Updated\",\r\n    \"content\": \"<h1>This is a Updated</h1><p>This is a Updated blog.</p>\",\r\n    \"status\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/blog/update/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blog",
+						"update",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Blog Delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTExNzAzNywiZXhwIjoxNjk1MTUzMDM3fQ.IBJEkRX2q5BEqXLBQP18QKO_0WZca4wk7QJCjwlFDR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/blog/delete/8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"blog",
+						"delete",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FAQ add",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTExNzAzNywiZXhwIjoxNjk1MTUzMDM3fQ.IBJEkRX2q5BEqXLBQP18QKO_0WZca4wk7QJCjwlFDR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"question\":\"How to change password\",\r\n    \"answer\":\"Login and goto profile section click on account\",\r\n    \"status\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/faq/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"faq",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FAQs List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTExNzAzNywiZXhwIjoxNjk1MTUzMDM3fQ.IBJEkRX2q5BEqXLBQP18QKO_0WZca4wk7QJCjwlFDR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/faq/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"faq",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FAQ get by ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTExNzAzNywiZXhwIjoxNjk1MTUzMDM3fQ.IBJEkRX2q5BEqXLBQP18QKO_0WZca4wk7QJCjwlFDR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/faq/get/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"faq",
+						"get",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FAQ Update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTExNzAzNywiZXhwIjoxNjk1MTUzMDM3fQ.IBJEkRX2q5BEqXLBQP18QKO_0WZca4wk7QJCjwlFDR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"question\":\"How to Vefiry email after register\",\r\n    \"answer\":\"Login and goto profile section click on account...\",\r\n    \"status\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/faq/update/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"faq",
+						"update",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FAQ Delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTExNzAzNywiZXhwIjoxNjk1MTUzMDM3fQ.IBJEkRX2q5BEqXLBQP18QKO_0WZca4wk7QJCjwlFDR4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/faq/delete/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"faq",
+						"delete",
+						"4"
 					]
 				}
 			},

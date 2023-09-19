@@ -22,7 +22,7 @@ exports.addDomainCategory = async (req, res) => {
 	}
 	catch(err){
 		console.log(err)
-		res.status(500).send({ status: false, message: "Something went to wrong, Please try again.", data: [] })
+		res.status(500).send({ status: false, message: "Something went to wrong, Please try again.", data: [], error: err.message })
 	}
 }
 
@@ -36,7 +36,7 @@ exports.deleteDomainCategory = async (req, res) => {
 	}catch(err)
 	{
 		console.log(err);
-		res.status(500).send({ status: false, message: "Domain category failed to delete, Please try again."})
+		res.status(500).send({ status: false, message: "Domain category failed to delete, Please try again.", data: [], error: err.message})
 	}
 }
 
@@ -50,7 +50,7 @@ exports.getSingleDoimainCategory = async(req, res) => {
 	}catch(err)
 	{
 		console.log(err)
-		res.status(500).send({ status: false, message: "Something went to wrong"})
+		res.status(500).send({ status: false, message: "Something went to wrong", data:[], error: err.message})
 	}
 }
 exports.editDomainCategory = async(req, res) => {
@@ -65,6 +65,6 @@ exports.editDomainCategory = async(req, res) => {
 	}catch(err)
 	{
 		console.log(err)
-		res.status(500).send({ status: false, message: "Something went to wrong"})
+		res.status(500).send({ status: false, message: "Something went to wrong", data:[], error: err.message})
 	}
 }

@@ -112,49 +112,8 @@ exports.signIn = async (req, res) => {
             sendVerifyMail(email, subject, "", mail)
             return res.status(401).send({ status: false, message: "Please check your email address first. The confirmation link will be sent to you by post", data: [] })
         }
-
-        // send permission levels
-        // if (checkUser.role === 0) checkUser.dataValues.permission = false
-        // if (checkUser.role === 1) checkUser.dataValues.permission = true
-        // if (checkUser.role === 2) {
-        //     const permission = []
-        //     const getEmpPermissions = await Models.Emp_Permission.findAll({ where: { emp_id: checkUser.id } })
-        //     getEmpPermissions.map((val) => {
-        //         permission.push(val.dataValues.permission)
-        //     })
-        //     checkUser.dataValues.permission = permission
-        // }
-
         const token = generateJWTToken({ userId: checkUser.id }, "10h")
         delete checkUser.dataValues.password
-
-        // //user has no subscribe product than login upto 60 days
-        // const findUser = await Models.User_Subs_Product.findAll({ where: { user_id: checkUser.id } })
-
-        // const product_subs_product = await findUser.map((val) => {
-        //     if (val.dataValues.subs_status == 1) {
-        //         return 1
-        //     } else {
-        //         return val.dataValues.updatedAt
-        //     }
-        // })
-        // // user has subscribe product than login
-        // if (product_subs_product.includes(1)) return res.status(200).send({ status: true, message: "login successfully", token, data: checkUser });
-
-        // // user has no subscribe product than login denied , go to product page for subsccribe
-        // const newArr = product_subs_product.filter(item => typeof item !== 'number');
-        // const allDateArray = newArr.map(date => moment(date));
-        // const lastDate = moment.max(allDateArray);
-        // const dateAfter2Months = lastDate.add(2, 'months');
-        // const date = moment(dateAfter2Months);
-        // const formattedDate = date.format('DD-MM-YYYY');
-        // const systemDate = new Date();
-        // const dates = systemDate.toISOString()
-        // const localdate = MomentNormal(dates, 'DD-MM-YYYY')
-
-        // // user has no subscribe product and 60 days to go than user not to login go to product page for subscribr product
-        // if (formattedDate == localdate) return res.status(200).send({ status: false, message: "your subscription is over , please subscribe product ", expire: true, data: checkUser });
-
         res.status(200).send({ status: true, message: "Login Successful", token, data: checkUser })
 
     } catch (err) {

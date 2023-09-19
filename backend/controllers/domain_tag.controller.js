@@ -21,7 +21,7 @@ exports.addDomainTag = async (req, res) => {
 	}
 	catch(err){
 		console.log(err)
-		res.status(500).send({ status: false, message: "Something went to wrong, Please try again.", data: [] })
+		res.status(500).send({ status: false, message: "Something went to wrong, Please try again.", data: [], error: err.message })
 	}
 }
 
@@ -41,7 +41,7 @@ exports.deleteDomainTag = async (req, res) => {
 	}catch(err)
 	{
 		console.log(err);
-		res.status(500).send({ status: false, message: "Domain tag failed to delete, Please try again."})
+		res.status(500).send({ status: false, message: "Domain tag failed to delete, Please try again.", data:[], error: err.message})
 	}
 }
 
@@ -55,7 +55,7 @@ exports.getSingleDomainTag = async(req, res) => {
 	}catch(err)
 	{
 		console.log(err)
-		res.status(500).send({ status: false, message: "Something went to wrong"})
+		res.status(500).send({ status: false, message: "Something went to wrong", data:[],  error: err.message})
 	}
 }
 exports.editDomainTag = async(req, res) => {
@@ -76,6 +76,6 @@ exports.editDomainTag = async(req, res) => {
 	}catch(err)
 	{
 		console.log(err)
-		res.status(500).send({ status: false, message: "Something went to wrong"})
+		res.status(500).send({ status: false, message: "Something went to wrong", data:[], error: err.message})
 	}
 }

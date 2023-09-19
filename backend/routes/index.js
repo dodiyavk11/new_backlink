@@ -4,4 +4,7 @@ module.exports = (app) => {
   require("./email.routes")(app)
   require("./domaincategory.routes")(app)
   require("./domain.routes")(app)
+  require("./account.routes")(app)
+  require("./blog.routes")(app)
+  require("./faq.routes")(app)
 }

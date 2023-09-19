@@ -52,7 +52,7 @@ exports.templateList = async(req, res) => {
         res.status(200).send({ status: true, message: "Email template fetched successfully", data:template });
     } catch(err){
         console.log(err)
-        res.status(500).send({ status: false, message: "Template not fetched Something went to wrong Please try again" })
+        res.status(500).send({ status: false, message: "Template not fetched Something went to wrong Please try again",data:[], error: err.message })
     }
 }
 
@@ -69,9 +69,9 @@ exports.getTemplate = async(req, res) => {
             res.status(500).send({ status: true, message: "Something went to wrong Please try again", data: [] })
         }        
     } 
-    catch
+    catch(err)
     {
-        res.status(500).send({ status: false, message: "Template not fetched Something went to wrong Please try again" })
+        res.status(500).send({ status: false, message: "Template not fetched Something went to wrong Please try again",data:[], error: err.message })
     }
 }
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2023 at 03:48 PM
+-- Generation Time: Sep 19, 2023 at 03:33 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -20,6 +20,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `backlink`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blogs`
+--
+
+CREATE TABLE `blogs` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `author` int(11) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `blogs`
+--
+
+INSERT INTO `blogs` (`id`, `title`, `content`, `author`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Updated', '<h1>This is a Updated</h1><p>This is a Updated blog.</p>', 2, 1, '2023-09-19 09:54:49', '2023-09-19 11:28:38');
 
 -- --------------------------------------------------------
 
@@ -71,7 +94,7 @@ CREATE TABLE `domain_categories` (
 
 INSERT INTO `domain_categories` (`id`, `name`, `description`, `createdAt`, `updatedAt`) VALUES
 (2, 'Testing ', 'Testing description', '2023-09-15 12:38:58', '2023-09-15 12:38:58'),
-(3, 'Testing Two', 'Testing description Two', '2023-09-15 16:40:49', '2023-09-15 16:40:49');
+(3, 'Two', 'Testing description Two', '2023-09-15 16:40:49', '2023-09-15 16:40:49');
 
 -- --------------------------------------------------------
 
@@ -111,6 +134,37 @@ CREATE TABLE `email_formats` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `email_formats`
+--
+
+INSERT INTO `email_formats` (`id`, `email_title`, `email_type`, `email_content`, `header`, `file`, `createdAt`, `updatedAt`) VALUES
+(2, 'Registration', 'registration', '<p><span style=\"font-size: 18pt;\"><strong>Moin,</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">vielen Dank f&uuml;r Deine Registrierung.</span></span></p>\n<p><span style=\"font-size: 12pt;\">Best&auml;tige bitte Deine E-Mailadresse {user_email} mit diesem Link:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: 12pt; background-color: rgb(192, 222, 96);\">{verification_Link}</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Viele Gr&uuml;&szlig;e</strong></span></p>', 'Please complete registration', NULL, '2023-09-19 11:27:57', '2023-09-19 11:27:57');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `faqs`
+--
+
+CREATE TABLE `faqs` (
+  `id` int(11) NOT NULL,
+  `question` varchar(255) NOT NULL,
+  `answer` text NOT NULL,
+  `status` int(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `faqs`
+--
+
+INSERT INTO `faqs` (`id`, `question`, `answer`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'How to add project', 'go to register and register then verify email and sign to show project menu to add project ', 1, '2023-09-19 12:39:23', '2023-09-19 12:39:23'),
+(2, 'How to Vefiry email after register', 'Login and goto profile section click on account...', 1, '2023-09-19 12:40:14', '2023-09-19 12:52:29'),
+(3, 'How to change password', 'Login and goto profile section click on account', 1, '2023-09-19 12:42:15', '2023-09-19 12:42:15');
 
 -- --------------------------------------------------------
 
@@ -158,12 +212,19 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `password`, `profile`, `phone`, `isAdmin`, `created_at`, `updated_at`) VALUES
-(1, 'nagherajayesh2087@gmail.com', 1, 'Test', 'Dev', '$2a$11$ERgfrBH7.d8y3SJ4EGpHp.dImeZz.WlgMohaSYhHWwN93pm8E1d9y', 'profileImg_1694606924479.JPG', '1234567809', 0, '2023-09-13 17:38:44', '2023-09-13 17:38:44'),
-(2, 'rjnaghera@gmail.com', 1, 'Admin', 'Admin', '$2a$11$ERgfrBH7.d8y3SJ4EGpHp.dImeZz.WlgMohaSYhHWwN93pm8E1d9y', 'profileImg_1694607039475.JPG', '1234567809', 1, '2023-09-13 17:40:39', '2023-09-13 17:40:39');
+(2, 'rjnaghera@gmail.com', 1, 'Admin', 'User', '$2a$11$fCg11cAgOk7RvVCffz7TuulHBoIYOMATc6iq6PjtlbbB5ieju4dG2', 'profileImg_1695097731854.jpeg', '09033389733', 1, '2023-09-13 17:40:39', '2023-09-19 10:02:11'),
+(6, 'test@gmail.com', 1, 'Test', 'Customer', '$2a$11$fRqk7yh94dGpBAXdZnlnnOvlJ3h8NC8IVqPF9Ykb1MQxABdgDqxjW', 'profileImg_1695101939136.png', '1234567809', 0, '2023-09-19 11:08:59', '2023-09-19 11:08:59');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `blogs`
+--
+ALTER TABLE `blogs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `author` (`author`);
 
 --
 -- Indexes for table `domains`
@@ -192,6 +253,12 @@ ALTER TABLE `email_formats`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `faqs`
+--
+ALTER TABLE `faqs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `forgotpasswords`
 --
 ALTER TABLE `forgotpasswords`
@@ -206,6 +273,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `blogs`
+--
+ALTER TABLE `blogs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `domains`
@@ -229,7 +302,13 @@ ALTER TABLE `domain_tags`
 -- AUTO_INCREMENT for table `email_formats`
 --
 ALTER TABLE `email_formats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `faqs`
+--
+ALTER TABLE `faqs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `forgotpasswords`
@@ -241,11 +320,17 @@ ALTER TABLE `forgotpasswords`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `blogs`
+--
+ALTER TABLE `blogs`
+  ADD CONSTRAINT `blogs_ibfk_1` FOREIGN KEY (`author`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `domains`
