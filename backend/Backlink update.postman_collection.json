@@ -77,12 +77,12 @@
 					"formdata": [
 						{
 							"key": "email",
-							"value": "rjnaghera@gmail.com",
+							"value": "customer@test.com",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "123123",
+							"value": "123456",
 							"type": "text"
 						}
 					]
@@ -164,7 +164,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/verify/email/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hZ2hlcmFqYXllc2gyMDg3QGdtYWlsLmNvbSIsImlhdCI6MTY5NDYwNjY5NSwiZXhwIjoxNjk0NjA3Mjk1fQ.UnEEO8B9SGWosZMZuCpBKGcKsMquuldQA_4zdvXhrE8",
+					"raw": "http://localhost:3000/verify/email/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN1c3RvbWVyQHRlc3QuY29tIiwiaWF0IjoxNjk1MTk2NDYzLCJleHAiOjE2OTUxOTcwNjN9.7SN0Y3y5mkyYvexACVSlWwBinEJSvNz3sIqUcSXOifQ",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -173,7 +173,7 @@
 					"path": [
 						"verify",
 						"email",
-						"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hZ2hlcmFqYXllc2gyMDg3QGdtYWlsLmNvbSIsImlhdCI6MTY5NDYwNjY5NSwiZXhwIjoxNjk0NjA3Mjk1fQ.UnEEO8B9SGWosZMZuCpBKGcKsMquuldQA_4zdvXhrE8"
+						"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN1c3RvbWVyQHRlc3QuY29tIiwiaWF0IjoxNjk1MTk2NDYzLCJleHAiOjE2OTUxOTcwNjN9.7SN0Y3y5mkyYvexACVSlWwBinEJSvNz3sIqUcSXOifQ"
 					]
 				}
 			},
@@ -1474,6 +1474,317 @@
 						"faq",
 						"delete",
 						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin to create new user",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTE4NTgxMSwiZXhwIjoxNjk1MjIxODExfQ.KshLB6FxixJ_VIdRl2tugkgUezO7DxX7rjTO_J_Fhi0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "devuser@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "firstName",
+							"value": "Dev",
+							"type": "text"
+						},
+						{
+							"key": "lastName",
+							"value": "User",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "1234567809",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/rjnag/Downloads/user_img_placeholder.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/account/user/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"account",
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User notification Setting",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTUxOTY1MzgsImV4cCI6MTY5NTIzMjUzOH0.-74BznSq28Iu3mS-eLC7Cp7jRzVZqagQyCj_92Uwfcs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/user/setting",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"setting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User notification setting Update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTUxOTY1MzgsImV4cCI6MTY5NTIzMjUzOH0.-74BznSq28Iu3mS-eLC7Cp7jRzVZqagQyCj_92Uwfcs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email_message_received\":true,\r\n    \"email_order_accepted\":true,\r\n    \"email_order_completed\":true,\r\n    \"email_order_created\":false,\r\n    \"email_order_declined\":false,\r\n    \"email_order_missing_details\":false,\r\n    \"email_payment_failed\":true,\r\n    \"email_payment_reminder\":1,\r\n    \"email_payment_succeeded\":1,\r\n    \"email_recommendations_available\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/user/setting/notification",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"setting",
+						"notification"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User add Domain",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTUxOTY1MzgsImV4cCI6MTY5NTIzMjUzOH0.-74BznSq28Iu3mS-eLC7Cp7jRzVZqagQyCj_92Uwfcs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"domain_name\":\"testdomain.com\",\r\n    \"category_id\":\"\",\r\n    \"budget\":12.36,\r\n    \"category_id\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/user/project",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"project"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User dashboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/user/dashboard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"dashboard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Projects (domains)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTUxOTY1MzgsImV4cCI6MTY5NTIzMjUzOH0.-74BznSq28Iu3mS-eLC7Cp7jRzVZqagQyCj_92Uwfcs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/user/projects",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"projects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order Message send",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTUxOTY1MzgsImV4cCI6MTY5NTIzMjUzOH0.-74BznSq28Iu3mS-eLC7Cp7jRzVZqagQyCj_92Uwfcs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "message",
+							"value": "123sss",
+							"type": "text"
+						},
+						{
+							"key": "files[]",
+							"type": "file",
+							"src": "/C:/Users/rjnag/Downloads/images1690288348.png"
+						},
+						{
+							"key": "files[]",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/message/send/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"message",
+						"send",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order message get by Order ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTUxOTY1MzgsImV4cCI6MTY5NTIzMjUzOH0.-74BznSq28Iu3mS-eLC7Cp7jRzVZqagQyCj_92Uwfcs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/message/get/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"message",
+						"get",
+						"1"
 					]
 				}
 			},

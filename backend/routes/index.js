@@ -7,4 +7,6 @@ module.exports = (app) => {
   require("./account.routes")(app)
   require("./blog.routes")(app)
   require("./faq.routes")(app)
+  require("./customer.routes")(app)
+  require("./message.routes")(app)
 }

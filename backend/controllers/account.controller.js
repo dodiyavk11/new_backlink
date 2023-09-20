@@ -152,3 +152,33 @@ exports.deleteUser = async(req, res) => {
 }
 
 
+exports.createUserAdminSide = async(req, res) => {
+	try
+	{
+		const { email,firstName,lastName,password,phone } = req.body
+		const profile = req.file
+		const checkUser = await Models.Users.findOne({ where:{ email } })
+		if(checkUser && checkUser.dataValues.email)
+		{
+			return res.status(500).send({ status: false, message: "User already registered", data: [] })
+		}
+		else
+		{
+			const hashedPassword = await bcrypt.hash(password,11);
+			const userInfo = { email,firstName,lastName,password:hashedPassword,phone,isAdmin:0,email_verified:true }
+			if(profile) userInfo.profile = profile.filename
+
+			const addUser = await Models.Users.create(userInfo)
+			delete addUser.dataValues.password
+			if(addUser)
+			{
+				res.status(200).send({ status: true, message: "User created success.",data: addUser })
+			}
+		}
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status:false, message:"User create fail,Please try again.", data:[], error:err.message })
+	}
+}

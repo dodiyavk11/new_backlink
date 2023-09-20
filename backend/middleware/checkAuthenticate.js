@@ -33,3 +33,21 @@ exports.isAdmin = async (req, res, next) => {
     res.status(401).send({ status: false, message: "Administrator authentication error", data: [] })
   }
 }
+
+exports.isCustomer = async (req, res, next) => {
+  try {
+    const uId = req.userId;
+    const fetchAllUser = await Models.Users.findOne({ where: { id: uId } });
+    delete fetchAllUser.dataValues.password;
+    
+    if (fetchAllUser.isAdmin !== 0) {
+      return res.status(401).send({ status: false, message: "You cannot access this page", data: [] });
+    }
+    
+    // If is customer to allow access
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(401).send({ status: false, message: "Administrator authentication error", data: [] });
+  }
+}

@@ -32,6 +32,11 @@ exports.signUp = async (req, res) => {
               const adminUser =  await Models.Users.update({email_verified :true}, { where: {email: addUser.dataValues.email } })
              return res.status(200).send({ status: true, message: "User registration successful", data: adminUser });
             }
+            else
+            {
+                const settingData = { user_id:addUser.dataValues.id }
+                const addSetting = await Models.Setting.create(settingData)
+            }
 
             // email send process
             // const mailTexts = await Models.email_template.findOne({ where: { email_type: 'registration' } })
