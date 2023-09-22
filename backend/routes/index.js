@@ -9,4 +9,5 @@ module.exports = (app) => {
   require("./faq.routes")(app)
   require("./customer.routes")(app)
   require("./message.routes")(app)
+  require("./order.routes")(app)
 }

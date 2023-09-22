@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 20, 2023 at 03:38 PM
+-- Generation Time: Sep 22, 2023 at 03:38 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -158,7 +158,8 @@ CREATE TABLE `email_formats` (
 --
 
 INSERT INTO `email_formats` (`id`, `email_title`, `email_type`, `email_content`, `header`, `file`, `createdAt`, `updatedAt`) VALUES
-(2, 'Registration', 'registration', '<p><span style=\"font-size: 18pt;\"><strong>Moin,</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">vielen Dank f&uuml;r Deine Registrierung.</span></span></p>\n<p><span style=\"font-size: 12pt;\">Best&auml;tige bitte Deine E-Mailadresse {user_email} mit diesem Link:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: 12pt; background-color: rgb(192, 222, 96);\">{verification_Link}</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Viele Gr&uuml;&szlig;e</strong></span></p>', 'Please complete registration', NULL, '2023-09-19 11:27:57', '2023-09-19 11:27:57');
+(2, 'Registration', 'registration', '<p><span style=\"font-size: 18pt;\"><strong>Moin,</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">vielen Dank f&uuml;r Deine Registrierung.</span></span></p>\n<p><span style=\"font-size: 12pt;\">Best&auml;tige bitte Deine E-Mailadresse {user_email} mit diesem Link:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: 12pt; background-color: rgb(192, 222, 96);\">{verification_Link}</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Viele Gr&uuml;&szlig;e</strong></span></p>', 'Please complete registration', NULL, '2023-09-19 11:27:57', '2023-09-19 11:27:57'),
+(3, 'New Order', 'create_new_order', '<p><span style=\"font-size: 18pt;\"><strong>{name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">The Backlink team has created the order \"{order_name}\" for you.</span></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Register now on the platform:</span></span></p>\n<p><span style=\"background-color: rgb(192, 222, 96); font-size: 12pt;\"><strong><span style=\"font-size: medium;\">Backlink</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'Backlink has created an order ', NULL, '2023-09-22 12:16:36', '2023-09-22 12:16:36');
 
 -- --------------------------------------------------------
 
@@ -217,20 +218,10 @@ CREATE TABLE `messages` (
   `order_id` int(11) NOT NULL,
   `message` text NOT NULL,
   `files` text DEFAULT NULL,
+  `role` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `messages`
---
-
-INSERT INTO `messages` (`id`, `sender_id`, `order_id`, `message`, `files`, `created_at`, `updated_at`) VALUES
-(1, 11, 1, 'Test first order', 'msg_image_1695215286966.JPG', '2023-09-20 13:08:06', '2023-09-20 13:08:06'),
-(2, 11, 1, 'Testing two', 'msg_image_1695215368713.pdf', '2023-09-20 13:09:28', '2023-09-20 13:09:28'),
-(3, 11, 1, 'Testing two', 'msg_image_1695215554537.png,msg_image_1695215554539.jpeg', '2023-09-20 13:12:34', '2023-09-20 13:12:34'),
-(4, 11, 1, '123', 'msg_image_1695216056805.png', '2023-09-20 13:20:56', '2023-09-20 13:20:56'),
-(5, 11, 1, '123sss', 'msg_image_1695216278413.png', '2023-09-20 13:24:38', '2023-09-20 13:24:38');
 
 -- --------------------------------------------------------
 
@@ -265,6 +256,27 @@ INSERT INTO `notifications` (`id`, `user_id`, `email_message_received`, `email_o
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `orderfiles`
+--
+
+CREATE TABLE `orderfiles` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `original_name` varchar(255) NOT NULL,
+  `file_path` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orderfiles`
+--
+
+INSERT INTO `orderfiles` (`id`, `order_id`, `file_name`, `original_name`, `file_path`) VALUES
+(1, 49, 'final_file1695387549321.JPG', 'jayesh', 'assets/order_assets/');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orders`
 --
 
@@ -272,21 +284,25 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `total_amount` decimal(10,2) NOT NULL,
+  `ordername` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
   `orderfile` varchar(255) DEFAULT NULL,
   `orderstatus` int(1) NOT NULL DEFAULT 1,
   `orderpriority` int(1) NOT NULL DEFAULT 1,
   `update_status_admin` int(1) NOT NULL DEFAULT 1,
+  `update_status` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `soft_delete` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `customer_id`, `total_amount`, `description`, `orderfile`, `orderstatus`, `orderpriority`, `update_status_admin`, `created_at`, `updated_at`) VALUES
-(1, 11, '10.00', 'Test order', NULL, 0, 0, 0, '2023-09-20 12:04:09', '2023-09-20 12:04:09');
+INSERT INTO `orders` (`id`, `customer_id`, `total_amount`, `ordername`, `description`, `orderfile`, `orderstatus`, `orderpriority`, `update_status_admin`, `update_status`, `created_at`, `updated_at`, `soft_delete`) VALUES
+(48, 11, '0.00', 'This order updated', 'This order updated by api', NULL, 2, 2, 2, 0, '2023-09-22 08:12:12', '2023-09-22 13:28:45', ''),
+(49, 11, '0.00', 'Second Name', 'Description', NULL, 1, 1, 1, 1, '2023-09-22 09:46:09', '2023-09-22 12:59:09', '');
 
 -- --------------------------------------------------------
 
@@ -407,6 +423,13 @@ ALTER TABLE `notifications`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `orderfiles`
+--
+ALTER TABLE `orderfiles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`);
+
+--
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
@@ -464,7 +487,7 @@ ALTER TABLE `domain_tags`
 -- AUTO_INCREMENT for table `email_formats`
 --
 ALTER TABLE `email_formats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `faqs`
@@ -482,7 +505,7 @@ ALTER TABLE `forgotpasswords`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -491,10 +514,16 @@ ALTER TABLE `notifications`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `orderfiles`
+--
+ALTER TABLE `orderfiles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `transactions`
@@ -542,6 +571,12 @@ ALTER TABLE `messages`
 --
 ALTER TABLE `notifications`
   ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `orderfiles`
+--
+ALTER TABLE `orderfiles`
+  ADD CONSTRAINT `orderfiles_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `orders`
