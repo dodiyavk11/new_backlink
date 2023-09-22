@@ -98,6 +98,7 @@ function AnalyticsDashboardApp() {
                               className="whitespace-nowrap bg-secondary"
                               variant="contained"
                               color="secondary"
+                              style={{color:"white"}}
                               startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus
                               </FuseSvgIcon>}
                             >
@@ -127,7 +128,7 @@ function AnalyticsDashboardApp() {
                             Projects
                           </Typography>
                           <Button
-                            className="whitespace-nowrap text-blue-800"
+                            className="whitespace-nowrap text-[#354252]"
 
                             startIcon={<FuseSvgIcon size={20}>heroicons-outline:plus
                             </FuseSvgIcon>}
@@ -222,7 +223,7 @@ function AnalyticsDashboardApp() {
                             <TableBody>
                               <TableRow >
                                 <TableCell component="th" scope="row">
-                                  <Typography className="text-blue-800 font-bold font-bold " >
+                                  <Typography className="text-[#354252] font-bold font-bold " >
                                     basicthinking.de
                                   </Typography>
                                   <Typography className=" " >
@@ -247,7 +248,7 @@ function AnalyticsDashboardApp() {
                                 <TableCell component="th" scope="row">
                                   <Typography className="font-bold" >
                                     $1214.40
-                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-blue-800 font-bold bg-blue-200 rounded-full">-15%</span>
+                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-[#354252] font-bold bg-[#ff9756] rounded-full">-15%</span>
                                   </Typography>
                                   <Typography className="text-sm line-through" >
                                     $1000.60
@@ -257,7 +258,7 @@ function AnalyticsDashboardApp() {
                               </TableRow>
                               <TableRow >
                                 <TableCell component="th" scope="row">
-                                  <Typography className="text-blue-800 font-bold font-bold " >
+                                  <Typography className="text-[#354252] font-bold font-bold " >
                                     mittellaendische.ch
                                   </Typography>
                                   <Typography className=" " >
@@ -282,7 +283,7 @@ function AnalyticsDashboardApp() {
                                 <TableCell component="th" scope="row">
                                   <Typography className="font-bold" >
                                     $336.60
-                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-blue-800 font-bold bg-blue-200 rounded-full">-15%</span>
+                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-[#354252] font-bold bg-[#ff9756] rounded-full">-15%</span>
                                   </Typography>
                                   <Typography className="text-sm line-through" >
                                     $408.60
@@ -359,7 +360,7 @@ function AnalyticsDashboardApp() {
                             <TableBody>
                               <TableRow >
                                 <TableCell component="th" scope="row">
-                                  <Typography className="text-blue-800 font-bold font-bold " >
+                                  <Typography className="text-[#354252] font-bold font-bold " >
                                     xyz.com
                                   </Typography>
                                   <Typography className=" " >
@@ -384,7 +385,7 @@ function AnalyticsDashboardApp() {
                                 <TableCell component="th" scope="row">
                                   <Typography className="font-bold" >
                                     $387.60
-                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-blue-800 font-bold bg-blue-200 rounded-full">-15%</span>
+                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-[#354252] font-bold bg-[#ff9756] rounded-full">-15%</span>
                                   </Typography>
                                   <Typography className="text-sm line-through" >
                                     $456.60
@@ -394,7 +395,7 @@ function AnalyticsDashboardApp() {
                               </TableRow>
                               <TableRow >
                                 <TableCell component="th" scope="row">
-                                  <Typography className="text-blue-800 font-bold font-bold " >
+                                  <Typography className="text-[#354252] font-bold font-bold " >
                                     ok-magazin.de
                                   </Typography>
                                   <Typography className=" " >
@@ -419,7 +420,7 @@ function AnalyticsDashboardApp() {
                                 <TableCell component="th" scope="row">
                                   <Typography className="font-bold whitespace-nowrap" >
                                     $1476.60
-                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-blue-800 font-bold bg-blue-200 rounded-full">-15%</span>
+                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-[#354252] font-bold bg-[#ff9756] rounded-full">-15%</span>
                                   </Typography>
                                   <Typography className="text-sm line-through" >
                                     $1740.60
@@ -429,7 +430,7 @@ function AnalyticsDashboardApp() {
                               </TableRow>
                               <TableRow >
                                 <TableCell component="th" scope="row">
-                                  <Typography className="text-blue-800 font-bold font-bold " >
+                                  <Typography className="text-[#354252] font-bold font-bold " >
                                     lernfoerderung.de
                                   </Typography>
                                   <Typography className=" " >
@@ -454,7 +455,7 @@ function AnalyticsDashboardApp() {
                                 <TableCell component="th" scope="row">
                                   <Typography className="font-bold" >
                                     $459.60
-                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-blue-800 font-bold bg-blue-200 rounded-full">-15%</span>
+                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-[#354252] font-bold bg-[#ff9756] rounded-full">-15%</span>
                                   </Typography>
                                   <Typography className="text-sm line-through" >
                                     $560.60
@@ -464,7 +465,7 @@ function AnalyticsDashboardApp() {
                               </TableRow>
                               <TableRow >
                                 <TableCell component="th" scope="row">
-                                  <Typography className="text-blue-800 font-bold font-bold " >
+                                  <Typography className="text-[#354252] font-bold font-bold " >
                                     basicthinking.de
                                   </Typography>
                                   <Typography className=" " >
@@ -489,7 +490,7 @@ function AnalyticsDashboardApp() {
                                 <TableCell component="th" scope="row">
                                   <Typography className="font-bold" >
                                     $1214.40
-                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-blue-800 font-bold bg-blue-200 rounded-full">-15%</span>
+                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-[#354252] font-bold bg-[#ff9756] rounded-full">-15%</span>
                                   </Typography>
                                   <Typography className="text-sm line-through" >
                                     $1000.60
@@ -499,7 +500,7 @@ function AnalyticsDashboardApp() {
                               </TableRow>
                               <TableRow >
                                 <TableCell component="th" scope="row">
-                                  <Typography className="text-blue-800 font-bold " >
+                                  <Typography className="text-[#354252] font-bold " >
                                     mittellaendische.ch
                                   </Typography>
                                   <Typography className=" " >
@@ -524,7 +525,7 @@ function AnalyticsDashboardApp() {
                                 <TableCell component="th" scope="row">
                                   <Typography className="font-bold" >
                                     $336.60
-                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-blue-800 bg-blue-200 rounded-full">-15%</span>
+                                    <span className="inline-flex items-center justify-center px-3 py-1 ml-2 text-xs font-bold leading-none text-[#354252] bg-[#ff9756] rounded-full">-15%</span>
                                   </Typography>
                                   <Typography className="text-sm line-through" >
                                     $408.60

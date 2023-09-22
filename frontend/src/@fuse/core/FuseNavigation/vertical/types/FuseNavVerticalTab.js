@@ -36,7 +36,7 @@ const Root = styled(Box)(({ theme }) => ({
       backgroundColor:
         theme.palette.mode === 'light'
           ? 'rgba(0, 0, 0, .05)!important'
-          : 'rgba(255, 255, 255, .1)!important',
+          : 'rgb(255, 151, 86)!important',
       pointerEvents: 'none',
     },
     '&:hover': {
@@ -47,7 +47,7 @@ const Root = styled(Box)(({ theme }) => ({
       backgroundColor:
         theme.palette.mode === 'light'
           ? 'rgba(0, 0, 0, .05)!important'
-          : 'rgba(255, 255, 255, .1)!important',
+          : 'rgb(255, 151, 86)!important',
       // pointerEvents: 'none',
       transition: 'border-radius .15s cubic-bezier(0.4,0.0,0.2,1)',
       '& .fuse-list-item-text-primary': {

@@ -25,6 +25,10 @@ import Paper from '@mui/material/Paper';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
+import Divider from '@mui/material/Divider';
+import "./style.css";
+
+
 
 function FinanceDashboardApp() {
   const dispatch = useDispatch();
@@ -66,68 +70,296 @@ function FinanceDashboardApp() {
 
 
 
-  const ITEM_HEIGHT = 45;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-function MultipleSelectCheckmarks() {
-  const [personName, setPersonName] = React.useState([]);
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
+  
+  function SelectStatus() {
+    const names = [
+      'Pending',
+      'In Progress',
+      'Completed',
+      'Cancelled',
+      'Rejected',
+      'Missing Details',
+    ];
+    const ITEM_HEIGHT = 100;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+      PaperProps: {
+        style: {
+          maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+          width: 250,
+        },
+      },
+      
+    };
+    const [personName, setPersonName] = React.useState([]);
+    const [searchInput, setSearchInput] = React.useState('');
 
-  return (
-    <div className='' >
-      <FormControl sx={{ m: 1, width: 150 }} size='small' style={{margin:"auto"}}>
-        <InputLabel id="demo-multiple-checkbox-label" style={{transform:"translate(10px,10px) scale(1)"}}>Status</InputLabel>
+    const handleTrashClick = () => {
+      // Clear all selected values by setting personName to an empty array
+      setPersonName([]);
+      setSearchInput(''); 
+    };
+  
+    const handleChange = (event) => {
+      const {
+        target: { value },
+      } = event;
+      setPersonName( 
+        typeof value === 'string' ? value.split(',') : value,
+      );
+    };
+    const filteredOptions = names.filter((name) =>
+    name.toLowerCase().includes(searchInput.toLowerCase())
+  );
+    return (
+
+      <FormControl sx={{ m: 1, minWidth: 120 }} className='status_search rounded-full' size="small" style={{ maxWidth: '184px' }}>
         <Select
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
+          className='rounded-full'
           multiple
           value={personName}
+          displayEmpty  
           onChange={handleChange}
-          className=''
-          input={<OutlinedInput label="Status" />}
-          renderValue={(selected) => selected.join(', ')}
+          input={<OutlinedInput />}
+          renderValue={(selected) => {
+            if (selected.length === 0 ) {
+              return <p className='mt-2' >Status</p>;
+            }
+            return (
+              <p className='mt-2 text-ellipsis overflow-hidden selectedvalues'><span className='selectedlength' >{`${selected.length}`}</span><span className=''>{`${selected.join(', ')}`}</span></p>
+            );
+          }}
+          
           MenuProps={MenuProps}
+          inputProps={{ 'aria-label': 'Without label' }}
         >
-          {names.map((name) => (
+
+           <div className='flex p-10'>
+            <Paper
+              component={motion.div}
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
+              className="flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0"
+            >
+              <FuseSvgIcon style={{ transform: 'scale(0.6)' }} color="disabled">feather:search</FuseSvgIcon>
+
+              <Input
+                placeholder="Search"
+                className="flex flex-1 text-sm"
+                disableUnderline
+                fullWidth
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                inputProps={{
+                  'aria-label': 'Search',
+                }}
+              // onChange={(ev) => dispatch(setProductsSearchText(ev))}
+              />
+            </Paper>
+            <Paper className='ms-5 p-8 bg-red-100 rounded-full' onClick={handleTrashClick}>
+              <FuseSvgIcon color="action" className="text-sm " style={{ color: '#ef5350', transform: 'scale(0.6) ' }}>feather:trash</FuseSvgIcon>
+            </Paper>
+
+          </div>
+          <Divider className='my-14' />
+          {searchInput === '' ? (
+          // Show all options when the search input is empty
+          names.map((name) => (
             <MenuItem key={name} value={name}>
-              <Checkbox checked={personName.indexOf(name) > -1} />
-              <ListItemText primary={name} />
+              <Checkbox
+                icon={<FuseSvgIcon >material-outline:circle</FuseSvgIcon>}
+                checkedIcon={<FuseSvgIcon >material-solid:check_circle_outline</FuseSvgIcon>}
+                checked={personName.indexOf(name) > -1}
+              />
+              <ListItemText className='text-[14px]' primary={name} />
             </MenuItem>
-          ))}
+          ))
+        ) : filteredOptions.length === 0 ? (
+          // Show "No results" when there are no matching options
+          <MenuItem disabled>No results</MenuItem>
+        ) : (
+          // Show matching options
+          filteredOptions.map((name) => (
+            <MenuItem key={name} value={name}>
+              <Checkbox
+                icon={<FuseSvgIcon >material-outline:circle</FuseSvgIcon>}
+                checkedIcon={<FuseSvgIcon >material-solid:check_circle_outline</FuseSvgIcon>}
+                checked={personName.indexOf(name) > -1}
+              />
+              <ListItemText className='text-[14px]' primary={name} />
+            </MenuItem>
+          ))
+        )}
+
         </Select>
       </FormControl>
-    </div>
+    );
+  }
+  function SelectProductType() {
+    const names = [
+      'Press Release',
+      'Seo Content',
+      'Google Disavow',
+    ];
+    const ITEM_HEIGHT = 100;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+      PaperProps: {
+        style: {
+          maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+          width: 250,
+        },
+      },
+      
+    };
+    const [personName, setPersonName] = React.useState([]);
+    const [searchInput, setSearchInput] = React.useState('');
+
+    const handleTrashClick = () => {
+      // Clear all selected values by setting personName to an empty array
+      setPersonName([]);
+      setSearchInput(''); 
+    };
+  
+    const handleChange = (event) => {
+      const {
+        target: { value },
+      } = event;
+      setPersonName( 
+        typeof value === 'string' ? value.split(',') : value,
+      );
+    };
+    const filteredOptions = names.filter((name) =>
+    name.toLowerCase().includes(searchInput.toLowerCase())
   );
-}
+    return (
+
+      <FormControl sx={{ m: 1, minWidth: 120 }} className='status_search rounded-full' size="small" style={{ maxWidth: '184px' }}>
+        <Select
+          className='rounded-full'
+          multiple
+          value={personName}
+          displayEmpty  
+          onChange={handleChange}
+          input={<OutlinedInput />}
+          renderValue={(selected) => {
+            // console.log(selected);
+            if (selected.length === 0 ) {
+              return <p className='mt-2' >Product Type</p>;
+            }
+            return (
+              <p className='mt-2 text-ellipsis overflow-hidden selectedvalues'><span className='selectedlength' >{`${selected.length}`}</span><span className=''>{`${selected.join(', ')}`}</span></p>
+            );
+          }}
+          
+          MenuProps={MenuProps}
+          inputProps={{ 'aria-label': 'Without label' }}
+        >
+
+           <div className='flex p-10'>
+            <Paper
+              component={motion.div}
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
+              className="flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0"
+            >
+              <FuseSvgIcon style={{ transform: 'scale(0.6)' }} color="disabled">feather:search</FuseSvgIcon>
+
+              <Input
+                placeholder="Search"
+                className="flex flex-1 text-sm"
+                disableUnderline
+                fullWidth
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                inputProps={{
+                  'aria-label': 'Search',
+                }}
+              // onChange={(ev) => dispatch(setProductsSearchText(ev))}
+              />
+            </Paper>
+            <Paper className='ms-5 p-8 bg-red-100 rounded-full' onClick={handleTrashClick}>
+              <FuseSvgIcon color="action" className="text-sm " style={{ color: '#ef5350', transform: 'scale(0.6) ' }}>feather:trash</FuseSvgIcon>
+            </Paper>
+
+          </div>
+          <Divider className='my-14' />
+          {searchInput === '' ? (
+          // Show all options when the search input is empty
+          names.map((name) => (
+            <MenuItem key={name} value={name}>
+              <Checkbox
+                icon={<FuseSvgIcon >material-outline:circle</FuseSvgIcon>}
+                checkedIcon={<FuseSvgIcon >material-solid:check_circle_outline</FuseSvgIcon>}
+                checked={personName.indexOf(name) > -1}
+              />
+              <ListItemText className='text-[14px]' primary={name} />
+            </MenuItem>
+          ))
+        ) : filteredOptions.length === 0 ? (
+          // Show "No results" when there are no matching options
+          <MenuItem disabled>No results</MenuItem>
+        ) : (
+          // Show matching options
+          filteredOptions.map((name) => (
+            <MenuItem key={name} value={name}>
+              <Checkbox
+                icon={<FuseSvgIcon >material-outline:circle</FuseSvgIcon>}
+                checkedIcon={<FuseSvgIcon >material-solid:check_circle_outline</FuseSvgIcon>}
+                checked={personName.indexOf(name) > -1}
+              />
+              <ListItemText className='text-[14px]' primary={name} />
+            </MenuItem>
+          ))
+        )}
+
+        </Select>
+      </FormControl>
+    );
+  }
+  function SelectProject() {
+    const [age, setAge] = React.useState('');
+  
+    const handleChange = (event) => {
+      setAge(event.target.value);
+    };
+  
+    return (
+      <div>
+        <FormControl size="small" sx={{ m: 1, minWidth: 120 }} style={{maxWidth:'184px'}}>
+        <Select
+            value={age}
+            className='rounded-full'
+          onChange={handleChange}
+          displayEmpty
+          inputProps={{ 'aria-label': 'Without label' }}
+        >
+          <MenuItem value=""> <Checkbox
+                icon={<FuseSvgIcon >material-outline:circle</FuseSvgIcon>}
+              checkedIcon={<FuseSvgIcon >material-solid:check_circle_outline</FuseSvgIcon>}
+              checked={age==''}
+              />
+            <p>No Project</p>
+          </MenuItem>
+          <MenuItem value='xyz.com'> <Checkbox
+                icon={<FuseSvgIcon >material-outline:circle</FuseSvgIcon>}
+              checkedIcon={<FuseSvgIcon >material-solid:check_circle_outline</FuseSvgIcon>}
+              checked={age=='xyz.com'}
+              />xyz.com</MenuItem>
+          <MenuItem value='besticoder.com'> <Checkbox
+                icon={<FuseSvgIcon >material-outline:circle</FuseSvgIcon>}
+              checkedIcon={<FuseSvgIcon >material-solid:check_circle_outline</FuseSvgIcon>}   
+              checked={age=='besticoder.com'}
+              />besticoder.com</MenuItem>
+         
+        </Select>
+       
+      </FormControl>
+      </div>
+    );
+  }
   return (
     <FusePageSimple
       header={<FinanceDashboardAppHeader />}
@@ -158,15 +390,18 @@ function MultipleSelectCheckmarks() {
                       component={motion.div}
                       initial={{ y: -20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
-                      className="flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0"
+                      style={{ height: '40px' }}
+                      className="flex items-center w-full my-auto sm:max-w-128   px-8 rounded-full border-1 shadow-0"
                     >
-                      <FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
+                      <FuseSvgIcon style={{ transform: 'scale(0.6)' }} color="disabled">feather:search</FuseSvgIcon>
 
                       <Input
                         placeholder="Search"
-                        className="flex flex-1"
+                        className="flex flex-1 p-0 text-sm"
                         disableUnderline
                         fullWidth
+
+
                         // value={searchText}
                         inputProps={{
                           'aria-label': 'Search',
@@ -174,7 +409,9 @@ function MultipleSelectCheckmarks() {
                       // onChange={(ev) => dispatch(setProductsSearchText(ev))}
                       />
                     </Paper>
-                    <MultipleSelectCheckmarks/>
+                    <SelectStatus />
+                    <SelectProductType />
+                    <SelectProject/>
                   </div>
 
 

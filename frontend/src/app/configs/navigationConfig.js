@@ -1,6 +1,4 @@
 import i18next from 'i18next';
-
-
 import ar from './navigation-i18n/ar';
 import en from './navigation-i18n/en';
 import tr from './navigation-i18n/tr';
@@ -53,32 +51,7 @@ const navigationConfig = [
      
     ],
   }
-  // {
-  //   id: 'apps.help-center',
-  //   title: 'Services',
-  //   type: 'collapse',
-  //   icon: 'feather:layers',
-  //   children: [
-  //     {
-  //       id: 'apps.help-center.home',
-  //       title: 'Seo Content',
-  //       type: 'item',
-  //       url: '/apps/help-center',
-  //       end: true,
-  //     },
-     
-  //   ],
-  // },
-  // {
-  //   id: 'apps.notes',
-  //   title: 'Managed SEO',
-  //   type: 'item',
-  //   icon: 'heroicons-outline:shield-check',
-  //   url: '/apps/notes',
-  //   translate: 'NOTES',
-  // },
- 
- 
+
 ];
 
 export default navigationConfig;

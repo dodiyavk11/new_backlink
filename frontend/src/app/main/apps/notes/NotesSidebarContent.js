@@ -22,7 +22,7 @@ const StyledListItem = styled(ListItem)(({ theme, active }) => ({
     backgroundColor:
       theme.palette.mode === 'light'
         ? 'rgba(0, 0, 0, .05)!important'
-        : 'rgba(255, 255, 255, .1)!important',
+        : 'rgb(255, 151, 86)!important',
     pointerEvents: 'none',
     '& .list-item-icon': {
       color: theme.palette.secondary.main,

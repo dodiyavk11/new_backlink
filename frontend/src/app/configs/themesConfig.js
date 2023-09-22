@@ -8,8 +8,8 @@ export const lightPaletteText = {
 };
 
 export const darkPaletteText = {
-  primary: 'rgb(255,255,255)',
-  secondary: 'rgb(148, 163, 184)',
+  primary: 'rgb(219, 218, 218)',
+  secondary: 'rgb(255, 151, 86)',
   disabled: 'rgb(156, 163, 175)',
 };
 
@@ -31,8 +31,8 @@ const themesConfig = {
       },
       secondary: {
         light: '#818cf8',
-        main: '#4f46e5',
-        dark: '#3730a3',
+        main: 'rgb(255, 151, 86)',
+        dark: '#354252',
         contrastText: darkPaletteText.primary,
       },
       background: {
@@ -72,7 +72,7 @@ const themesConfig = {
       },
       background: {
         paper: '#1e293b',
-        default: '#111827',
+        default: '#354252 ',
       },
       error: {
         light: '#ffcdd2',
