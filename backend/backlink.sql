@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 22, 2023 at 03:38 PM
+-- Generation Time: Sep 25, 2023 at 03:43 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -43,20 +43,6 @@ CREATE TABLE `blogs` (
 
 INSERT INTO `blogs` (`id`, `title`, `content`, `author`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Updated', '<h1>This is a Updated</h1><p>This is a Updated blog.</p>', 2, 1, '2023-09-19 09:54:49', '2023-09-19 11:28:38');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `customer_wallet`
---
-
-CREATE TABLE `customer_wallet` (
-  `id` int(11) NOT NULL,
-  `customer_id` int(11) NOT NULL,
-  `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -312,13 +298,25 @@ INSERT INTO `orders` (`id`, `customer_id`, `total_amount`, `ordername`, `descrip
 
 CREATE TABLE `transactions` (
   `id` int(11) NOT NULL,
-  `customer_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `transaction_type` varchar(50) NOT NULL,
   `description` text DEFAULT NULL,
+  `payment_created` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `transaction_id` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `user_id`, `amount`, `transaction_type`, `description`, `payment_created`, `transaction_id`, `created_at`) VALUES
+(1, 11, '200.00', 'checkout.session.completed', NULL, '2023-09-25 12:01:38', 'pi_3NuDTySC7x5vD10M0alrd3Rx', '2023-09-25 12:01:47'),
+(2, 11, '200.00', 'checkout.session.completed', NULL, '2023-09-25 12:03:01', 'pi_3NuDVNSC7x5vD10M04vDUaKX', '2023-09-25 12:03:16'),
+(3, 11, '200.00', 'checkout.session.completed', NULL, '2023-09-25 12:41:03', 'pi_3NuE6RSC7x5vD10M01GsY7D4', '2023-09-25 12:41:32'),
+(4, 11, '200.00', 'checkout.session.completed', NULL, '2023-09-25 13:11:35', 'pi_3NuEa4SC7x5vD10M1b3Gpfqx', '2023-09-25 13:12:10'),
+(5, 11, '200.00', 'checkout.session.completed', NULL, '2023-09-25 13:29:14', 'pi_3NuEqnSC7x5vD10M1hiKrfjj', '2023-09-25 13:29:28');
 
 -- --------------------------------------------------------
 
@@ -352,6 +350,27 @@ INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `
 (10, 'devuser@gmail.com', 1, 'Dev', 'User', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1695188498849.jpg', '1234567809', 0, '2023-09-20 11:11:39', '2023-09-20 11:11:39'),
 (11, 'customer@test.com', 1, 'Customer', 'Customer', '$2a$11$zUU62EIftcI7V8bU8XCN6O8ynRwhalVmVzlG4EYCVTadW1ZbjK9iO', 'profileImg_1695188498849.jpg', '1234567809', 0, '2023-09-20 13:23:06', '2023-09-20 13:24:52');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users_wallet`
+--
+
+CREATE TABLE `users_wallet` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users_wallet`
+--
+
+INSERT INTO `users_wallet` (`id`, `user_id`, `balance`, `created_at`, `updated_at`) VALUES
+(1, 11, '1000.00', '2023-09-25 13:29:28', '2023-09-25 13:29:28');
+
 --
 -- Indexes for dumped tables
 --
@@ -362,13 +381,6 @@ INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `
 ALTER TABLE `blogs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `author` (`author`);
-
---
--- Indexes for table `customer_wallet`
---
-ALTER TABLE `customer_wallet`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `customer_id` (`customer_id`);
 
 --
 -- Indexes for table `domains`
@@ -441,13 +453,20 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `transactions`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `customer_id` (`customer_id`);
+  ADD KEY `customer_id` (`user_id`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users_wallet`
+--
+ALTER TABLE `users_wallet`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `customer_id` (`user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -458,12 +477,6 @@ ALTER TABLE `users`
 --
 ALTER TABLE `blogs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `customer_wallet`
---
-ALTER TABLE `customer_wallet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `domains`
@@ -529,13 +542,19 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `users_wallet`
+--
+ALTER TABLE `users_wallet`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -546,12 +565,6 @@ ALTER TABLE `users`
 --
 ALTER TABLE `blogs`
   ADD CONSTRAINT `blogs_ibfk_1` FOREIGN KEY (`author`) REFERENCES `users` (`id`);
-
---
--- Constraints for table `customer_wallet`
---
-ALTER TABLE `customer_wallet`
-  ADD CONSTRAINT `customer_wallet_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `domains`
@@ -588,7 +601,13 @@ ALTER TABLE `orders`
 -- Constraints for table `transactions`
 --
 ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `users_wallet`
+--
+ALTER TABLE `users_wallet`
+  ADD CONSTRAINT `users_wallet_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

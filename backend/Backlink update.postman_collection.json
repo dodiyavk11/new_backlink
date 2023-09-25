@@ -1660,6 +1660,16 @@
 		{
 			"name": "User dashboard",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU2MzQ3ODcsImV4cCI6MTY5NTY3MDc4N30.JrXo7N3cC1wgJKpCnuwnoKp_J4qV4hUlOTQtOLSAj8A",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -1685,7 +1695,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTUxOTY1MzgsImV4cCI6MTY5NTIzMjUzOH0.-74BznSq28Iu3mS-eLC7Cp7jRzVZqagQyCj_92Uwfcs",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU2MzQ3ODcsImV4cCI6MTY5NTY3MDc4N30.JrXo7N3cC1wgJKpCnuwnoKp_J4qV4hUlOTQtOLSAj8A",
 							"type": "string"
 						}
 					]
@@ -2218,6 +2228,104 @@
 						"file",
 						"get",
 						"49"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment Refund",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU2MzQ3ODcsImV4cCI6MTY5NTY3MDc4N30.JrXo7N3cC1wgJKpCnuwnoKp_J4qV4hUlOTQtOLSAj8A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/refundPayment/pi_3NuDLgSC7x5vD10M17T7dJ7p",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"refundPayment",
+						"pi_3NuDLgSC7x5vD10M17T7dJ7p"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initialized payment (Stripe)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU2MzQ3ODcsImV4cCI6MTY5NTY3MDc4N30.JrXo7N3cC1wgJKpCnuwnoKp_J4qV4hUlOTQtOLSAj8A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product\": {\r\n                \"name\": \"Watch\", \r\n                \"image\": \"https://img.freepik.com/free-vector/software-testing-concept-application-website-code-test-process-it-specialist-searching-bugs-idea-computer-technology-digital-analysis-vector-illustration-cartoon-style_613284-2893.jpg\", \r\n                \"amount\": 200,\r\n                \"quantity\": 1\r\n            }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/payment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Payment Transaction History ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU2MzQ3ODcsImV4cCI6MTY5NTY3MDc4N30.JrXo7N3cC1wgJKpCnuwnoKp_J4qV4hUlOTQtOLSAj8A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/user/transactionHistory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"transactionHistory"
 					]
 				}
 			},
