@@ -1,11 +1,19 @@
-.MuiPopover-root.MuiMenu-root.MuiModal-root{
-    top:30px !important;
-    left: 66px !important;
+ #status-select .MuiPaper-root.MuiMenu-paper.MuiPaper-elevation.MuiPaper-rounded{
+    top:26% !important;
+    left: 33% !important;
 
 }
-.MuiPaper-root.MuiMenu-paper.MuiPaper-elevation.MuiPaper-rounded{
-    top:210px !important;
-    left:865px !important;
+#product-select .MuiPaper-root.MuiMenu-paper.MuiPaper-elevation.MuiPaper-rounded{
+    top:26% !important;
+    left: 40% !important;
+
+}
+#Project-select .MuiPaper-root.MuiMenu-paper.MuiPaper-elevation.MuiPaper-rounded {
+    top:26% !important;
+    left: 48% !important;
+}
+.muiltr-113qkos-MuiSwitch-root{
+    margin:0px
 }
 .selectedvalues{
     padding: 3px;
@@ -20,5 +28,9 @@
     position: relative;     
     top:-1px;
     margin-right:3px;
+}
+
+.addbalance .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation24{
+    width: 100%;
 }
 

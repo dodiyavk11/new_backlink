@@ -17,6 +17,7 @@ function FinanceDashboardAppHeader(props) {
             variant="contained"
             color="secondary"
             startIcon={<FuseSvgIcon size={20}>heroicons-solid:save</FuseSvgIcon>}
+            style={{color:'white'}}
           >
             Export
           </Button>
