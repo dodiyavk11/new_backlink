@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test Payments</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://js.stripe.com/v3/"></script>
+  </head>
+  <body class="container" >      
+      <div class="product">
+        <center><h3>Payment Details</h3></center>
+        <p style="color: red;fon"></p>
+        <img
+          src="https://img.freepik.com/free-vector/software-testing-concept-application-website-code-test-process-it-specialist-searching-bugs-idea-computer-technology-digital-analysis-vector-illustration-cartoon-style_613284-2893.jpg"
+          alt="Watch"
+          class="product_img"
+        />
+        <div class="description">
+          <h3>Test</h3>
+          <h4>&#8377 200.00</h4>
+        </div>
+        <button type="button" id="btn" class="btn btn-success"><b>Pay &#8594;</b></button>
+      </div>
+  </body>
+  <script type="text/javascript">
+    // Create an instance of the Stripe object with your publishable API key
+    var stripe = Stripe("pk_test_51NsHj9SC7x5vD10MwSXcqvZoKpQxEOa2VuUNxCB0MfWKHd0oFMY4bEZAAulbIE23yP4Dk4fF0reCMQlfAh2ANsio00QXxoDW3d");
+    var checkoutButton = document.getElementById("btn");
+    var jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU2MzQ3ODcsImV4cCI6MTY5NTY3MDc4N30.JrXo7N3cC1wgJKpCnuwnoKp_J4qV4hUlOTQtOLSAj8A";
+    checkoutButton.addEventListener("click", function () {
+      fetch("http://localhost:3000/payment", {
+        headers: {'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken}`,
+        },
+        method: "POST",
+        body: JSON.stringify({
+            "product": {
+                "name": "Watch", 
+                "image": "https://img.freepik.com/free-vector/software-testing-concept-application-website-code-test-process-it-specialist-searching-bugs-idea-computer-technology-digital-analysis-vector-illustration-cartoon-style_613284-2893.jpg", 
+                "amount": 200,
+                "quantity": 1
+            }})
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (session) {
+          return stripe.redirectToCheckout({ sessionId: session.id });
+        })
+        .then(function (result) {
+          // If redirectToCheckout fails due to a browser or network
+          // error, you should display the localized error message to your
+          // customer using error.message.
+          if (result.error) {
+            alert(result.error.message);
+          }
+        })
+        .catch(function (error) {
+          console.error("Error:", error);
+        });
+    });
+  </script>
+</html>

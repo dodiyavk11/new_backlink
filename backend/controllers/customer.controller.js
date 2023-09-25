@@ -17,8 +17,13 @@ exports.dashboard = async(req, res) => {
 		      limit: 3,
 		      order: [['id', 'DESC']], 
 		    },
+		    {
+		      model: Models.UserWallet,
+		      as: 'userAccountBalnace',
+		      attributes: ['balance'],
+		    },
 		  ],
-		});
+		});		
 		res.status(200).send({ status:true,message: "User overview", data: overview })
 	}
 	catch(err)
@@ -209,4 +214,33 @@ exports.addMessageToOrder = async(req, res) => {
 		res.status(500).send({ status: false, message: "Something went to wrong.", data: [], error:err.message })
 	}
 
+}
+
+exports.transactionHistory = async(req, res) =>
+{
+	try
+	{
+		const userId = req.userId;
+
+		const userTransaction = await Models.Users.findAll({
+			where: { id:userId },
+			include: [
+			{
+				model: Models.Transactions,
+			      as: 'transaction',
+				}
+			],
+			order: [[{ model: Models.Transactions, as: 'transaction' }, 'id', 'DESC']],
+			order: [[{ model: Models.Transactions, as: 'transaction'}, 'id', 'DESC' ]]
+		});
+		userTransaction.forEach((user) => {
+		  delete user.dataValues.password;
+		});
+		res.status(200).send({ status: true, message: "User Transaction fecth successfully.",data: userTransaction });
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message: "Something went to wrong.",data: [], error: err.message })
+	}
 }

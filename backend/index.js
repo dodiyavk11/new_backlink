@@ -5,7 +5,7 @@ const compression = require("compression");
 const db = require("./models/index");
 const cors = require("cors");
 const config = require("./config/config.js")
-
+const path = require("path");
 const app = express();
 const PORT = 3000;
 const router = express.Router();
@@ -17,6 +17,7 @@ const corsOpts = {
 
 
 app.use(cors(corsOpts));
+app.use(express.static(path.join(__dirname, "views")));
 app.use(/\/((?!webhooks).)*/, express.json());
 app.use(helmet());
 app.use(compression());
@@ -35,7 +36,6 @@ db.sequelize
 require("./routes")(router);
 
 app.get("/", (req, res) => res.send("Hi your application is running..."));
-
 app.listen(PORT, (err) => {
   if (err) {
     console.error("Server failed to start:", err);

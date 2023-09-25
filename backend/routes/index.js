@@ -10,4 +10,5 @@ module.exports = (app) => {
   require("./customer.routes")(app)
   require("./message.routes")(app)
   require("./order.routes")(app)
+  require("./payment.routes")(app)
 }
