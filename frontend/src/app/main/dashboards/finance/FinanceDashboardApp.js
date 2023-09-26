@@ -477,47 +477,7 @@ function FinanceDashboardApp() {
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
-    const AntSwitch = styled(Switch)(({ theme }) => ({
-      width: 28,
-      height: 16,
-      padding: 0,
-      display: 'flex',
-      '&:active': {
-        '& .MuiSwitch-thumb': {
-          width: 15,
-        },
-        '& .MuiSwitch-switchBase.Mui-checked': {
-          transform: 'translateX(9px)',
-        },
-      },
-      '& .MuiSwitch-switchBase': {
-        padding: 2,
-        '&.Mui-checked': {
-          transform: 'translateX(12px)',
-          color: '#fff',
-          '& + .MuiSwitch-track': {
-            opacity: 1,
-            backgroundColor: theme.palette.mode === 'dark' ? '#177ddc' : '#1890ff',
-          },
-        },
-      },
-      '& .MuiSwitch-thumb': {
-        boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
-        width: 12,
-        height: 12,
-        borderRadius: 6,
-        transition: theme.transitions.create(['width'], {
-          duration: 200,
-        }),
-      },
-      '& .MuiSwitch-track': {
-        borderRadius: 16 / 2,
-        opacity: 1,
-        backgroundColor:
-          theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
-        boxSizing: 'border-box',
-      },
-    }));
+  
     const IOSSwitch = styled((props) => (
       <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
     ))(({ theme }) => ({
@@ -570,7 +530,7 @@ function FinanceDashboardApp() {
     }));
     return (
       <div className=' my-auto'>
-        <Button aria-describedby={id} variant="outlined" onClick={handleClick}>
+        <Button aria-describedby={id} variant="outlined" className='whitespace-nowrap' onClick={handleClick}>
           <FuseSvgIcon style={{ transform: 'rotate(90deg) scale(0.7)' }}>heroicons-outline:adjustments</FuseSvgIcon>Customize table
         </Button>
         <Popover
@@ -825,14 +785,14 @@ function FinanceDashboardApp() {
                 delay={300} className="w-full max-w-[calc(1240px+2.5rem)]  px-10 pt-14 mx-auto" variants={container}>
 
                 <Paper className='p-28 shadow '>
-                  <div className='flex justify-between	' >
+                  <div className='flex justify-between overflow-x-auto	' >
                     <div className='float-left flex'>
                       <Paper
                         component={motion.div}
                         initial={{ y: -20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1, transition: { delay: 0.2 } }}
                         style={{ height: '40px' }}
-                        className="flex items-center w-full my-auto sm:max-w-128   px-8 rounded-full border-1 shadow-0"
+                        className="flex items-center w-full my-auto sm:max-w-128 min-w-128   px-8 rounded-full border-1 shadow-0"
                       >
                         <FuseSvgIcon style={{ transform: 'scale(0.6)' }} color="disabled">feather:search</FuseSvgIcon>
 

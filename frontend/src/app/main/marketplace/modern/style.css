@@ -1,0 +1,51 @@
+.disabled-div {
+    opacity: 0.6; /* Reduce opacity to make it look disabled */
+    background-color: #fff; /* Change background color */
+    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+    pointer-events: none; /* Prevent interactions with the element */
+  }
+  #dailytable table.simple tbody tr th {
+    border: none !important;;
+}
+#dailytable table.simple tbody tr:hover{
+ background-color: #e7e4e47a;
+ cursor: pointer;
+}
+/* .MuiDataGrid-columnHeaders{
+    border:solid  rgba(0, 0, 0, 0.12) !important;
+    border-right:1px !important;
+    border-left:1px !important;
+}  */
+.MuiDataGrid-columnHeadersInner.muiltr-gl260s-MuiDataGrid-columnHeadersInner {
+    height: 50px !important;
+    border:0.7px solid #80808047 !important;
+    border-left: 1px !important;
+    border-right: 1px !important;
+    /* border-top: 1px !important;
+    border-bottom: 1px !important; */
+    width: 100% !important;
+}
+.MuiDataGrid-columnHeaderTitle{
+    font-size: 10px;
+   
+   
+}
+.MuiDataGrid-columnHeaderTitle:first-child{
+
+    padding: .75rem 1rem;
+}
+
+.selectedvalues{
+    padding: 3px;
+}
+.selectedvalues .selectedlength{
+    padding: 1px 4px;
+    background:#ff9756;
+    color:#354252;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 800;
+    position: relative;     
+    top:-1px;
+    margin-right:3px;
+}
