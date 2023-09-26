@@ -18,11 +18,16 @@ module.exports = (sequelize, DataTypes) => {
     file_name: DataTypes.STRING,
     original_name:DataTypes.STRING,
     file_path:DataTypes.STRING,
+    isLink:DataTypes.INTEGER,
+    link:DataTypes.STRING,
 
   }, {
     sequelize,
-    modelName: 'orderFiles',
-    timestamps: false, 
+    modelName: 'orderFiles', 
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    timestamps: true,
+    paranoid: false,
   });
   return orderFiles;
 };

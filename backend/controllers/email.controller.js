@@ -1,17 +1,6 @@
 const Models = require("../models")
 const { unlinkAttachement } = require("../utils/deleteFile")
 
-exports.getDomainCategory = async (req, res) => {
-    try {
-        const domain_category = await Models.domainCategorys.findAll();
-        const domain_category_data = await domain_category.map((val) => { return val.dataValues })
-        res.status(200).send({ status: true, message: "Domain Category get successfully", data: domain_category_data });
-    } catch (err) {
-        console.log(err)
-        res.status(500).send({ status: false, message: "Domain Category cannot be loaded, an error has occurred", data: [],error: err.message })
-    }
-}
-
 exports.createEmailTemplate = async (req, res) => {
     try {         
         const { email_title } = req.body

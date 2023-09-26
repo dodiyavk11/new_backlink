@@ -21,7 +21,6 @@ exports.UpdateProfile = async(req, res) => {
 	{
 		const uId = req.userId
 	    const userData = await Models.Users.findOne({where:{id:uId}})
-
 	    const { firstName, lastName, email,password, phone } = req.body
 
 	    if(email == userData.dataValues.email){
@@ -34,7 +33,6 @@ exports.UpdateProfile = async(req, res) => {
 	        const hashedPassword = await bcrypt.hash(password, 11);
 	        userInfo = { firstName, lastName,email, password: hashedPassword, phone }
 	      }
-	  
 	      const getUserInfo = await Models.Users.findOne({ where: { id: uId } })
 	  
 	      const userImg = req.file
@@ -94,7 +92,6 @@ exports.userProfileAdminSide = async(req, res) => {
 exports.userList = async(req, res) => {
 	try {
 	  const userData = await Models.Users.findAll();
-
 	  // Remove the 'password' property from each user object
 	  const userDataWithoutPassword = userData.map((user) => {
 	    const { password, ...userWithoutPassword } = user.dataValues;
@@ -121,7 +118,6 @@ exports.deleteUser = async(req, res) => {
 	{
 		const userId = req.params.id;	
 		const hasRelatedDomains = await Models.Domains.findOne({ where: { user_id: userId } });
-
 		if (hasRelatedDomains) {
 			await Models.Domains.destroy({ where: { user_id: userId } });
 		}
@@ -150,7 +146,6 @@ exports.deleteUser = async(req, res) => {
 		res.status(500).send({ status:false, message: "An error occured while deleteting user, please try again", data: [], error: err.message})
 	}
 }
-
 
 exports.createUserAdminSide = async(req, res) => {
 	try
