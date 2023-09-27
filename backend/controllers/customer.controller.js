@@ -1,7 +1,6 @@
 const Models = require("../models");
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
-const stripe = require('stripe')('sk_test_51NsHj9SC7x5vD10Msw6jkUut1c6QEMO0sN2RpWt1mnoiK0ccWOONIhCAWHwsAjdVSPpNuMtybe2a8dSxa1Po0IhN00ootqyaJH');
 
 exports.dashboard = async(req, res) => {
 	try
@@ -22,7 +21,13 @@ exports.dashboard = async(req, res) => {
 		      as: 'userAccountBalnace',
 		      attributes: ['balance'],
 		    },
+		    {
+		      model: Models.UserSubscription,
+		      as: 'subscriptions',
+		      attributes: ['plan_id','start_date','end_date','cancel_date','info','credits','status'],
+		    },
 		  ],
+		  attributes: { exclude: ['password'] },
 		});		
 		res.status(200).send({ status:true,message: "User overview", data: overview })
 	}
@@ -230,11 +235,9 @@ exports.transactionHistory = async(req, res) =>
 			      as: 'transaction',
 				}
 			],
+			attributes: { exclude: ['password'] },
 			order: [[{ model: Models.Transactions, as: 'transaction' }, 'id', 'DESC']],
 			order: [[{ model: Models.Transactions, as: 'transaction'}, 'id', 'DESC' ]]
-		});
-		userTransaction.forEach((user) => {
-		  delete user.dataValues.password;
 		});
 		res.status(200).send({ status: true, message: "User Transaction fecth successfully.",data: userTransaction });
 	}

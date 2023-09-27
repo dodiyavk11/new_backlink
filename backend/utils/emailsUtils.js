@@ -40,6 +40,50 @@ exports.sendVerifyMail = async (email, subject, text, link) => {
   }
 }
 
+exports.sendWelcomEmailWithAttachement = async(email, subject, text, link,attachementFileName) => {
+  try
+  {
+    const senderName = 'BackLink';
+    const senderEmail = process.env.SENDER_EMAIL;
+
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: Number(process.env.EMAIL_PORT),
+      // secure: true,
+      requireTLS: true,
+      auth: {
+        user: process.env.SENDER_EMAIL,
+        pass: process.env.EMAIL_PASS,
+      },
+    })
+    const attachmentFilePath = path.join(__dirname, '..', 'assets', 'attachment', attachementFileName);
+    const mailOptions = {
+      from: `"${senderName}" <${senderEmail}>`,
+      to: email,
+      subject,
+      text,
+      html: link,
+      attachments: [
+        {
+          filename: attachementFileName,
+          path: attachmentFilePath,
+        }
+      ]
+    }
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
 exports.emailTemplate = async (message) => {
   const url = 'https://nodejs.org/static/images/logo.svg';
   const html = `

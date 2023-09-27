@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 	subscription_plan.init({
 		name: DataTypes.STRING,
 		description: DataTypes.STRING,
-		price: DataTypes.DECIMAL(10,2),
+		price: DataTypes.INTEGER,
 		cancellation_period: DataTypes.INTEGER,
 		max_domains_per_month: DataTypes.INTEGER,
 		max_orders: DataTypes.INTEGER,
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 	{
 		sequelize,
 		createdAt:'created_at',
-		updatedAt:'updated-at',
+		updatedAt:'updated_at',
 		timestamps:true,
 		modelName: "SubscriptionPlans",
 		paranoid:false,

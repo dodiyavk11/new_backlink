@@ -37,7 +37,7 @@ exports.initPayment = async(req, res) => {
 		            },
 		        ],
 		        mode: "payment",
-		        success_url: `http://localhost:3000/getPayments`,
+		        success_url: `https://6812-150-129-148-240.ngrok-free.app/getPayments`,
 		        cancel_url: `http://localhost:3000/cancel.html`,
 		    });
 		    res.status(200).send({ status: true, message: "Stripe created session successfully.", id: session.id })
@@ -72,29 +72,98 @@ exports.getPaymentDetails = async (req, res) => {
 			const transaction_id = newData.payment_intent;
 			const amount = newData.amount_total / 100;
 			const currency = newData.currency;	
-
 			const transaction_type = type;
 			const user_id = newData.metadata.userid;
-			const tranInfo = { user_id,amount,transaction_type,payment_created,transaction_id }
-
+			let description = null;
+			let isPlan = false;
+			if(newData.metadata && newData.metadata.planId !== undefined)
+			{
+				isPlan = true;
+				const getPlan = await Models.SubscriptionPlans.findOne({ where:{ id:newData.metadata.planId } });
+				description = "Subscription Plans : "+getPlan.name;
+			}
+			const tranInfo = { user_id,amount,transaction_type,description,payment_created,transaction_id,isPlan,paymentData:newData }
 			const transaction = await Models.Transactions.create(tranInfo);
-			const walletInfo = await Models.UserWallet.findOne({ where:{ user_id:user_id }});	
-			if (walletInfo) {
-		    	const balance = parseFloat(amount) + parseFloat(walletInfo.balance);
-				const updateOnfo = { balance }
-		       	const walletInfoData = await Models.UserWallet.update(updateOnfo, {
-					      where: { id: walletInfo.dataValues.id },
-					    });
-		    } else {
-				const walletInfoData = await Models.UserWallet.create({ user_id, balance: amount });
-		    }
+
+			if(newData.metadata && newData.metadata.planId !== undefined)
+			{								
+				const transaction_id = transaction.id;
+				const currentDate = new Date();
+				const endDate = new Date(currentDate);
+				endDate.setMonth(endDate.getMonth() + 1);
+				const end_date = endDate.toISOString().slice(0, 19).replace('T', ' ');
+
+				const userSubscription = { user_id,plan_id:newData.metadata.planId,end_date,transaction_id }
+				const userSubscriptionAdd = await Models.UserSubscription.create(userSubscription);
+			}
+			else
+			{
+				const walletInfo = await Models.UserWallet.findOne({ where:{ user_id:user_id }});	
+				if (walletInfo) {
+			    	const balance = parseFloat(amount) + parseFloat(walletInfo.balance);
+					const updateOnfo = { balance }
+			       	const walletInfoData = await Models.UserWallet.update(updateOnfo, {
+						      where: { id: walletInfo.dataValues.id },
+						    });
+			    } else {
+					const walletInfoData = await Models.UserWallet.create({ user_id, balance: amount });
+			    }
+			}			
 		    res.json({ received: true });
-		    // res.status(200).send({ status: true, message: "Wallte amount added successfully.", data: walletInfo  })
 		}	 
 	}
 	catch (err) {
 	  console.log("/webhooks route error: ", err)
 	  res.status(500).send({ status: false, message: "Something went to wrong, Please try again.",error:err.message })
+	}
+}
+
+exports.initPaymentPlan = async(req, res) => {
+	try
+	{
+		const { product } = req.body;
+		const user_id = req.userId;
+		if(product.planId)
+		{
+			const getPlan = await Models.SubscriptionPlans.findOne({ where:{ id:product.planId } });
+			const userInfo = await Models.Users.findOne({ where:{ id:user_id } });
+			const customer = await stripe.customers.create({
+				email: userInfo.dataValues.email,
+				metadata: {
+					userId: user_id
+				}
+			});
+			const customerId = customer.id;
+			const session = await stripe.checkout.sessions.create({
+				payment_method_types:['card'],
+				customer: customerId,
+				metadata: {
+					userid : user_id,
+					planId: product.planId
+				},
+				line_items:[
+					{
+						price_data : {
+							currency: 'inr',
+							product_data:{
+								name: getPlan.dataValues.name
+							},
+							unit_amount: getPlan.dataValues.price * 100
+						},
+						quantity: 1,
+					}
+				],
+				mode: "payment",
+				success_url: `https://6812-150-129-148-240.ngrok-free.app/getPayments`,
+				cancel_url: `http://localhost:300/cancel.html`
+			});
+			return res.status(200).send({ status: true, message: "Payment session created successfully.", id: session.id })
+		}		
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message: "Something went to wrong",data: [], error: err.message })
 	}
 }
 

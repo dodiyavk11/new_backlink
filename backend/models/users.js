@@ -25,6 +25,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'user_id',
         as: 'transaction',
       });
+
+      this.hasMany(models.UserSubscription, {
+        foreignKey: 'user_id',
+        as: 'subscriptions',
+        scope: {
+          status: 1, // Filter subscriptions status is 1
+        },
+      });
     }
   }
   User.init({

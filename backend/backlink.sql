@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 26, 2023 at 03:27 PM
+-- Generation Time: Sep 27, 2023 at 03:44 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -146,7 +146,8 @@ CREATE TABLE `email_formats` (
 INSERT INTO `email_formats` (`id`, `email_title`, `email_type`, `email_content`, `header`, `file`, `createdAt`, `updatedAt`) VALUES
 (2, 'Registration', 'registration', '<p><span style=\"font-size: 18pt;\"><strong>Hello {user_name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Thank you very much for your registration.</span></span></p>\n<p><span style=\"font-size: 12pt;\">Please confirm your email address\n {user_email} with this link:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: 12pt; background-color: rgb(192, 222, 96);\">{verification_Link}</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'Please complete registration', NULL, '2023-09-19 11:27:57', '2023-09-19 11:27:57'),
 (3, 'New Order', 'create_new_order', '<p><span style=\"font-size: 18pt;\"><strong>{name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">The Backlink team has created the order \"{order_name}\" for you.</span></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Register now on the platform:</span></span></p>\n<p><span style=\"background-color: rgb(192, 222, 96); font-size: 12pt;\"><strong><span style=\"font-size: medium;\">Backlink</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'Backlink has created an order ', NULL, '2023-09-22 12:16:36', '2023-09-22 12:16:36'),
-(4, 'Order status changes', 'order_status', '<p><span style=\"font-size: 18pt;\"><strong>Hello,</strong></span></p>\n<p><span style=\"font-size: 12pt;\">The status of the order  \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</span></p>\n<p><span style=\"font-size: 12pt;\">Take a look at your order now:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: medium;\">https://</span></strong></span></p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'There is news about your order', NULL, '2023-09-26 12:04:46', '2023-09-26 12:04:46');
+(4, 'Order status changes', 'order_status', '<p><span style=\"font-size: 18pt;\"><strong>Hello,</strong></span></p>\n<p><span style=\"font-size: 12pt;\">The status of the order  \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</span></p>\n<p><span style=\"font-size: 12pt;\">Take a look at your order now:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: medium;\">https://</span></strong></span></p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'There is news about your order', NULL, '2023-09-26 12:04:46', '2023-09-26 12:04:46'),
+(5, 'Welcome', 'welcome', '<p><span style=\"font-size: 18pt;\"><strong>Hello {user_name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Thank you very much for your registration and Verify email your account now activated .</span></span></p>\n<a style=\"font-size: 12pt; background-color: rgb(192, 222, 96);text-decoration:none;padding:10px\" href=\"https://www.google.co.in/\" title=\"Login to access account\" target=\"_blank\">Login</a>', 'Welcome to Backling family', 'attachement_1695786722177.pdf', '2023-09-27 09:22:02', '2023-09-27 09:22:02');
 
 -- --------------------------------------------------------
 
@@ -311,7 +312,7 @@ CREATE TABLE `subscription_plans` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
-  `price` decimal(10,2) NOT NULL,
+  `price` int(11) NOT NULL,
   `cancellation_period` int(11) DEFAULT NULL,
   `max_domains_per_month` int(11) DEFAULT NULL,
   `max_orders` int(11) DEFAULT NULL,
@@ -321,6 +322,15 @@ CREATE TABLE `subscription_plans` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `subscription_plans`
+--
+
+INSERT INTO `subscription_plans` (`id`, `name`, `description`, `price`, `cancellation_period`, `max_domains_per_month`, `max_orders`, `credits_price`, `credits_quota`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Basic', 'Basic plan for indiindividual use', 60, 30, 10, 5, NULL, NULL, 1, '2023-09-27 05:20:00', '2023-09-27 07:29:36'),
+(2, 'Medium ', 'Medium plan for indiindividual use', 110, 30, 50, 25, NULL, NULL, 1, '2023-09-27 05:22:07', '2023-09-27 07:29:23'),
+(3, 'Agency', 'Agency plan for Agency use', 200, 30, 100, 50, NULL, NULL, 1, '2023-09-27 05:23:28', '2023-09-27 07:29:11');
 
 -- --------------------------------------------------------
 
@@ -336,6 +346,8 @@ CREATE TABLE `transactions` (
   `description` text DEFAULT NULL,
   `payment_created` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `transaction_id` varchar(255) DEFAULT NULL,
+  `isPlan` tinyint(1) NOT NULL DEFAULT 0,
+  `paymentData` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`paymentData`)),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -343,12 +355,8 @@ CREATE TABLE `transactions` (
 -- Dumping data for table `transactions`
 --
 
-INSERT INTO `transactions` (`id`, `user_id`, `amount`, `transaction_type`, `description`, `payment_created`, `transaction_id`, `created_at`) VALUES
-(1, 11, '200.00', 'checkout.session.completed', NULL, '2023-09-25 12:01:38', 'pi_3NuDTySC7x5vD10M0alrd3Rx', '2023-09-25 12:01:47'),
-(2, 11, '200.00', 'checkout.session.completed', NULL, '2023-09-25 12:03:01', 'pi_3NuDVNSC7x5vD10M04vDUaKX', '2023-09-25 12:03:16'),
-(3, 11, '200.00', 'checkout.session.completed', NULL, '2023-09-25 12:41:03', 'pi_3NuE6RSC7x5vD10M01GsY7D4', '2023-09-25 12:41:32'),
-(4, 11, '200.00', 'checkout.session.completed', NULL, '2023-09-25 13:11:35', 'pi_3NuEa4SC7x5vD10M1b3Gpfqx', '2023-09-25 13:12:10'),
-(5, 11, '200.00', 'checkout.session.completed', NULL, '2023-09-26 03:45:58', 'pi_3NuEqnSC7x5vD10M1hiKrfjj', '2023-09-25 13:29:28');
+INSERT INTO `transactions` (`id`, `user_id`, `amount`, `transaction_type`, `description`, `payment_created`, `transaction_id`, `isPlan`, `paymentData`, `created_at`) VALUES
+(1, 15, '60.00', 'checkout.session.completed', 'Subscription Plans : Basic', '2023-09-27 12:51:54', 'pi_3NuxDzSC7x5vD10M0iqAnYgB', 1, '{\"id\":\"cs_test_a1DP5Hw8ZPgvIlOw9XSkOxDeaUGyglT4MEOEFPakaRKeIfIOVQrLpd6P99\",\"object\":\"checkout.session\",\"after_expiration\":null,\"allow_promotion_codes\":null,\"amount_subtotal\":6000,\"amount_total\":6000,\"automatic_tax\":{\"enabled\":false,\"status\":null},\"billing_address_collection\":null,\"cancel_url\":\"http://localhost:300/cancel.html\",\"client_reference_id\":null,\"consent\":null,\"consent_collection\":null,\"created\":1695819114,\"currency\":\"inr\",\"currency_conversion\":null,\"custom_fields\":[],\"custom_text\":{\"shipping_address\":null,\"submit\":null,\"terms_of_service_acceptance\":null},\"customer\":\"cus_OiNzQMqfJE1j74\",\"customer_creation\":null,\"customer_details\":{\"address\":{\"city\":null,\"country\":\"IN\",\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":\"nagherajayesh2087@gmail.com\",\"name\":\"Jayesh Naghera\",\"phone\":null,\"tax_exempt\":\"none\",\"tax_ids\":[]},\"customer_email\":null,\"expires_at\":1695905514,\"invoice\":null,\"invoice_creation\":{\"enabled\":false,\"invoice_data\":{\"account_tax_ids\":null,\"custom_fields\":null,\"description\":null,\"footer\":null,\"metadata\":{},\"rendering_options\":null}},\"livemode\":false,\"locale\":null,\"metadata\":{\"userid\":\"15\",\"planId\":\"1\"},\"mode\":\"payment\",\"payment_intent\":\"pi_3NuxDzSC7x5vD10M0iqAnYgB\",\"payment_link\":null,\"payment_method_collection\":\"if_required\",\"payment_method_configuration_details\":null,\"payment_method_options\":{},\"payment_method_types\":[\"card\"],\"payment_status\":\"paid\",\"phone_number_collection\":{\"enabled\":false},\"recovered_from\":null,\"setup_intent\":null,\"shipping_address_collection\":null,\"shipping_cost\":null,\"shipping_details\":null,\"shipping_options\":[],\"status\":\"complete\",\"submit_type\":null,\"subscription\":null,\"success_url\":\"https://6812-150-129-148-240.ngrok-free.app/getPayments\",\"total_details\":{\"amount_discount\":0,\"amount_shipping\":0,\"amount_tax\":0},\"url\":null}', '2023-09-27 12:52:25');
 
 -- --------------------------------------------------------
 
@@ -381,7 +389,7 @@ INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `
 (9, '123@gmail.com', 1, 'test', 'test', '$2a$11$uADreLR8rD3x7TF0dg54n.natIDMyUCFh/l1yKutPnLpkif5D5F1e', NULL, '1234567809', 0, '2023-09-20 10:55:10', '2023-09-20 10:55:10'),
 (10, 'devuser@gmail.com', 1, 'Dev', 'User', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1695188498849.jpg', '1234567809', 0, '2023-09-20 11:11:39', '2023-09-20 11:11:39'),
 (11, 'customer@test.com', 1, 'Customer', 'Customer', '$2a$11$zUU62EIftcI7V8bU8XCN6O8ynRwhalVmVzlG4EYCVTadW1ZbjK9iO', 'profileImg_1695188498849.jpg', '1234567809', 0, '2023-09-20 13:23:06', '2023-09-20 13:24:52'),
-(15, 'nagherajayesh2087@gmail.com', 0, 'Jayesh', 'Naghera', '$2a$11$bw6B8GeAU94tv01rXm4N..AiVoePSht4NmJpN71yIIRekbIYmXZc2', NULL, '9033389733', 0, '2023-09-26 09:56:08', '2023-09-26 09:56:08'),
+(15, 'nagherajayesh2087@gmail.com', 1, 'Jayesh', 'Naghera', '$2a$11$bw6B8GeAU94tv01rXm4N..AiVoePSht4NmJpN71yIIRekbIYmXZc2', NULL, '9033389733', 0, '2023-09-26 09:56:08', '2023-09-26 09:56:08'),
 (18, '1323@gmail.com', 1, 'Test', 'Customer', '$2a$11$2uW7YFE7S1btWgvoLN9ORuSzZ9tApUz9L1zeXDuvDz4pwlQG9ox/q', NULL, '1234567809', 0, '2023-09-26 18:47:55', '2023-09-26 18:51:51');
 
 -- --------------------------------------------------------
@@ -398,13 +406,6 @@ CREATE TABLE `users_wallet` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `users_wallet`
---
-
-INSERT INTO `users_wallet` (`id`, `user_id`, `balance`, `created_at`, `updated_at`) VALUES
-(1, 11, '1000.00', '2023-09-25 13:29:28', '2023-09-25 13:29:28');
-
 -- --------------------------------------------------------
 
 --
@@ -415,12 +416,21 @@ CREATE TABLE `user_subscriptions` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `plan_id` int(11) NOT NULL,
-  `start_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `start_date` datetime NOT NULL DEFAULT current_timestamp(),
   `end_date` datetime DEFAULT NULL,
   `cancel_date` timestamp NULL DEFAULT NULL,
   `info` varchar(255) DEFAULT NULL,
-  `credits` int(11) DEFAULT 0
+  `credits` int(11) DEFAULT 0,
+  `transaction_id` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_subscriptions`
+--
+
+INSERT INTO `user_subscriptions` (`id`, `user_id`, `plan_id`, `start_date`, `end_date`, `cancel_date`, `info`, `credits`, `transaction_id`, `status`) VALUES
+(1, 15, 1, '2023-09-27 18:22:26', '2023-10-27 12:52:26', NULL, NULL, 0, 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -565,7 +575,7 @@ ALTER TABLE `domain_tags`
 -- AUTO_INCREMENT for table `email_formats`
 --
 ALTER TABLE `email_formats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `faqs`
@@ -589,7 +599,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `orderfiles`
@@ -607,31 +617,31 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `subscription_plans`
 --
 ALTER TABLE `subscription_plans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `users_wallet`
 --
 ALTER TABLE `users_wallet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_subscriptions`
 --
 ALTER TABLE `user_subscriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

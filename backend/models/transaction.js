@@ -26,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
     },
     transaction_id:DataTypes.STRING,
+    isPlan: DataTypes.INTEGER,
+    paymentData: DataTypes.JSON
   }, {
     sequelize,
     createdAt: 'created_at',

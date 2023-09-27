@@ -1665,7 +1665,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU2MzQ3ODcsImV4cCI6MTY5NTY3MDc4N30.JrXo7N3cC1wgJKpCnuwnoKp_J4qV4hUlOTQtOLSAj8A",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTU4MTgxMDYsImV4cCI6MTY5NTg1NDEwNn0.IXinhz1fBfP7TPEqBOwKzJ40YF5rFT0C3eom3tj6Pqo",
 							"type": "string"
 						}
 					]
@@ -2309,7 +2309,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU2MzQ3ODcsImV4cCI6MTY5NTY3MDc4N30.JrXo7N3cC1wgJKpCnuwnoKp_J4qV4hUlOTQtOLSAj8A",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTU4MTgxMDYsImV4cCI6MTY5NTg1NDEwNn0.IXinhz1fBfP7TPEqBOwKzJ40YF5rFT0C3eom3tj6Pqo",
 							"type": "string"
 						}
 					]
@@ -2547,6 +2547,177 @@
 						"order",
 						"deleteCloudLinks",
 						"23"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscription Plan ADD",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTc4ODc3OSwiZXhwIjoxNjk1ODI0Nzc5fQ.a00DhHfTaOxOiqulqRDTwlajjzF1g1ANhmwR7q8DhGE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Standard\",\r\n    \"description\":\"Use to multiple user\",\r\n    \"price\":250,\r\n    \"cancellation_period\":30,\r\n    \"max_domains_per_month\":250,\r\n    \"max_orders\":15,\r\n    \"status\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/subscriptionPlan/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"subscriptionPlan",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscription Plan List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTc4ODc3OSwiZXhwIjoxNjk1ODI0Nzc5fQ.a00DhHfTaOxOiqulqRDTwlajjzF1g1ANhmwR7q8DhGE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/subscriptionPlan/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"subscriptionPlan",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Subscription Plan by id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTc4ODc3OSwiZXhwIjoxNjk1ODI0Nzc5fQ.a00DhHfTaOxOiqulqRDTwlajjzF1g1ANhmwR7q8DhGE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/subscriptionPlan/get/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"subscriptionPlan",
+						"get",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Subscription Plan",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTc4ODc3OSwiZXhwIjoxNjk1ODI0Nzc5fQ.a00DhHfTaOxOiqulqRDTwlajjzF1g1ANhmwR7q8DhGE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Basic\",\r\n    \"description\":\"Basic plan for indiindividual use\",\r\n    \"price\":50,\r\n    \"cancellation_period\":30,\r\n    \"max_domains_per_month\":10,\r\n    \"max_orders\":5,\r\n    \"status\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/subscriptionPlan/update/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"subscriptionPlan",
+						"update",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Subscription Plan",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTc4ODc3OSwiZXhwIjoxNjk1ODI0Nzc5fQ.a00DhHfTaOxOiqulqRDTwlajjzF1g1ANhmwR7q8DhGE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/subscriptionPlan/delete/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"subscriptionPlan",
+						"delete",
+						"5"
 					]
 				}
 			},
