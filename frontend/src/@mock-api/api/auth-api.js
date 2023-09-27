@@ -15,7 +15,7 @@ mock.onGet('/api/auth/sign-in').reply(async (config) => {
   const data = JSON.parse(config.data);
   const { email, password } = data;
   const user = _.cloneDeep(usersApi.find((_user) => _user.data.email === email));
-
+ 
   const error = [];
 
   if (!user) {
@@ -32,6 +32,7 @@ mock.onGet('/api/auth/sign-in').reply(async (config) => {
     });
   }
 
+  // console.log(error);
   if (error.length === 0) {
     delete user.password;
 

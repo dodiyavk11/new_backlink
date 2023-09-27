@@ -32640,6 +32640,7 @@
             "from": "custom-db",
             "password": "admin",
             "role": "admin",
+            "loginRedirectUrl":"/",
             "data": {
               "displayName": "Abbott Keitch",
               "photoURL": "assets/images/avatars/brian-hughes.jpg",
@@ -32654,46 +32655,28 @@
                 "apps.contacts"
               ]
             }
-          },
-          {
-            "uuid": "XgbuVEXBU6gtSKdbTYR1Zbbby1i3",
-            "from": "custom-db",
-            "password": "staff",
-            "role": "staff",
+          }, {
+            "uuid": "XgbuVEXBU5gtSKdbQRP1Zbbby1i2",
+            "from": "custom-dbe",
+            "password": "user",
+            "role": "user",
+            "loginRedirectUrl":"/user",
             "data": {
-              "displayName": "Arnold Matlock",
-              "photoURL": "assets/images/avatars/Arnold.jpg",
-              "email": "staff@fusetheme.com",
+              "displayName": "USer Keitch",
+              "photoURL": "assets/images/avatars/brian-hughes.jpg",
+              "email": "user@selllinks.com",
               "settings": {
-                "layout": {
-                  "style": "layout2",
-                  "config": {
-                    "mode": "boxed",
-                    "scroll": "content",
-                    "navbar": {
-                      "display": true
-                    },
-                    "toolbar": {
-                      "display": true,
-                      "position": "below"
-                    },
-                    "footer": {
-                      "display": true,
-                      "style": "fixed"
-                    }
-                  }
-                },
-                "customScrollbars": true,
+                "layout": {},
                 "theme": {}
               },
               "shortcuts": [
                 "apps.calendar",
                 "apps.mailbox",
-                "apps.contacts",
-                "apps.tasks"
+                "apps.contacts"
               ]
             }
           }
+        
         ]
       },
       "notifications": {

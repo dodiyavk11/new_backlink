@@ -12,7 +12,7 @@ function AnalyticsDashboardAppHeader(props) {
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}
         delay={300} className="text-3xl text-[#354252] font-bold tracking-tight leading-8">
-            Dashboard
+             Dashboard(A)
           </Typography>
           
         </div>

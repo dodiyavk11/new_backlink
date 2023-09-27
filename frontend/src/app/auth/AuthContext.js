@@ -23,6 +23,7 @@ function AuthProvider({ children }) {
       jwtService
         .signInWithToken()
         .then((user) => {
+         
           success(user, 'Signed in with JWT');
         })
         .catch((error) => {
@@ -90,5 +91,7 @@ function useAuth() {
   }
   return context;
 }
+
+
 
 export { AuthProvider, useAuth };

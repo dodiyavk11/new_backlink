@@ -15,6 +15,16 @@ const navigationConfig = [
     type: 'item',
     icon: 'heroicons-outline:chart-pie',
     url: '/admin/dashboard',
+    auth:authRoles.admin
+    
+  },
+  {
+    id: 'dashboards.analytics1',
+    title: 'Dashboard',
+    type: 'item',
+    icon: 'heroicons-outline:chart-pie',
+    url: '/user/dashboard',
+    auth:authRoles.user,
   },
   {
     id: 'dashboards.project',
@@ -22,6 +32,15 @@ const navigationConfig = [
     type: 'item',
     icon: 'heroicons-outline:clipboard-check',
     url: '/admin/project',
+    auth:authRoles.admin
+  },
+  {
+    id: 'dashboards.project1',
+    title: 'Project',
+    type: 'item',
+    icon: 'heroicons-outline:clipboard-check',
+    url: '/user/project',
+    auth:authRoles.user
   },
     {
         id: 'dashboards.finance',
