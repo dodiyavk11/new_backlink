@@ -9,10 +9,8 @@ const moment = require('moment');
 
 // add customer - both user and admin side
 exports.signUp = async (req, res) => {
-    try {
-       
-        const { email, firstName, lastName, password,phone,isAdmin } = req.body
-        // const { email, fname, lname, password, company, street, postalNum, country, ustId, number, city, employee, code,isAdmin } = req.body
+    try {       
+        const { email, firstName, lastName, password,phone } = req.body        
         const profile = req.file
         const checkUser = await Models.Users.findOne({ where: { email } })
         if (checkUser && checkUser.dataValues.email) {
@@ -28,23 +26,21 @@ exports.signUp = async (req, res) => {
             const addUser = await Models.Users.create(userInfo)
             delete addUser.dataValues.password
             
-            if(isAdmin){   
-              const adminUser =  await Models.Users.update({email_verified :true}, { where: {email: addUser.dataValues.email } })
-             return res.status(200).send({ status: true, message: "User registration successful", data: adminUser });
-            }
-            else
-            {
+            // if(isAdmin){   
+            //   const adminUser =  await Models.Users.update({email_verified :true}, { where: {email: addUser.dataValues.email } })
+            //  return res.status(200).send({ status: true, message: "User registration successful", data: adminUser });
+            // }
+            // else
+            // {
                 const settingData = { user_id:addUser.dataValues.id }
                 const addSetting = await Models.Setting.create(settingData)
-            }
+            // }
 
             // email send process
-            // const mailTexts = await Models.email_template.findOne({ where: { email_type: 'registration' } })
-            // let subject = mailTexts.header
-            // let text = mailTexts.email_content
-            let subject = "Complete registration now";
-            let text = '<p><span style="font-size: 18pt;"><strong>Hello,</strong></span></p><p><span style="font-size: 12pt;"><span style="font-size: medium;">Thank you for your registration.</span></span></p><p><span style="font-size: 12pt;">Please confirm your email address {user_email} with this link:</span></p><p><span style="background-color: rgb(192, 222, 96);"><strong><span style="font-size: 12pt; background-color: rgb(192, 222, 96); ">{verification_Link}</span></strong></span></p><p><span style="font-size: 14pt;"><strong>Many sizes</strong></span></p>';
-            text = text.replace("{user_name}", firstName + lastName);
+            const mailTexts = await Models.email_format.findOne({ where: { email_type: 'registration' } })
+            let subject = mailTexts.header
+            let text = mailTexts.email_content
+            text = text.replace("{user_name}", firstName+" "+ lastName);
             text = text.replace("{user_email}", email);
             const EmailToken = generateJWTToken({ email: addUser.dataValues.email }, "10m")
             const VerificationLink = `<a href="${process.env.BASE_URL}/verify/email/${EmailToken}">Click here</a>`

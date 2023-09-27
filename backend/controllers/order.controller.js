@@ -310,3 +310,127 @@ exports.deleteOrderFinalFile = async(req, res) => {
 		res.status(500).send({ status: true, message: "Final file cannot be deleted, an error occurred.", data: [], error:err.message })
 	}
 }
+
+exports.updateOrderStatus = async(req, res) => {
+	try
+	{
+		const { order_id } = req.params;
+		const { orderstatus } = req.body;
+		const user_id = req.userId
+		const getOrderUserId = await Models.Orders.findOne({ where: { id:order_id } });
+		const getOrderUserData = await Models.Users.findOne({ where: { id:getOrderUserId.dataValues.customer_id } })
+		let ordername = getOrderUserId.dataValues.ordername;
+		const mailText = await Models.email_format.findOne({ where: { email_type: "order_status" } });
+		let text = mailText.email_content;
+		let subject = mailText.header;
+		text = text.replace("{order_name}", ordername);
+		let email = {}
+		if(orderstatus == 1)
+		{
+			text = text.replace("{order_status}","New Order");			
+		}
+		if(orderstatus == 3)
+		{
+			text = text.replace("{order_status}","Completed");
+		}
+
+		if(orderstatus == 1 || orderstatus == 3)
+		{
+			email = await emailTemplate(text);			
+			sendVerifyMail(getOrderUserData.dataValues.email,subject,"",email);
+		}
+		const updateOrderStatus = await Models.Orders.update({ orderstatus },{ where: { id:order_id } });
+		getOrderUserData.isAdmin !== 0 && ( await Models.Orders.update({ update_status: true },{ where: { id: order_id } } ));
+
+		res.status(200).send({ status: true, message: "Order status Update successfully.",data: updateOrderStatus })
+	}
+	catch(err)
+	{
+		console.log(err)
+		res.status(500).send({ status: true, message: "Order status update cannot be update, an error occurred.", data: [],  error: err.message })
+	}
+}
+
+exports.addOrderCloundLinks = async(req, res) => {
+	try
+	{
+		const { order_id } = req.params;
+		const { cloud_links } = req.body;
+		if(!cloud_links || cloud_links.length===0)
+		{
+			return res.status(400).send({ status: false, message: "Please add link", data: [] });
+		}
+		const links = await Promise.all(
+		  cloud_links.map(async (linkObj) => {
+		    try {
+		      if (linkObj.link) {
+		        const createdLink = await Models.orderFiles.create({
+		          order_id: order_id,
+		          isLink: true,
+		          link: linkObj.link,
+		          original_name: linkObj.link_name,
+		        });
+		        return createdLink;
+		      }
+		    } catch (error) {
+		      console.error("Error creating link:", error);
+		    }
+		  })
+		);		
+		res.status(200).send({ status: true, message: "Link added successfully.", data: links })
+	}
+	catch(err)
+	{
+		console.log(err)
+		res.status(500).send({ status: false, message: "Cloud link cannot be added, an error occurred.", data: [], error: err.message });
+	}
+}
+
+exports.updateOrderCloundLinks = async(req, res) => {
+	try
+	{
+		const { id } = req.params;
+		const { cloud_links,link_name } = req.body;
+		if(!cloud_links || !link_name)
+		{
+			return res.status(400).send({ status: false, message: "Please add link or add link name" })
+		}
+		const checkIsLink = await Models.orderFiles.findOne({ where:{ id:id,isLink:true } })
+		if(checkIsLink)
+		{
+			const updateData = await Models.orderFiles.update({ link:cloud_links,original_name:link_name },{ where:{ id:id } });
+			res.status(200).send({ status: true, message: "Cloud link updated successfully.", data: updateData })
+		}	
+		else
+		{
+			return res.status(400).send({ status: false, message: "This is not a link" })
+		}	
+	}
+	catch(err)
+	{
+		console.log(err)
+		res.status(500).send({ status: false, message: "Cloud link cannot be updated, an error occurred.", data: [], error: err.message })
+	}
+}
+
+exports.deleteCloudLinks = async(req, res) => {
+	try
+	{
+		const { id } = req.params
+		const checkIsLink = await Models.orderFiles.findOne({ where:{ id: id, isLink: true} });
+		if(checkIsLink)
+		{
+			const deleteData = await Models.orderFiles.destroy({ where:{ id:id } });
+			res.status(200).send({ status: true, message: "Cloud link deleted successfully.", data: deleteData })
+		}
+		else
+		{
+			return res.status(400).send({ status: false, message: "This is not a link.", data: [] });
+		}
+	}
+	catch(err)
+	{
+		console.log(err)
+		res.status(500).send({ status: true, message: "Cloud link cannot be deleted, an error occurred.",data:[], error: err.message })
+	}
+}

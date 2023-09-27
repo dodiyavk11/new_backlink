@@ -199,28 +199,28 @@
 					"formdata": [
 						{
 							"key": "email_title",
-							"value": "Registration",
+							"value": "Order status changes",
 							"type": "text"
 						},
 						{
 							"key": "email_type",
-							"value": "registration",
+							"value": "order_status",
 							"type": "text"
 						},
 						{
 							"key": "email_content",
-							"value": "<p><span style=\"font-size: 18pt;\"><strong>Moin,</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">vielen Dank f&uuml;r Deine Registrierung.</span></span></p>\n<p><span style=\"font-size: 12pt;\">Best&auml;tige bitte Deine E-Mailadresse {user_email} mit diesem Link:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: 12pt; background-color: rgb(192, 222, 96);\">{verification_Link}</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Viele Gr&uuml;&szlig;e</strong></span></p>",
+							"value": "<p><span style=\"font-size: 18pt;\"><strong>Hello,</strong></span></p>\n<p><span style=\"font-size: 12pt;\">The status of the order  \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</span></p>\n<p><span style=\"font-size: 12pt;\">Take a look at your order now:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: medium;\">https://</span></strong></span></p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>",
 							"type": "text"
 						},
 						{
 							"key": "header",
-							"value": "Please complete registration",
+							"value": "There is news about your order",
 							"type": "text"
 						},
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/C:/Users/rjnag/Downloads/5470201726.jpg"
+							"src": []
 						}
 					]
 				},
@@ -2209,7 +2209,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTUzNTQ5NTQsImV4cCI6MTY5NTM5MDk1NH0.a5Jat9ThQzgg9bxT3zA8IKATs1i0tJwZ4fA1dyFOcOc",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTcxNDg5MiwiZXhwIjoxNjk1NzUwODkyfQ.SWZwa7z5uTW1C6cjaImaXQevjBmm-fT7WT5WGWQ-kPw",
 							"type": "string"
 						}
 					]
@@ -2326,6 +2326,227 @@
 					"path": [
 						"user",
 						"transactionHistory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Domain to get AHREF Backlinks Details",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU2OTk5NzYsImV4cCI6MTY5NTczNTk3Nn0.xTKreS0ipXipEzfFhbmnI9n-y6yI-dKNUrVCBnPIczQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/getBacklinks/blog.ahrefs.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"getBacklinks",
+						"blog.ahrefs.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order final file delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTUzNTQ5NTQsImV4cCI6MTY5NTM5MDk1NH0.a5Jat9ThQzgg9bxT3zA8IKATs1i0tJwZ4fA1dyFOcOc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"final_file1695387549326.jpeg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/order/finalFileDelete/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"order",
+						"finalFileDelete",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order Status Update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU2OTk5NzYsImV4cCI6MTY5NTczNTk3Nn0.xTKreS0ipXipEzfFhbmnI9n-y6yI-dKNUrVCBnPIczQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orderstatus\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/order/updateStatus/48",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"order",
+						"updateStatus",
+						"48"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order Add Cloud Links",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTcxNDg5MiwiZXhwIjoxNjk1NzUwODkyfQ.SWZwa7z5uTW1C6cjaImaXQevjBmm-fT7WT5WGWQ-kPw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cloud_links\": [\r\n        {\r\n            \"link\": \"https://github.com/ybonnefond/node-ahrefs/tree/master\",\r\n            \"link_name\": \"ahref npm tutorial\"\r\n        },\r\n        {\r\n            \"link\": \"https://app.ahrefs.com/api/profile\",\r\n            \"link_name\": \"ahref token link\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/order/addCloudLinks/48",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"order",
+						"addCloudLinks",
+						"48"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Cloud Link",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTcxNDg5MiwiZXhwIjoxNjk1NzUwODkyfQ.SWZwa7z5uTW1C6cjaImaXQevjBmm-fT7WT5WGWQ-kPw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cloud_links\":\"https://www.google.co.in\",\r\n    \"link_name\":\"Googles\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/order/updateCloudLinks/20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"order",
+						"updateCloudLinks",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Cloud Link",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NTcxNDg5MiwiZXhwIjoxNjk1NzUwODkyfQ.SWZwa7z5uTW1C6cjaImaXQevjBmm-fT7WT5WGWQ-kPw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/order/deleteCloudLinks/23",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"order",
+						"deleteCloudLinks",
+						"23"
 					]
 				}
 			},
