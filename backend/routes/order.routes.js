@@ -6,7 +6,6 @@ const { uploadOrderFile, uploadOrderFinalFile } = require("../middleware/orderFi
 module.exports = (app) => {
 	app.post("/order/add",[isLogin,isCustomer,uploadOrderFile.array("files[]",999999)],addOrder);
 	app.get("/order/get/all", [isLogin,isAdmin], getAllOrders);
-	// app.post("/order/get/filter", [checkAuth, isAdmin], GetFilteredOrder)
   	app.get("/order/get", [isLogin], getOrderByUserId)
 	app.get("/order/get/:order_id", [isLogin], getOrderByOrderId)
 	app.patch("/order/update/:order_id", [isLogin, uploadOrderFile.array("files[]",999999)], updateOrder);
@@ -19,5 +18,4 @@ module.exports = (app) => {
 	app.post("/order/addCloudLinks/:order_id",[isLogin],addOrderCloundLinks)
 	app.post("/order/updateCloudLinks/:id",[isLogin],updateOrderCloundLinks)
 	app.get("/order/deleteCloudLinks/:id",[isLogin],deleteCloudLinks)
-
 }

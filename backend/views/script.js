@@ -1,5 +1,5 @@
 const plansContainer = document.getElementById('plans');
-let jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTU3OTYxMzEsImV4cCI6MTY5NTgzMjEzMX0.6friUvfDuRdny7RcIG-N_uGcbcxVXfFtc4ZStWdW_fY";
+let jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU4ODIyNDQsImV4cCI6MTY5NTkxODI0NH0.Cn0n7GBguzU3clvtUq9iA1svPpYKKaMb1XHqDGyPnp0";
 const headers = {
   'Authorization': `Bearer ${jwtToken}`,
   'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ function renderPlans(plans) {
 function purchasePlan(planId) {
     var stripe = Stripe("pk_test_51NsHj9SC7x5vD10MwSXcqvZoKpQxEOa2VuUNxCB0MfWKHd0oFMY4bEZAAulbIE23yP4Dk4fF0reCMQlfAh2ANsio00QXxoDW3d");
     var checkoutButton = document.getElementById("btn");
-    var jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTU3OTYxMzEsImV4cCI6MTY5NTgzMjEzMX0.6friUvfDuRdny7RcIG-N_uGcbcxVXfFtc4ZStWdW_fY";
+    // var jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTU3OTYxMzEsImV4cCI6MTY5NTgzMjEzMX0.6friUvfDuRdny7RcIG-N_uGcbcxVXfFtc4ZStWdW_fY";
       fetch("http://localhost:3000/subscriptionPayment", {
         headers: {'Content-Type': 'application/json',
         'Authorization': `Bearer ${jwtToken}`,

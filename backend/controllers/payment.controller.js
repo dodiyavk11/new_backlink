@@ -1,6 +1,7 @@
 const Models = require("../models");
 const Sequelize = require('sequelize');
 const stripe = require("stripe")("sk_test_51NsHj9SC7x5vD10Msw6jkUut1c6QEMO0sN2RpWt1mnoiK0ccWOONIhCAWHwsAjdVSPpNuMtybe2a8dSxa1Po0IhN00ootqyaJH");
+const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils");
 
 exports.initPayment = async(req, res) => {
 	try
@@ -37,7 +38,7 @@ exports.initPayment = async(req, res) => {
 		            },
 		        ],
 		        mode: "payment",
-		        success_url: `https://6812-150-129-148-240.ngrok-free.app/getPayments`,
+		        success_url: `https://4fef-103-247-54-225.ngrok-free.app/getPayments`,
 		        cancel_url: `http://localhost:3000/cancel.html`,
 		    });
 		    res.status(200).send({ status: true, message: "Stripe created session successfully.", id: session.id })
@@ -57,9 +58,10 @@ exports.getPaymentDetails = async (req, res) => {
 		if(type === 'checkout.session.completed')
 		{
 			const newData = data.object;
-			const created = newData.created;
-
-			const unixTimestamp = created;
+			const createdAt = newData.created;
+			const transaction_id = newData.payment_intent;			
+			const payment_status = newData.payment_status;			
+			const unixTimestamp = createdAt;
 			const date = new Date(unixTimestamp * 1000);
 			const year = date.getFullYear();
 			const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -68,47 +70,71 @@ exports.getPaymentDetails = async (req, res) => {
 			const minutes = String(date.getMinutes()).padStart(2, '0');
 			const seconds = String(date.getSeconds()).padStart(2, '0');
 			const payment_created = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
-			const transaction_id = newData.payment_intent;
+			
 			const amount = newData.amount_total / 100;
 			const currency = newData.currency;	
 			const transaction_type = type;
 			const user_id = newData.metadata.userid;
-			let description = null;
+			let description = 'Order';
 			let isPlan = false;
+			let getPlan;
 			if(newData.metadata && newData.metadata.planId !== undefined)
 			{
 				isPlan = true;
-				const getPlan = await Models.SubscriptionPlans.findOne({ where:{ id:newData.metadata.planId } });
+				getPlan = await Models.SubscriptionPlans.findOne({ where:{ id:newData.metadata.planId } });
 				description = "Subscription Plans : "+getPlan.name;
 			}
-			const tranInfo = { user_id,amount,transaction_type,description,payment_created,transaction_id,isPlan,paymentData:newData }
-			const transaction = await Models.Transactions.create(tranInfo);
-
-			if(newData.metadata && newData.metadata.planId !== undefined)
-			{								
-				const transaction_id = transaction.id;
-				const currentDate = new Date();
-				const endDate = new Date(currentDate);
-				endDate.setMonth(endDate.getMonth() + 1);
-				const end_date = endDate.toISOString().slice(0, 19).replace('T', ' ');
-
-				const userSubscription = { user_id,plan_id:newData.metadata.planId,end_date,transaction_id }
-				const userSubscriptionAdd = await Models.UserSubscription.create(userSubscription);
-			}
-			else
+			const tranInfo = { user_id,amount,transaction_type,description,payment_created,transaction_id,isPlan,status:payment_status,paymentData:newData }
+			const [transaction, created] = await Models.Transactions.findOrCreate({
+			  where: {
+			    transaction_id: transaction_id,
+			  },
+			  defaults: tranInfo,
+			});
+			if (created) 
 			{
-				const walletInfo = await Models.UserWallet.findOne({ where:{ user_id:user_id }});	
-				if (walletInfo) {
-			    	const balance = parseFloat(amount) + parseFloat(walletInfo.balance);
-					const updateOnfo = { balance }
-			       	const walletInfoData = await Models.UserWallet.update(updateOnfo, {
-						      where: { id: walletInfo.dataValues.id },
-						    });
-			    } else {
-					const walletInfoData = await Models.UserWallet.create({ user_id, balance: amount });
-			    }
-			}			
+				if(newData.metadata && newData.metadata.planId !== undefined)
+				{								
+					const transaction_id = transaction.id;
+					const currentDate = new Date();
+					const endDate = new Date(currentDate);
+					endDate.setMonth(endDate.getMonth() + 1); //add current date to 1 month
+					const end_date = endDate.toISOString().slice(0, 19).replace('T', ' ');
+
+					// const daysToAdd =3; // Number of days to add
+					// const endDate = new Date(currentDate);
+					// endDate.setDate(currentDate.getDate() + daysToAdd);
+
+					const userInfo = await Models.Users.findOne({ where:{ id:user_id } });
+					const mailText = await Models.email_format.findOne({ where: { email_type: "subscription_purchase" } });
+					let text = mailText.email_content;
+					let subject = mailText.header;
+					let username = userInfo.dataValues.firstName+' '+userInfo.dataValues.lastName;
+					text = text.replace("{username}", username);
+					text = text.replace("{planname}", getPlan.name);
+					text = text.replace("{price}", getPlan.price);
+					text = text.replace("{startdate}", currentDate);
+					text = text.replace("{enddate}", end_date);
+					const email = await emailTemplate(text);		
+					sendVerifyMail(userInfo.dataValues.email,subject,"",email);
+
+					const userSubscription = { user_id,plan_id:newData.metadata.planId,end_date,transaction_id }
+					const userSubscriptionAdd = await Models.UserSubscription.create(userSubscription);
+				}
+				else
+				{
+					const walletInfo = await Models.UserWallet.findOne({ where:{ user_id:user_id }});	
+					if (walletInfo) {
+				    	const balance = parseFloat(amount) + parseFloat(walletInfo.balance);
+						const updateOnfo = { balance }
+				       	const walletInfoData = await Models.UserWallet.update(updateOnfo, {
+							      where: { id: walletInfo.dataValues.id },
+							    });
+				    } else {
+						const walletInfoData = await Models.UserWallet.create({ user_id, balance: amount });
+				    }
+				}	
+			}		
 		    res.json({ received: true });
 		}	 
 	}
@@ -154,7 +180,7 @@ exports.initPaymentPlan = async(req, res) => {
 					}
 				],
 				mode: "payment",
-				success_url: `https://6812-150-129-148-240.ngrok-free.app/getPayments`,
+				success_url: `https://4fef-103-247-54-225.ngrok-free.app/getPayments`,
 				cancel_url: `http://localhost:300/cancel.html`
 			});
 			return res.status(200).send({ status: true, message: "Payment session created successfully.", id: session.id })

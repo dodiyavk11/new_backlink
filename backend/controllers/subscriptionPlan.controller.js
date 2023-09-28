@@ -4,11 +4,11 @@ const Sequelize = require("sequelize")
 exports.addSubscriptionPlan = async(req, res) => {
 	try
 	{
-		const { name, description, price, cancellation_period, max_domains_per_month, max_orders, status } = req.body;
+		const { name, description, price, cancellation_period, max_domains_per_month, max_orders, status,validity } = req.body;
 		let isValid = fieldValidation(req.body);
 		if (isValid.isTrue) 
 		{
-			const planInfo = { name, description, price:parseFloat(price), cancellation_period, max_domains_per_month, max_orders, status };		  
+			const planInfo = { name, description, price:parseFloat(price), cancellation_period, max_domains_per_month, max_orders, status,validity };		  
 			const addData =  await Models.SubscriptionPlans.create(planInfo);			
 			res.status(200).send({ status: true, message: "Subscription Plan added successfully.", data:addData });
 		} else {
@@ -53,11 +53,11 @@ exports.updateSubscriptionPlan = async(req, res) => {
 	try
 	{
 		const { id } = req.params;
-		const { name, description, price, cancellation_period, max_domains_per_month, max_orders, status } = req.body;
+		const { name, description, price, cancellation_period, max_domains_per_month, max_orders, status,validity } = req.body;
 		let isValid = fieldValidation(req.body)
 		if(isValid.isTrue)
 		{
-			const planInfo = { name, description, price:parseFloat(price), cancellation_period, max_domains_per_month, max_orders, status };
+			const planInfo = { name, description, price:parseFloat(price), cancellation_period, max_domains_per_month, max_orders, status, validity };
 			const updateData = await Models.SubscriptionPlans.update(planInfo,{ where:{ id:id } })
 			res.status(200).send({ status: true, message: "Subscription plan updated successfully.", data: updateData })
 		}
@@ -89,7 +89,7 @@ exports.deleteSubscriptionPlan = async(req, res) => {
 
 function fieldValidation(bodyFiled)
 {
-	const requiredFields = ['name', 'description', 'price', 'cancellation_period', 'max_domains_per_month', 'max_orders', 'status'];
+	const requiredFields = ['name', 'description', 'price', 'cancellation_period', 'max_domains_per_month', 'max_orders', 'status','validity'];
 	const resp = {};
 	const isValid = requiredFields.every(filed =>{
 		return typeof bodyFiled[filed] !== 'undefined' && bodyFiled[filed] !== null && bodyFiled[filed] !== "";
@@ -97,4 +97,35 @@ function fieldValidation(bodyFiled)
 	resp.isTrue = isValid;
 	resp.requiredFields = requiredFields
 	return resp;
+}
+
+exports.userSubscriptionHistory = async(req, res) => {
+	try
+	{
+		const SubscriptionHistory = await Models.UserSubscription.findAll({
+			include: [
+				{
+					model: Models.Users,
+					as: 'user',
+					attributes: ['id','firstName','lastName','email']
+				},
+				{
+					model: Models.SubscriptionPlans,
+					as: 'plan',
+					attributes: ['name','price','description','validity']
+				},
+				{
+					model: Models.Transactions,
+					as: 'transaction',
+					attributes: ['id','transaction_type']
+				},
+			],
+		});
+		res.status(200).send({ status: true, message: "User Subscription details fetched successfully.", data: SubscriptionHistory })
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message: "An error occurred while fecthing Subscription History.", data: [], error: err.message });
+	}
 }

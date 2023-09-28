@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     transaction_id:DataTypes.STRING,
     isPlan: DataTypes.INTEGER,
-    paymentData: DataTypes.JSON
+    status: DataTypes.STRING,
+    paymentData: DataTypes.JSON,
   }, {
     sequelize,
     createdAt: 'created_at',

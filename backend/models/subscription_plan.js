@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
 		max_orders: DataTypes.INTEGER,
 		credits_price: DataTypes.DECIMAL(10,2),
 		credits_quota: DataTypes.INTEGER,
-		status: DataTypes.INTEGER
+		status: DataTypes.INTEGER,
+		validity:DataTypes.INTEGER,
 	},
 	{
 		sequelize,

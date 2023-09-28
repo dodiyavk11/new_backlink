@@ -6,7 +6,18 @@ module.exports = (sequelize, DataTypes) => {
 	{
 		static associate(models)
 		{
-
+			this.belongsTo(models.Users,{
+				foreignKey: 'user_id',
+				as: 'user'
+			});
+			this.belongsTo(models.SubscriptionPlans,{
+				foreignKey: 'plan_id',
+				as: 'plan'
+			});
+			this.belongsTo(models.Transactions,{
+				foreignKey: 'transaction_id',
+				as: 'transaction'
+			});
 		}
 	}
 	user_subscriptions.init({
@@ -18,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
 		info: DataTypes.STRING,
 		credits: DataTypes.INTEGER,
 		transaction_id: DataTypes.INTEGER,
+		status: DataTypes.INTEGER,
 	},
 	{
 		sequelize,

@@ -227,17 +227,17 @@ exports.transactionHistory = async(req, res) =>
 	{
 		const userId = req.userId;
 
-		const userTransaction = await Models.Users.findAll({
-			where: { id:userId },
-			include: [
-			{
-				model: Models.Transactions,
-			      as: 'transaction',
-				}
-			],
-			attributes: { exclude: ['password'] },
-			order: [[{ model: Models.Transactions, as: 'transaction' }, 'id', 'DESC']],
-			order: [[{ model: Models.Transactions, as: 'transaction'}, 'id', 'DESC' ]]
+		const userTransaction = await Models.Transactions.findAll({
+			where: { user_id:userId },
+			// include: [
+			// 	{
+			// 		model: Models.Transactions,
+			// 	    as: 'transaction',
+			// 	}
+			// ],
+			// attributes: { exclude: ['password'] },
+			order: [['id', 'DESC']],
+			// order: [[{ model: Models.Transactions, as: 'transaction'}, 'id', 'DESC' ]]
 		});
 		res.status(200).send({ status: true, message: "User Transaction fecth successfully.",data: userTransaction });
 	}
