@@ -12,10 +12,13 @@ import FullScreenToggle from '../../shared-components/FullScreenToggle';
 import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
 import NotificationPanelToggleButton from '../../shared-components/notificationPanel/NotificationPanelToggleButton';
 import NavigationShortcuts from '../../shared-components/NavigationShortcuts';
+import CustomizedDialogs from '../../shared-components/addbalance/addbalance';
+import Cart from '../../shared-components/cartbutton/cart';
 import NavigationSearch from '../../shared-components/NavigationSearch';
 import NavbarToggleButton from '../../shared-components/NavbarToggleButton';
 import UserMenu from '../../shared-components/UserMenu';
 import QuickPanelToggleButton from '../../shared-components/quickPanel/QuickPanelToggleButton';
+import Divider from '@mui/material/Divider';
 import ChatPanelToggleButton from '../../shared-components/chatPanel/ChatPanelToggleButton';
 
 function ToolbarLayout1(props) {
@@ -77,9 +80,11 @@ function ToolbarLayout1(props) {
             </Hidden> */}
 
             {/* <QuickPanelToggleButton /> */}
-
+            <CustomizedDialogs />
+            <Divider style={{width:'34px',transform:'rotate(90deg)'}}/>
             <NotificationPanelToggleButton />
-
+            <Cart/>
+            <Divider style={{width:'34px',transform:'rotate(90deg)'}}/>
             <UserMenu />
           </div>
 
