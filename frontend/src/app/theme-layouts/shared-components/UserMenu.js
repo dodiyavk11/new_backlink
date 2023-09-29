@@ -10,6 +10,8 @@ import { useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { selectUser } from 'app/store/userSlice';
+import { Divider } from '@mui/material';
+import './usermenu.css';
 
 function UserMenu(props) {
   const user = useSelector(selectUser);
@@ -51,6 +53,7 @@ function UserMenu(props) {
       <Popover
         open={Boolean(userMenu)}
         anchorEl={userMenu}
+        className='usermenupop'
         onClose={userMenuClose}
         anchorOrigin={{
           vertical: 'bottom',
@@ -61,7 +64,7 @@ function UserMenu(props) {
           horizontal: 'center',
         }}
         classes={{
-          paper: 'py-8',
+          paper: 'py-8 w-full max-w-[190px]',
         }}
       >
         {!user.role || user.role.length === 0 ? (
@@ -80,19 +83,28 @@ function UserMenu(props) {
             </MenuItem>
           </>
         ) : (
-          <>
-            <MenuItem component={Link} to="/apps/profile" onClick={userMenuClose} role="button">
-              <ListItemIcon className="min-w-40">
-                <FuseSvgIcon>heroicons-outline:user-circle</FuseSvgIcon>
-              </ListItemIcon>
-              <ListItemText primary="My Profile" />
+            <>
+              
+              <h5 className='min-w-40 text-[11px] pl-[14px] font-semibold uppercase'>Account</h5>
+              <MenuItem component={Link} to="/apps/profile" onClick={userMenuClose} role="button">
+            
+              <ListItemText primary="Payments" />
             </MenuItem>
-            <MenuItem component={Link} to="/apps/mailbox" onClick={userMenuClose} role="button">
-              <ListItemIcon className="min-w-40">
-                <FuseSvgIcon>heroicons-outline:mail-open</FuseSvgIcon>
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
+              <Divider /> 
+              <h5 className='min-w-40 pl-[14px] text-[11px] font-semibold uppercase'>Settings</h5>
+            <MenuItem component={Link} to="/settings/profile" onClick={userMenuClose} role="button">
+            
+              <ListItemText primary="Profile" />
             </MenuItem>
+            <MenuItem component={Link} to="/settings/account" onClick={userMenuClose} role="button">
+              
+              <ListItemText primary="Account" />
+              </MenuItem>
+              <MenuItem component={Link} to="/settings/notifications" onClick={userMenuClose} role="button">
+             
+              <ListItemText primary="Notifications" />
+              </MenuItem>
+              <Divider /> 
             <MenuItem
               component={NavLink}
               to="/sign-out"
@@ -100,10 +112,7 @@ function UserMenu(props) {
                 userMenuClose();
               }}
             >
-              <ListItemIcon className="min-w-40">
-                <FuseSvgIcon>heroicons-outline:logout</FuseSvgIcon>
-              </ListItemIcon>
-              <ListItemText primary="Sign out" />
+              <ListItemText className='text-red-600' primary="Log out" />
             </MenuItem>
           </>
         )}

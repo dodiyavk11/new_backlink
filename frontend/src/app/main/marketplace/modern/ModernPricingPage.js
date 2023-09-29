@@ -55,6 +55,16 @@ function ModernPricingPage() {
   const [period, setPeriod] = useState('month');
   const [value, setValue] = React.useState('1');
   const [deleteall, setDeleteall] = React.useState(false);
+
+
+
+
+  const [isDivVisible, setDivVisibility] = React.useState(false);
+
+  const toggleDivVisibility = () => {
+    setDivVisibility(!isDivVisible);
+  };
+
   const BootstrapTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} arrow classes={{ popper: className }} placement="top" />
   ))(({ theme }) => ({
@@ -545,22 +555,22 @@ function ModernPricingPage() {
     );
   }
   function Morefilter() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    // const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
+    // const handleClick = (event) => {
+    //   setAnchorEl(event.currentTarget);
+    // };
 
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
+    // const handleClose = () => {
+    //   setAnchorEl(null);
+    // };
 
 
 
 
     return (
       <div className=' my-auto'>
-        <Button variant="outlined" className='whitespace-nowrap' onClick={handleClick}>
+        <Button variant="outlined" className='whitespace-nowrap' onClick={toggleDivVisibility}>
           <FuseSvgIcon style={{ transform: 'rotate(90deg) scale(0.7)' }}>heroicons-outline:adjustments</FuseSvgIcon>More Filters
         </Button>
 
@@ -572,16 +582,17 @@ function ModernPricingPage() {
     const columns = [
       {
         field: 'name', sortable: false, headerName: 'NAME', width: 345,
+        height:70,
         renderCell: (params) => (
           <div className='flex'>
             <IconButton aria-label="link">
               <FuseSvgIcon style={{ transform: 'scale(0.8)' }}>heroicons-outline:lock-closed</FuseSvgIcon>
             </IconButton>
             <div className='block'>
-              <Typography>
+              <Typography className='font-semibold'>
                 {params.row.name}
               </Typography>
-              <Typography> sdfsdfsdfsdfsdfsdfsdf</Typography>
+              <Typography className='font-light text-sm'> sdfsdfsdfsdfsdfsdfsdf</Typography>
             </div>
 
 
@@ -589,13 +600,44 @@ function ModernPricingPage() {
           </div>
         )
       },
-      { field: 'language', sortable: false, headerName: 'LANGUAGE', width: 130 },
-      { field: 'rating', headerName: 'RATING', width: 130 },
+      {
+        field: 'language', sortable: false, headerName: 'LANGUAGE', width: 130,
+        renderCell: (params) => (
+          <div className='flex'>
+            <img src='assets/images/flags/US.svg'/>
+            <div className='block ml-10'>
+              <Typography className='font-semibold uppercase'>
+                {params.row.language}
+              </Typography>
+              
+            </div>
+
+
+
+          </div>
+        )
+      
+      },
+      { field: 'rating', headerName: 'RATING', width: 130 ,  renderCell: (params) => (
+        <div className='flex'>
+         <FuseSvgIcon className='text-yellow-700' style={{ transform: 'scale(0.6)' }}>heroicons-solid:star</FuseSvgIcon>
+          <div className='block ml-5'>
+            <Typography className='font-semibold uppercase'>
+              {params.row.rating}
+            </Typography>
+            
+          </div>
+
+
+
+        </div>
+      )},
       {
         field: 'dr',
         headerName: 'DR',
         type: 'number',
         width: 90,
+      
 
       },
       {
@@ -667,6 +709,7 @@ function ModernPricingPage() {
               paginationModel: { page: 0, pageSize: 10 },
             },
           }}
+          className='contentlinks-table'
           disableColumnMenu
           pageSizeOptions={[5, 10]}
 
@@ -676,23 +719,114 @@ function ModernPricingPage() {
     );
   }
   function Morefilterdata() {
+    // Domain Rating
     function valuetext(value) {
       return `${value}`;
     }
-    const [value, setValue] = React.useState([30.00, 2000.00]);
+    const [value, setValue] = React.useState([0.00, 94.00]);
     const handleChange = (event, newValue) => {
       // console.log(newValue);
       setValue(newValue);
     };
 
     const handleInputChange = (index, newValue) => {
-      console.log(newValue);
+      // console.log(newValue);
       if (/^-?\d*\.?\d*$/.test(newValue)) {
         const newValues = [...value];
         newValues[index] = newValue;
         setValue(newValues);
       }
     };
+     // Domain Authority
+    function Authority(value) {
+      return `${value}`;
+    }
+    const [authvalue, setauthvalue] = React.useState([0.00, 96.00]);
+    const handleChange1 = (event, newValue) => {
+      // console.log(newValue);
+      setauthvalue(newValue);
+    };
+
+    const handleInputChange1 = (index, newValue) => {
+      // console.log(newValue);
+      if (/^-?\d*\.?\d*$/.test(newValue)) {
+        const newValues = [...authvalue];
+        newValues[index] = newValue;
+        setauthvalue(newValues);
+      }
+    };
+     // Visibility Index
+    function index(value) {
+      return `${value}`;
+    }
+    const [indexvalue, setindexvalue] = React.useState([0.00, 20.00]);
+    const handleChange2 = (event, newValue) => {
+      // console.log(newValue);
+      setindexvalue(newValue);
+    };
+
+    const handleInputChange2 = (index, newValue) => {
+      // console.log(newValue);
+      if (/^-?\d*\.?\d*$/.test(newValue)) {
+        const newValues = [...indexvalue];
+        newValues[index] = newValue;
+        setindexvalue(newValues);
+      }
+    };
+       // Trust Flow
+       function Flow(value) {
+        return `${value}`;
+      }
+      const [flowvalue, setflowvalue] = React.useState([0.00, 84.00]);
+      const handleChange3 = (event, newValue) => {
+        // console.log(newValue);
+        setflowvalue(newValue);
+      };
+  
+      const handleInputChange3 = (index, newValue) => {
+        // console.log(newValue);
+        if (/^-?\d*\.?\d*$/.test(newValue)) {
+          const newValues = [...flowvalue];
+          newValues[index] = newValue;
+          setflowvalue(newValues);
+        }
+      };
+       // Traffic
+       function traffic(value) {
+        return `${value}`;
+      }
+      const [trafficvalue, settrafficvalue] = React.useState([0.00, 1000000.00]);
+      const handleChange4 = (event, newValue) => {
+        // console.log(newValue);
+        settrafficvalue(newValue);
+      };
+  
+      const handleInputChange4 = (index, newValue) => {
+        // console.log(newValue);
+        if (/^-?\d*\.?\d*$/.test(newValue)) {
+          const newValues = [...trafficvalue];
+          newValues[index] = newValue;
+          settrafficvalue(newValues);
+        }
+      };
+      // Referring Domains
+      function domains(value) {
+        return `${value}`;
+      }
+      const [domainvalue, setdomainvalue] = React.useState([0.00, 50000.00]);
+      const handleChange5 = (event, newValue) => {
+        // console.log(newValue);
+        setdomainvalue(newValue);
+      };
+  
+      const handleInputChange5 = (index, newValue) => {
+        // console.log(newValue);
+        if (/^-?\d*\.?\d*$/.test(newValue)) {
+          const newValues = [...domainvalue];
+          newValues[index] = newValue;
+          setdomainvalue(newValues);
+        }
+      };
     return (
       <Paper className='mx-14  grid grid-cols-3 gap-4'>
         <Box sx={{ width: 300 }} className="m-[24px]">
@@ -708,8 +842,8 @@ function ModernPricingPage() {
               onChange={handleChange}
               valueLabelDisplay="auto"
               getAriaValueText={valuetext}
-              min={30}
-              max={2000}
+              min={0}
+              max={94}
             />
           </div>
 
@@ -745,6 +879,23 @@ function ModernPricingPage() {
 
         </Box>
         <Box sx={{ width: 300 }} className="m-[24px]">
+        <div className='flex mb-14'>
+            <img src="https://assets.app.backlinked.com/dist/assets/metrics/moz.svg" class="bg-bl-dark-blue rounded-lg w-24 p-1 mr-3" />
+            <Typography className='ml-10'>Domain Authority</Typography>
+          </div>
+          <div className='flex justify-center'>
+            <Slider
+              sx={{ width: 250 }}
+              getAriaLabel={() => 'Temperature range'}
+              value={authvalue}
+              onChange={handleChange1}
+              valueLabelDisplay="auto"
+              getAriaValueText={Authority}
+              min={0}
+              max={96}
+            />
+          </div>
+
           <div className='flex'>
             <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
 
@@ -755,8 +906,8 @@ function ModernPricingPage() {
                 type="number"
                 step='0.01'
                 // defaultValue={value[0]}
-                value={value[0]}
-                onChange={(e) => handleInputChange(0, e.target.value)}
+                value={authvalue[0]}
+                onChange={(e) => handleInputChange1(0, e.target.value)}
               />
 
             </FormControl>
@@ -768,24 +919,31 @@ function ModernPricingPage() {
                 className='rounded-full ml-10'
                 type="number"
                 step='0.01'
-                value={value[1]}
+                value={authvalue[1]}
                 onChange={(e) => handleInputChange(1, e.target.value)}
               />
             </FormControl>
 
           </div>
-
-          <Slider
-            getAriaLabel={() => 'Temperature range'}
-            value={value}
-            onChange={handleChange}
-            valueLabelDisplay="auto"
-            getAriaValueText={valuetext}
-            min={30}
-            max={2000}
-          />
         </Box>
         <Box sx={{ width: 300 }} className="m-[24px]">
+        <div className='flex mb-14'>
+            <img src="https://assets.app.backlinked.com/dist/assets/metrics/sistrix.svg" class="bg-bl-dark-blue rounded-lg w-24 p-1 mr-3" />
+            <Typography className='ml-10'>Visibility Index</Typography>
+          </div>
+          <div className='flex justify-center'>
+            <Slider
+              sx={{ width: 250 }}
+              getAriaLabel={() => 'Temperature range'}
+              value={indexvalue}
+              onChange={handleChange2}
+              valueLabelDisplay="auto"
+              getAriaValueText={index}
+              min={0}
+              max={20}
+            />
+          </div>
+
           <div className='flex'>
             <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
 
@@ -796,8 +954,8 @@ function ModernPricingPage() {
                 type="number"
                 step='0.01'
                 // defaultValue={value[0]}
-                value={value[0]}
-                onChange={(e) => handleInputChange(0, e.target.value)}
+                value={indexvalue[0]}
+                onChange={(e) => handleInputChange2(0, e.target.value)}
               />
 
             </FormControl>
@@ -809,24 +967,32 @@ function ModernPricingPage() {
                 className='rounded-full ml-10'
                 type="number"
                 step='0.01'
-                value={value[1]}
-                onChange={(e) => handleInputChange(1, e.target.value)}
+                value={indexvalue[1]}
+                onChange={(e) => handleInputChange2(1, e.target.value)}
               />
             </FormControl>
 
           </div>
 
-          <Slider
-            getAriaLabel={() => 'Temperature range'}
-            value={value}
-            onChange={handleChange}
-            valueLabelDisplay="auto"
-            getAriaValueText={valuetext}
-            min={30}
-            max={2000}
-          />
         </Box>
         <Box sx={{ width: 300 }} className="m-[24px]">
+        <div className='flex mb-14'>
+            <img src="https://assets.app.backlinked.com/dist/assets/metrics/majestic.svg" class="bg-bl-dark-blue rounded-lg w-24 p-1 mr-3" />
+            <Typography className='ml-10'>Trust Flow</Typography>
+          </div>
+          <div className='flex justify-center'>
+            <Slider
+              sx={{ width: 250 }}
+              getAriaLabel={() => 'Temperature range'}
+              value={flowvalue}
+              onChange={handleChange3}
+              valueLabelDisplay="auto"
+              getAriaValueText={Flow}
+              min={0}
+              max={84}
+            />
+          </div>
+
           <div className='flex'>
             <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
 
@@ -837,8 +1003,8 @@ function ModernPricingPage() {
                 type="number"
                 step='0.01'
                 // defaultValue={value[0]}
-                value={value[0]}
-                onChange={(e) => handleInputChange(0, e.target.value)}
+                value={flowvalue[0]}
+                onChange={(e) => handleInputChange3(0, e.target.value)}
               />
 
             </FormControl>
@@ -850,24 +1016,31 @@ function ModernPricingPage() {
                 className='rounded-full ml-10'
                 type="number"
                 step='0.01'
-                value={value[1]}
-                onChange={(e) => handleInputChange(1, e.target.value)}
+                value={flowvalue[1]}
+                onChange={(e) => handleInputChange3(1, e.target.value)}
               />
             </FormControl>
 
           </div>
-
-          <Slider
-            getAriaLabel={() => 'Temperature range'}
-            value={value}
-            onChange={handleChange}
-            valueLabelDisplay="auto"
-            getAriaValueText={valuetext}
-            min={30}
-            max={2000}
-          />
         </Box>
         <Box sx={{ width: 300 }} className="m-[24px]">
+        <div className='flex mb-14'>
+            <img src="https://assets.app.backlinked.com/dist/assets/metrics/ahrefs.svg" class="bg-bl-dark-blue rounded-lg w-24 p-1 mr-3" />
+            <Typography className='ml-10'> Traffic</Typography>
+          </div>
+          <div className='flex justify-center'>
+            <Slider
+              sx={{ width: 250 }}
+              getAriaLabel={() => 'Temperature range'}
+              value={trafficvalue}
+              onChange={handleChange4}
+              valueLabelDisplay="auto"
+              getAriaValueText={traffic}
+              min={0}
+              max={1000000}
+            />
+          </div>
+
           <div className='flex'>
             <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
 
@@ -878,8 +1051,8 @@ function ModernPricingPage() {
                 type="number"
                 step='0.01'
                 // defaultValue={value[0]}
-                value={value[0]}
-                onChange={(e) => handleInputChange(0, e.target.value)}
+                value={trafficvalue[0]}
+                onChange={(e) => handleInputChange4(0, e.target.value)}
               />
 
             </FormControl>
@@ -891,24 +1064,31 @@ function ModernPricingPage() {
                 className='rounded-full ml-10'
                 type="number"
                 step='0.01'
-                value={value[1]}
-                onChange={(e) => handleInputChange(1, e.target.value)}
+                value={trafficvalue[1]}
+                onChange={(e) => handleInputChange4(1, e.target.value)}
               />
             </FormControl>
 
           </div>
-
-          <Slider
-            getAriaLabel={() => 'Temperature range'}
-            value={value}
-            onChange={handleChange}
-            valueLabelDisplay="auto"
-            getAriaValueText={valuetext}
-            min={30}
-            max={2000}
-          />
         </Box>
         <Box sx={{ width: 300 }} className="m-[24px]">
+        <div className='flex mb-14'>
+            <img src="https://assets.app.backlinked.com/dist/assets/metrics/ahrefs.svg" class="bg-bl-dark-blue rounded-lg w-24 p-1 mr-3" />
+            <Typography className='ml-10'> Referring Domains</Typography>
+          </div>
+          <div className='flex justify-center'>
+            <Slider
+              sx={{ width: 250 }}
+              getAriaLabel={() => 'Temperature range'}
+              value={domainvalue}
+              onChange={handleChange5}
+              valueLabelDisplay="auto"
+              getAriaValueText={domains}
+              min={0}
+              max={50000}
+            />
+          </div>
+
           <div className='flex'>
             <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
 
@@ -919,8 +1099,8 @@ function ModernPricingPage() {
                 type="number"
                 step='0.01'
                 // defaultValue={value[0]}
-                value={value[0]}
-                onChange={(e) => handleInputChange(0, e.target.value)}
+                value={domainvalue[0]}
+                onChange={(e) => handleInputChange5(0, e.target.value)}
               />
 
             </FormControl>
@@ -932,22 +1112,12 @@ function ModernPricingPage() {
                 className='rounded-full ml-10'
                 type="number"
                 step='0.01'
-                value={value[1]}
-                onChange={(e) => handleInputChange(1, e.target.value)}
+                value={domainvalue[1]}
+                onChange={(e) => handleInputChange5(1, e.target.value)}
               />
             </FormControl>
 
           </div>
-
-          <Slider
-            getAriaLabel={() => 'Temperature range'}
-            value={value}
-            onChange={handleChange}
-            valueLabelDisplay="auto"
-            getAriaValueText={valuetext}
-            min={30}
-            max={2000}
-          />
         </Box>
       </Paper>
     );
@@ -1293,7 +1463,7 @@ function ModernPricingPage() {
                 </div>
 
               </div>
-              <div className='bg-[#f1f5f9]'>
+              {isDivVisible && <div className='bg-[#f1f5f9] pb-14' >
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                   <Select
                     value={follow}
@@ -1330,7 +1500,8 @@ function ModernPricingPage() {
 
                 </FormControl>
                 <Morefilterdata />
-              </div>
+              </div>}
+              
               <div style={{
                 height: '100%', width: '100%'
               }}>

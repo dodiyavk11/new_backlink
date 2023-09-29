@@ -445,6 +445,7 @@ function FinanceDashboardApp() {
         </Button>
         <Popover
           id={id}
+          className='datepop'
           open={open}
           anchorEl={anchorEl}
           onClose={handleClose}
@@ -492,7 +493,7 @@ function FinanceDashboardApp() {
           transform: 'translateX(16px)',
           color: '#fff',
           '& + .MuiSwitch-track': {
-            backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#65C466',
+            backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#ff9756',
             opacity: 1,
             border: 0,
           },
@@ -536,9 +537,10 @@ function FinanceDashboardApp() {
         <Popover
           id={id}
           open={open}
+          className="customizepop"
           anchorEl={anchorEl}
           onClose={handleClose}
-          className=''
+          
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
@@ -550,39 +552,39 @@ function FinanceDashboardApp() {
 
         >
           <div className='max-w-[300px] w-[300px]'>
-            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 p-10'
+            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 px-10 py-4'
               control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
               label="ID"
             />
-            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 p-10'
+            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 px-10 py-4'
               control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
               label="Date & Time"
             />
-            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 p-10'
+            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 px-10 py-4'
               control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
               label="Product"
             />
-            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 p-10'
+            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 px-10 py-4'
               control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
               label="Status"
             />
-            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 p-10'
+            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 px-10 py-4'
               control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
               label="Project"
             />
-            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 p-10'
+            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 px-10 py-4'
               control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
               label="Anchor text "
             />
-            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 p-10'
+            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 px-10 py-4'
               control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
               label="Target URl"
             />
-            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 p-10'
+            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 px-10 py-4'
               control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
               label="Week"
             />
-            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 p-10'
+            <FormControlLabel dir="rtl" className='justify-between flex border rounded-full m-10 px-10 py-4'
               control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
               label="Amount"
             />
