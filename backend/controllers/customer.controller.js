@@ -1,6 +1,10 @@
 const Models = require("../models");
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
+const puppeteer = require('puppeteer');
+const path = require('path');
+const generateUniqueId = require('generate-unique-id');
+const { Worker, isMainThread } = require('worker_threads');
 
 exports.dashboard = async(req, res) => {
 	try
@@ -29,7 +33,47 @@ exports.dashboard = async(req, res) => {
 		  ],
 		  attributes: { exclude: ['password'] },
 		});		
-		res.status(200).send({ status:true,message: "User overview", data: overview })
+
+		const customizeProjectData = async (overview) => {
+		    const customOverview = {
+		        ...overview.get()
+		    };
+
+		    if (customOverview.domains && customOverview.domains.length > 0) {
+		        const customizedDomains = [];
+
+		        for (const domain of customOverview.domains) {
+		            const customizedDomain = {
+		                ...domain.get()
+		            }; // Use .get() to get the dataValues
+
+		            if (domain.domain_name) {
+		                const domainParts = domain.domain_name.split('.');
+		                customizedDomain.tld = domainParts[domainParts.length - 1];
+		                customizedDomain.image_url = '/assets/domain_img/' + domain.hash_id + '.png';
+
+		                const orderCount = await Models.Orders.count({
+		                    where: {
+		                        domain_id: domain.id
+		                    }
+		                });
+		                customizedDomain.order_count = orderCount;
+		            } else {
+		                customizedDomain.tld = '';
+		            }
+
+		            customizedDomains.push(customizedDomain);
+		        }
+
+		        customOverview.domains = customizedDomains;
+		    }
+
+		    return customOverview;
+		};
+
+		// Usage:
+		const customizedOverview = await customizeProjectData(overview);
+		res.status(200).send({ status:true,message: "User overview", data: customizedOverview })
 	}
 	catch(err)
 	{
@@ -50,13 +94,27 @@ exports.getProjects = async(req, res) => {
 		  ],
 		}
 
-		const projects = await Models.Domains.findAll({ where: { user_id: userId }, ...baseQuery,  order: [['id', 'DESC']], });
+		const projects = await Models.Domains.findAll({ where: { user_id: userId }, ...baseQuery,
+			 attributes: {
+			    include: [
+			      [
+			        Sequelize.literal(`(
+			          SELECT COUNT(*)
+			          FROM orders
+			          WHERE orders.domain_id = domains.id
+			        )`),
+			        'order_count',
+			      ],
+			    ],
+			  },
+			order: [['id', 'DESC']], });
 		// Extract domain extensions and add tld in the data
 		const customizeProjectData = projects.map((domain) => {
 		  const customDomain = { ...domain.get() };
 		  if (domain.domain_name) {
 		    const domainParts = domain.domain_name.split('.');
 		    customDomain.tld = domainParts[domainParts.length - 1];
+		    customDomain.image_url = '/assets/domain_img/'+domain.hash_id+'.png'
 		  } else {
 		    customDomain.tld = '';
 		  }
@@ -128,64 +186,84 @@ exports.updateNotification = async(req, res) => {
 }
 
 exports.addCustomerDomain = async (req, res) => {
-	try {
-		const { domain_name } = req.body;
-		const { category_id } = req.body;
-		const { budget } = req.body;
-		const user_id = req.userId;
+    try {
+        const {
+            domain_name
+        } = req.body;
+        const {
+            category_id
+        } = req.body;
+        const {
+            budget
+        } = req.body;
+        const user_id = req.userId;
 
-		const domainPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+(\.[a-zA-Z]{2,}){1,2})(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
-
-		function extractMainDomain(url) {
-		  let mainDomain = url.toLowerCase();
-
-		  // Remove "https://" or "http://" if present
-		  if (mainDomain.startsWith("https://")) {
-		    mainDomain = mainDomain.replace("https://", "");
-		  } else if (mainDomain.startsWith("http://")) {
-		    mainDomain = mainDomain.replace("http://", "");
-		  }
-
-		  // Remove "www." if present
-		  if (mainDomain.startsWith("www.")) {
-		    mainDomain = mainDomain.replace("www.", "");
-		  }
-
-		  // Split by "/" and take the first part as the main domain
-		  mainDomain = mainDomain.split("/")[0];
-
-		  return mainDomain;
+        const domainPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+(\.[a-zA-Z]{2,}){1,2})(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+        function extractMainDomain(url) {
+			let mainDomain = url.replace(/^https?:\/\//, '');	  
+			mainDomain = mainDomain.split("/")[0];
+			return mainDomain;
 		}
+        if (domainPattern.test(domain_name)) {        	
+            let mainDomain = extractMainDomain(domain_name);            
+            mainDomain = mainDomain.trim().replace(/\/+$/, '');            
+            const existingDomain = await Models.Domains.findOne({
+                where: {
+                    domain_name: {
+                        [Sequelize.Op.substring]: mainDomain.replace("www",""),
+                    },
+                    user_id: req.userId,
+                },
+            });
+            if (existingDomain) {
+                return res.status(400).send({
+                    status: false,
+                    message: "A domain with a similar name already exists.",
+                });
+            }
+            let hash_id = generateUniqueId({
+                length: 8,
+                useLetters: true
+            });
 
-		if (domainPattern.test(domain_name)) {
-		  const mainDomain = extractMainDomain(domain_name);
-		  const existingDomain = await Models.Domains.findOne({
-		    where: {
-		      domain_name: {
-		        [Sequelize.Op.like]: mainDomain,
-		      },
-		      user_id: req.userId,
-		    },
-		  });
+            hash_id.toUpperCase();
+            const addData = { domain_name: mainDomain, category_id, budget, user_id, hash_id };
+            const addDomain = await Models.Domains.create(addData);
 
-		  if (existingDomain) {
-		    return res.status(400).send({
-		      status: false,
-		      message: "A domain with a similar name already exists.",
-		    });
-		  }
+            res.status(200).send({ status: true, message: "Domain added successfully", data: addDomain });
 
-		  const addData = { domain_name: domain_name, category_id, budget, user_id };
-		  const addDomain = await Models.Domains.create(addData);
+            if (isMainThread) {
+				const worker = new Worker('./controllers/domainScreenCapture_worker.js', { workerData: { url: mainDomain, hash_id } });
 
-		  res.status(200).send({ status: true, message: "Domain added successfully", data: addDomain });
-		} else {
-		  res.status(400).send({ status: false, message: "Invalid domain name." });
-		}
-	} catch (err) {
-		  console.error(err);
-		  res.status(500).send({ status: false, message: "Something went wrong, Please try again.", data: [], error: err.message });
-	}
+				worker.on('message', (message) => {
+					console.log(message);
+				});
+
+				worker.on('error', (error) => {
+					console.error(`Worker error: ${error}`);
+				});
+
+				worker.on('exit', (code) => {
+				if (code !== 0) {
+				  console.error(`Worker stopped with exit code ${code}`);
+				}
+				});
+			}
+        } else {
+            res.status(400).send({
+                status: false,
+                message: "Invalid domain name."
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({
+            status: false,
+            message: "Something went wrong, Please try again.",
+            data: [],
+            error: err.message
+        });
+    }
 }
 
 exports.addMessageToOrder = async(req, res) => {

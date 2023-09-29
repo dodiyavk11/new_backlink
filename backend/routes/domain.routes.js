@@ -3,14 +3,14 @@ const { getDomainTags,addDomainTag,deleteDomainTag,getSingleDomainTag,editDomain
 const { isLogin,isAdmin } = require('../middleware/checkAuthenticate')
 
 module.exports = (app) =>{
-	// domain routes
+	// domain routes for admin
 	app.post("/domain/list",[isLogin,isAdmin],getDomain);
 	app.post("/domain/add",[isLogin,isAdmin],addDomain);
 	app.post("/domain/delete/:id",[isLogin,isAdmin],deleteDomain);
 	app.post("/domain/get/:id",[isLogin,isAdmin],getSingleDoimain);
 	app.patch("/domain/edit/:id",[isLogin,isAdmin],editDomain)
 
-	// domain tags routes
+	// domain tags routes for admin
 	app.post("/domain_tag/list",[isLogin,isAdmin],getDomainTags);
 	app.post("/domain_tag/add",[isLogin,isAdmin],addDomainTag);
 	app.post("/domain_tag/delete/:id",[isLogin,isAdmin],deleteDomainTag);

@@ -61,11 +61,14 @@ exports.addOrder = async (req, res) => {
       checkUser.dataValues.firstName + " " + checkUser.dataValues.lastName
     );
     const mail = await emailTemplate(text);
+
     admin.map((val) => {
       sendVerifyMail(val.dataValues.email, subject, "", mail);
     });
+
     res.status(200).send({ status: true, message: "Order added successfully", data: addOrder});
-  } catch (err) {
+  } catch (err) 
+  {
     console.log(err);
     res.status(500).send({ status: false, message: "Order cannot be added, an error has occurred", data: [], error: err.message });
   }
@@ -77,7 +80,8 @@ exports.getAllOrders = async (req, res) => {
     const getAllOrderData = await Models.Orders.findAll();
 
     res.status(200).send({ status: true, message: "Orders fetched successfully", data: getAllOrderData });
-  } catch (err) {
+  } catch (err) 
+  {
     console.log(err);
     res.status(500).send({ status: false, message: "Order cannot be retrieved, an error has occurred", data: [], error: err.message });
   }
@@ -129,7 +133,8 @@ exports.getOrderByUserId = async(req, res) => {
 
 	    res.status(200).send({ status: true, message: "Order fetched successfully", data: finalSortData });
 	}
-	catch(err){
+	catch(err)
+	{
 		console.log(err);
 		res.status(500).send({ status: false, message: "Order cannot be retrieved, an error has occurred.", data: [], error: err.message });
 	}

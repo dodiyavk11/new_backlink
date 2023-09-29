@@ -1,10 +1,10 @@
-const { addOrder,getAllOrders,getOrderByUserId,getOrderByOrderId,updateOrder,deleteOrderFile,deleteOrder,addOrderFile,getOrderFile,deleteOrderFinalFile,updateOrderStatus,addOrderCloundLinks,updateOrderCloundLinks,deleteCloudLinks } = require("../controllers/order.controller") 
+const { addOrder,getAllOrders,getOrderByUserId,getOrderByOrderId,updateOrder,deleteOrderFile,deleteOrder,addOrderFile,getOrderFile,deleteOrderFinalFile,updateOrderStatus,addOrderCloundLinks,updateOrderCloundLinks,deleteCloudLinks, test } = require("../controllers/order.controller") 
 const { isLogin, isCustomer,isAdmin } = require("../middleware/checkAuthenticate")
 const { assetsUpload } = require("../middleware/messageMiddleware");
 const { uploadOrderFile, uploadOrderFinalFile } = require("../middleware/orderFileHandler")
-
+const { checkOrderLimitInSubscriptionPlan } = require("../middleware/checkIsPlanOrderAndDomainLimit");
 module.exports = (app) => {
-	app.post("/order/add",[isLogin,isCustomer,uploadOrderFile.array("files[]",999999)],addOrder);
+	app.post("/order/add",[isLogin,isCustomer,checkOrderLimitInSubscriptionPlan,uploadOrderFile.array("files[]",999999)],addOrder);
 	app.get("/order/get/all", [isLogin,isAdmin], getAllOrders);
   	app.get("/order/get", [isLogin], getOrderByUserId)
 	app.get("/order/get/:order_id", [isLogin], getOrderByOrderId)
@@ -17,5 +17,5 @@ module.exports = (app) => {
 	app.post("/order/updateStatus/:order_id",[isLogin],updateOrderStatus)
 	app.post("/order/addCloudLinks/:order_id",[isLogin],addOrderCloundLinks)
 	app.post("/order/updateCloudLinks/:id",[isLogin],updateOrderCloundLinks)
-	app.get("/order/deleteCloudLinks/:id",[isLogin],deleteCloudLinks)
+	app.get("/order/deleteCloudLinks/:id",[isLogin],deleteCloudLinks)	
 }

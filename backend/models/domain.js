@@ -18,6 +18,10 @@ module.exports = (sequelize,DataTypes) => {
 		        foreignKey: 'category_id',
 		        as: 'category',
 		      });
+		      // this.hasMany(models.Orders,{
+		      // 	foreignKey: 'domain_id', 
+		      // 	as: 'orders'
+		      // });
 		}
 	}
 	Domain.init({
@@ -26,6 +30,7 @@ module.exports = (sequelize,DataTypes) => {
 		status:DataTypes.INTEGER,
 		user_id:DataTypes.INTEGER,
 		budget:DataTypes.DECIMAL(8, 2),
+		hash_id:DataTypes.STRING
 	},
 	{
 		sequelize,

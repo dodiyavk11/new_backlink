@@ -18,6 +18,7 @@ const corsOpts = {
 
 app.use(cors(corsOpts));
 app.use(express.static(path.join(__dirname, "views")));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(/\/((?!webhooks).)*/, express.json());
 app.use(helmet());
 app.use(compression());

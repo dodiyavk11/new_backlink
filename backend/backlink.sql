@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2023 at 03:37 PM
+-- Generation Time: Sep 29, 2023 at 03:40 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -57,6 +57,7 @@ CREATE TABLE `domains` (
   `category_id` int(11) DEFAULT NULL,
   `status` int(1) NOT NULL DEFAULT 1,
   `user_id` int(11) NOT NULL,
+  `hash_id` varchar(25) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -65,18 +66,9 @@ CREATE TABLE `domains` (
 -- Dumping data for table `domains`
 --
 
-INSERT INTO `domains` (`id`, `domain_name`, `budget`, `category_id`, `status`, `user_id`, `created_at`, `updated_at`) VALUES
-(25, 'www.examples.com', '12.35', 3, 1, 2, '2023-09-15 10:30:46', '2023-09-15 12:13:51'),
-(30, 'besticoder.com', '12.36', 2, 1, 2, '2023-09-15 10:33:42', '2023-09-15 10:33:42'),
-(31, 'testbesticoder.com', '12.36', 2, 1, 2, '2023-09-15 10:38:39', '2023-09-15 10:38:39'),
-(32, 'testbesticoder.test', '12.36', 2, 1, 2, '2023-09-15 10:39:21', '2023-09-15 10:39:21'),
-(35, 'jayesh.com', '12.36', 2, 1, 2, '2023-09-15 10:41:01', '2023-09-15 10:41:01'),
-(36, 'www.jayesh.org', '12.36', 2, 1, 2, '2023-09-15 10:49:08', '2023-09-15 10:49:08'),
-(38, 'www.testdomain.com', '12.36', 2, 1, 2, '2023-09-15 12:07:43', '2023-09-15 12:07:43'),
-(40, 'www.testdomain.org', '12.36', 2, 1, 11, '2023-09-20 09:27:26', '2023-09-20 10:27:35'),
-(43, 'avcc.com', '12.00', 3, 1, 11, '2023-09-20 09:31:32', '2023-09-20 09:31:32'),
-(44, '123.com', '12.00', 3, 1, 11, '2023-09-20 09:55:26', '2023-09-20 09:55:26'),
-(45, 'user.in', '12.00', 3, 1, 11, '2023-09-20 09:55:38', '2023-09-20 10:41:31');
+INSERT INTO `domains` (`id`, `domain_name`, `budget`, `category_id`, `status`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
+(1, 'www.besticoder.com', '12.36', 2, 1, 15, 'rd7vwa9e', '2023-09-29 11:58:24', '2023-09-29 11:58:24'),
+(2, 'npmjs.com', '12.36', 2, 1, 15, 'aytd451f', '2023-09-29 11:59:13', '2023-09-29 11:59:13');
 
 -- --------------------------------------------------------
 
@@ -131,7 +123,7 @@ INSERT INTO `domain_tags` (`id`, `name`, `status`, `createdAt`, `updatedAt`) VAL
 CREATE TABLE `email_formats` (
   `id` int(11) NOT NULL,
   `email_title` varchar(255) DEFAULT NULL,
-  `email_type` text DEFAULT NULL,
+  `email_type` text DEFAULT NULL COMMENT 'use to find template base on require',
   `email_content` text DEFAULT NULL,
   `header` text DEFAULT NULL,
   `file` varchar(255) DEFAULT NULL,
@@ -254,7 +246,7 @@ CREATE TABLE `orderfiles` (
   `id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `file_name` varchar(255) DEFAULT NULL,
-  `original_name` varchar(255) DEFAULT NULL,
+  `original_name` varchar(255) DEFAULT NULL COMMENT 'for file name or Link name',
   `file_path` varchar(255) DEFAULT NULL,
   `isLink` tinyint(1) NOT NULL DEFAULT 0,
   `link` varchar(255) DEFAULT NULL,
@@ -282,6 +274,7 @@ INSERT INTO `orderfiles` (`id`, `order_id`, `file_name`, `original_name`, `file_
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
+  `domain_id` int(11) NOT NULL,
   `total_amount` decimal(10,2) NOT NULL,
   `ordername` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
@@ -299,9 +292,9 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `customer_id`, `total_amount`, `ordername`, `description`, `orderfile`, `orderstatus`, `orderpriority`, `update_status_admin`, `update_status`, `created_at`, `updated_at`, `soft_delete`) VALUES
-(48, 15, '0.00', 'This order updated', 'This order updated by api', NULL, 1, 2, 2, 0, '2023-08-01 08:12:12', '2023-09-28 12:55:09', ''),
-(49, 15, '0.00', 'Second Name', 'Description', NULL, 1, 1, 1, 1, '2023-09-20 12:57:23', '2023-09-28 12:57:27', '');
+INSERT INTO `orders` (`id`, `customer_id`, `domain_id`, `total_amount`, `ordername`, `description`, `orderfile`, `orderstatus`, `orderpriority`, `update_status_admin`, `update_status`, `created_at`, `updated_at`, `soft_delete`) VALUES
+(48, 15, 2, '0.00', 'This order updated', 'This order updated by api', NULL, 1, 2, 2, 0, '2023-09-27 18:30:00', '2023-09-29 12:20:37', ''),
+(49, 15, 2, '0.00', 'Second Name', 'Description', NULL, 1, 1, 1, 1, '2023-09-28 05:09:32', '2023-09-29 13:09:06', '');
 
 -- --------------------------------------------------------
 
@@ -314,13 +307,13 @@ CREATE TABLE `subscription_plans` (
   `name` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
   `price` int(11) NOT NULL,
-  `cancellation_period` int(11) DEFAULT NULL,
+  `cancellation_period` int(11) DEFAULT NULL COMMENT 'in Days',
   `max_domains_per_month` int(11) DEFAULT NULL,
   `max_orders` int(11) DEFAULT NULL,
   `credits_price` decimal(10,2) DEFAULT NULL,
   `credits_quota` int(11) DEFAULT NULL,
   `status` tinyint(1) DEFAULT 1,
-  `validity` int(11) NOT NULL,
+  `validity` int(11) NOT NULL COMMENT 'in Days',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -330,7 +323,7 @@ CREATE TABLE `subscription_plans` (
 --
 
 INSERT INTO `subscription_plans` (`id`, `name`, `description`, `price`, `cancellation_period`, `max_domains_per_month`, `max_orders`, `credits_price`, `credits_quota`, `status`, `validity`, `created_at`, `updated_at`) VALUES
-(1, 'Basic', 'Basic plan for indiindividual use', 60, 30, 10, 5, NULL, NULL, 1, 30, '2023-09-27 05:20:00', '2023-09-28 13:27:29'),
+(1, 'Basic', 'Basic plan for indiindividual use', 60, 30, 10, 5, NULL, NULL, 1, 30, '2023-09-27 05:20:00', '2023-09-29 07:05:15'),
 (2, 'Medium ', 'Medium plan for indiindividual comapany use', 110, 30, 50, 25, NULL, NULL, 1, 30, '2023-09-27 05:22:07', '2023-09-28 06:42:18'),
 (3, 'Agency', 'for Agency use', 200, 30, 100, 50, NULL, NULL, 1, 30, '2023-09-27 05:23:28', '2023-09-28 06:43:03');
 
@@ -345,10 +338,10 @@ CREATE TABLE `transactions` (
   `user_id` int(11) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `transaction_type` varchar(50) NOT NULL,
-  `description` text DEFAULT NULL,
+  `description` text DEFAULT NULL COMMENT 'payment for plan or extra order',
   `payment_created` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `transaction_id` varchar(255) DEFAULT NULL,
-  `isPlan` tinyint(1) NOT NULL DEFAULT 0,
+  `isPlan` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0: order or other extra payment, 1: subscription plan payment',
   `status` varchar(25) NOT NULL,
   `paymentData` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`paymentData`)),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -441,7 +434,7 @@ CREATE TABLE `user_subscriptions` (
   `info` varchar(255) DEFAULT NULL,
   `credits` int(11) DEFAULT 0,
   `transaction_id` int(11) NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT 1
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 is Active Plan\r\n0 Expire '
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -449,7 +442,7 @@ CREATE TABLE `user_subscriptions` (
 --
 
 INSERT INTO `user_subscriptions` (`id`, `user_id`, `plan_id`, `start_date`, `end_date`, `cancel_date`, `info`, `credits`, `transaction_id`, `status`) VALUES
-(1, 15, 1, '2023-09-20 18:22:26', '2023-10-27 12:52:26', NULL, NULL, 0, 1, 1),
+(1, 15, 1, '2023-09-27 00:00:00', '2023-10-27 12:52:26', NULL, NULL, 0, 1, 1),
 (5, 11, 2, '2023-09-28 13:52:18', '2023-10-28 08:22:18', NULL, NULL, 0, 5, 1);
 
 --
@@ -468,6 +461,7 @@ ALTER TABLE `blogs`
 --
 ALTER TABLE `domains`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_hash_id` (`hash_id`),
   ADD KEY `category_id` (`category_id`),
   ADD KEY `user_id` (`user_id`);
 
@@ -577,7 +571,7 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `domains`
 --
 ALTER TABLE `domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `domain_categories`
