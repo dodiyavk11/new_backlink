@@ -86,7 +86,7 @@ function UserMenu(props) {
             <>
               
               <h5 className='min-w-40 text-[11px] pl-[14px] font-semibold uppercase'>Account</h5>
-              <MenuItem component={Link} to="/apps/profile" onClick={userMenuClose} role="button">
+              <MenuItem component={Link} to="/account/payments" onClick={userMenuClose} role="button">
             
               <ListItemText primary="Payments" />
             </MenuItem>

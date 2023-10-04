@@ -15,8 +15,8 @@ const navigationConfig = [
     type: 'item',
     icon: 'heroicons-outline:chart-pie',
     url: '/admin/dashboard',
-    auth:authRoles.admin
-    
+    auth: authRoles.admin
+
   },
   {
     id: 'dashboards.analytics1',
@@ -24,15 +24,31 @@ const navigationConfig = [
     type: 'item',
     icon: 'heroicons-outline:chart-pie',
     url: '/user/dashboard',
-    auth:authRoles.user,
+    auth: authRoles.user,
   },
   {
-    id: 'dashboards.project',
+    id: 'projects',
     title: 'Project',
-    type: 'item',
+    type: 'collapse',
     icon: 'heroicons-outline:clipboard-check',
     url: '/admin/project',
-    auth:authRoles.admin
+    auth: authRoles.admin,
+    children: [
+      // {
+      //   id: 'dashboards.project',
+      //   title: 'Project',
+      //   type: 'item',
+      //   url: '/admin/project',
+        
+      // },
+      {
+        id: 'backlinks',
+        title: 'backliks',
+        type: 'item',
+        url: '/admin/backlinks',
+      },
+
+    ],
   },
   {
     id: 'dashboards.project1',
@@ -40,20 +56,46 @@ const navigationConfig = [
     type: 'item',
     icon: 'heroicons-outline:clipboard-check',
     url: '/user/project',
-    auth:authRoles.user
+    auth: authRoles.user
   },
-    {
-        id: 'dashboards.finance',
-        title: 'Orders',
-        type: 'item',
-        icon: 'heroicons-outline:newspaper',
-        url: '/dashboards/finance',
-    },
+  {
+    id: 'dashboards.finance',
+    title: 'Orders',
+    type: 'item',
+    icon: 'heroicons-outline:newspaper',
+    url: '/user/finance',
+    auth: authRoles.user
+  },
+  {
+    id: 'dashboards.finance1',
+    title: 'Orders',
+    type: 'item',
+    icon: 'heroicons-outline:newspaper',
+    url: '/admin/orders',
+    auth: authRoles.admin
+  },
+  {
+    id: 'dashboards.users',
+    title: 'Users',
+    type: 'item',
+    icon: 'heroicons-outline:users',
+    url: '/admin/users',
+    auth: authRoles.admin
+  },
+  {
+    id: 'dashboards.plans',
+    title: 'Plans',
+    type: 'item',
+    icon: 'material-outline:local_play',
+    url: '/admin/plans',
+    auth: authRoles.admin
+  },
   {
     id: 'marketplace',
     title: 'MarketPlace',
     type: 'collapse',
     icon: 'heroicons-outline:link',
+    auth: authRoles.user,
     children: [
       {
         id: 'marketplace.modern',
@@ -67,7 +109,7 @@ const navigationConfig = [
         type: 'item',
         url: '/marketplace/simple',
       },
-     
+
     ],
   }
 

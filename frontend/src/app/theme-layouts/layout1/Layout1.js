@@ -72,7 +72,7 @@ function Layout1(props) {
               </div>
 
               <div className='flex justify-end '>
-                <Typography className='text-[#6B7280] text-12px'>© Backlinked 2023</Typography>
+                <Typography className='text-[#6B7280] text-12px'>© FairLinked 2023</Typography>
               </div>
 
             </div>

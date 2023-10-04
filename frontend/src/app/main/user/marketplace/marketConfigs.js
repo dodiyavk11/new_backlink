@@ -3,11 +3,11 @@ import ModernPricingPageConfig from './modern/ModernPricingPageConfig';
 // import FinanceDashboardAppConfig from './finance/FinanceDashboardAppConfig';
 // import CryptoDashboardAppConfig from './crypto/CryptoDashboardAppConfig';
 
-const marketConfig = [
+const marketConfigs = [
   SimplePricingPageConfig,
   ModernPricingPageConfig,
 //   FinanceDashboardAppConfig,
 //   CryptoDashboardAppConfig,
 ];
 
-export default marketConfig;
+export default marketConfigs;

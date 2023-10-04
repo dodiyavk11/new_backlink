@@ -71,7 +71,7 @@ function SignUpPage() {
             Sign up
           </Typography>
           <div className="flex mx-auto text-center items-baseline mt-2 font-medium">
-            <Typography className='text-sm mx-auto text-center'>Register for an account in the Selllinked Marketplace.</Typography>
+            <Typography className='text-sm mx-auto text-center'>Register for an account in the fairlinked Marketplace.</Typography>
 
           </div>
 

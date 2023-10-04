@@ -25,7 +25,7 @@ function Logo() {
         style={{ backgroundColor: '#121212', color: '#61DAFB' }}
       >
        
-        <span className="react-text text-12 mx-4">Selllinked</span>
+        <span className="react-text text-12 mx-4">Fairlinked</span>
       </div>
     </Root>
   );

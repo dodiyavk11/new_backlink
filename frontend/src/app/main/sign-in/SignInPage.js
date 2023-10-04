@@ -44,7 +44,7 @@ function SignInPage() {
   const { isValid, dirtyFields, errors } = formState;
 
   useEffect(() => {
-    setValue('email', 'admin@selllinks.com', { shouldDirty: true, shouldValidate: true });
+    setValue('email', 'admin@fairlinked.com', { shouldDirty: true, shouldValidate: true });
     setValue('password', 'admin', { shouldDirty: true, shouldValidate: true });
   }, [setValue]);
 

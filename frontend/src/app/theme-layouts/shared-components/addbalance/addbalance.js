@@ -151,7 +151,7 @@ function CustomizedDialogs() {
               <InputLabel shrink style={{ fontSize: '17px ' }} htmlFor="bootstrap-input">
               Do you have a coupon code? Enter it here.
               </InputLabel>
-              <BootstrapInput placeholder='Selllinked2020' id="bootstrap-input" />
+              <BootstrapInput placeholder='Fairlinked2020' id="bootstrap-input" />
               </FormControl>
               <Typography className=' mt-14 text-[14px]'>Saved payment methods</Typography>
               <Typography className='text-[12px]'>Use a saved payment method to top up your balance.</Typography>

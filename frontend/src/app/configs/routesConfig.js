@@ -6,26 +6,28 @@ import userInterfaceConfigs from '../main/user-interface/UserInterfaceConfigs';
 import SignInConfig from '../main/sign-in/SignInConfig';
 import SignUpConfig from '../main/sign-up/SignUpConfig';
 import SignOutConfig from '../main/sign-out/SignOutConfig';
-import dashboardsConfigs from '../main/dashboards/dashboardsConfigs';
-import UserdashboardsConfigs from '../main/user/dashboards/dashboardsConfigs';
+import dashboardsConfigs from '../main/admin/dashboardsConfigs';
+import usersConfigs from '../main/user/usersConfigs';
 import appsConfigs from '../main/apps/appsConfigs';
 import pagesConfigs from '../main/pages/pagesConfigs';
 import authRoleExamplesConfigs from '../main/auth/authRoleExamplesConfigs';
 import authRoles from '../auth/authRoles';
+import adminmarketConfig from '../main/admin/marketplace/marketConfigs';
 import { AuthProvider } from '../auth/AuthContext';
 import {  setUser } from 'app/store/userSlice';
-import marketConfigs from '../main/marketplace/marketConfigs';
+import marketConfigs from '../main/user/marketplace/marketConfigs';
+
 
 
 const routeConfigs = [
   ...appsConfigs,
   ...dashboardsConfigs,
-  ...UserdashboardsConfigs,
+  ...usersConfigs,
   ...pagesConfigs,
-  ...marketConfigs,
   ...authRoleExamplesConfigs,
+  ...adminmarketConfig,
   ...userInterfaceConfigs,
-
+  ...marketConfigs,
   SignOutConfig,
   SignInConfig,
   SignUpConfig,
