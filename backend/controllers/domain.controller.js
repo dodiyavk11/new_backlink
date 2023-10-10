@@ -99,8 +99,9 @@ exports.addDomain = async (req, res) => {
 		      message: "A domain with a similar name already exists.",
 		    });
 		  }
-
-		  const addData = { domain_name: domain_name, category_id, budget, user_id };
+		  const domainParts = domain_name.split('.');
+		  const tld = domainParts[domainParts.length - 1];		  
+		  const addData = { domain_name: domain_name,tld, category_id, budget, user_id };
 		  const addDomain = await Models.Domains.create(addData);
 
 		  res.status(200).send({ status: true, message: "Domain added successfully", data: addDomain });

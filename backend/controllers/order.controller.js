@@ -20,10 +20,12 @@ exports.addOrder = async (req, res) => {
       ordername,
       orderpriority,
       description,
-      orderstatus
+      orderstatus,
+      domain_id,
     } = req.body;
     const orderInfo = {
       customer_id,
+      domain_id,
       ordername,
       orderpriority,
       description,
@@ -93,6 +95,13 @@ exports.getOrderByUserId = async(req, res) => {
 		const user_id = req.userId
 	    const getAllOrderByUser = await Models.Orders.findAll({
 	      where: { customer_id:user_id },
+	      include:[
+	      	{
+	      		model: Models.Domains,
+				as: 'domain',
+				attributes: ['domain_name','tld','budget','hash_id','created_at']
+	      	}
+	      ],
 	      order: [
 	        ["orderpriority", "DESC"],
 	        ["orderstatus", "ASC"],

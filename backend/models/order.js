@@ -11,14 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // this.belongsTo(models.Domains, {
-      //   foreignKey: 'domain_id',
-      //   as: 'domain',
-      // });
+      this.belongsTo(models.Domains, {
+        foreignKey: 'domain_id',
+        as: 'domain',
+      });
     }
   }
   order.init({
     customer_id: DataTypes.INTEGER,
+    domain_id:DataTypes.INTEGER,
     ordername: DataTypes.STRING,
     description: DataTypes.STRING,
     orderpriority: DataTypes.INTEGER,

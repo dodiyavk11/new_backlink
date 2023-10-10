@@ -134,8 +134,8 @@ exports.setting = async (req, res) => {
     const baseQuery = {
       include: [
         {
-          model: Models.Users, // User model
-          as: 'user', // Alias defined in the Domain model
+          model: Models.Users,
+          as: 'user',
           attributes: ['firstName', 'lastName', 'email','profile','phone'],
         }
       ],
@@ -227,7 +227,9 @@ exports.addCustomerDomain = async (req, res) => {
             });
 
             hash_id.toUpperCase();
-            const addData = { domain_name: mainDomain, category_id, budget, user_id, hash_id };
+            const domainParts = domain_name.split('.');
+		  	const tld = domainParts[domainParts.length - 1];
+            const addData = { domain_name: mainDomain, tld, category_id, budget, user_id, hash_id };
             const addDomain = await Models.Domains.create(addData);
 
             res.status(200).send({ status: true, message: "Domain added successfully", data: addDomain });

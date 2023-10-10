@@ -17,7 +17,6 @@ exports.signUp = async (req, res) => {
             profile && unlinkProfile(profile.filename)
             return res.status(409).send({ status: false, message: "User already registered ", data: [] })
         }
-            // genrate cripted password
             const hashedPassword = await bcrypt.hash(password, 11);
             const userInfo = { email, firstName, lastName, password: hashedPassword, phone }
 
@@ -124,17 +123,13 @@ exports.signIn = async (req, res) => {
 }
 
 // forgot password
-
 exports.Forgotpassword = async (req, res) => {
     try {
         const { password } = req.body;
         const { token } = req.params
-        // console.log(req)
         const decode = decodeJWTToken(token);
         const email = decode.email
-        // const checkId = req.userId
         await Models.forgotpassword.findOne({ email })
-        // genrate cripted password
         const hashedPassword = await bcrypt.hash(password, 11);
         const checkUser = await Models.Users.update({ password: hashedPassword }, { where: { email } });
 
@@ -147,7 +142,6 @@ exports.Forgotpassword = async (req, res) => {
 }
 
 // export forgot password link
-
 exports.ForgotPasswordLink = async (req, res) => {
     try {
         const { email } = req.body

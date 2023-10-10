@@ -24,9 +24,11 @@ exports.isLogin = (req, res, next) => {
 exports.isAdmin = async (req, res, next) => {
   try {
     const uId = req.userId
-    const fetchAllUser = await Models.Users.findOne({ where: { id: uId } })
-    delete fetchAllUser.dataValues.password
-    if (fetchAllUser.isAdmin === 0 || fetchAllUser.isAdmin === 2) return res.status(401).send({ status: false, message: "You cannot access the admin page", data: [] })
+    const fetchUser = await Models.Users.findOne({ 
+      attributes: { exclude: ['password'] },
+      where: { id: uId } 
+    })
+    if (fetchUser.isAdmin === 0 || fetchUser.isAdmin === 2) return res.status(401).send({ status: false, message: "You cannot access the admin page", data: [] })
     next();
   } catch (err) {
     console.log(err)
@@ -37,10 +39,12 @@ exports.isAdmin = async (req, res, next) => {
 exports.isCustomer = async (req, res, next) => {
   try {
     const uId = req.userId;
-    const fetchAllUser = await Models.Users.findOne({ where: { id: uId } });
-    delete fetchAllUser.dataValues.password;
+    const fetchUser = await Models.Users.findOne({ 
+      attributes: { exclude: ['password'] },
+      where: { id: uId } 
+    });
     
-    if (fetchAllUser.isAdmin !== 0) {
+    if (fetchUser.isAdmin !== 0) {
       return res.status(401).send({ status: false, message: "You cannot access this page", data: [] });
     }
     
@@ -49,5 +53,24 @@ exports.isCustomer = async (req, res, next) => {
   } catch (err) {
     console.error(err);
     res.status(401).send({ status: false, message: "Administrator authentication error", data: [] });
+  }
+}
+
+exports.isPublisher = async(req, res, next) =>
+{
+  try
+  {
+    const userId = req.userId;
+    const fetchUser = await Models.Users.findOne({
+      attributes: { exclude: ['password'] },
+      where: { id: userId }
+    });
+    if (fetchUser.isAdmin === 0 || fetchUser.isAdmin === 1) return res.status(401).send({ status: false, message: "You cannot access this page beacuse your not publisher.", data: [] })
+    next();
+  }
+  catch(err)
+  {
+    console.log(err);
+    res.status(500).send({ status:false, message: "authentication error" })
   }
 }

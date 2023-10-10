@@ -26,6 +26,7 @@ module.exports = (sequelize,DataTypes) => {
 	}
 	Domain.init({
 		domain_name:DataTypes.STRING,
+		tld:DataTypes.STRING,
 		category_id:DataTypes.INTEGER,
 		status:DataTypes.INTEGER,
 		user_id:DataTypes.INTEGER,
