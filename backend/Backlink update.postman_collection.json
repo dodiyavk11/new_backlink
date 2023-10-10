@@ -442,7 +442,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\":\"Testing \",\r\n    \"description\":\"Testing description\"\r\n}",
+					"raw": "{\r\n    \"name\":\"Science\",\r\n    \"description\":\"Science\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1626,7 +1626,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTU5NjE0MzEsImV4cCI6MTY5NTk5NzQzMX0.XrjNImbT2CDwbxN_3LS9BZjZ619MxVRTjcpGuQdoZ8E",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTYyMjAwMzksImV4cCI6MTY5NjI1NjAzOX0.X0mfDYjDLQYqyn21vmEubAyeB21P_jeFgOws2f6V_W0",
 							"type": "string"
 						}
 					]
@@ -1635,7 +1635,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"domain_name\":\"besticoder.com\",\r\n    \"category_id\":\"\",\r\n    \"budget\":12.36,\r\n    \"category_id\":2\r\n}",
+					"raw": "{\r\n    \"domain_name\":\"google.com\",\r\n    \"budget\":0,\r\n    \"category_id\":2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1695,7 +1695,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTU5NjE0MzEsImV4cCI6MTY5NTk5NzQzMX0.XrjNImbT2CDwbxN_3LS9BZjZ619MxVRTjcpGuQdoZ8E",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTY0MTgzNDMsImV4cCI6MTY5NjQ1NDM0M30.04ahlr231cA2IWqKsOLC7M40ITW63nE9jrn9P96kZgo",
 							"type": "string"
 						}
 					]
@@ -1841,7 +1841,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTUzNTQ5NTQsImV4cCI6MTY5NTM5MDk1NH0.a5Jat9ThQzgg9bxT3zA8IKATs1i0tJwZ4fA1dyFOcOc",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTY0MTgzNDMsImV4cCI6MTY5NjQ1NDM0M30.04ahlr231cA2IWqKsOLC7M40ITW63nE9jrn9P96kZgo",
 							"type": "string"
 						}
 					]
@@ -1889,10 +1889,9 @@
 							"src": "/C:/Users/rjnag/Downloads/1693548503784.jpeg"
 						},
 						{
-							"key": "",
-							"value": "",
-							"type": "text",
-							"disabled": true
+							"key": "domain_id",
+							"value": "1",
+							"type": "text"
 						},
 						{
 							"key": "",
@@ -1956,7 +1955,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTUzNTQ5NTQsImV4cCI6MTY5NTM5MDk1NH0.a5Jat9ThQzgg9bxT3zA8IKATs1i0tJwZ4fA1dyFOcOc",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTY0MTgzNDMsImV4cCI6MTY5NjQ1NDM0M30.04ahlr231cA2IWqKsOLC7M40ITW63nE9jrn9P96kZgo",
 							"type": "string"
 						}
 					]
@@ -2749,6 +2748,142 @@
 						"users",
 						"subscription",
 						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publisher Add Domain",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTY5MjMwOTMsImV4cCI6MTY5Njk1OTA5M30.sjrbwZxuAK-9HC4LDpD4TjgI0Onb-6lm3VTH2B094kI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"domain_name\":\"google.com\",\r\n    \"category_id\":2,\r\n    \"price\":5000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/publisher/addDomain",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"addDomain"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publisher Update Domain",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTY5MjMwOTMsImV4cCI6MTY5Njk1OTA5M30.sjrbwZxuAK-9HC4LDpD4TjgI0Onb-6lm3VTH2B094kI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"domain_name\":\"jayesh.com\",\r\n    \"category_id\":3,\r\n    \"price\":512\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/publisher/updateDomain/4",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"updateDomain",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publisher Domain Delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTY5MjMwOTMsImV4cCI6MTY5Njk1OTA5M30.sjrbwZxuAK-9HC4LDpD4TjgI0Onb-6lm3VTH2B094kI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/publisher/deleteDomain/4",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"deleteDomain",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publisher Domains List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTY5NDEwODcsImV4cCI6MTY5Njk3NzA4N30.yScV3BvoWPwzWdxI0i76Fkas29TCnff0ZZwWQVv7_Gc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/publisher/domains",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"domains"
 					]
 				}
 			},
