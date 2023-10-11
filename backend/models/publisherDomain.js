@@ -2,17 +2,22 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize,DataTypes) => {
-	class Backlinks extends Model
+	class publisherDomain extends Model
 	{
 		static associate(models)
 		{
 			this.belongsTo(models.domain_category, {
 		        foreignKey: 'category_id',
 		        as: 'category',
-		      });
+		    });
+		    
+		    this.hasOne(models.backlinksDetails, {
+				foreignKey: 'domain_id',
+				as: 'contentData',
+			});
 		}
 	}
-	Backlinks.init({
+	publisherDomain.init({
 		domain_name:DataTypes.STRING,
 		tld:DataTypes.STRING,
 		category_id:DataTypes.INTEGER,
@@ -26,9 +31,9 @@ module.exports = (sequelize,DataTypes) => {
 		createdAt: 'created_at',
 		updatedAt: 'updated_at',
 		timestamps: true,
-	    modelName: 'Backlinks',
+	    modelName: 'publisherDomain',
 	    paranoid: false,
 	    tableName:"publisher_domains"
 	});
-	return Backlinks;
+	return publisherDomain;
 }

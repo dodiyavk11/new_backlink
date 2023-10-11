@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 10, 2023 at 03:46 PM
+-- Generation Time: Oct 11, 2023 at 03:44 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -62,6 +62,13 @@ CREATE TABLE `domains` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `domains`
+--
+
+INSERT INTO `domains` (`id`, `domain_name`, `tld`, `budget`, `category_id`, `status`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
+(1, 'google.com', 'com', '0.00', 6, 1, 15, 'y8n78xoy', '2023-10-11 13:05:15', '2023-10-11 13:05:15');
 
 -- --------------------------------------------------------
 
@@ -169,7 +176,8 @@ INSERT INTO `email_formats` (`id`, `email_title`, `email_type`, `email_content`,
 (4, 'Order status changes', 'order_status', '<p><span style=\"font-size: 18pt;\"><strong>Hello,</strong></span></p>\n<p><span style=\"font-size: 12pt;\">The status of the order  \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</span></p>\n<p><span style=\"font-size: 12pt;\">Take a look at your order now:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: medium;\">https://</span></strong></span></p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'There is news about your order', NULL, '2023-09-26 12:04:46', '2023-09-26 12:04:46'),
 (5, 'Welcome', 'welcome', '<p><span style=\"font-size: 18pt;\"><strong>Hello {user_name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Thank you very much for your registration and Verify email your account now activated .</span></span></p>\n<a style=\"font-size: 12pt; background-color: rgb(192, 222, 96);text-decoration:none;padding:10px\" href=\"https://www.google.co.in/\" title=\"Login to access account\" target=\"_blank\">Login</a>', 'Welcome to Backling family', 'attachement_1695786722177.pdf', '2023-09-27 09:22:02', '2023-09-27 09:22:02'),
 (6, 'Subscription Confirmed', 'subscription_purchase', '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td align=\"center\">\n            <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color: #ffffff; padding: 20px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding: 30px 0;\">\n                        <h1 style=\"color: #333; font-size: 28px; margin: 0;\">Subscription Confirmed</h1>\n                    </td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 20px;\">\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            Dear {username},<br><br>\n                            Thank you for subscribing to our plan. You\'re now part of our exclusive community!<br><br>\n                            Here are your subscription details:<br>\n                        </p>\n                        <ul style=\"list-style: none; padding-left: 0;\">\n                            <li><strong>Plan Name:</strong> {planname}</li>\n                            <li><strong>Price:</strong> {price}</li>\n                            <li><strong>Start Date:</strong> {startdate}</li>\n                            <li><strong>End Date:</strong> {enddate}</li>\n                        </ul>\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            If you have any questions or need assistance, feel free to contact our support team.<br><br>\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td align=\"center\" style=\"background-color: #f2f2f2; padding: 20px 0;\">\n                        <p style=\"color: #777; font-size: 14px;\">Best regards, <b>Backlink.com<b></p>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>', 'Your Subscription is Confirmed.', NULL, '2023-09-28 13:17:59', '2023-09-28 13:17:59'),
-(7, 'Subscription Expired', 'subscription_expire', '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td align=\"center\">\n            <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color: #ffffff; padding: 20px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding: 30px 0;\">\n                        <h1 style=\"color: #333; font-size: 28px; margin: 0;\">Subscription Plan Expired</h1>\n                    </td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 20px;\">\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            Dear {username},<br><br>\n                            We regret to inform you that your subscription plan has expired. Your access to our services is now limited.<br><br>\n                            Here are the details of your expired subscription plan:<br>\n                        </p>\n                        <ul style=\"list-style: none; padding-left: 0;\">\n                            <li><strong>Plan Name:</strong> {planname}</li>\n                            <li><strong>Price:</strong> {price}</li>\n                            <li><strong>Start Date:</strong> {startdate}</li>\n                            <li><strong>End Date:</strong> {enddate}</li>\n                        </ul>\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            If you wish to continue using our services, please renew your subscription plan.<br><br>\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td align=\"center\" style=\"background-color: #f2f2f2; padding: 20px 0;\">\n                        <p style=\"color: #777; font-size: 14px;\">Best regards, <b>Your Company Name</b></p>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>', 'Subscription Plan Expired', NULL, '2023-09-28 14:58:33', '2023-09-28 14:58:33');
+(7, 'Subscription Expired', 'subscription_expire', '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td align=\"center\">\n            <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color: #ffffff; padding: 20px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding: 30px 0;\">\n                        <h1 style=\"color: #333; font-size: 28px; margin: 0;\">Subscription Plan Expired</h1>\n                    </td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 20px;\">\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            Dear {username},<br><br>\n                            We regret to inform you that your subscription plan has expired. Your access to our services is now limited.<br><br>\n                            Here are the details of your expired subscription plan:<br>\n                        </p>\n                        <ul style=\"list-style: none; padding-left: 0;\">\n                            <li><strong>Plan Name:</strong> {planname}</li>\n                            <li><strong>Price:</strong> {price}</li>\n                            <li><strong>Start Date:</strong> {startdate}</li>\n                            <li><strong>End Date:</strong> {enddate}</li>\n                        </ul>\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            If you wish to continue using our services, please renew your subscription plan.<br><br>\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td align=\"center\" style=\"background-color: #f2f2f2; padding: 20px 0;\">\n                        <p style=\"color: #777; font-size: 14px;\">Best regards, <b>Backlinks</b></p>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>', 'Subscription Plan Expired', NULL, '2023-09-28 14:58:33', '2023-09-28 14:58:33'),
+(8, 'New domain added', 'new_domain_added', '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td align=\"center\">\n            <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color: #ffffff; padding: 20px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding: 30px 0;\">\n                        <h1 style=\"color: #333; font-size: 28px; margin: 0;\">New domain added in your Portfolio</h1>\n                    </td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 20px;\">\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            Dear {username},<br><br>\n                            We inform you that your Portfolio added new domain.                                </p>\n                       <p> Here are the details of your new added domain</p>\n                        <ul style=\"list-style: none; padding-left: 0;\">\n                            <li><strong>Domain name:</strong> {domain_name}</li>\n                            <li><strong>Price:</strong> {price}</li>\n                            <li><strong>Category:</strong> {category}</li>\n                        </ul>                        \n                    </td>\n                </tr>\n                <tr>\n                    <td align=\"center\" style=\"background-color: #f2f2f2; padding: 20px 0;\">\n                        <p style=\"color: #777; font-size: 14px;\">Best regards, <b>Backlinks</b></p>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>', 'New Domain added in your Portfolio', NULL, '2023-10-11 15:14:59', '2023-10-11 15:14:59');
 
 -- --------------------------------------------------------
 
@@ -236,6 +244,36 @@ CREATE TABLE `messages` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `new_orders`
+--
+
+CREATE TABLE `new_orders` (
+  `id` int(11) NOT NULL,
+  `publisher_id` int(11) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `domain_id` int(11) DEFAULT NULL,
+  `status` enum('Placed','Approved','Decline','Completed','Cancelled') DEFAULT NULL,
+  `total_price` decimal(10,2) DEFAULT NULL,
+  `anchortext` varchar(100) DEFAULT NULL,
+  `linktarget` varchar(255) DEFAULT NULL,
+  `publication_date` date DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL,
+  `project_id` varchar(50) DEFAULT NULL,
+  `hash_id` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `new_orders`
+--
+
+INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `status`, `total_price`, `anchortext`, `linktarget`, `publication_date`, `note`, `project_id`, `hash_id`, `created_at`, `updated_at`) VALUES
+(1, 11, 15, 3, 'Placed', '153.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'y8n78xoy', '2ix82ctm', '2023-10-11 13:36:49', '2023-10-11 13:36:49');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `notifications`
 --
 
@@ -287,11 +325,7 @@ CREATE TABLE `orderfiles` (
 --
 
 INSERT INTO `orderfiles` (`id`, `order_id`, `file_name`, `original_name`, `file_path`, `isLink`, `link`, `created_at`, `updated_at`) VALUES
-(1, 49, 'final_file1695387549321.JPG', 'jayesh', 'assets/order_assets/', 0, '', '2023-09-26 07:34:11', '2023-09-26 07:34:11'),
-(3, 49, 'final_file1695714963980.jpg', 'jayeshs', 'assets/order_assets/', 0, NULL, '2023-09-26 07:56:03', '2023-09-26 09:32:58'),
-(18, 49, NULL, 'ahref npm tutorial', NULL, 1, 'https://github.com/ybonnefond/node-ahrefs/tree/master', '2023-09-26 09:46:35', '2023-09-26 09:46:35'),
-(19, 49, NULL, 'ahref token link', NULL, 1, 'https://app.ahrefs.com/api/profile', '2023-09-26 09:46:35', '2023-09-26 09:46:35'),
-(20, 48, NULL, 'Googles', NULL, 1, 'https://www.google.co.in', '2023-09-26 09:47:27', '2023-09-26 10:24:10');
+(1, 1, 'new_order_1697031409371.pdf', NULL, 'assets/order_assets/', 0, NULL, '2023-10-11 13:36:49', '2023-10-11 13:36:49');
 
 -- --------------------------------------------------------
 
@@ -302,6 +336,7 @@ INSERT INTO `orderfiles` (`id`, `order_id`, `file_name`, `original_name`, `file_
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
+  `publisher_id` int(11) NOT NULL,
   `domain_id` int(11) NOT NULL,
   `total_amount` decimal(10,2) NOT NULL,
   `ordername` varchar(255) NOT NULL,
@@ -320,10 +355,45 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `customer_id`, `domain_id`, `total_amount`, `ordername`, `description`, `orderfile`, `orderstatus`, `orderpriority`, `update_status_admin`, `update_status`, `created_at`, `updated_at`, `soft_delete`) VALUES
-(48, 15, 2, '0.00', 'This order updated', 'This order updated by api', NULL, 1, 2, 2, 0, '2023-09-27 18:30:00', '2023-09-29 12:20:37', ''),
-(49, 15, 2, '0.00', 'Second Name', 'Description', NULL, 1, 1, 1, 1, '2023-09-28 05:09:32', '2023-09-29 13:09:06', ''),
-(51, 15, 1, '0.00', 'Second Name', 'Description', NULL, 1, 1, 1, 0, '2023-10-04 12:37:18', '2023-10-04 12:38:33', '');
+INSERT INTO `orders` (`id`, `customer_id`, `publisher_id`, `domain_id`, `total_amount`, `ordername`, `description`, `orderfile`, `orderstatus`, `orderpriority`, `update_status_admin`, `update_status`, `created_at`, `updated_at`, `soft_delete`) VALUES
+(48, 15, 0, 2, '0.00', 'This order updated', 'This order updated by api', NULL, 1, 2, 2, 0, '2023-09-27 18:30:00', '2023-09-29 12:20:37', ''),
+(49, 15, 0, 2, '0.00', 'Second Name', 'Description', NULL, 1, 1, 1, 1, '2023-09-28 05:09:32', '2023-09-29 13:09:06', ''),
+(51, 15, 0, 1, '0.00', 'Second Name', 'Description', NULL, 1, 1, 1, 0, '2023-10-04 12:37:18', '2023-10-04 12:38:33', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `publisher_backlinks`
+--
+
+CREATE TABLE `publisher_backlinks` (
+  `id` int(11) NOT NULL,
+  `domain_id` int(11) NOT NULL,
+  `traffic` int(11) NOT NULL DEFAULT 0,
+  `anchor_text` varchar(50) DEFAULT NULL,
+  `delivery_time` varchar(50) DEFAULT NULL,
+  `link` varchar(50) DEFAULT NULL,
+  `language` varchar(15) DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT 0.00,
+  `visibility_index` decimal(10,2) DEFAULT 0.00,
+  `domain_rating` int(11) NOT NULL,
+  `rating` decimal(1,1) NOT NULL DEFAULT 0.0,
+  `referring` int(11) NOT NULL DEFAULT 0,
+  `citation_flow` int(11) DEFAULT 0,
+  `trust_flow` int(11) NOT NULL DEFAULT 0,
+  `authority` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `publisher_backlinks`
+--
+
+INSERT INTO `publisher_backlinks` (`id`, `domain_id`, `traffic`, `anchor_text`, `delivery_time`, `link`, `language`, `price`, `visibility_index`, `domain_rating`, `rating`, `referring`, `citation_flow`, `trust_flow`, `authority`, `created_at`, `updated_at`) VALUES
+(1, 2, 10, 'tee', '4.8', 'follow', 'en', '160.00', '10.60', 68, '0.0', 12, 15, 68, 1, '2023-10-11 05:29:07', '2023-10-11 05:29:07'),
+(3, 3, 1, 'test', '1.2', 'ddd', 'en', '153.00', '15.00', 12, '0.0', 3, 26, 63, 12, '2023-10-11 06:05:20', '2023-10-11 06:05:20'),
+(4, 6, 55, '55', '55', '55', 'en', '55.00', '55.00', 55, '0.0', 55, 55, 55, 55, '2023-10-11 06:18:04', '2023-10-11 06:18:19');
 
 -- --------------------------------------------------------
 
@@ -350,8 +420,9 @@ CREATE TABLE `publisher_domains` (
 
 INSERT INTO `publisher_domains` (`id`, `domain_name`, `tld`, `price`, `category_id`, `status`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
 (2, 'test.com', 'com', '480.00', 8, 1, 11, 'vqxyvl9w', '2023-10-10 10:54:02', '2023-10-10 12:27:26'),
-(3, 'google.com', 'com', '5000.00', 15, 1, 11, '2ix82ctm', '2023-10-10 10:54:52', '2023-10-10 12:27:29'),
-(6, 'besticoder.com', 'com', '5000.00', 2, 1, 11, '8bs7vyk3', '2023-10-10 13:06:35', '2023-10-10 13:06:35');
+(3, 'google.com', 'net', '5000.00', 15, 1, 11, '2ix82ctm', '2023-10-10 10:54:52', '2023-10-11 06:17:35'),
+(6, 'besticoder.com', 'com', '5000.00', 2, 1, 11, '8bs7vyk3', '2023-10-10 13:06:35', '2023-10-10 13:06:35'),
+(8, 'jayesh.com', 'com', '5000.00', 4, 1, 11, '3fc562lq', '2023-10-11 09:55:48', '2023-10-11 09:55:48');
 
 -- --------------------------------------------------------
 
@@ -560,6 +631,12 @@ ALTER TABLE `messages`
   ADD KEY `sender_id` (`sender_id`);
 
 --
+-- Indexes for table `new_orders`
+--
+ALTER TABLE `new_orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `notifications`
 --
 ALTER TABLE `notifications`
@@ -579,6 +656,13 @@ ALTER TABLE `orderfiles`
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `customer_id` (`customer_id`);
+
+--
+-- Indexes for table `publisher_backlinks`
+--
+ALTER TABLE `publisher_backlinks`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `domain_id` (`domain_id`);
 
 --
 -- Indexes for table `publisher_domains`
@@ -637,7 +721,7 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `domains`
 --
 ALTER TABLE `domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `domain_categories`
@@ -655,7 +739,7 @@ ALTER TABLE `domain_tags`
 -- AUTO_INCREMENT for table `email_formats`
 --
 ALTER TABLE `email_formats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `faqs`
@@ -676,6 +760,12 @@ ALTER TABLE `messages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `new_orders`
+--
+ALTER TABLE `new_orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
@@ -685,7 +775,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `orderfiles`
 --
 ALTER TABLE `orderfiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -694,10 +784,16 @@ ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
+-- AUTO_INCREMENT for table `publisher_backlinks`
+--
+ALTER TABLE `publisher_backlinks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `publisher_domains`
 --
 ALTER TABLE `publisher_domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `subscription_plans`
@@ -757,12 +853,6 @@ ALTER TABLE `messages`
 --
 ALTER TABLE `notifications`
   ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-
---
--- Constraints for table `orderfiles`
---
-ALTER TABLE `orderfiles`
-  ADD CONSTRAINT `orderfiles_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `orders`

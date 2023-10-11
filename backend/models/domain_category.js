@@ -8,10 +8,10 @@ module.exports = (sequelize,DataTypes) => {
 	{
 		static associate(models) 
 		{
-			 this.hasMany(models.Domains, {
-		        foreignKey: 'category_id',
-		        as: 'domains',
-		      });
+			this.hasMany(models.Domains, {
+				foreignKey: 'category_id',
+				as: 'domains',
+			});
 		}
 	}
 	domain_category.init({

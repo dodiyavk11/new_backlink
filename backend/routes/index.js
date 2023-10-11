@@ -14,4 +14,5 @@ module.exports = (app) => {
   require("./ahref.routes")(app)
   require("./subscriptionPlan.routes")(app)
   require("./backlink.route")(app)
+  require("./newOrder.routes")(app)
 }

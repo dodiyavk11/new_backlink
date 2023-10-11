@@ -2,23 +2,7 @@ const Models = require('../models');
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 const generateUniqueId = require('generate-unique-id');
-
-exports.getDomainBacklinksDetails = async(req , res) => {
-	try
-	{
-		const { hash_id } = req.params;
-		const userId = req.userId;
-		const getData = await Models.Backlinks.findAll({
-			where: { hash_id: hash_id }
-		});
-		res.status(200).send({ status: true, message: "Backlinks fetch success.", data: getData })
-	}
-	catch(err)
-	{
-		console.log(err);
-		res.status(500).send({ status: false, message: "Backlink fetch failed, Please try again.", data: [], error: err.message });
-	}
-}
+const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils");
 
 exports.getPublisherDomainList = async(req, res) => {
 	try
@@ -31,9 +15,14 @@ exports.getPublisherDomainList = async(req, res) => {
 		      as: 'category',
 		      attributes: ['id','name'],
 		    },
+		    {
+		      model: Models.backlinksDetails,
+		      as: 'contentData',
+		      // attributes: { exclude: ['updated_at'] }
+		    },
 		  ],
 		}
-		const publisherDomainList = await Models.Backlinks.findAll({ where:{ user_id:user_id }, ...baseQuery,order: [['id', 'DESC']] });
+		const publisherDomainList = await Models.publisherDomain.findAll({ where:{ user_id:user_id }, ...baseQuery,order: [['id', 'DESC']] });
 		res.status(200).send({ status: true, message: "List fetch successfully.", data: publisherDomainList });
 	}
 	catch(err)
@@ -53,7 +42,7 @@ exports.addPublisherDomain = async(req, res) => {
 		if (domainPattern.test(domain_name)) {        	
             let mainDomain = extractMainDomain(domain_name);        
             mainDomain = mainDomain.trim().replace(/\/+$/, '');            
-            const existingDomain = await Models.Backlinks.findOne({
+            const existingDomain = await Models.publisherDomain.findOne({
                 where: {
                     domain_name: {
                         [Sequelize.Op.substring]: mainDomain.replace("www",""),
@@ -75,7 +64,30 @@ exports.addPublisherDomain = async(req, res) => {
             const domainParts = domain_name.split('.');
 		  	const tld = domainParts[domainParts.length - 1];
             const addData = { domain_name: mainDomain, tld, category_id, price, user_id:userId, hash_id };
-            const addDomain = await Models.Backlinks.create(addData);
+            const addDomain = await Models.publisherDomain.create(addData);
+
+            /* send publisher notification email to successed added domain */
+
+            const userInfo = await Models.Users.findOne({ where:{ id:userId } });
+            let categoryName;
+            if(category_id)
+            {
+            	const category = await Models.domain_category.findOne({ where:{ id:category_id } });
+            	categoryName = category.dataValues.name;
+            }            
+
+			const mailText = await Models.email_format.findOne({ where: { email_type: "new_domain_added" } });
+
+			let text = mailText.email_content;
+			let subject = mailText.header;
+			let username = userInfo.dataValues.firstName+' '+userInfo.dataValues.lastName;
+			text = text.replace("{username}", username);
+			text = text.replace("{domain_name}", domain_name);
+			text = text.replace("{price}", price);
+			text = text.replace("{category}", categoryName);
+			const email = await emailTemplate(text);	
+			console.log(email);	
+			sendVerifyMail(userInfo.dataValues.email,subject,"",email);
 
             res.status(200).send({ status: true, message: "Domain added successfully", data: addDomain });            
         } else {
@@ -103,7 +115,7 @@ exports.editPublisherDomain = async(req, res) => {
 		{
 			let mainDomain = extractMainDomain(domain_name);
 			mainDomain = mainDomain.trim().replace(/\/+$/,'');
-			const existingDomain = await Models.Backlinks.findOne({
+			const existingDomain = await Models.publisherDomain.findOne({
 				where: {
 					domain_name: {
 						[Sequelize.Op.substring] : mainDomain.replace("wwww",""),
@@ -121,7 +133,7 @@ exports.editPublisherDomain = async(req, res) => {
 			const domainParts = domain_name.split(".");
 			const tld = domainParts[domainParts.length - 1];
 			const updateData = { domain_name:mainDomain ,category_id, price, tld };
-			const updateDomain = await Models.Backlinks.update(updateData, { where: { id:domainId } });
+			const updateDomain = await Models.publisherDomain.update(updateData, { where: { id:domainId } });
 			res.status(200).send({ status: true, message: "Domain updated successfully.", data: updateDomain })
 		}
 		else
@@ -141,13 +153,74 @@ exports.deletePublisherDomain = async(req, res) => {
 	try
 	{
 		const id = req.params;
-		const deleteDomain = await Models.Backlinks.destroy({ where: id });
+		const deleteDomain = await Models.publisherDomain.destroy({ where: id });
 		res.status(200).send({ status: true, message: "Domain deleted successfully.",data: deleteDomain });
 	}
 	catch(err)
 	{
 		console.log(err);
 		res.status(500).send({ status: false, message: "Domain delete failed.", error: err.message })
+	}
+}
+
+exports.getConetentLinks = async(req, res) => {
+	try
+	{		
+		const { category_id,tld,price,language,domain_name } = req.body;
+
+		const filters = {
+			'category_id': category_id,
+			'tld': tld,
+			'price': price,
+			'contentData.language': language,
+			'domain_name': domain_name
+		};
+		const baseQuery = {
+			include: [
+				{
+				  model: Models.domain_category,
+				  as: 'category',
+				  attributes: ['id', 'name'],
+				},
+				{
+				  model: Models.backlinksDetails,
+				  as: 'contentData',
+				},
+			],
+		  	where: {},
+		};
+
+		if (filters['category_id'] && filters['category_id'].length > 0) {
+			baseQuery.where['category_id'] = filters['category_id'];
+		}
+
+		if (filters['tld'] && filters['tld'].length > 0) {
+			baseQuery.where['tld'] = filters['tld'];
+		}
+
+		if (filters['price']) {
+			baseQuery.where['price'] = {
+				[Op.gte]: filters['price'].min,
+				[Op.lte]: filters['price'].max,
+			};
+		}
+
+		if (filters['contentData.language'] && filters['contentData.language'].length > 0) {
+			baseQuery.where['$contentData.language$'] = filters['contentData.language'];
+		}
+		if (filters['domain_name'] !== undefined && filters['domain_name'] !== '')
+		{
+			baseQuery.where['domain_name'] = {
+			    [Op.like]: `%${filters['domain_name']}%`,
+			  };
+		}
+		const contentData = await Models.publisherDomain.findAll({ ...baseQuery,order: [['id', 'DESC']] });
+		res.status(200).send({ status: true, message: "Content links get successfully.", data: contentData });
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message: "Something went to wrong, Please try again.", data: [] })		;
 	}
 }
 
