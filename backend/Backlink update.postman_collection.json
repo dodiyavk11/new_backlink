@@ -2308,7 +2308,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTU4MTgxMDYsImV4cCI6MTY5NTg1NDEwNn0.IXinhz1fBfP7TPEqBOwKzJ40YF5rFT0C3eom3tj6Pqo",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcwOTUwODQsImV4cCI6MTY5NzEzMTA4NH0.AoGOu85a9j8zXLGwtL1NBFELkAOIdqGEVv8OTbdIixs",
 							"type": "string"
 						}
 					]
@@ -2962,7 +2962,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcwMDM5MTcsImV4cCI6MTY5NzAzOTkxN30.eAeUiIotyj2nAsBqP02hcT2SUGnMILhFxd75T8YS3Q4",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcwOTUwODQsImV4cCI6MTY5NzEzMTA4NH0.AoGOu85a9j8zXLGwtL1NBFELkAOIdqGEVv8OTbdIixs",
 							"type": "string"
 						}
 					]
@@ -3019,6 +3019,104 @@
 					"path": [
 						"order",
 						"placeOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Publisher order list( received from customer)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTcwODU5NDUsImV4cCI6MTY5NzEyMTk0NX0.eyCbiFAJfEZ31fIj1O9HdfNo1YRBdGRh_FIQj5yDCiA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/publisher/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publisher update order status",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTcwODU5NDUsImV4cCI6MTY5NzEyMTk0NX0.eyCbiFAJfEZ31fIj1O9HdfNo1YRBdGRh_FIQj5yDCiA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\":\"Inprogress\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/publisher/updateOrderStatus/2",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"updateOrderStatus",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer cancel order and refund amount in wallet",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcxMTIwNjQsImV4cCI6MTY5NzE0ODA2NH0.c4kzWy-56GQqFd5wqOVuNHTNbEy5ReqbJyyRaoFtDhI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/order/cancelOrder/14",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"order",
+						"cancelOrder",
+						"14"
 					]
 				}
 			},

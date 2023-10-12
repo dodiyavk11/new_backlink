@@ -1,5 +1,5 @@
 const plansContainer = document.getElementById('plans');
-let jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTU4ODIyNDQsImV4cCI6MTY5NTkxODI0NH0.Cn0n7GBguzU3clvtUq9iA1svPpYKKaMb1XHqDGyPnp0";
+let jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcxMTIwNjQsImV4cCI6MTY5NzE0ODA2NH0.c4kzWy-56GQqFd5wqOVuNHTNbEy5ReqbJyyRaoFtDhI";
 const headers = {
   'Authorization': `Bearer ${jwtToken}`,
   'Content-Type': 'application/json',

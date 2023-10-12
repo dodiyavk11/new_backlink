@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2023 at 03:44 PM
+-- Generation Time: Oct 12, 2023 at 03:32 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -68,7 +68,8 @@ CREATE TABLE `domains` (
 --
 
 INSERT INTO `domains` (`id`, `domain_name`, `tld`, `budget`, `category_id`, `status`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
-(1, 'google.com', 'com', '0.00', 6, 1, 15, 'y8n78xoy', '2023-10-11 13:05:15', '2023-10-11 13:05:15');
+(1, 'google.com', 'com', '0.00', 6, 1, 15, 'y8n78xoy', '2023-10-11 13:05:15', '2023-10-11 13:05:15'),
+(2, 'abc.com', 'com', '0.00', 8, 1, 10, '7ae6fw6', '2023-10-12 05:09:59', '2023-10-12 05:09:59');
 
 -- --------------------------------------------------------
 
@@ -173,11 +174,12 @@ CREATE TABLE `email_formats` (
 INSERT INTO `email_formats` (`id`, `email_title`, `email_type`, `email_content`, `header`, `file`, `createdAt`, `updatedAt`) VALUES
 (2, 'Registration', 'registration', '<p><span style=\"font-size: 18pt;\"><strong>Hello {user_name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Thank you very much for your registration.</span></span></p>\n<p><span style=\"font-size: 12pt;\">Please confirm your email address\n {user_email} with this link:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: 12pt; background-color: rgb(192, 222, 96);\">{verification_Link}</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'Please complete registration', NULL, '2023-09-19 11:27:57', '2023-09-19 11:27:57'),
 (3, 'New Order', 'create_new_order', '<p><span style=\"font-size: 18pt;\"><strong>{name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">The Backlink team has created the order \"{order_name}\" for you.</span></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Register now on the platform:</span></span></p>\n<p><span style=\"background-color: rgb(192, 222, 96); font-size: 12pt;\"><strong><span style=\"font-size: medium;\">Backlink</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'Backlink has created an order ', NULL, '2023-09-22 12:16:36', '2023-09-22 12:16:36'),
-(4, 'Order status changes', 'order_status', '<p><span style=\"font-size: 18pt;\"><strong>Hello,</strong></span></p>\n<p><span style=\"font-size: 12pt;\">The status of the order  \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</span></p>\n<p><span style=\"font-size: 12pt;\">Take a look at your order now:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: medium;\">https://</span></strong></span></p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'There is news about your order', NULL, '2023-09-26 12:04:46', '2023-09-26 12:04:46'),
+(4, 'Order status changes', 'order_status', '<p><span style=\"font-size: 18pt;\"><strong>Hello,</strong> {name}</span></p>\n<p><span style=\"font-size: 12pt;\">The status of your order  \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</span></p>\n<p><span style=\"font-size: 12pt;\">Take a look at your order now:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: medium;\">https://</span></strong></span></p>\n<p>&nbsp;</p>', 'There is news about your order', NULL, '2023-09-26 12:04:46', '2023-09-26 12:04:46'),
 (5, 'Welcome', 'welcome', '<p><span style=\"font-size: 18pt;\"><strong>Hello {user_name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Thank you very much for your registration and Verify email your account now activated .</span></span></p>\n<a style=\"font-size: 12pt; background-color: rgb(192, 222, 96);text-decoration:none;padding:10px\" href=\"https://www.google.co.in/\" title=\"Login to access account\" target=\"_blank\">Login</a>', 'Welcome to Backling family', 'attachement_1695786722177.pdf', '2023-09-27 09:22:02', '2023-09-27 09:22:02'),
 (6, 'Subscription Confirmed', 'subscription_purchase', '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td align=\"center\">\n            <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color: #ffffff; padding: 20px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding: 30px 0;\">\n                        <h1 style=\"color: #333; font-size: 28px; margin: 0;\">Subscription Confirmed</h1>\n                    </td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 20px;\">\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            Dear {username},<br><br>\n                            Thank you for subscribing to our plan. You\'re now part of our exclusive community!<br><br>\n                            Here are your subscription details:<br>\n                        </p>\n                        <ul style=\"list-style: none; padding-left: 0;\">\n                            <li><strong>Plan Name:</strong> {planname}</li>\n                            <li><strong>Price:</strong> {price}</li>\n                            <li><strong>Start Date:</strong> {startdate}</li>\n                            <li><strong>End Date:</strong> {enddate}</li>\n                        </ul>\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            If you have any questions or need assistance, feel free to contact our support team.<br><br>\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td align=\"center\" style=\"background-color: #f2f2f2; padding: 20px 0;\">\n                        <p style=\"color: #777; font-size: 14px;\">Best regards, <b>Backlink.com<b></p>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>', 'Your Subscription is Confirmed.', NULL, '2023-09-28 13:17:59', '2023-09-28 13:17:59'),
 (7, 'Subscription Expired', 'subscription_expire', '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td align=\"center\">\n            <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color: #ffffff; padding: 20px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding: 30px 0;\">\n                        <h1 style=\"color: #333; font-size: 28px; margin: 0;\">Subscription Plan Expired</h1>\n                    </td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 20px;\">\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            Dear {username},<br><br>\n                            We regret to inform you that your subscription plan has expired. Your access to our services is now limited.<br><br>\n                            Here are the details of your expired subscription plan:<br>\n                        </p>\n                        <ul style=\"list-style: none; padding-left: 0;\">\n                            <li><strong>Plan Name:</strong> {planname}</li>\n                            <li><strong>Price:</strong> {price}</li>\n                            <li><strong>Start Date:</strong> {startdate}</li>\n                            <li><strong>End Date:</strong> {enddate}</li>\n                        </ul>\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            If you wish to continue using our services, please renew your subscription plan.<br><br>\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td align=\"center\" style=\"background-color: #f2f2f2; padding: 20px 0;\">\n                        <p style=\"color: #777; font-size: 14px;\">Best regards, <b>Backlinks</b></p>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>', 'Subscription Plan Expired', NULL, '2023-09-28 14:58:33', '2023-09-28 14:58:33'),
-(8, 'New domain added', 'new_domain_added', '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td align=\"center\">\n            <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color: #ffffff; padding: 20px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding: 30px 0;\">\n                        <h1 style=\"color: #333; font-size: 28px; margin: 0;\">New domain added in your Portfolio</h1>\n                    </td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 20px;\">\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            Dear {username},<br><br>\n                            We inform you that your Portfolio added new domain.                                </p>\n                       <p> Here are the details of your new added domain</p>\n                        <ul style=\"list-style: none; padding-left: 0;\">\n                            <li><strong>Domain name:</strong> {domain_name}</li>\n                            <li><strong>Price:</strong> {price}</li>\n                            <li><strong>Category:</strong> {category}</li>\n                        </ul>                        \n                    </td>\n                </tr>\n                <tr>\n                    <td align=\"center\" style=\"background-color: #f2f2f2; padding: 20px 0;\">\n                        <p style=\"color: #777; font-size: 14px;\">Best regards, <b>Backlinks</b></p>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>', 'New Domain added in your Portfolio', NULL, '2023-10-11 15:14:59', '2023-10-11 15:14:59');
+(8, 'New domain added', 'new_domain_added', '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td align=\"center\">\n            <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color: #ffffff; padding: 20px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding: 30px 0;\">\n                        <h1 style=\"color: #333; font-size: 28px; margin: 0;\">New domain added in your Portfolio</h1>\n                    </td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 20px;\">\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            Dear {username},<br><br>\n                            We inform you that your Portfolio added new domain.                                </p>\n                       <p> Here are the details of your new added domain</p>\n                        <ul style=\"list-style: none; padding-left: 0;\">\n                            <li><strong>Domain name:</strong> {domain_name}</li>\n                            <li><strong>Price:</strong> {price}</li>\n                            <li><strong>Category:</strong> {category}</li>\n                        </ul>                        \n                    </td>\n                </tr>\n                <tr>\n                    <td align=\"center\" style=\"background-color: #f2f2f2; padding: 20px 0;\">\n                        <p style=\"color: #777; font-size: 14px;\">Best regards, <b>Backlinks</b></p>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>', 'New Domain added in your Portfolio', NULL, '2023-10-11 15:14:59', '2023-10-11 15:14:59'),
+(9, 'Order Cancel', 'order_cancel', '<p><span style=\"font-size: 18pt;\"><strong>Hello,</strong> {name}</span></p>\r\n<p><span style=\"font-size: 12pt;\">The status of your order  \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</span></p>\r\n<p>Your order has been Cancelled successfully,and <strong>Rs.{amount}</strong> refunded in your wallet.</p>\r\n<p><span style=\"font-size: 12pt;\">Take a look at your order now:</span></p>\r\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: medium;\">https://</span></strong></span></p>\r\n<p>&nbsp;</p>', 'Your order has been Cancelled successfully', NULL, '2023-10-12 14:13:23', '2023-10-12 14:13:23');
 
 -- --------------------------------------------------------
 
@@ -252,7 +254,8 @@ CREATE TABLE `new_orders` (
   `publisher_id` int(11) DEFAULT NULL,
   `customer_id` int(11) DEFAULT NULL,
   `domain_id` int(11) DEFAULT NULL,
-  `status` enum('Placed','Approved','Decline','Completed','Cancelled') DEFAULT NULL,
+  `backlink_id` int(11) NOT NULL,
+  `status` enum('Pending','Inprogress','Completed','Cancelled','Rejected','MissingDetails') DEFAULT NULL,
   `total_price` decimal(10,2) DEFAULT NULL,
   `anchortext` varchar(100) DEFAULT NULL,
   `linktarget` varchar(255) DEFAULT NULL,
@@ -268,8 +271,10 @@ CREATE TABLE `new_orders` (
 -- Dumping data for table `new_orders`
 --
 
-INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `status`, `total_price`, `anchortext`, `linktarget`, `publication_date`, `note`, `project_id`, `hash_id`, `created_at`, `updated_at`) VALUES
-(1, 11, 15, 3, 'Placed', '153.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'y8n78xoy', '2ix82ctm', '2023-10-11 13:36:49', '2023-10-11 13:36:49');
+INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `backlink_id`, `status`, `total_price`, `anchortext`, `linktarget`, `publication_date`, `note`, `project_id`, `hash_id`, `created_at`, `updated_at`) VALUES
+(1, 11, 15, 3, 3, 'Pending', '153.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'y8n78xoy', '2ix82ctm', '2023-10-11 13:36:49', '2023-10-12 12:38:43'),
+(2, 11, 10, 6, 1, 'Inprogress', '16.00', 'Click Me', 'https://www.example.com', '2023-12-30', 'testing', '7ae6fw6', '8bs7vyk3', '2023-10-11 08:06:49', '2023-10-12 06:55:04'),
+(14, 11, 15, 8, 4, 'Pending', '2000.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'y8n78xoy', '3fc562lq', '2023-10-12 09:36:18', '2023-10-12 12:38:15');
 
 -- --------------------------------------------------------
 
@@ -374,7 +379,6 @@ CREATE TABLE `publisher_backlinks` (
   `delivery_time` varchar(50) DEFAULT NULL,
   `link` varchar(50) DEFAULT NULL,
   `language` varchar(15) DEFAULT NULL,
-  `price` decimal(10,2) DEFAULT 0.00,
   `visibility_index` decimal(10,2) DEFAULT 0.00,
   `domain_rating` int(11) NOT NULL,
   `rating` decimal(1,1) NOT NULL DEFAULT 0.0,
@@ -390,10 +394,10 @@ CREATE TABLE `publisher_backlinks` (
 -- Dumping data for table `publisher_backlinks`
 --
 
-INSERT INTO `publisher_backlinks` (`id`, `domain_id`, `traffic`, `anchor_text`, `delivery_time`, `link`, `language`, `price`, `visibility_index`, `domain_rating`, `rating`, `referring`, `citation_flow`, `trust_flow`, `authority`, `created_at`, `updated_at`) VALUES
-(1, 2, 10, 'tee', '4.8', 'follow', 'en', '160.00', '10.60', 68, '0.0', 12, 15, 68, 1, '2023-10-11 05:29:07', '2023-10-11 05:29:07'),
-(3, 3, 1, 'test', '1.2', 'ddd', 'en', '153.00', '15.00', 12, '0.0', 3, 26, 63, 12, '2023-10-11 06:05:20', '2023-10-11 06:05:20'),
-(4, 6, 55, '55', '55', '55', 'en', '55.00', '55.00', 55, '0.0', 55, 55, 55, 55, '2023-10-11 06:18:04', '2023-10-11 06:18:19');
+INSERT INTO `publisher_backlinks` (`id`, `domain_id`, `traffic`, `anchor_text`, `delivery_time`, `link`, `language`, `visibility_index`, `domain_rating`, `rating`, `referring`, `citation_flow`, `trust_flow`, `authority`, `created_at`, `updated_at`) VALUES
+(1, 2, 10, 'tee', '4.8', 'follow', 'en', '10.60', 68, '0.0', 12, 15, 68, 1, '2023-10-11 05:29:07', '2023-10-11 05:29:07'),
+(3, 3, 1, 'test', '1.2', 'ddd', 'en', '15.00', 12, '0.0', 3, 26, 63, 12, '2023-10-11 06:05:20', '2023-10-11 06:05:20'),
+(4, 8, 55, '55', '55', '55', 'en', '55.00', 55, '0.0', 55, 55, 55, 55, '2023-10-11 06:18:04', '2023-10-12 09:14:52');
 
 -- --------------------------------------------------------
 
@@ -420,9 +424,9 @@ CREATE TABLE `publisher_domains` (
 
 INSERT INTO `publisher_domains` (`id`, `domain_name`, `tld`, `price`, `category_id`, `status`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
 (2, 'test.com', 'com', '480.00', 8, 1, 11, 'vqxyvl9w', '2023-10-10 10:54:02', '2023-10-10 12:27:26'),
-(3, 'google.com', 'net', '5000.00', 15, 1, 11, '2ix82ctm', '2023-10-10 10:54:52', '2023-10-11 06:17:35'),
+(3, 'google.com', 'net', '5000.00', 15, 1, 11, '2ix82ctm', '2023-10-10 10:54:52', '2023-10-12 08:33:59'),
 (6, 'besticoder.com', 'com', '5000.00', 2, 1, 11, '8bs7vyk3', '2023-10-10 13:06:35', '2023-10-10 13:06:35'),
-(8, 'jayesh.com', 'com', '5000.00', 4, 1, 11, '3fc562lq', '2023-10-11 09:55:48', '2023-10-11 09:55:48');
+(8, 'jayesh.com', 'com', '2000.00', 4, 1, 11, '3fc562lq', '2023-10-11 09:55:48', '2023-10-12 08:34:09');
 
 -- --------------------------------------------------------
 
@@ -491,7 +495,8 @@ INSERT INTO `transactions` (`id`, `user_id`, `amount`, `transaction_type`, `desc
 (12, 15, '200.00', 'checkout.session.completed', 'Order', '2023-09-28 10:44:54', 'pi_3NvHiMSC7x5vD10M1nIJ50vs', 0, 'paid', '{\"id\":\"cs_test_a1rURGyihUbQphVTXQIQbkSQQHdqjIamw0nyrldUmYee90uAm4arA0LJy7\",\"object\":\"checkout.session\",\"after_expiration\":null,\"allow_promotion_codes\":null,\"amount_subtotal\":20000,\"amount_total\":20000,\"automatic_tax\":{\"enabled\":false,\"status\":null},\"billing_address_collection\":null,\"cancel_url\":\"http://localhost:3000/cancel.html\",\"client_reference_id\":null,\"consent\":null,\"consent_collection\":null,\"created\":1695897894,\"currency\":\"inr\",\"currency_conversion\":null,\"custom_fields\":[],\"custom_text\":{\"shipping_address\":null,\"submit\":null,\"terms_of_service_acceptance\":null},\"customer\":\"cus_OijALBgCDPJCeq\",\"customer_creation\":null,\"customer_details\":{\"address\":{\"city\":null,\"country\":\"IN\",\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":\"nagherajayesh2087@gmail.com\",\"name\":\"12321\",\"phone\":null,\"tax_exempt\":\"none\",\"tax_ids\":[]},\"customer_email\":null,\"expires_at\":1695984294,\"invoice\":null,\"invoice_creation\":{\"enabled\":false,\"invoice_data\":{\"account_tax_ids\":null,\"custom_fields\":null,\"description\":null,\"footer\":null,\"metadata\":{},\"rendering_options\":null}},\"livemode\":false,\"locale\":null,\"metadata\":{\"userid\":\"15\"},\"mode\":\"payment\",\"payment_intent\":\"pi_3NvHiMSC7x5vD10M1nIJ50vs\",\"payment_link\":null,\"payment_method_collection\":\"if_required\",\"payment_method_configuration_details\":null,\"payment_method_options\":{},\"payment_method_types\":[\"card\"],\"payment_status\":\"paid\",\"phone_number_collection\":{\"enabled\":false},\"recovered_from\":null,\"setup_intent\":null,\"shipping_address_collection\":null,\"shipping_cost\":null,\"shipping_details\":null,\"shipping_options\":[],\"status\":\"complete\",\"submit_type\":null,\"subscription\":null,\"success_url\":\"https://4fef-103-247-54-225.ngrok-free.app/getPayments\",\"total_details\":{\"amount_discount\":0,\"amount_shipping\":0,\"amount_tax\":0},\"url\":null}', '2023-09-28 11:44:27'),
 (13, 15, '200.00', 'checkout.session.completed', 'Order', '2023-09-28 10:48:38', 'pi_3NvHm5SC7x5vD10M0KXolvbH', 0, 'paid', '{\"id\":\"cs_test_a1GqhZc9u2QwSkEOFttkoA5M3ppqdhCVS4jOVFOzhk2ClaHyLyMZIy8GeC\",\"object\":\"checkout.session\",\"after_expiration\":null,\"allow_promotion_codes\":null,\"amount_subtotal\":20000,\"amount_total\":20000,\"automatic_tax\":{\"enabled\":false,\"status\":null},\"billing_address_collection\":null,\"cancel_url\":\"http://localhost:3000/cancel.html\",\"client_reference_id\":null,\"consent\":null,\"consent_collection\":null,\"created\":1695898118,\"currency\":\"inr\",\"currency_conversion\":null,\"custom_fields\":[],\"custom_text\":{\"shipping_address\":null,\"submit\":null,\"terms_of_service_acceptance\":null},\"customer\":\"cus_OijEVhzCYoFlZW\",\"customer_creation\":null,\"customer_details\":{\"address\":{\"city\":null,\"country\":\"IN\",\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":\"nagherajayesh2087@gmail.com\",\"name\":\"12321\",\"phone\":null,\"tax_exempt\":\"none\",\"tax_ids\":[]},\"customer_email\":null,\"expires_at\":1695984517,\"invoice\":null,\"invoice_creation\":{\"enabled\":false,\"invoice_data\":{\"account_tax_ids\":null,\"custom_fields\":null,\"description\":null,\"footer\":null,\"metadata\":{},\"rendering_options\":null}},\"livemode\":false,\"locale\":null,\"metadata\":{\"userid\":\"15\"},\"mode\":\"payment\",\"payment_intent\":\"pi_3NvHm5SC7x5vD10M0KXolvbH\",\"payment_link\":null,\"payment_method_collection\":\"if_required\",\"payment_method_configuration_details\":null,\"payment_method_options\":{},\"payment_method_types\":[\"card\"],\"payment_status\":\"paid\",\"phone_number_collection\":{\"enabled\":false},\"recovered_from\":null,\"setup_intent\":null,\"shipping_address_collection\":null,\"shipping_cost\":null,\"shipping_details\":null,\"shipping_options\":[],\"status\":\"complete\",\"submit_type\":null,\"subscription\":null,\"success_url\":\"https://4fef-103-247-54-225.ngrok-free.app/getPayments\",\"total_details\":{\"amount_discount\":0,\"amount_shipping\":0,\"amount_tax\":0},\"url\":null}', '2023-09-28 11:49:37'),
 (14, 15, '200.00', 'checkout.session.completed', 'Order', '2023-09-28 10:49:48', 'pi_3NvHn6SC7x5vD10M0zoRivzA', 0, 'paid', '{\"id\":\"cs_test_a1U16LEtAJXfbO9mdJXWuM9hqP9795uGb7fo28yUPPjY9BjqUr2InQYEJm\",\"object\":\"checkout.session\",\"after_expiration\":null,\"allow_promotion_codes\":null,\"amount_subtotal\":20000,\"amount_total\":20000,\"automatic_tax\":{\"enabled\":false,\"status\":null},\"billing_address_collection\":null,\"cancel_url\":\"http://localhost:3000/cancel.html\",\"client_reference_id\":null,\"consent\":null,\"consent_collection\":null,\"created\":1695898188,\"currency\":\"inr\",\"currency_conversion\":null,\"custom_fields\":[],\"custom_text\":{\"shipping_address\":null,\"submit\":null,\"terms_of_service_acceptance\":null},\"customer\":\"cus_OijF8GZ2yhPahH\",\"customer_creation\":null,\"customer_details\":{\"address\":{\"city\":null,\"country\":\"IN\",\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":\"nagherajayesh2087@gmail.com\",\"name\":\"12321\",\"phone\":null,\"tax_exempt\":\"none\",\"tax_ids\":[]},\"customer_email\":null,\"expires_at\":1695984588,\"invoice\":null,\"invoice_creation\":{\"enabled\":false,\"invoice_data\":{\"account_tax_ids\":null,\"custom_fields\":null,\"description\":null,\"footer\":null,\"metadata\":{},\"rendering_options\":null}},\"livemode\":false,\"locale\":null,\"metadata\":{\"userid\":\"15\"},\"mode\":\"payment\",\"payment_intent\":\"pi_3NvHn6SC7x5vD10M0zoRivzA\",\"payment_link\":null,\"payment_method_collection\":\"if_required\",\"payment_method_configuration_details\":null,\"payment_method_options\":{},\"payment_method_types\":[\"card\"],\"payment_status\":\"paid\",\"phone_number_collection\":{\"enabled\":false},\"recovered_from\":null,\"setup_intent\":null,\"shipping_address_collection\":null,\"shipping_cost\":null,\"shipping_details\":null,\"shipping_options\":[],\"status\":\"complete\",\"submit_type\":null,\"subscription\":null,\"success_url\":\"https://4fef-103-247-54-225.ngrok-free.app/getPayments\",\"total_details\":{\"amount_discount\":0,\"amount_shipping\":0,\"amount_tax\":0},\"url\":null}', '2023-09-28 11:50:23'),
-(15, 15, '200.00', 'checkout.session.completed', 'Order', '2023-09-28 10:52:46', 'pi_3NvHpzSC7x5vD10M1WvKinxX', 0, 'paid', '{\"id\":\"cs_test_a1BQ7UifrzL89gePFEK4R1sAnXYXHvMBgOoi99wwbdLotc7VQgeUX0j8rj\",\"object\":\"checkout.session\",\"after_expiration\":null,\"allow_promotion_codes\":null,\"amount_subtotal\":20000,\"amount_total\":20000,\"automatic_tax\":{\"enabled\":false,\"status\":null},\"billing_address_collection\":null,\"cancel_url\":\"http://localhost:3000/cancel.html\",\"client_reference_id\":null,\"consent\":null,\"consent_collection\":null,\"created\":1695898366,\"currency\":\"inr\",\"currency_conversion\":null,\"custom_fields\":[],\"custom_text\":{\"shipping_address\":null,\"submit\":null,\"terms_of_service_acceptance\":null},\"customer\":\"cus_OijIhxkXDHoYGq\",\"customer_creation\":null,\"customer_details\":{\"address\":{\"city\":null,\"country\":\"IN\",\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":\"nagherajayesh2087@gmail.com\",\"name\":\"12321\",\"phone\":null,\"tax_exempt\":\"none\",\"tax_ids\":[]},\"customer_email\":null,\"expires_at\":1695984766,\"invoice\":null,\"invoice_creation\":{\"enabled\":false,\"invoice_data\":{\"account_tax_ids\":null,\"custom_fields\":null,\"description\":null,\"footer\":null,\"metadata\":{},\"rendering_options\":null}},\"livemode\":false,\"locale\":null,\"metadata\":{\"userid\":\"15\"},\"mode\":\"payment\",\"payment_intent\":\"pi_3NvHpzSC7x5vD10M1WvKinxX\",\"payment_link\":null,\"payment_method_collection\":\"if_required\",\"payment_method_configuration_details\":null,\"payment_method_options\":{},\"payment_method_types\":[\"card\"],\"payment_status\":\"paid\",\"phone_number_collection\":{\"enabled\":false},\"recovered_from\":null,\"setup_intent\":null,\"shipping_address_collection\":null,\"shipping_cost\":null,\"shipping_details\":null,\"shipping_options\":[],\"status\":\"complete\",\"submit_type\":null,\"subscription\":null,\"success_url\":\"https://4fef-103-247-54-225.ngrok-free.app/getPayments\",\"total_details\":{\"amount_discount\":0,\"amount_shipping\":0,\"amount_tax\":0},\"url\":null}', '2023-09-28 11:53:09');
+(15, 15, '200.00', 'checkout.session.completed', 'Order', '2023-09-28 10:52:46', 'pi_3NvHpzSC7x5vD10M1WvKinxX', 0, 'paid', '{\"id\":\"cs_test_a1BQ7UifrzL89gePFEK4R1sAnXYXHvMBgOoi99wwbdLotc7VQgeUX0j8rj\",\"object\":\"checkout.session\",\"after_expiration\":null,\"allow_promotion_codes\":null,\"amount_subtotal\":20000,\"amount_total\":20000,\"automatic_tax\":{\"enabled\":false,\"status\":null},\"billing_address_collection\":null,\"cancel_url\":\"http://localhost:3000/cancel.html\",\"client_reference_id\":null,\"consent\":null,\"consent_collection\":null,\"created\":1695898366,\"currency\":\"inr\",\"currency_conversion\":null,\"custom_fields\":[],\"custom_text\":{\"shipping_address\":null,\"submit\":null,\"terms_of_service_acceptance\":null},\"customer\":\"cus_OijIhxkXDHoYGq\",\"customer_creation\":null,\"customer_details\":{\"address\":{\"city\":null,\"country\":\"IN\",\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":\"nagherajayesh2087@gmail.com\",\"name\":\"12321\",\"phone\":null,\"tax_exempt\":\"none\",\"tax_ids\":[]},\"customer_email\":null,\"expires_at\":1695984766,\"invoice\":null,\"invoice_creation\":{\"enabled\":false,\"invoice_data\":{\"account_tax_ids\":null,\"custom_fields\":null,\"description\":null,\"footer\":null,\"metadata\":{},\"rendering_options\":null}},\"livemode\":false,\"locale\":null,\"metadata\":{\"userid\":\"15\"},\"mode\":\"payment\",\"payment_intent\":\"pi_3NvHpzSC7x5vD10M1WvKinxX\",\"payment_link\":null,\"payment_method_collection\":\"if_required\",\"payment_method_configuration_details\":null,\"payment_method_options\":{},\"payment_method_types\":[\"card\"],\"payment_status\":\"paid\",\"phone_number_collection\":{\"enabled\":false},\"recovered_from\":null,\"setup_intent\":null,\"shipping_address_collection\":null,\"shipping_cost\":null,\"shipping_details\":null,\"shipping_options\":[],\"status\":\"complete\",\"submit_type\":null,\"subscription\":null,\"success_url\":\"https://4fef-103-247-54-225.ngrok-free.app/getPayments\",\"total_details\":{\"amount_discount\":0,\"amount_shipping\":0,\"amount_tax\":0},\"url\":null}', '2023-09-28 11:53:09'),
+(21, 15, '2000.00', 'Place order', 'Buy backlins jayesh.com', '2023-10-12 09:36:18', 'order_14', 0, 'paid', '{\"id\":14,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":8,\"backlink_id\":4,\"status\":\"Pending\",\"total_price\":\"2000.00\",\"anchortext\":\"Click Here\",\"linktarget\":\"https://www.example.com/test.html\",\"publication_date\":\"2023-12-15T00:00:00.000Z\",\"note\":\"test\",\"project_id\":\"y8n78xoy\",\"hash_id\":\"3fc562lq\",\"updated_at\":\"2023-10-12T09:36:18.096Z\",\"created_at\":\"2023-10-12T09:36:18.096Z\"}', '2023-10-12 09:36:18');
 
 -- --------------------------------------------------------
 
@@ -544,7 +549,7 @@ CREATE TABLE `users_wallet` (
 --
 
 INSERT INTO `users_wallet` (`id`, `user_id`, `balance`, `created_at`, `updated_at`) VALUES
-(1, 15, '2000.00', '2023-09-28 11:53:09', '2023-09-28 11:53:09');
+(1, 15, '100.00', '2023-10-12 12:38:23', '2023-10-12 12:38:47');
 
 -- --------------------------------------------------------
 
@@ -721,7 +726,7 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `domains`
 --
 ALTER TABLE `domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `domain_categories`
@@ -739,7 +744,7 @@ ALTER TABLE `domain_tags`
 -- AUTO_INCREMENT for table `email_formats`
 --
 ALTER TABLE `email_formats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `faqs`
@@ -763,7 +768,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `new_orders`
 --
 ALTER TABLE `new_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -787,7 +792,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `publisher_backlinks`
 --
 ALTER TABLE `publisher_backlinks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `publisher_domains`
@@ -805,7 +810,7 @@ ALTER TABLE `subscription_plans`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -859,12 +864,6 @@ ALTER TABLE `notifications`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `users` (`id`);
-
---
--- Constraints for table `transactions`
---
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `users_wallet`

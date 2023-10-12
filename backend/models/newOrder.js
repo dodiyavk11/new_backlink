@@ -5,15 +5,23 @@ module.exports = (sequelize, DataTypes) => {
 	class newOrder extends Model
 	{
 		static associate(models){
-
+			this.belongsTo(models.publisherDomain, {
+		        foreignKey: 'domain_id',
+		        as: 'domain',
+		    });
+		    this.belongsTo(models.Users, {
+		        foreignKey: 'customer_id',
+		        as: 'customer',
+		    });
 		}
 	}
 	newOrder.init({
 		publisher_id: DataTypes.INTEGER,
 		customer_id: DataTypes.INTEGER,
 		domain_id: DataTypes.INTEGER,
+		backlink_id: DataTypes.INTEGER,
 		status: {
-	      type: DataTypes.ENUM('Placed', 'Approved', 'Decline', 'Completed', 'Cancelled'),
+	      type: DataTypes.ENUM('Pending','Inprogress','Completed','Cancelled','Rejected','MissingDetails'),
 	    },
 	    total_price: DataTypes.DECIMAL(10,2),
 	    anchortext: DataTypes.STRING,

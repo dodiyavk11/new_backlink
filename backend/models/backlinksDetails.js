@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
 		delivery_time: DataTypes.STRING,
 		link: DataTypes.STRING,
 		language: DataTypes.STRING,
-		price: DataTypes.DECIMAL(10,2),
 		visibility_index: DataTypes.DECIMAL(10,2),
 		domain_rating: DataTypes.INTEGER,
 		rating: DataTypes.DECIMAL(1,1),

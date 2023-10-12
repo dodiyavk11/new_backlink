@@ -36,7 +36,7 @@ db.sequelize
 
 require("./routes")(router);
 
-app.get("/", (req, res) => res.send("Hi your application is running..."));
+app.get("/", (req, res) => res.send("<b>Hi your application is running on Port : "+PORT+"<b/>"));
 app.listen(PORT, (err) => {
   if (err) {
     console.error("Server failed to start:", err);
