@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 12, 2023 at 03:32 PM
+-- Generation Time: Oct 13, 2023 at 03:39 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -47,6 +47,38 @@ INSERT INTO `blogs` (`id`, `title`, `content`, `author`, `status`, `created_at`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `customer_domain_data`
+--
+
+CREATE TABLE `customer_domain_data` (
+  `id` int(11) NOT NULL,
+  `domain_id` int(11) NOT NULL,
+  `traffic` int(11) NOT NULL DEFAULT 0,
+  `anchor_text` varchar(50) DEFAULT NULL,
+  `delivery_time` varchar(50) DEFAULT NULL,
+  `link` varchar(50) DEFAULT NULL,
+  `language` varchar(15) DEFAULT NULL,
+  `visibility_index` decimal(10,2) DEFAULT 0.00,
+  `domain_rating` int(11) NOT NULL DEFAULT 0,
+  `rating` decimal(1,1) NOT NULL DEFAULT 0.0,
+  `referring` int(11) NOT NULL DEFAULT 0,
+  `citation_flow` int(11) NOT NULL DEFAULT 0,
+  `trust_flow` int(11) NOT NULL DEFAULT 0,
+  `authority` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `customer_domain_data`
+--
+
+INSERT INTO `customer_domain_data` (`id`, `domain_id`, `traffic`, `anchor_text`, `delivery_time`, `link`, `language`, `visibility_index`, `domain_rating`, `rating`, `referring`, `citation_flow`, `trust_flow`, `authority`, `created_at`, `updated_at`) VALUES
+(13, 21, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-10-13 12:39:09', '2023-10-13 12:39:09');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `domains`
 --
 
@@ -69,7 +101,9 @@ CREATE TABLE `domains` (
 
 INSERT INTO `domains` (`id`, `domain_name`, `tld`, `budget`, `category_id`, `status`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
 (1, 'google.com', 'com', '0.00', 6, 1, 15, 'y8n78xoy', '2023-10-11 13:05:15', '2023-10-11 13:05:15'),
-(2, 'abc.com', 'com', '0.00', 8, 1, 10, '7ae6fw6', '2023-10-12 05:09:59', '2023-10-12 05:09:59');
+(2, 'abc.com', 'com', '0.00', 8, 1, 10, '7ae6fw6', '2023-10-12 05:09:59', '2023-10-12 05:09:59'),
+(4, 'best.com', 'com', '0.00', 15, 1, 15, '86adcfoq', '2023-10-13 09:15:05', '2023-10-13 09:15:05'),
+(21, 'chat.openai.com', 'com', '0.00', 15, 1, 15, 'rkwqb5bu', '2023-10-13 12:39:05', '2023-10-13 12:39:05');
 
 -- --------------------------------------------------------
 
@@ -272,9 +306,9 @@ CREATE TABLE `new_orders` (
 --
 
 INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `backlink_id`, `status`, `total_price`, `anchortext`, `linktarget`, `publication_date`, `note`, `project_id`, `hash_id`, `created_at`, `updated_at`) VALUES
-(1, 11, 15, 3, 3, 'Pending', '153.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'y8n78xoy', '2ix82ctm', '2023-10-11 13:36:49', '2023-10-12 12:38:43'),
-(2, 11, 10, 6, 1, 'Inprogress', '16.00', 'Click Me', 'https://www.example.com', '2023-12-30', 'testing', '7ae6fw6', '8bs7vyk3', '2023-10-11 08:06:49', '2023-10-12 06:55:04'),
-(14, 11, 15, 8, 4, 'Pending', '2000.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'y8n78xoy', '3fc562lq', '2023-10-12 09:36:18', '2023-10-12 12:38:15');
+(1, 11, 15, 3, 3, 'Pending', '153.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'y8n78xoy', '2ix82ctm', '2023-10-11 13:36:49', '2023-10-13 07:50:33'),
+(2, 11, 10, 2, 1, 'Inprogress', '16.00', 'Click Me', 'https://www.example.com', '2023-12-30', 'testing', '7ae6fw6', '8bs7vyk3', '2023-10-11 08:06:49', '2023-10-13 04:30:11'),
+(14, 11, 15, 8, 4, 'Inprogress', '2000.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'y8n78xoy', '3fc562lq', '2023-10-12 09:36:18', '2023-10-13 07:50:36');
 
 -- --------------------------------------------------------
 
@@ -368,40 +402,6 @@ INSERT INTO `orders` (`id`, `customer_id`, `publisher_id`, `domain_id`, `total_a
 -- --------------------------------------------------------
 
 --
--- Table structure for table `publisher_backlinks`
---
-
-CREATE TABLE `publisher_backlinks` (
-  `id` int(11) NOT NULL,
-  `domain_id` int(11) NOT NULL,
-  `traffic` int(11) NOT NULL DEFAULT 0,
-  `anchor_text` varchar(50) DEFAULT NULL,
-  `delivery_time` varchar(50) DEFAULT NULL,
-  `link` varchar(50) DEFAULT NULL,
-  `language` varchar(15) DEFAULT NULL,
-  `visibility_index` decimal(10,2) DEFAULT 0.00,
-  `domain_rating` int(11) NOT NULL,
-  `rating` decimal(1,1) NOT NULL DEFAULT 0.0,
-  `referring` int(11) NOT NULL DEFAULT 0,
-  `citation_flow` int(11) DEFAULT 0,
-  `trust_flow` int(11) NOT NULL DEFAULT 0,
-  `authority` int(11) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `publisher_backlinks`
---
-
-INSERT INTO `publisher_backlinks` (`id`, `domain_id`, `traffic`, `anchor_text`, `delivery_time`, `link`, `language`, `visibility_index`, `domain_rating`, `rating`, `referring`, `citation_flow`, `trust_flow`, `authority`, `created_at`, `updated_at`) VALUES
-(1, 2, 10, 'tee', '4.8', 'follow', 'en', '10.60', 68, '0.0', 12, 15, 68, 1, '2023-10-11 05:29:07', '2023-10-11 05:29:07'),
-(3, 3, 1, 'test', '1.2', 'ddd', 'en', '15.00', 12, '0.0', 3, 26, 63, 12, '2023-10-11 06:05:20', '2023-10-11 06:05:20'),
-(4, 8, 55, '55', '55', '55', 'en', '55.00', 55, '0.0', 55, 55, 55, 55, '2023-10-11 06:18:04', '2023-10-12 09:14:52');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `publisher_domains`
 --
 
@@ -423,10 +423,46 @@ CREATE TABLE `publisher_domains` (
 --
 
 INSERT INTO `publisher_domains` (`id`, `domain_name`, `tld`, `price`, `category_id`, `status`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
-(2, 'test.com', 'com', '480.00', 8, 1, 11, 'vqxyvl9w', '2023-10-10 10:54:02', '2023-10-10 12:27:26'),
+(2, 'example.com', 'com', '480.00', 8, 1, 11, 'vqxyvl9w', '2023-10-10 10:54:02', '2023-10-13 08:13:04'),
 (3, 'google.com', 'net', '5000.00', 15, 1, 11, '2ix82ctm', '2023-10-10 10:54:52', '2023-10-12 08:33:59'),
 (6, 'besticoder.com', 'com', '5000.00', 2, 1, 11, '8bs7vyk3', '2023-10-10 13:06:35', '2023-10-10 13:06:35'),
-(8, 'jayesh.com', 'com', '2000.00', 4, 1, 11, '3fc562lq', '2023-10-11 09:55:48', '2023-10-12 08:34:09');
+(8, 'test.com', 'com', '2000.00', 4, 1, 11, '3fc562lq', '2023-10-11 09:55:48', '2023-10-13 07:51:17'),
+(10, 'chat.openai.com', 'com', '5000.00', 18, 1, 11, 'f464xpqw', '2023-10-13 11:21:39', '2023-10-13 11:21:39');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `publisher_domain_data`
+--
+
+CREATE TABLE `publisher_domain_data` (
+  `id` int(11) NOT NULL,
+  `domain_id` int(11) NOT NULL,
+  `traffic` int(11) DEFAULT 0,
+  `anchor_text` varchar(50) DEFAULT NULL,
+  `delivery_time` varchar(50) DEFAULT NULL,
+  `link` varchar(50) DEFAULT NULL,
+  `language` varchar(15) DEFAULT NULL,
+  `visibility_index` decimal(10,2) DEFAULT 0.00,
+  `domain_rating` int(11) NOT NULL DEFAULT 0,
+  `rating` decimal(1,1) NOT NULL DEFAULT 0.0,
+  `referring` int(11) NOT NULL DEFAULT 0,
+  `citation_flow` int(11) NOT NULL DEFAULT 0,
+  `trust_flow` int(11) NOT NULL DEFAULT 0,
+  `authority` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `publisher_domain_data`
+--
+
+INSERT INTO `publisher_domain_data` (`id`, `domain_id`, `traffic`, `anchor_text`, `delivery_time`, `link`, `language`, `visibility_index`, `domain_rating`, `rating`, `referring`, `citation_flow`, `trust_flow`, `authority`, `created_at`, `updated_at`) VALUES
+(1, 2, 10, 'tee', '4.8', 'follow', 'en', '10.60', 68, '0.0', 12, 15, 68, 1, '2023-10-11 05:29:07', '2023-10-11 05:29:07'),
+(3, 3, 1, 'test', '1.2', 'ddd', 'en', '15.00', 12, '0.0', 3, 26, 63, 12, '2023-10-11 06:05:20', '2023-10-11 06:05:20'),
+(4, 8, 55, '55', '55', '55', 'en', '55.00', 55, '0.0', 55, 55, 55, 55, '2023-10-11 06:18:04', '2023-10-12 09:14:52'),
+(10, 10, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-10-13 11:21:42', '2023-10-13 11:21:42');
 
 -- --------------------------------------------------------
 
@@ -590,6 +626,13 @@ ALTER TABLE `blogs`
   ADD KEY `author` (`author`);
 
 --
+-- Indexes for table `customer_domain_data`
+--
+ALTER TABLE `customer_domain_data`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `domain_id` (`domain_id`);
+
+--
 -- Indexes for table `domains`
 --
 ALTER TABLE `domains`
@@ -663,13 +706,6 @@ ALTER TABLE `orders`
   ADD KEY `customer_id` (`customer_id`);
 
 --
--- Indexes for table `publisher_backlinks`
---
-ALTER TABLE `publisher_backlinks`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `domain_id` (`domain_id`);
-
---
 -- Indexes for table `publisher_domains`
 --
 ALTER TABLE `publisher_domains`
@@ -677,6 +713,13 @@ ALTER TABLE `publisher_domains`
   ADD UNIQUE KEY `unique_hash_id` (`hash_id`),
   ADD KEY `category_id` (`category_id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `publisher_domain_data`
+--
+ALTER TABLE `publisher_domain_data`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `domain_id` (`domain_id`);
 
 --
 -- Indexes for table `subscription_plans`
@@ -723,10 +766,16 @@ ALTER TABLE `blogs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT for table `customer_domain_data`
+--
+ALTER TABLE `customer_domain_data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
 -- AUTO_INCREMENT for table `domains`
 --
 ALTER TABLE `domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `domain_categories`
@@ -789,16 +838,16 @@ ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
--- AUTO_INCREMENT for table `publisher_backlinks`
---
-ALTER TABLE `publisher_backlinks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
 -- AUTO_INCREMENT for table `publisher_domains`
 --
 ALTER TABLE `publisher_domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `publisher_domain_data`
+--
+ALTER TABLE `publisher_domain_data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `subscription_plans`

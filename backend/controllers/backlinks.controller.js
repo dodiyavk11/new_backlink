@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 const generateUniqueId = require('generate-unique-id');
 const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils");
+const { Worker, isMainThread } = require('worker_threads');
 
 exports.getPublisherDomainList = async(req, res) => {
 	try
@@ -16,7 +17,7 @@ exports.getPublisherDomainList = async(req, res) => {
 		      attributes: ['id','name'],
 		    },
 		    {
-		      model: Models.backlinksDetails,
+		      model: Models.publisherDomainData,
 		      as: 'contentData',
 		      // attributes: { exclude: ['updated_at'] }
 		    },
@@ -29,6 +30,34 @@ exports.getPublisherDomainList = async(req, res) => {
 	{
 		console.log(err);
 		res.status(500).send({ status: false, message: "Something went to wrong.", error: err.message });
+	}
+}
+
+exports.getPublisherDomain = async(req, res) => {
+	try
+	{
+		const userId = req.userId
+		const { domainId } = req.params
+		const baseQuery = {
+			include: [
+				{
+					model: Models.domain_category,
+					as: "category",
+					attributes: ['id','name'],
+				},
+				{
+					model: Models.publisherDomainData,
+					as: "contentData",					
+				},
+			],
+		}
+		const domainData = await Models.publisherDomain.findOne({ where:{ user_id: userId, id: domainId },...baseQuery });
+		res.status(200).send({ status: true, message: "Domain fetch succesfully.", data: domainData });
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message: "Something wnet to wrong.", error: err.message });
 	}
 }
 
@@ -89,7 +118,27 @@ exports.addPublisherDomain = async(req, res) => {
 			console.log(email);	
 			sendVerifyMail(userInfo.dataValues.email,subject,"",email);
 
-            res.status(200).send({ status: true, message: "Domain added successfully", data: addDomain });            
+            res.status(200).send({ status: true, message: "Domain added successfully", data: addDomain });     
+
+            if (isMainThread) {
+            	const domainId = addDomain.id;
+            	const type = "publisher";
+				const worker = new Worker('./controllers/domainBackgroundProcesses.js', { workerData: { url: mainDomain, hash_id,domainId,type } });
+
+				worker.on('message', (message) => {
+					console.log(message);
+				});
+
+				worker.on('error', (error) => {
+					console.error(`Worker error: ${error}`);
+				});
+
+				worker.on('exit', (code) => {
+				if (code !== 0) {
+				  console.error(`Worker stopped with exit code ${code}`);
+				}
+				});
+			}
         } else {
             res.status(400).send({
                 status: false,
@@ -183,7 +232,7 @@ exports.getConetentLinks = async(req, res) => {
 				  attributes: ['id', 'name'],
 				},
 				{
-				  model: Models.backlinksDetails,
+				  model: Models.publisherDomainData,
 				  as: 'contentData',
 				},
 			],
@@ -198,7 +247,7 @@ exports.getConetentLinks = async(req, res) => {
 			baseQuery.where['tld'] = filters['tld'];
 		}
 
-		if (filters['price']) {
+		if (filters['price'] && filters['price'].min && filters['price'].max) {
 			baseQuery.where['price'] = {
 				[Op.gte]: filters['price'].min,
 				[Op.lte]: filters['price'].max,

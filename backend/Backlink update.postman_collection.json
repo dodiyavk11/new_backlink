@@ -1626,7 +1626,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTYyMjAwMzksImV4cCI6MTY5NjI1NjAzOX0.X0mfDYjDLQYqyn21vmEubAyeB21P_jeFgOws2f6V_W0",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcxODg0MDUsImV4cCI6MTY5NzIyNDQwNX0.Ubr6Xyqrsfu2LY7wrQPjW1Bl74CxVY5tXhMpuBDrZRM",
 							"type": "string"
 						}
 					]
@@ -1635,7 +1635,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"domain_name\":\"google.com\",\r\n    \"budget\":0,\r\n    \"category_id\":2\r\n}",
+					"raw": "{\r\n    \"domain_name\":\"chat.openai.com\",\r\n    \"budget\":0,\r\n    \"category_id\":15\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1695,7 +1695,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTY0MTgzNDMsImV4cCI6MTY5NjQ1NDM0M30.04ahlr231cA2IWqKsOLC7M40ITW63nE9jrn9P96kZgo",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcxODg0MDUsImV4cCI6MTY5NzIyNDQwNX0.Ubr6Xyqrsfu2LY7wrQPjW1Bl74CxVY5tXhMpuBDrZRM",
 							"type": "string"
 						}
 					]
@@ -2761,7 +2761,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTY5MjMwOTMsImV4cCI6MTY5Njk1OTA5M30.sjrbwZxuAK-9HC4LDpD4TjgI0Onb-6lm3VTH2B094kI",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTcxOTYwNDksImV4cCI6MTY5NzIzMjA0OX0.GTwOKIhuBGtURdZ0RIgLFQQyYeyOuZquXfMD7Z-T4oQ",
 							"type": "string"
 						}
 					]
@@ -2770,7 +2770,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"domain_name\":\"google.com\",\r\n    \"category_id\":2,\r\n    \"price\":5000\r\n}",
+					"raw": "{\r\n    \"domain_name\":\"chat.openai.com\",\r\n    \"category_id\":18,\r\n    \"price\":5000\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2868,7 +2868,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTY5NDEwODcsImV4cCI6MTY5Njk3NzA4N30.yScV3BvoWPwzWdxI0i76Fkas29TCnff0ZZwWQVv7_Gc",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTcxOTYwNDksImV4cCI6MTY5NzIzMjA0OX0.GTwOKIhuBGtURdZ0RIgLFQQyYeyOuZquXfMD7Z-T4oQ",
 							"type": "string"
 						}
 					]
@@ -2934,7 +2934,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcwMDM5MTcsImV4cCI6MTY5NzAzOTkxN30.eAeUiIotyj2nAsBqP02hcT2SUGnMILhFxd75T8YS3Q4",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcxODg0MDUsImV4cCI6MTY5NzIyNDQwNX0.Ubr6Xyqrsfu2LY7wrQPjW1Bl74CxVY5tXhMpuBDrZRM",
 							"type": "string"
 						}
 					]
@@ -3032,13 +3032,22 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTcwODU5NDUsImV4cCI6MTY5NzEyMTk0NX0.eyCbiFAJfEZ31fIj1O9HdfNo1YRBdGRh_FIQj5yDCiA",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTcxODQ1NDYsImV4cCI6MTY5NzIyMDU0Nn0.L4b4Loh2AB6xWP3kZ3zAvYcqiZyVERiWHDnSEZLw1us",
 							"type": "string"
 						}
 					]
 				},
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": [\"Inprogress\"],\r\n    \"date\": {\r\n        \"min\": \"2023-10-10\",\r\n        \"max\": \"2023-10-13\"\r\n    },\r\n    \"search\": \"example.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "localhost:3000/publisher/orders",
 					"host": [
@@ -3117,6 +3126,104 @@
 						"order",
 						"cancelOrder",
 						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user get all Order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcxNzEyMTIsImV4cCI6MTY5NzIwNzIxMn0.lyzek4gksYOktLWjTNMJNxXbeh7EXHuaQUohnUj9bqc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": [\"Inprogress\"],\r\n    \"date\": {\r\n        \"min\": \"2023-10-11\",\r\n        \"max\": \"2023-10-13\"\r\n    },\r\n    \"search\": \"test\",\r\n    \"project_id\": [\r\n        \"y8n78xoy\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/user/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get User(customer) Single domain ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcxODg0MDUsImV4cCI6MTY5NzIyNDQwNX0.Ubr6Xyqrsfu2LY7wrQPjW1Bl74CxVY5tXhMpuBDrZRM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/user/domain/21",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"domain",
+						"21"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Publisher Single domain ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTcxOTYwNDksImV4cCI6MTY5NzIzMjA0OX0.GTwOKIhuBGtURdZ0RIgLFQQyYeyOuZquXfMD7Z-T4oQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/publisher/domain/10",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"domain",
+						"10"
 					]
 				}
 			},

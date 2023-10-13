@@ -1,6 +1,6 @@
 const Models = require("../models");
 const Sequelize = require("sequelize");
-const { Op } = require("sequelize");
+const { Op, fn, col } = require("sequelize");
 const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils");
 
 exports.addNewOrder = async(req, res) => {
@@ -172,25 +172,59 @@ exports.cancelOrder = async(req, res) => {
 		res.status(500).send({ status: false, message: "Something went to wrong.", error: err.message })
 	}
 }
+
+/* customer get all order */
+exports.getUserOrders = async(req, res) => {
+	try{
+		const userId = req.userId;
+		const baseQuery = {
+		  include: [
+		    {
+		      model: Models.publisherDomain,
+		      as: 'domain',
+		      attributes: { exclude: ['updated_at', 'created_at', 'id'] }
+		    },
+		    {
+		      model: Models.Domains,
+		      as: 'project',
+		      attributes: { exclude: ['updated_at', 'created_at', 'id'] }
+		    },
+		  ],
+		  where: { customer_id: userId },
+		};
+
+		const getFilterQuery = await createFilterQuery(req.body,"user",baseQuery)
+		const getOrderData = await Models.newOrder.findAll(getFilterQuery);
+		res.status(200).send({ status: true, message: "Order fetched successfully.", data: getOrderData });
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message: "Something went to wrong, Please try again.", error: err.message });
+	}
+}
 /* publisher get their backlink(domain) order placed by customer */
 exports.getPublisherOrder = async(req, res) => {
 	try{
 
-		const publisher_id = req.userId;
-		const orderData = await Models.newOrder.findAll({
-			include: [
-				{
-				  model: Models.publisherDomain,
-				  as: 'domain',
-				},
-				{
-				  model: Models.Users,
-				  as: 'customer',
-				  attributes: { exclude: ['password','isAdmin','created_at','updated_at','email_verified'] }
-				},
-			],
+		const publisher_id = req.userId;	
+		const baseQuery = {
+		  	include: 
+		  	[
+			    {
+			      	model: Models.publisherDomain,
+				  	as: 'domain',
+			    },
+			    {
+			      	model: Models.Users,
+				  	as: 'customer',
+				  	attributes: { exclude: ['password','isAdmin','created_at','updated_at','email_verified'] }
+			    },
+		  	],
 		  	where: { publisher_id: publisher_id },
-		})
+		};
+		const getFilterQuery = await createFilterQuery(req.body,"publisher",baseQuery)
+		const orderData = await Models.newOrder.findAll({...getFilterQuery})
 		res.status(200).send({ status: true, message: "Order fetch successfully.", data: orderData })
 	}
 	catch(err)
@@ -240,6 +274,67 @@ exports.publisherUpdateOrderStatus = async(req, res) => {
 	}
 }
 
+async function createFilterQuery(body,type,baseQuery)
+{
+	try{
+		const { status,project,date,search } = body;
+		const filters = {
+		  	'status': status,
+		  	'project_id': project,
+		  	'date': date,
+		  	'search': search,
+		};
+
+		if (filters['status'] && filters['status'].length > 0) {
+		  	baseQuery.where['status'] = filters['status'];
+		}
+
+		if (filters['date'] && filters['date'].min) {
+			let maxDateTime;
+			if(filters['date'].max)
+			{
+				maxDateTime = `${filters['date'].max} 23:59:59`;
+			}  			
+			else
+			{
+				const today = new Date();
+    			maxDateTime = today.toISOString().split('T')[0] + ' 23:59:59';
+			}
+			const minDateTime = `${filters['date'].min} 00:00:00`;
+		  	baseQuery.where['created_at'] = {
+			    // [Op.gte]: filters['date'].min,
+			    // [Op.lte]: filters['date'].max,
+			     [Op.between]: [minDateTime, maxDateTime],
+			  };
+		}
+		if(type === "user")
+		{
+			if (filters['project_id'] && filters['project_id'] !== '') { 
+			  baseQuery.where['project.hash_id'] = filters['project_id'];
+			}
+		}
+
+		if (filters['search'] !== undefined && filters['search'] !== '') {
+		  	baseQuery.include.push({
+			    model: Models.publisherDomain,
+			    as: 'domain',
+			    where: {
+			      domain_name: {
+			        [Op.like]: `%${filters['search']}%`,
+			      },
+			    },
+		  });
+		}
+		console.log(baseQuery.where)
+		return baseQuery;
+	}
+	catch(err)
+	{
+		console.log(err);
+		return false;
+	}
+}
+
 async function getPublisherDomainData(domain_id=null,hash_id=null)
 {
 	try
@@ -269,7 +364,7 @@ async function getBacklinksData(domain_id)
 		let backlinkPrice;
 		if(domain_id)
 		{
-			backlinkPrice = await Models.backlinksDetails.findOne({ where:{ domain_id:domain_id } });
+			backlinkPrice = await Models.publisherDomainData.findOne({ where:{ domain_id:domain_id } });
 			return backlinkPrice;
 		}				
 	}

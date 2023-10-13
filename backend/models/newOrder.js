@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
 		        foreignKey: 'customer_id',
 		        as: 'customer',
 		    });
+		    this.belongsTo(models.Domains, {
+		        foreignKey: 'project_id',
+		        targetKey: 'hash_id',
+		        as: 'project',
+		    });
 		}
 	}
 	newOrder.init({

@@ -232,10 +232,12 @@ exports.addCustomerDomain = async (req, res) => {
             const addData = { domain_name: mainDomain, tld, category_id, budget, user_id, hash_id };
             const addDomain = await Models.Domains.create(addData);
 
-            res.status(200).send({ status: true, message: "Domain added successfully", data: addDomain });
+			res.status(200).send({ status: true, message: "Domain added successfully", data: addDomain });
 
             if (isMainThread) {
-				const worker = new Worker('./controllers/domainScreenCapture_worker.js', { workerData: { url: mainDomain, hash_id } });
+            	const domainId = addDomain.id;
+            	const type = "user";
+				const worker = new Worker('./controllers/domainBackgroundProcesses.js', { workerData: { url: mainDomain, hash_id,domainId,type }});
 
 				worker.on('message', (message) => {
 					console.log(message);
@@ -266,6 +268,33 @@ exports.addCustomerDomain = async (req, res) => {
             error: err.message
         });
     }
+}
+
+exports.getUserDomain = async(req, res) => {
+	try{
+		const userId = req.userId;
+		const { domainId } = req.params;
+		const baseQuery = {
+		  include: [
+		    {
+		      model: Models.domain_category,
+		      as: 'category',
+		      attributes: ['id','name'],
+		    },
+		    {
+		      model: Models.customerDomainData,
+		      as: 'contentData',
+		    },
+		  ],
+		}
+		const domainData = await Models.Domains.findOne({ where:{ user_id:userId, id:domainId }, ...baseQuery });
+		res.status(200).send({ status: true, message: "Domain fetch successfully.", data: domainData });
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message: "Something went to wrong.", error: err.message });
+	}
 }
 
 exports.addMessageToOrder = async(req, res) => {

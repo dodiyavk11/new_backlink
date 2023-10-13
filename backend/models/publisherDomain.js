@@ -11,7 +11,7 @@ module.exports = (sequelize,DataTypes) => {
 		        as: 'category',
 		    });
 		    
-		    this.hasOne(models.backlinksDetails, {
+		    this.hasOne(models.publisherDomainData, {
 				foreignKey: 'domain_id',
 				as: 'contentData',
 			});

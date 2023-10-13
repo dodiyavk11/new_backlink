@@ -8,16 +8,21 @@ module.exports = (sequelize,DataTypes) => {
 		static associate(models)
 		{
 			 // Associate with Users model using user_id
-		      this.belongsTo(models.Users, {
-		        foreignKey: 'user_id',
-		        as: 'user',
-		      });
+			this.belongsTo(models.Users, {
+				foreignKey: 'user_id',
+				as: 'user',
+			});
 
-		      // Associate with domain_category model using category_id
-		      this.belongsTo(models.domain_category, {
-		        foreignKey: 'category_id',
-		        as: 'category',
-		      });
+			// Associate with domain_category model using category_id
+			this.belongsTo(models.domain_category, {
+				foreignKey: 'category_id',
+				as: 'category',
+			});
+
+			this.hasOne(models.customerDomainData, {
+				foreignKey: 'domain_id',
+				as: 'contentData',
+			});
 		      // this.hasMany(models.Orders,{
 		      // 	foreignKey: 'domain_id', 
 		      // 	as: 'orders'

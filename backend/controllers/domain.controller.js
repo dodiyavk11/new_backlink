@@ -8,19 +8,18 @@ exports.getDomain = async (req, res) => {
     const baseQuery = {
       include: [
         {
-          model: Models.Users, // User model
-          as: 'user', // Alias defined in the Domain model
+          model: Models.Users,
+          as: 'user',
           attributes: ['firstName', 'lastName', 'email'],
         },
         {
-          model: Models.domain_category, // domain_category model
-          as: 'category', // Alias defined in the Domain model
+          model: Models.domain_category,
+          as: 'category',
           attributes: ['name', 'description'],
         },
       ],
     };
 
-    // Check if the "q" parameter is set and not empty
     if (q) {
       baseQuery.where = {
         [Op.or]: [
@@ -64,19 +63,16 @@ exports.addDomain = async (req, res) => {
 		function extractMainDomain(url) {
 		  let mainDomain = url.toLowerCase();
 
-		  // Remove "https://" or "http://" if present
 		  if (mainDomain.startsWith("https://")) {
 		    mainDomain = mainDomain.replace("https://", "");
 		  } else if (mainDomain.startsWith("http://")) {
 		    mainDomain = mainDomain.replace("http://", "");
 		  }
 
-		  // Remove "www." if present
 		  if (mainDomain.startsWith("www.")) {
 		    mainDomain = mainDomain.replace("www.", "");
 		  }
 
-		  // Split by "/" and take the first part as the main domain
 		  mainDomain = mainDomain.split("/")[0];
 
 		  return mainDomain;
