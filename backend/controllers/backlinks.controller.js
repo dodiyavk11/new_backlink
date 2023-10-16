@@ -115,7 +115,6 @@ exports.addPublisherDomain = async(req, res) => {
 			text = text.replace("{price}", price);
 			text = text.replace("{category}", categoryName);
 			const email = await emailTemplate(text);	
-			console.log(email);	
 			sendVerifyMail(userInfo.dataValues.email,subject,"",email);
 
             res.status(200).send({ status: true, message: "Domain added successfully", data: addDomain });     

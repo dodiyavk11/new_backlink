@@ -76,3 +76,14 @@ exports.UpdateProfile = async(req, res) => {
 		res.status(500).send({ status: false, message: "Profile Cannot update, an error occurred",data: [], error: err.message })
 	}
 }
+
+exports.UpdateProfile = async(req, res) => {
+	try
+	{
+		
+	}
+	catch(err)
+	{
+		console.log(err)
+	}
+}
