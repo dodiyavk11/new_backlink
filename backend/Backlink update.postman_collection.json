@@ -2308,7 +2308,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcwOTUwODQsImV4cCI6MTY5NzEzMTA4NH0.AoGOu85a9j8zXLGwtL1NBFELkAOIdqGEVv8OTbdIixs",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTc1MTU5MDUsImV4cCI6MTY5NzU1MTkwNX0.qDBkIPdzrCqbtHkhJVSN9SJemvrXB88b7ckvgAsdRn4",
 							"type": "string"
 						}
 					]
@@ -2962,7 +2962,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTc0Mzk3MTgsImV4cCI6MTY5NzQ3NTcxOH0.0p4g9SZygNDwa1JxpRPaVI4HgtJpBEjIj05PEyorJU8",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTc1MTU5MDUsImV4cCI6MTY5NzU1MTkwNX0.qDBkIPdzrCqbtHkhJVSN9SJemvrXB88b7ckvgAsdRn4",
 							"type": "string"
 						}
 					]
@@ -2971,7 +2971,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n  {\r\n    \"hash_id\": \"2ix82ctm\",\r\n    \"anchortext\": \"Click Here\",\r\n    \"linktarget\": \"https://www.example.com/test.html\",\r\n    \"publication_date\": \"2023-12-15\",\r\n    \"note\": \"test\",\r\n    \"project_id\": \"y8n78xoy\",\r\n    \"originalname\": \"Dummy.docx\",\r\n    \"filename\": \"textFile1697456552830.docx\"\r\n  }\r\n]\r\n",
+					"raw": "  {\r\n    \"anchortext\": \"Click Here\",\r\n    \"linktarget\": \"https://www.example.com/test.html\",\r\n    \"publication_date\": \"2023-12-15\",\r\n    \"note\": \"test\",\r\n    \"project_id\": \"y8n78xoy\",\r\n    \"originalname\": \"Dummy.docx\",\r\n    \"filename\": \"textFile1697456552830.docx\"\r\n  }\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2979,7 +2979,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/order/placeOrder",
+					"raw": "http://localhost:3000/order/vqxyvl9w/placeOrder",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -2987,6 +2987,7 @@
 					"port": "3000",
 					"path": [
 						"order",
+						"vqxyvl9w",
 						"placeOrder"
 					]
 				}
@@ -3244,7 +3245,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTc0Mzk3MTgsImV4cCI6MTY5NzQ3NTcxOH0.0p4g9SZygNDwa1JxpRPaVI4HgtJpBEjIj05PEyorJU8",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTc1MTU5MDUsImV4cCI6MTY5NzU1MTkwNX0.qDBkIPdzrCqbtHkhJVSN9SJemvrXB88b7ckvgAsdRn4",
 							"type": "string"
 						}
 					]
@@ -3262,6 +3263,104 @@
 						"cart",
 						"add-item",
 						"vqxyvl9w"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete item from cart",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTc1MTU5MDUsImV4cCI6MTY5NzU1MTkwNX0.qDBkIPdzrCqbtHkhJVSN9SJemvrXB88b7ckvgAsdRn4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/user/cart/gak7bsgur",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"cart",
+						"gak7bsgur"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Cart ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTc1MTU5MDUsImV4cCI6MTY5NzU1MTkwNX0.qDBkIPdzrCqbtHkhJVSN9SJemvrXB88b7ckvgAsdRn4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/user/cart",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cart place order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTc1MTU5MDUsImV4cCI6MTY5NzU1MTkwNX0.qDBkIPdzrCqbtHkhJVSN9SJemvrXB88b7ckvgAsdRn4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n    \"hash_id\":\"vqxyvl9w\",\r\n    \"anchortext\": \"Click Here\",\r\n    \"linktarget\": \"https://www.example.com/test.html\",\r\n    \"publication_date\": \"2023-12-15\",\r\n    \"note\": \"test\",\r\n    \"project_id\": \"y8n78xoy\",\r\n    \"originalname\": \"Dummy.docx\",\r\n    \"filename\": \"textFile1697455999388.docx\"\r\n  },\r\n  {\r\n    \"hash_id\":\"vqxyvl9w\",\r\n    \"anchortext\": \"Click Here\",\r\n    \"linktarget\": \"https://www.example.com/test.html\",\r\n    \"publication_date\": \"2023-12-15\",\r\n    \"note\": \"test\",\r\n    \"project_id\": \"y8n78xoy\",\r\n    \"originalname\": \"Dummy.docx\",\r\n    \"filename\": \"textFile1697456552830.docx\"\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/order/cart/order",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"order",
+						"cart",
+						"order"
 					]
 				}
 			},

@@ -12,7 +12,7 @@ const router = express.Router();
 
 const corsOpts = {
   origin: '*',
-  methods: ['GET', 'POST', 'PATCH'],
+  methods: ['GET', 'POST', 'PATCH','DELETE'],
 };
 
 

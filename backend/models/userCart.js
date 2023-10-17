@@ -6,11 +6,16 @@ module.exports = (sequelize,DataTypes) => {
 	{
 		static associate(models)
 		{
-
+			this.belongsTo(models.publisherDomain, {
+		        foreignKey: 'hash_id',
+		        targetKey: 'hash_id',
+		        as: 'cartItems',
+		    });
 		}
 	}
 	userCart.init({
 		user_id: DataTypes.INTEGER,
+		cart_id: DataTypes.STRING,
 		hash_id: DataTypes.STRING,
 		quantity: DataTypes.INTEGER,
 	},

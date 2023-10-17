@@ -15,6 +15,10 @@ module.exports = (sequelize,DataTypes) => {
 				foreignKey: 'domain_id',
 				as: 'contentData',
 			});
+			this.hasMany(models.userCart, {
+			  foreignKey: 'hash_id',
+			  as: 'domainData',
+			});
 		}
 	}
 	publisherDomain.init({
