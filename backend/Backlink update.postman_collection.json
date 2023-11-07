@@ -1626,7 +1626,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTcxODg0MDUsImV4cCI6MTY5NzIyNDQwNX0.Ubr6Xyqrsfu2LY7wrQPjW1Bl74CxVY5tXhMpuBDrZRM",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTkyNDQxNTcsImV4cCI6MTY5OTI4MDE1N30.EobFTK8dNegXi1R6olANNJ_s0e9740xf6o97GbRBksg",
 							"type": "string"
 						}
 					]
@@ -1635,7 +1635,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"domain_name\":\"chat.openai.com\",\r\n    \"budget\":0,\r\n    \"category_id\":15\r\n}",
+					"raw": "{\r\n    \"domain_name\":\"example.com\",\r\n    \"budget\":0,\r\n    \"category_id\":15\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3361,6 +3361,36 @@
 						"order",
 						"cart",
 						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View single Backlinks data",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE2OTkzMzk4MjAsImV4cCI6MTY5OTM3NTgyMH0.1QJ9dUB4ERWyaqxFea838CcZvQpKWnuBhAn7Ww9iHq8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/contentlinks/z5cirixk",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"contentlinks",
+						"z5cirixk"
 					]
 				}
 			},

@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
           status: 1, // Filter subscriptions status is 1
         },
       });
+      this.hasMany(models.newOrder, {
+        foreignKey: 'customer_id',
+        as: 'orders',
+      });
     }
   }
   User.init({

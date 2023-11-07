@@ -272,6 +272,34 @@ exports.getConetentLinks = async(req, res) => {
 	}
 }
 
+exports.getSingleConetentLinks = async(req, res) => {
+	try
+	{
+		const { hash_id } = req.params;
+		const baseQuery = {
+			include: [
+				{
+				  model: Models.domain_category,
+				  as: 'category',
+				  attributes: ['id', 'name'],
+				},
+				{
+				  model: Models.publisherDomainData,
+				  as: 'contentData',
+				},
+			],
+		  	where: {},
+		};
+		const contentData = await Models.publisherDomain.findOne({ ...baseQuery,where: { hash_id: hash_id },order: [['id', 'DESC']] });
+		res.status(200).send({ status: true, data:contentData })
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message:"Something wnet to wrong", error:err.message });
+	}
+}
+
 function extractMainDomain(url) {
 	let mainDomain = url.replace(/^https?:\/\//, '');	  
 	mainDomain = mainDomain.split("/")[0];

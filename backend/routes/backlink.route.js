@@ -1,4 +1,4 @@
-const { getDomainBacklinksDetails, addPublisherDomain, editPublisherDomain,deletePublisherDomain,getPublisherDomainList,getConetentLinks, getPublisherOrder, publisherUpdateOrderStatus, getPublisherDomain } = require('../controllers/backlinks.controller')
+const { getDomainBacklinksDetails, addPublisherDomain,getSingleConetentLinks, editPublisherDomain,deletePublisherDomain,getPublisherDomainList,getConetentLinks, getPublisherOrder, publisherUpdateOrderStatus, getPublisherDomain } = require('../controllers/backlinks.controller')
 const { isLogin, isPublisher, isAdmin, isCustomer } =require('../middleware/checkAuthenticate')
 
 module.exports = (app) => {
@@ -10,4 +10,5 @@ module.exports = (app) => {
 	app.get('/publisher/domain/:domainId',[isLogin,isPublisher], getPublisherDomain)
 	/* customer route */
 	app.post('/contentlinks',[isLogin,isCustomer], getConetentLinks)
+	app.get('/contentlinks/:hash_id',[isLogin,isCustomer], getSingleConetentLinks)
 }

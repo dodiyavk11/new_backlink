@@ -1,0 +1,60 @@
+.proCircle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background:linear-gradient(to right, #da8cff, #9a55ff);
+    color: rgb(29 85 196 / var(--tw-text-opacity));
+    font-size: 19px;
+    text-align: center;
+    line-height: 50px;
+    font-weight: bold;
+    margin-right: 10px;
+    padding: 19px;
+    color: #fff;
+}
+.dashboardCard
+{
+    padding-left: 2.5rem !important;
+    padding-bottom: 13px !important;
+    padding-top: 18px !important;
+}
+
+.dashProHead
+{
+    padding-left: 2.5rem !important;
+    padding-bottom: 0px !important;
+}
+.dashboardCard p {
+    font-size: 12px;
+}
+.hrefTitle {
+    text-decoration: none !important;
+    color: #b66dff;
+    font-weight: 500;
+}
+.extraInfo
+{
+    --tw-text-opacity: 1;
+    color: rgb(107 114 128 / var(--tw-text-opacity));
+    font-size: 12px;
+}
+.iconBash
+{
+    margin: 0px 15px;
+    font-size: 9px;
+}
+.text-bl-green.font-bold.w-full.conTitle {
+    font-weight: 700;
+    font-size: 18px;
+    padding: 0px 0px 16px;
+    color: #c505ff;
+}
+.dashboardHome tbody tr{
+    cursor: pointer;
+}
+.catContent
+{
+    width: fit-content;
+    background-color: rgb(248 250 251);
+    border-radius: 50px;
+}

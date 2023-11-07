@@ -3,6 +3,84 @@ const Sequelize = require('sequelize');
 const stripe = require("stripe")("sk_test_51NsHj9SC7x5vD10Msw6jkUut1c6QEMO0sN2RpWt1mnoiK0ccWOONIhCAWHwsAjdVSPpNuMtybe2a8dSxa1Po0IhN00ootqyaJH");
 const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils");
 
+async function createProduct() {
+  try {
+    const product = await stripe.products.create({
+      name: 'Custom Product', // Give it a generic name
+    });
+    return product.id;
+  } catch (error) {
+    console.error('Error creating product:', error);
+    throw error;
+  }
+}
+
+// Create a price for the product
+async function createPrice(productId, amount) {
+  try {
+    const price = await stripe.prices.create({
+      product: productId,
+      unit_amount: amount * 100, // Convert the amount to the smallest currency unit
+      currency: 'inr', // Currency code
+    });
+    return price.id;
+  } catch (error) {
+    console.error('Error creating price:', error);
+    throw error;
+  }
+}
+
+// Create a Stripe Checkout session using the price
+async function createCheckoutSession(priceId) {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: 'https://4fef-103-247-54-225.ngrok-free.app/getPayments',
+      cancel_url: 'http://localhost:3000/cancel.html',
+    });
+    return session.id;
+  } catch (error) {
+    console.error('Error creating checkout session:', error);
+    throw error;
+  }
+}
+
+// Your API endpoint to initiate the payment
+exports.initPaymentFrontSide = async (req, res) => {
+  try {
+    const { amount } = req.body;
+
+    // Create a product
+    const productId = await createProduct();
+
+    // Create a price for the product
+    const priceId = await createPrice(productId, amount);
+
+    // Create a Stripe Checkout session using the price
+    const sessionId = await createCheckoutSession(priceId);
+
+    res.status(200).send({
+      status: true,
+      message: 'Stripe created session successfully.',
+      id: sessionId,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      status: false,
+      message: 'Something went wrong, please try again',
+      error: err.message,
+    });
+  }
+};
+
 exports.initPayment = async(req, res) => {
 	try
 	{

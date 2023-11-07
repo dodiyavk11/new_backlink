@@ -18,7 +18,7 @@ exports.dashboard = async(req, res) => {
 		      model: Models.Domains,
 		      as: 'domains', 
 		      limit: 3,
-		      order: [['id', 'DESC']], 
+		      order: [['id', 'DESC']], 		      
 		    },
 		    {
 		      model: Models.UserWallet,
@@ -30,6 +30,22 @@ exports.dashboard = async(req, res) => {
 		      as: 'subscriptions',
 		      attributes: ['plan_id','start_date','end_date','cancel_date','info','credits','status'],
 		    },
+		    {
+	          model: Models.newOrder,
+	          as: 'orders',
+	          include: [
+			    {
+			      model: Models.publisherDomain,
+			      as: 'domain',
+			      attributes: { exclude: ['updated_at', 'created_at', 'id'] }
+			    },
+			    {
+			      model: Models.Domains,
+			      as: 'project',
+			      attributes: { exclude: ['updated_at', 'created_at', 'id'] }
+			    },
+			  ],
+	        },
 		  ],
 		  attributes: { exclude: ['password'] },
 		});		
@@ -38,21 +54,18 @@ exports.dashboard = async(req, res) => {
 		    const customOverview = {
 		        ...overview.get()
 		    };
-
 		    if (customOverview.domains && customOverview.domains.length > 0) {
 		        const customizedDomains = [];
-
 		        for (const domain of customOverview.domains) {
 		            const customizedDomain = {
 		                ...domain.get()
-		            }; // Use .get() to get the dataValues
+		            };
 
 		            if (domain.domain_name) {
 		                const domainParts = domain.domain_name.split('.');
 		                customizedDomain.tld = domainParts[domainParts.length - 1];
 		                customizedDomain.image_url = '/assets/domain_img/' + domain.hash_id + '.png';
-
-		                const orderCount = await Models.Orders.count({
+		                const orderCount = await Models.newOrder.count({
 		                    where: {
 		                        domain_id: domain.id
 		                    }
@@ -61,18 +74,29 @@ exports.dashboard = async(req, res) => {
 		            } else {
 		                customizedDomain.tld = '';
 		            }
-
 		            customizedDomains.push(customizedDomain);
 		        }
-
 		        customOverview.domains = customizedDomains;
 		    }
-
 		    return customOverview;
 		};
-
-		// Usage:
+		const baseQuery = {
+			include: [
+				{
+				  model: Models.domain_category,
+				  as: 'category',
+				  attributes: ['id', 'name'],
+				},
+				{
+				  model: Models.publisherDomainData,
+				  as: 'contentData',
+				},
+			],
+		  	where: {},
+		};
 		const customizedOverview = await customizeProjectData(overview);
+		const contentData = await Models.publisherDomain.findAll({ ...baseQuery,order: Sequelize.literal('RAND()'),limit: 5, });
+		customizedOverview.contentData = contentData;
 		res.status(200).send({ status:true,message: "User overview", data: customizedOverview })
 	}
 	catch(err)
