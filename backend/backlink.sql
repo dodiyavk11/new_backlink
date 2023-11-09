@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2023 at 01:55 PM
+-- Generation Time: Nov 09, 2023 at 02:45 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -74,7 +74,8 @@ CREATE TABLE `customer_domain_data` (
 --
 
 INSERT INTO `customer_domain_data` (`id`, `domain_id`, `traffic`, `anchor_text`, `delivery_time`, `link`, `language`, `visibility_index`, `domain_rating`, `rating`, `referring`, `citation_flow`, `trust_flow`, `authority`, `created_at`, `updated_at`) VALUES
-(13, 21, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-10-13 12:39:09', '2023-10-13 12:39:09');
+(13, 21, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-10-13 12:39:09', '2023-10-13 12:39:09'),
+(16, 6, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-11-09 12:01:48', '2023-11-09 12:01:48');
 
 -- --------------------------------------------------------
 
@@ -628,7 +629,7 @@ CREATE TABLE `user_subscriptions` (
 --
 
 INSERT INTO `user_subscriptions` (`id`, `user_id`, `plan_id`, `start_date`, `end_date`, `cancel_date`, `info`, `credits`, `transaction_id`, `status`) VALUES
-(1, 15, 1, '2023-09-27 00:00:00', '2023-10-27 12:52:26', NULL, NULL, 0, 1, 1),
+(1, 15, 1, '2023-09-27 00:00:00', '2023-11-27 12:52:26', NULL, NULL, 0, 1, 1),
 (5, 11, 2, '2023-09-28 13:52:18', '2023-10-28 08:22:18', NULL, NULL, 0, 5, 1);
 
 --
@@ -794,13 +795,13 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `customer_domain_data`
 --
 ALTER TABLE `customer_domain_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `domains`
 --
 ALTER TABLE `domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `domain_categories`

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthService from "../services/auth.service";
+import "../../assets/custom.css";
 export class Register extends Component {
   constructor(props) {
     super(props);
@@ -79,9 +80,9 @@ export class Register extends Component {
           <div className="row w-100 mx-0">
             <div className="col-lg-4 mx-auto">
               <div className="auth-form-light text-left py-5 px-4 px-sm-5">
-                <div className="brand-logo">
+                <div className="brand-logo text-center">
                   <img
-                    src={require("../../assets/images/logo.svg")}
+                    src={require("../../assets/images/logo_new.png")}
                     alt="logo"
                   />
                 </div>
@@ -160,7 +161,7 @@ export class Register extends Component {
                   <div className="mt-3">
                     <button
                       type="submit"
-                      className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                      className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
                     >
                       SIGN UP
                     </button>

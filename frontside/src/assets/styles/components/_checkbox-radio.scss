@@ -79,7 +79,7 @@
       &:checked {
         +.input-helper {
           &:before {
-            background: theme-color(primary);
+            background:  #ff9756;
             border-width: 0;
           }
           &:after {
@@ -105,7 +105,7 @@
         &:checked {
           + .input-helper {
             &:after {
-              background: $border-color;
+              background:  #ff9756;
               color: $white;
             }
           }
@@ -138,7 +138,7 @@
           content: "";
           width: 8px;
           height: 8px;
-          background: $white;
+          background:  #ff9756;
           border-radius: 50%;
           top: 6px;
           left: 6px;
@@ -165,7 +165,7 @@
       &:checked {
         +.input-helper {
           &:before {
-            background: theme-color(primary);
+            background:  #ff9756;
             border-width: 0;
           }
 
@@ -191,11 +191,11 @@
         &:checked {
           + .input-helper {
             &:before {
-              background: $border-color;
+              background:  #ff9756;
             }
 
             &:after {
-              background: $white;
+              background:  #ff9756;
             }
           }
         }
@@ -218,7 +218,7 @@
           &:checked {
             +.input-helper {
               &:before {
-                background: $value;
+                background:  #ff9756;
               }
             }
           }

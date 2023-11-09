@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthService from "../services/auth.service";
 import "../../assets/custom.css";
+import "../../assets/custom.css";
 
 export class ContentLinks extends Component {
   constructor(props) {
@@ -76,26 +77,18 @@ export class ContentLinks extends Component {
     return (
       <div>
         <ToastContainer />
-        <div className="page-header">
-          <h3 className="page-title">
-            <span className="page-title-icon bg-gradient-primary text-white mr-2">
-              <i className="mdi mdi-home"></i>
-            </span>
-            Content Link
-          </h3>
-        </div>
         <div className="row">
           <div className="col-lg-8 grid-margin">
             <div className="card">
               <div className="card-img-top d-flex flex-row justify-content-between p-4">
                 <button
-                  className="btn btn-outline-primary btn-icon-text"
+                  className="btn btn-rounded font-weight-medium auth-form-btn"
                   onClick={this.handleGoBack}
                 >
                   <i className="mdi mdi-arrow-left"></i> Back
                 </button>
                 <a
-                  className="btn btn-outline-primary btn-icon-text"
+                  className="btn btn-rounded font-weight-medium auth-form-btn"
                   href={`http://${contentData.domain_name}`}
                   target="_blank"
                   rel="noopener noreferrer"

@@ -114,6 +114,8 @@ exports.signIn = async (req, res) => {
         }
         const token = generateJWTToken({ userId: checkUser.id }, "10h")
         delete checkUser.dataValues.password
+        // checkUser.dataValues.role = ['admin']
+        // checkUser.dataValues.loginRedirectUrl = '/'
         res.status(200).send({ status: true, message: "Login Successful", token, data: checkUser })
 
     } catch (err) {

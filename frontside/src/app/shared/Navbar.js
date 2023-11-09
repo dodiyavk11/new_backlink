@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link, withRouter } from "react-router-dom";
 import { Trans } from "react-i18next";
-import AuthService from "../services/auth.service";
 class Navbar extends Component {
   constructor(props) {
     super(props);    
     this.state = {
       user: {},
+      isAuthenticated: this.props.isAuthenticated,
     };
     this.handleLogouts = this.handleLogouts.bind(this);
   }
@@ -21,22 +21,21 @@ class Navbar extends Component {
   toggleOffcanvas() {
     document.querySelector(".sidebar-offcanvas").classList.toggle("active");
   }
-  handleLogouts = (e) => {
-    // e.preventDefault();    
-    AuthService.logout();
-    this.props.history.push("/login");
+  handleLogouts = (e) => {     
+    e.preventDefault();    
+    this.props.handleLogout();
+    console.log(this.props.isAuthenticated);
   };
-  render() {
-    console.log(this.props)
+  render() {    
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
           <Link className="navbar-brand brand-logo" to="/">
-            <img src={require("../../assets/images/logo.svg")} alt="logo" />
-          </Link>
+            <img src={require("../../assets/images/logo_new.png")} alt="logo"/>
+          </Link>          
           <Link className="navbar-brand brand-logo-mini" to="/">
             <img
-              src={require("../../assets/images/logo-mini.svg")}
+              src={require("../../assets/images/logo_new.png")}
               alt="logo"
             />
           </Link>
@@ -49,20 +48,6 @@ class Navbar extends Component {
           >
             <span className="mdi mdi-menu"></span>
           </button>
-          <div className="search-field d-none d-md-block">
-            <form className="d-flex align-items-center h-100" action="#">
-              <div className="input-group">
-                <div className="input-group-prepend bg-transparent">
-                  <i className="input-group-text border-0 mdi mdi-magnify"></i>
-                </div>
-                <input
-                  type="text"
-                  className="form-control bg-transparent border-0"
-                  placeholder="Search projects"
-                />
-              </div>
-            </form>
-          </div>
           <ul className="navbar-nav navbar-nav-right">
             {/* <li className="nav-item">
               <div>
@@ -292,7 +277,7 @@ class Navbar extends Component {
                   <i className="mdi mdi-bell-ring mr-2 text-primary"></i>
                   <Trans>Notification</Trans>
                   </Dropdown.Item>
-                  <Dropdown.Item href="!#" onClick={this.handleLogouts}>
+                  <Dropdown.Item onClick={this.handleLogouts}>
                     <i className="mdi mdi-logout mr-2 text-primary"></i>
                     <Trans>Log out</Trans>
                   </Dropdown.Item>

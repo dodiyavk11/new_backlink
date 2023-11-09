@@ -1,6 +1,5 @@
 import axios from "axios";
 const APP_URL = "http://localhost:3000/";
-const authToken = localStorage.getItem('token');
 class AuthService {
   login(email, password) {
     return axios
@@ -32,7 +31,7 @@ class AuthService {
 
   getDashboard()
   {    
-    const authToken = localStorage.getItem('token')
+    const authToken = localStorage.getItem('token');
     return axios.get(APP_URL + 'user/dashboard',{
       headers: { 'Authorization': `Bearer ${authToken}` },
     });
@@ -47,6 +46,7 @@ class AuthService {
   }
   getCartData()
   {
+    const authToken = localStorage.getItem('token');
     return axios.get(APP_URL + 'user/cart',{
       headers: { 'Authorization': `Bearer ${authToken}` },
     });

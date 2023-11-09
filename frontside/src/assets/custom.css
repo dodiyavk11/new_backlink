@@ -2,7 +2,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background:linear-gradient(to right, #da8cff, #9a55ff);
+    background:#e3f2fd;
     color: rgb(29 85 196 / var(--tw-text-opacity));
     font-size: 19px;
     text-align: center;
@@ -10,7 +10,7 @@
     font-weight: bold;
     margin-right: 10px;
     padding: 19px;
-    color: #fff;
+    color: #0d469e;
 }
 .dashboardCard
 {
@@ -29,7 +29,7 @@
 }
 .hrefTitle {
     text-decoration: none !important;
-    color: #b66dff;
+    color: #222;
     font-weight: 500;
 }
 .extraInfo
@@ -47,7 +47,6 @@
     font-weight: 700;
     font-size: 18px;
     padding: 0px 0px 16px;
-    color: #c505ff;
 }
 .dashboardHome tbody tr{
     cursor: pointer;
@@ -57,4 +56,100 @@
     width: fit-content;
     background-color: rgb(248 250 251);
     border-radius: 50px;
+}
+.btn-rounded
+{
+    background-color: rgb(255, 151, 86) !important;
+    color: #fff;
+}
+.btn-rounded:hover
+{
+    background-color:#354252 !important;
+    color: #fff !important;
+}
+.navbar .navbar-brand-wrapper .navbar-brand img
+{
+    width: 3.2rem;
+    height: 3.2rem;
+}
+.navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini img
+{
+    width: 1.5rem;
+    height: 26px;
+}
+.navbar .navbar-brand-wrapper, .sidebar.sidebar-offcanvas
+{
+    background: #354252;
+}
+.sidebar .nav .nav-item .nav-link
+{
+    color: rgba(219, 218, 218, 0.7) !important;
+}
+.sidebar .nav .nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);    
+}
+.sidebar .nav .nav-item .nav-link:hover
+{
+    color: rgb(219, 218, 218) !important;
+}
+/* .sidebar .nav .nav-item.active .nav-link .menu-title
+{
+    color: rgb(255, 151, 86) !important;
+} */
+.sidebar .nav .nav-item.active .nav-link i,.sidebar .nav .nav-item.active .nav-link .menu-title,.sidebar .nav.sub-menu .nav-item .nav-link.active,.sidebar .nav.sub-menu .nav-item .nav-link.active::before
+{
+    color: #fff;
+}
+.nav-item.active
+{
+    background:  rgb(255, 151, 86);
+}
+.createProject
+{
+    cursor: pointer;
+}
+spann.createProject:hover {
+    background: #f1f5f9;
+    padding: 10px;
+    border-radius: 20px;
+}
+spann.createProject
+{
+    padding: 10px;
+}
+.auth .brand-logo img {
+    width: 119px;
+}
+.form-control:focus, .swal2-modal .swal2-content .swal2-input:focus
+{
+    border-color: #ff9756;
+}
+.form-control, .swal2-modal .swal2-content .swal2-input
+{
+    border: 1px solid #dbdada;
+}
+.text-primary
+{
+    color: #ff9756 !important;
+}
+.text-primary:hover
+{
+    color:  #f1f5f9 !important;
+}
+.footer a
+{
+    color: #ff9756;
+}
+.createProjectModal .modal-dialog
+{
+    max-width: 670px;
+}
+.createProjectModal .modal-content
+{
+    background-color: #fff;
+    padding: 25px;
+}
+.customText
+{
+    font-size: 12px;
 }
