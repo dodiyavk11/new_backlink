@@ -27,15 +27,7 @@ class AuthService {
     localStorage.removeItem("token");
     localStorage.removeItem("userData");
     localStorage.setItem("isLoggedIn", false);
-  }
-
-  getDashboard()
-  {    
-    const authToken = localStorage.getItem('token');
-    return axios.get(APP_URL + 'user/dashboard',{
-      headers: { 'Authorization': `Bearer ${authToken}` },
-    });
-  }
+  }  
 
   getContentLinksData(hash_id)
   {

@@ -6,6 +6,7 @@ import Navbar from "./shared/Navbar";
 import Sidebar from "./shared/Sidebar";
 import Footer from "./shared/Footer";
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
+const Projects = lazy(() => import("./projects/Projects"));
 const ContentLinks = lazy(() => import("./general-pages/ContentLinks"));
 const Buttons = lazy(() => import("./basic-ui/Buttons"));
 const Dropdowns = lazy(() => import("./basic-ui/Dropdowns"));
@@ -99,6 +100,24 @@ class AppRoutes extends Component {
                   />
                   <ProtectedRoute
                     exact
+                    path="/content/:hash_id"
+                    component={ContentLinks}
+                    isAuthenticated={this.state.isAuthenticated}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/projects"
+                    component={Projects}
+                    isAuthenticated={this.state.isAuthenticated}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/projects/:hash_id"
+                    component={BlankPage}
+                    isAuthenticated={this.state.isAuthenticated}
+                  />
+                  <ProtectedRoute
+                    exact
                     path="/basic-ui/buttons"
                     component={Buttons}
                     isAuthenticated={this.state.isAuthenticated}
@@ -163,13 +182,7 @@ class AppRoutes extends Component {
                     path="/general-pages/blank-page"
                     component={BlankPage}
                     isAuthenticated={this.state.isAuthenticated}
-                  />
-                  <ProtectedRoute
-                    exact
-                    path="/content/:hash_id"
-                    component={ContentLinks}
-                    isAuthenticated={this.state.isAuthenticated}
-                  />
+                  />                  
                   <ProtectedRoute
                     exact
                     path="/order/:order_id"

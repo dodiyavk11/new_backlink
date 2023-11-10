@@ -54,30 +54,19 @@ async function createCheckoutSession(priceId) {
 
 // Your API endpoint to initiate the payment
 exports.initPaymentFrontSide = async (req, res) => {
+  const { amount, currency } = req.body;
+
   try {
-    const { amount } = req.body;
-
-    // Create a product
-    const productId = await createProduct();
-
-    // Create a price for the product
-    const priceId = await createPrice(productId, amount);
-
-    // Create a Stripe Checkout session using the price
-    const sessionId = await createCheckoutSession(priceId);
-
-    res.status(200).send({
-      status: true,
-      message: 'Stripe created session successfully.',
-      id: sessionId,
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount * 100,
+      currency: currency || 'usd',
+      payment_method_types: ['card'],
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({
-      status: false,
-      message: 'Something went wrong, please try again',
-      error: err.message,
-    });
+
+    res.status(200).json({ clientSecret: paymentIntent.client_secret });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Could not create PaymentIntent' });
   }
 };
 

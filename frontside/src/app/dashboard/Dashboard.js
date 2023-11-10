@@ -3,10 +3,12 @@ import { withRouter, Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import TimeAgo from "timeago-react";
 import { Modal } from "react-bootstrap";
 import CreateProjectModal from "../shared/CreateProjectModal";
-import ApiCall from "../services/ApiCall";
+import OrderComponent from "./Order";
+import DomainComponent from "./Domain";
+import ContentLinksComponent from "./contentLinks";
+import ApiServices from "../services/api.service";
 // import StripePayment from "../stripePayment";
 import "../../assets/custom.css";
 
@@ -35,13 +37,15 @@ export class Dashboard extends Component {
   goToOrderLink = (order_id) => {
     this.props.history.push(`/order/${order_id}`);
   };
-
+  goToProjectViewLink = (hash_id) => {
+    this.props.history.push(`/projects/${hash_id}`);
+  };
   handleShow = () => {
     this.setState({ show: true });
   };
 
   handleFormSubmit = (formData) => {
-    ApiCall.addUserProject(formData).then(
+    ApiServices.addUserProject(formData).then(
       () => {
         this.closeProjectModal();
         this.props.history.push("/projects");
@@ -61,7 +65,7 @@ export class Dashboard extends Component {
     );
   };
   componentDidMount() {
-    AuthService.getDashboard()
+    ApiServices.getDashboard()
       .then((res) => {
         if (!res.status) {
           toast.error(res.data.message, {
@@ -127,6 +131,9 @@ export class Dashboard extends Component {
           </Modal.Footer> */}
           </Modal>
           <ToastContainer />
+          <div className="page-header">
+            <h3 className="h3">Dashboard</h3>
+          </div>
           <div className="row">
             <div className="col-lg-6 grid-margin">
               <div className="card mb-4">
@@ -170,36 +177,7 @@ export class Dashboard extends Component {
                 </div>
               </div>
               {this.state.domains.map((item) => (
-                <div className="card" key={item.id}>
-                  <div className="card-body dashboardCard">
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <span className="proCircle">
-                              {extractInitials(item.domain_name)}
-                            </span>
-                          </td>
-                          <td>
-                            <h4>{item.domain_name}</h4>
-                            <div className="extraInfo d-flex flex-wrap justify-content-between">
-                              <div>0 Recommendations</div>
-                              <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                              <div>{item.order_count} Orders</div>
-                              <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                              <div>
-                                <TimeAgo
-                                  datetime={item.created_at}
-                                  locale="en"
-                                />
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                <DomainComponent key={item.id} item={item} goToProjectViewLink={this.goToProjectViewLink}/>
               ))}
               {!this.state.domains.length && (
                 <div className="card">
@@ -208,79 +186,37 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               )}
-              {this.state.domains.length >0 && (
-              <div className="card">
-                <div className="card-footer text-center">
-                  <Link to="/basic-ui/buttons" className="hrefTitle">
-                    View all
-                  </Link>
+              {this.state.domains.length > 0 && (
+                <div className="card">
+                  <div className="card-footer text-center">
+                    <Link to="/projects" className="hrefTitle">
+                      View all
+                    </Link>
+                  </div>
                 </div>
-              </div>
               )}
             </div>
             <div className="col-lg-6 grid-margin stretch-card">
               <div className="card">
                 <div className="card-body">
                   <h4 className="card-title">Orders</h4>
-                  {this.state.orders.map((item) => (
-                    <div className="card" key={item.id}>
-                      <div
-                        className="card-body"
-                        style={{ padding: "1.5rem 0.5rem" }}
-                      >
-                        <table>
-                          <tbody>
-                            <tr onClick={() => this.goToOrderLink(item.id)}>
-                              <td>
-                                <h4>{item.domain.domain_name}</h4>
-                                <div className="extraInfo flex-wrap d-flex justify-content-between">
-                                  <div>{item.project.domain_name}</div>
-                                  <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                  <div
-                                    style={{ padding: "3px" }}
-                                    className={
-                                      item.status === "Pending"
-                                        ? "badge badge-danger"
-                                        : item.status === "Inprogress"
-                                        ? "badge badge-info"
-                                        : item.status === "Completed"
-                                        ? "badge badge-success"
-                                        : "badge badge-warning"
-                                    }
-                                  >
-                                    {item.status}
-                                  </div>
-                                  <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                  <div>${item.total_price}</div>
-                                  <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                  <div>
-                                    <TimeAgo
-                                      datetime={item.created_at}
-                                      locale="en"
-                                    />
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+                  {this.state.orders.map((order) => (
+                    <OrderComponent key={order.id} order={order} />
                   ))}
                   {!this.state.orders.length && (
-                <div className="card">
-                  <div className="card-body dashboardCard">
-                    <h4 className="text-center">No Orders.</h4>
+                    <div className="card">
+                      <div className="card-body dashboardCard">
+                        <h4 className="text-center">No Orders.</h4>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {this.state.orders.length > 0 && (
+                  <div className="card-footer text-center">
+                    <Link to="/basic-ui/buttons" className="hrefTitle">
+                      View all
+                    </Link>
                   </div>
-                </div>
-              )}
-                </div>
-                {this.state.orders.length >0 && (
-                <div className="card-footer text-center">
-                  <Link to="/basic-ui/buttons" className="hrefTitle">
-                    View all
-                  </Link>
-                </div>
                 )}
               </div>
             </div>
@@ -304,25 +240,11 @@ export class Dashboard extends Component {
                       </thead>
                       <tbody>
                         {this.state.contentData.map((content) => (
-                          <tr
+                          <ContentLinksComponent
                             key={content.hash_id}
-                            onClick={() =>
-                              this.goToContentLink(content.hash_id)
-                            }
-                          >
-                            <td>
-                              <div className="text-bl-green font-bold w-full conTitle">
-                                {content.domain_name}
-                              </div>
-                              <div className="overflow-hidden">
-                                {content.category.name}
-                              </div>
-                            </td>
-                            <td>{content.contentData.domain_rating}</td>
-                            <td>{content.contentData.authority}</td>
-                            <td>{content.contentData.trust_flow}</td>
-                            <td className="h3">${content.price}</td>
-                          </tr>
+                            content={content}
+                            goToContentLink={this.goToContentLink}
+                          />
                         ))}
                       </tbody>
                     </table>
@@ -465,14 +387,4 @@ export class Dashboard extends Component {
     );
   }
 }
-const extractInitials = (name) => {
-  const names = name.split(" ");
-  if (names.length === 1) {
-    return names[0].substring(0, 2);
-  } else if (names.length > 1) {
-    return names[0][0] + names[names.length - 1][0];
-  } else {
-    return "";
-  }
-};
 export default withRouter(Dashboard);

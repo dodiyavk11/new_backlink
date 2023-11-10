@@ -69,7 +69,7 @@ export class ContentLinks extends Component {
             className="btn btn-outline-primary btn-icon-text"
             onClick={this.handleGoBack}
           >
-          Back
+            Back
           </button>
         </div>
       );
@@ -175,6 +175,40 @@ export class ContentLinks extends Component {
             <div className="card">
               <div className="card-body">
                 <h4 className="card-title">Orders</h4>
+                <div className="table-responsive">
+                  <table className="table">                    
+                    <tbody>
+                      <tr>
+                        <td>Traffic</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>Anchor text</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>Delivery time</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>Link</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>Language</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>TLD</td>
+                        <td>0</td>
+                      </tr>
+                      <tr>
+                        <td>Price</td>
+                        <td><span className="h2">0</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
