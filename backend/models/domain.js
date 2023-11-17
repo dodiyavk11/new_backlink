@@ -44,7 +44,8 @@ module.exports = (sequelize,DataTypes) => {
 	    updatedAt: 'updated_at',
 	    timestamps: true,
 	    modelName: 'Domains',
-	    paranoid: false
+	    paranoid: false,
+	    tableName:'domains'
 	});
 	return Domain;
 }

@@ -125,7 +125,7 @@ exports.getProjects = async(req, res) => {
 			        Sequelize.literal(`(
 			          SELECT COUNT(*)
 			          FROM new_orders
-			          WHERE new_orders.domain_id = domains.id
+			          WHERE new_orders.domain_id = Domains.id
 			        )`),
 			        'order_count',
 			      ],

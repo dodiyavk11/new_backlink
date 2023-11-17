@@ -83,20 +83,22 @@ export class Login extends Component {
   render() {
     const { password, email, error } = this.state;
     return (
-      <div>
-        <div className="d-flex align-items-center auth px-0">
+      <div className="loginPage">
+        <div className="d-flex align-items-center auth px-0 bgColor">
           <ToastContainer />
           <div className="row w-100 mx-0">
-            <div className="col-lg-4 mx-auto">
-              <div className="auth-form-light text-left py-5 px-4 px-sm-5">
+            <div className="col-lg-5 mx-auto">
+              <div className="auth-form-light text-left py-5 px-4 px-sm-5 bRadius">
                 <div className="brand-logo text-center">
                   <img
                     src={require("../../assets/images/logo_new.png")}
                     alt="logo"
                   />
                 </div>
-                <h4>Hello! let's get started</h4>
-                <h6 className="font-weight-light">Sign in to continue.</h6>
+                <div className="text-center">
+                  <h3 className="fontBold800 latterSpace-0025">Sign in</h3>
+                  <span className="text-sm">Great to have you back.</span>
+                </div>                
                 <Form className="pt-3" onSubmit={this.handleSubmit}>
                   <Form.Group className="d-flex search-field">
                     <Form.Control
@@ -120,15 +122,7 @@ export class Login extends Component {
                       onChange={this.handleInputChange}
                     />
                   </Form.Group>
-                  {error && <p className="text-danger">{error}</p>}
-                  <div className="mt-3">
-                    <button
-                      type="submit"
-                      className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
-                    >
-                      SIGN IN
-                    </button>
-                  </div>
+                  {error && <p className="text-danger">{error}</p>}                  
                   <div className="my-2 d-flex justify-content-between align-items-center">
                     <div className="form-check">
                       <label className="form-check-label text-muted">
@@ -145,13 +139,32 @@ export class Login extends Component {
                       Forgot password?
                     </a>
                   </div>
-                  <div className="text-center mt-4 font-weight-light">
+                  <div className="mt-3">
+                    <button
+                      type="submit"
+                      className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
+                    >
+                      SIGN IN
+                    </button>
+                  </div>
+                  <div className="text-center mt-4 fontBold400">
                     Don't have an account?{" "}
                     <Link to="/register" className="text-primary">
-                      Create
+                      Sign up
                     </Link>
                   </div>
                 </Form>
+                <hr/>
+                <div className="d-flex justify-content-between">
+                  <div>
+                    <span className="text-sm">© se 2023</span>
+                  </div>
+                  <div className="">
+                    <span className="text-sm loginLinks">Terms of Service</span>
+                    <span className="text-sm loginLinks">Privacy Policy</span>
+                    <span className="text-sm loginLinks">Imprint</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

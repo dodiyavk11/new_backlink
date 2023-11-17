@@ -136,7 +136,7 @@ class AppRoutes extends Component {
                   />
                   <ProtectedRoute
                     exact
-                    path="/form-Elements/basic-elements"
+                    path="/orders"
                     component={BasicElements}
                     isAuthenticated={this.state.isAuthenticated}
                   />

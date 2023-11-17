@@ -54,7 +54,8 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: 'updated_at',
     timestamps: true,
     modelName: 'Users',
-    paranoid: false
+    paranoid: false,
+    tableName:'users'
   });
   return User;
 };

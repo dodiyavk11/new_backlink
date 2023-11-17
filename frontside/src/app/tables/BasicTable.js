@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ProgressBar } from 'react-bootstrap';
-
+import "../../assets/custom.css";
 export class BasicTable extends Component {
   render() {
     return (

@@ -74,22 +74,22 @@ export class Register extends Component {
   render() {
     const { error } = this.state;
     return (
-      <div>
+      <div className="signupPage">
         <div className="d-flex align-items-center auth px-0">
           <ToastContainer />
           <div className="row w-100 mx-0">
-            <div className="col-lg-4 mx-auto">
-              <div className="auth-form-light text-left py-5 px-4 px-sm-5">
+            <div className="col-lg-5 mx-auto">
+              <div className="auth-form-light text-left py-5 px-4 px-sm-5 bRadius">
                 <div className="brand-logo text-center">
                   <img
                     src={require("../../assets/images/logo_new.png")}
                     alt="logo"
                   />
                 </div>
-                <h4>New here?</h4>
-                <h6 className="font-weight-light">
-                  Signing up is easy. It only takes a few steps
-                </h6>
+                <div className="text-center">
+                  <h3 className="fontBold800 latterSpace-0025">Sign up</h3>
+                  <span className="text-sm">Register for an account in the fairlinked Marketplace.</span>
+                </div>     
                 <form className="pt-3" onSubmit={this.handleSubmit}>
                   <div className="form-group">
                     <input
@@ -163,16 +163,27 @@ export class Register extends Component {
                       type="submit"
                       className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
                     >
-                      SIGN UP
+                      Create your free account
                     </button>
                   </div>
-                  <div className="text-center mt-4 font-weight-light">
-                    Already have an account?{" "}
+                  <div className="text-center mt-4 fontBold400">
+                    Already have an account?{" "} 
                     <Link to="/login" className="text-primary">
                       Login
                     </Link>
                   </div>
                 </form>
+                <hr/>
+                <div className="d-flex justify-content-between">
+                  <div>
+                    <span className="text-sm">© se 2023</span>
+                  </div>
+                  <div className="">
+                    <span className="text-sm loginLinks">Terms of Service</span>
+                    <span className="text-sm loginLinks">Privacy Policy</span>
+                    <span className="text-sm loginLinks">Imprint</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

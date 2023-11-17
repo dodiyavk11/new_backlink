@@ -90,7 +90,7 @@ export class Projects extends Component {
     return (
       <div className="projectsPage">
         <div className="page-header">
-          <h3 className="h3">Projects</h3>
+          <h3 className="fontBold latterSpacing">Projects</h3>
         </div>
         <ToastContainer />
         <CreateProjectModal
@@ -100,7 +100,7 @@ export class Projects extends Component {
         />
         <div className="row">
           <div className="col-lg-12 grid-margin">
-            <div className="card mb-4">
+            <div className="card mb-4 bRadius">
               <div className="card-body projectsCard">
                 <div className="d-flex flex-row justify-content-between">
                   <Paper className="relative rounded-1xl overflow-hidden d-flex flex-column">

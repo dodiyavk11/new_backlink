@@ -27,6 +27,7 @@ class Navbar extends Component {
     console.log(this.props.isAuthenticated);
   };
   render() {    
+    const imageUrl = `${process.env.REACT_APP_BASE_URL}/assets/profile/${this.state.user.profile}`;
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
@@ -57,7 +58,7 @@ class Navbar extends Component {
                 <span className="text-sm text-bl-dark-gray" style={{color:'#222'}}>Available balance</span>
                 </div>
             </li> */}
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">
                   <i className="mdi mdi-cart-outline"></i>
@@ -136,7 +137,7 @@ class Navbar extends Component {
                   </h6>
                 </Dropdown.Menu>
               </Dropdown>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">
@@ -214,14 +215,26 @@ class Navbar extends Component {
             </li>
             <li className="nav-item nav-profile">
               <Dropdown alignRight>
-                <Dropdown.Toggle className="nav-link">
+                <Dropdown.Toggle className="nav-link">                  
+                  <div className="nav-profile-text">
+                    <p className="mb-1 text-black">
+                      {this.state.user ? (
+                        <Trans>
+                          <b className="fontBold500">
+                            {this.state.user.firstName}{" "}
+                            {this.state.user.lastName}                            
+                          </b><br/>
+                          <span>{ this.state.user.isAdmin ? 'Admin' : 'User' }</span>
+                        </Trans>
+                      ) : (
+                        ""
+                      )}
+                    </p>
+                  </div>
                   <div className="nav-profile-img">
                     {this.state.user.profile ? (
                       <img
-                        src={
-                          "http://localhost:3000/assets/profile/" +
-                          this.state.user.profile
-                        }
+                        src={imageUrl}
                         alt="user"
                       />
                     ) : (
@@ -231,20 +244,6 @@ class Navbar extends Component {
                       />
                     )}
                     {/* <span className="availability-status online"></span> */}
-                  </div>
-                  <div className="nav-profile-text">
-                    <p className="mb-1 text-black">
-                      {this.state.user ? (
-                        <Trans>
-                          <b>
-                            {this.state.user.firstName}{" "}
-                            {this.state.user.lastName}
-                          </b>
-                        </Trans>
-                      ) : (
-                        ""
-                      )}
-                    </p>
                   </div>
                 </Dropdown.Toggle>
 

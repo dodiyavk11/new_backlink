@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import bsCustomFileInput from 'bs-custom-file-input'
-
+import "../../assets/custom.css";
 export class BasicElements extends Component {
   state = {
     startDate: new Date()
@@ -20,7 +20,7 @@ export class BasicElements extends Component {
     return (
       <div>
         <div className="page-header">
-          <h3 className="page-title"> Form elements </h3>
+          <h3 className="page-title"> Orders </h3>
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
               <li className="breadcrumb-item"><a href="!#" onClick={event => event.preventDefault()}>Forms</a></li>
@@ -28,7 +28,7 @@ export class BasicElements extends Component {
             </ol>
           </nav>
         </div>
-        <div className="row">
+        {/* <div className="row">
           <div className="col-md-6 grid-margin stretch-card">
             <div className="card">
               <div className="card-body">
@@ -613,7 +613,7 @@ export class BasicElements extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     )
   }

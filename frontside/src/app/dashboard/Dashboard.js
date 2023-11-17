@@ -132,11 +132,11 @@ export class Dashboard extends Component {
           </Modal>
           <ToastContainer />
           <div className="page-header">
-            <h3 className="h3">Dashboard</h3>
+            <h3 className="fontBold latterSpacing">Dashboard(U)</h3>
           </div>
           <div className="row">
             <div className="col-lg-6 grid-margin">
-              <div className="card mb-4">
+              <div className="card mb-4 bRadius">
                 <div className="card-body dashboardCard">
                   <div className="d-flex flex-row justify-content-between">
                     <div className="p-2 bd-highlight d-flex flex-column">
@@ -157,7 +157,7 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               </div>
-              <div className="card">
+              <div className="card bRadius">
                 <div className="card-body dashProHead">
                   <div className="d-flex flex-row justify-content-between">
                     <div className="p-2 bd-highlight d-flex flex-column">
@@ -197,7 +197,7 @@ export class Dashboard extends Component {
               )}
             </div>
             <div className="col-lg-6 grid-margin stretch-card">
-              <div className="card">
+              <div className="card bRadius">
                 <div className="card-body">
                   <h4 className="card-title">Orders</h4>
                   {this.state.orders.map((order) => (
@@ -223,7 +223,7 @@ export class Dashboard extends Component {
           </div>
           <div className="row">
             <div className="col-lg-8 grid-margin stretch-card">
-              <div className="card">
+              <div className="card bRadius">
                 <div className="card-body">
                   <h4 className="card-title">Daily Deals 5</h4>
                   <hr />
@@ -265,7 +265,7 @@ export class Dashboard extends Component {
                 alt="Card image cap"
               /> */}
                 <svg
-                  className="card-img-top"
+                  className="card-img-top bRadius"
                   xmlns="http://www.w3.org/2000/svg"
                   width="370"
                   height="235"
