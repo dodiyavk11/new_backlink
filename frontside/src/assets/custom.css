@@ -15,6 +15,17 @@
     font-named-instance: 'Italic';
     src: url("Inter-italic.var.woff2?v=3.18") format("woff2");
 }
+body
+{
+    background: #f1f5f9 !important;
+    font-family: 'Inter var', Roboto, Helvetica Neue, Arial, sans-serif !important;
+    font-feature-settings: "salt";
+}
+.ordersPage
+{
+    font-family: 'Inter var', Roboto, Helvetica Neue, Arial, sans-serif !important;
+    font-feature-settings: "salt";
+}
 .proCircle {
     width: 50px;
     height: 50px;
@@ -86,8 +97,8 @@
 }
 .navbar .navbar-brand-wrapper .navbar-brand img
 {
-    width: 3.2rem;
-    height: 3.2rem;
+    width: 2.2rem;
+    height: 2.2rem;
 }
 .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini img
 {
@@ -101,6 +112,7 @@
 .sidebar .nav .nav-item .nav-link
 {
     color: rgba(219, 218, 218, 0.7) !important;
+    padding: 0.6rem 0 0.6rem 9px;
 }
 .sidebar .nav .nav-item:hover {
     background: rgba(255, 255, 255, 0.05);    
@@ -144,6 +156,11 @@ spann.createProject
 .form-control, .swal2-modal .swal2-content .swal2-input
 {
     border: 1px solid #dbdada;
+}
+.ordersPage .form-control, .swal2-modal .swal2-content .swal2-input
+{
+    border-color:#ebedf2;
+    padding: 0;
 }
 .text-primary
 {
@@ -290,3 +307,182 @@ html
 {
     flex: 1 1 auto;
 }
+.cRadiusTop
+{
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+.cRadiusBottom
+{
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.notification-icon--fixed {
+    position: relative;
+    color: #222;    
+    background-color: #ff9756;
+    border-radius: 50%;
+    line-height: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin-left: 5px;
+  }
+  .notification-icon--fixed::after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+  }
+  .sidebar .nav .nav-item
+  {
+    border-radius: 6px;
+  }
+  .sidebar.sidebar-offcanvas .nav li
+  {
+    margin-bottom: 7px;
+  }
+  .sidebar .nav:not(.sub-menu)
+  {
+    margin-top: 20px;
+  }
+  .extraLogoText
+  {
+    background-color: #222;
+    padding: 4px;
+    font-size: 12px;
+    color: rgb(97, 218, 251);
+  }
+  .searchWrapper
+  {
+    padding: 9px;
+    width: 75px;
+    padding: 15px;
+  }
+  .css-1r4vtzz,.css-48ayfv
+  {
+    border: 1px solid rgba(0, 0, 0, 0.23) !important;
+    padding: 7px 5px 8px 13px !important;
+    border-radius:20px !important;  
+    margin-right: 12px !important;  
+    color: #222 !important;
+  }
+  .css-1vr111p-option,.css-1qprcsu-option
+  {
+    padding: 18px 18px !important;
+    font-weight: normal !important;
+  }
+  .css-1qprcsu-option:active
+  {
+    background-color:#b4bac166 !important;
+    font-weight:normal !important;
+  }
+  .customSearch
+  {
+    border-top-right-radius: 25px !important;
+    border-bottom-right-radius: 25px !important;
+  }
+  .customSearchIcon
+  {
+    border-bottom-left-radius: 25px !important;
+    border-top-left-radius: 25px !important;
+  }
+  .popover {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-family: 'Inter var', Roboto, Helvetica Neue, Arial, sans-serif !important;
+    font-feature-settings: "salt";
+  }
+  .css-1r4vtzz:hover
+  {
+    border-color:#222 !important;
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 25px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 0px;
+    bottom: 1px;
+    background-color: white;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #ff9756;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #ff9756;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  .bdr
+  {
+    border: 1px solid #e2e8f0;
+    padding: 10px;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  .css-1jllj6i-control:focus, .css-1jllj6i-control:hover
+  {
+    border-color: #222 !important;
+  }
+  .custamFilterBtn
+  {
+    background-color: transparent !important;
+    color: #222;
+    border-color: #222;
+  }
+  .css-11unzgr
+  {
+    max-height: none !important;
+    overflow-y:none !important;
+  }
+  .css-1pcexqc-container
+  {
+    box-shadow: 0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12) !important;
+    border-radius: 10px;
+    padding-top: 5px;
+  }

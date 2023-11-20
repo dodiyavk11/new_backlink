@@ -157,7 +157,7 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               </div>
-              <div className="card bRadius">
+              <div className="card bRadius cRadiusBottom">
                 <div className="card-body dashProHead">
                   <div className="d-flex flex-row justify-content-between">
                     <div className="p-2 bd-highlight d-flex flex-column">
@@ -180,15 +180,16 @@ export class Dashboard extends Component {
                 <DomainComponent key={item.id} item={item} goToProjectViewLink={this.goToProjectViewLink}/>
               ))}
               {!this.state.domains.length && (
-                <div className="card">
-                  <div className="card-body dashboardCard">
+                <div className="card bRadius cRadiusTop">
+                  <div className="card-body dashboardCard mb-2">
                     <h4 className="text-center">No projects yet</h4>
                   </div>
                 </div>
               )}
               {this.state.domains.length > 0 && (
-                <div className="card">
-                  <div className="card-footer text-center">
+                <div className="card bRadius cRadiusTop">
+                  <div className="card-body text-center">
+                    <hr/>
                     <Link to="/projects" className="hrefTitle">
                       View all
                     </Link>
@@ -212,10 +213,13 @@ export class Dashboard extends Component {
                   )}
                 </div>
                 {this.state.orders.length > 0 && (
-                  <div className="card-footer text-center">
-                    <Link to="/basic-ui/buttons" className="hrefTitle">
-                      View all
-                    </Link>
+                  <div className="card bRadius cRadiusTop">                    
+                    <div className="card-body text-center">
+                      <hr/>
+                      <Link to="/basic-ui/buttons" className="hrefTitle">
+                        View all
+                      </Link>
+                    </div>
                   </div>
                 )}
               </div>
@@ -250,15 +254,18 @@ export class Dashboard extends Component {
                     </table>
                   </div>
                 </div>
-                <div className="card-footer text-center">
-                  <Link to="/basic-ui/buttons" className="hrefTitle">
-                    View all
-                  </Link>
-                </div>
+                <div className="card bRadius cRadiusTop">
+                  <div className="card-body text-center">
+                    <hr/>
+                    <Link to="/basic-ui/buttons" className="hrefTitle">
+                      View all
+                    </Link>
+                  </div>
+                  </div>
               </div>
             </div>
             <div className="col-lg-4 grid-margin stretch-card">
-              <div className="card">
+              <div className="card bRadius">
                 {/* <img
                 className="card-img-top"
                 src={require("../../assets/images/demo.svg")}
@@ -369,11 +376,11 @@ export class Dashboard extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="card-footer text-center">
-                  <Link to="/basic-ui/buttons" className="hrefTitle">
-                    Discover more
-                  </Link>
-                </div>
+                  <div className="card-body text-center">
+                    <Link to="/basic-ui/buttons" className="hrefTitle">
+                      Discover more
+                    </Link>
+                  </div>
               </div>
             </div>
           </div>

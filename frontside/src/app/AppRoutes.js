@@ -11,7 +11,7 @@ const ContentLinks = lazy(() => import("./general-pages/ContentLinks"));
 const Buttons = lazy(() => import("./basic-ui/Buttons"));
 const Dropdowns = lazy(() => import("./basic-ui/Dropdowns"));
 const Typography = lazy(() => import("./basic-ui/Typography"));
-const BasicElements = lazy(() => import("./form-elements/BasicElements"));
+const Orders = lazy(() => import("./orders/Orders"));
 const BasicTable = lazy(() => import("./tables/BasicTable"));
 const Mdi = lazy(() => import("./icons/Mdi"));
 const ChartJs = lazy(() => import("./charts/ChartJs"));
@@ -137,7 +137,7 @@ class AppRoutes extends Component {
                   <ProtectedRoute
                     exact
                     path="/orders"
-                    component={BasicElements}
+                    component={Orders}
                     isAuthenticated={this.state.isAuthenticated}
                   />
                   <ProtectedRoute

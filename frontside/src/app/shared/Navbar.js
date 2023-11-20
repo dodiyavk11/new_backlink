@@ -4,7 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import { Trans } from "react-i18next";
 class Navbar extends Component {
   constructor(props) {
-    super(props);    
+    super(props);
     this.state = {
       user: {},
       isAuthenticated: this.props.isAuthenticated,
@@ -12,7 +12,7 @@ class Navbar extends Component {
     this.handleLogouts = this.handleLogouts.bind(this);
   }
 
-  componentDidMount() {   
+  componentDidMount() {
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (userData) {
       this.setState({ user: userData });
@@ -21,24 +21,22 @@ class Navbar extends Component {
   toggleOffcanvas() {
     document.querySelector(".sidebar-offcanvas").classList.toggle("active");
   }
-  handleLogouts = (e) => {     
-    e.preventDefault();    
+  handleLogouts = (e) => {
+    e.preventDefault();
     this.props.handleLogout();
     console.log(this.props.isAuthenticated);
   };
-  render() {    
+  render() {
     const imageUrl = `${process.env.REACT_APP_BASE_URL}/assets/profile/${this.state.user.profile}`;
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-        <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <Link className="navbar-brand brand-logo" to="/">
-            <img src={require("../../assets/images/logo_new.png")} alt="logo"/>
-          </Link>          
+        <div className="text-center navbar-brand-wrapper d-flex justify-content-center">
+          <Link className="navbar-brand brand-logo d-flex justify-content-center" to="/">
+            <div><img src={require("../../assets/images/logo_new.png")} alt="logo" /></div>
+            <div className="text-light align-items-center justify-content-center ml-2"><span className="h6 extraLogoText">Fairlinked</span></div>
+          </Link>
           <Link className="navbar-brand brand-logo-mini" to="/">
-            <img
-              src={require("../../assets/images/logo_new.png")}
-              alt="logo"
-            />
+            <img src={require("../../assets/images/logo_new.png")} alt="logo" />
           </Link>
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-stretch">
@@ -141,7 +139,22 @@ class Navbar extends Component {
             <li className="nav-item">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">
-                  <i className="mdi mdi-bell-outline"></i>
+                  <svg
+                    width={24}
+                    id="bell"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    style={{color:"#707070"}}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                    />
+                  </svg>
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="dropdown-menu navbar-dropdown preview-list">
                   <h6 className="p-3 mb-0">
@@ -215,16 +228,19 @@ class Navbar extends Component {
             </li>
             <li className="nav-item nav-profile">
               <Dropdown alignRight>
-                <Dropdown.Toggle className="nav-link">                  
+                <Dropdown.Toggle className="nav-link">
                   <div className="nav-profile-text">
                     <p className="mb-1 text-black">
                       {this.state.user ? (
                         <Trans>
                           <b className="fontBold500">
                             {this.state.user.firstName}{" "}
-                            {this.state.user.lastName}                            
-                          </b><br/>
-                          <span>{ this.state.user.isAdmin ? 'Admin' : 'User' }</span>
+                            {this.state.user.lastName}
+                          </b>
+                          <br />
+                          <span>
+                            {this.state.user.isAdmin ? "Admin" : "User"}
+                          </span>
                         </Trans>
                       ) : (
                         ""
@@ -233,10 +249,7 @@ class Navbar extends Component {
                   </div>
                   <div className="nav-profile-img">
                     {this.state.user.profile ? (
-                      <img
-                        src={imageUrl}
-                        alt="user"
-                      />
+                      <img src={imageUrl} alt="user" />
                     ) : (
                       <img
                         src={require("../../assets/images/faces/face1.jpg")}
@@ -252,29 +265,29 @@ class Navbar extends Component {
                     href="!#"
                     onClick={(evt) => evt.preventDefault()}
                   >
-                  <i className="mdi mdi-wallet mr-2 text-primary"></i>
-                  <Trans>Payments</Trans>
+                    <i className="mdi mdi-wallet mr-2 text-primary"></i>
+                    <Trans>Payments</Trans>
                   </Dropdown.Item>
                   <Dropdown.Item
                     href="!#"
                     onClick={(evt) => evt.preventDefault()}
                   >
-                  <i className="mdi mdi-account-circle mr-2 text-primary"></i>
-                  <Trans>Profile</Trans>
+                    <i className="mdi mdi-account-circle mr-2 text-primary"></i>
+                    <Trans>Profile</Trans>
                   </Dropdown.Item>
                   <Dropdown.Item
                     href="!#"
                     onClick={(evt) => evt.preventDefault()}
                   >
-                  <i className="mdi mdi-account-check mr-2 text-primary"></i>
-                  <Trans>Account</Trans>
+                    <i className="mdi mdi-account-check mr-2 text-primary"></i>
+                    <Trans>Account</Trans>
                   </Dropdown.Item>
                   <Dropdown.Item
                     href="!#"
                     onClick={(evt) => evt.preventDefault()}
                   >
-                  <i className="mdi mdi-bell-ring mr-2 text-primary"></i>
-                  <Trans>Notification</Trans>
+                    <i className="mdi mdi-bell-ring mr-2 text-primary"></i>
+                    <Trans>Notification</Trans>
                   </Dropdown.Item>
                   <Dropdown.Item onClick={this.handleLogouts}>
                     <i className="mdi mdi-logout mr-2 text-primary"></i>
