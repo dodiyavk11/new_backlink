@@ -8,6 +8,7 @@ import Footer from "./shared/Footer";
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Projects = lazy(() => import("./projects/Projects"));
 const ContentLinks = lazy(() => import("./general-pages/ContentLinks"));
+const ContentLinksHome = lazy(() => import("./contentLinks/ContentLinks"));
 const Buttons = lazy(() => import("./basic-ui/Buttons"));
 const Dropdowns = lazy(() => import("./basic-ui/Dropdowns"));
 const Typography = lazy(() => import("./basic-ui/Typography"));
@@ -118,8 +119,8 @@ class AppRoutes extends Component {
                   />
                   <ProtectedRoute
                     exact
-                    path="/basic-ui/buttons"
-                    component={Buttons}
+                    path="/marketplace/contentlinks"
+                    component={ContentLinksHome}
                     isAuthenticated={this.state.isAuthenticated}
                   />
                   <ProtectedRoute
@@ -148,7 +149,7 @@ class AppRoutes extends Component {
                   />
                   <ProtectedRoute
                     exact
-                    path="/tables/basic-table-2"
+                    path="/marketplace/basic-table-2"
                     component={BasicTable}
                     isAuthenticated={this.state.isAuthenticated}
                   />

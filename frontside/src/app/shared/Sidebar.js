@@ -42,7 +42,7 @@ class Sidebar extends Component {
       { path: "/basic-ui", state: "basicUiMenuOpen" },
       { path: "/advanced-ui", state: "advancedUiMenuOpen" },
       { path: "/form-elements", state: "formElementsMenuOpen" },
-      { path: "/tables", state: "tablesMenuOpen" },
+      { path: "/marketplace", state: "tablesMenuOpen" },
       { path: "/maps", state: "mapsMenuOpen" },
       { path: "/icons", state: "iconsMenuOpen" },
       { path: "/charts", state: "chartsMenuOpen" },
@@ -257,11 +257,11 @@ class Sidebar extends Component {
                   {" "}
                   <Link
                     className={
-                      this.isPathActive("/tables/basic-table")
+                      this.isPathActive("/marketplace/contentlinks")
                         ? "nav-link active"
                         : "nav-link"
                     }
-                    to="/tables/basic-table"
+                    to="/marketplace/contentlinks"
                   >
                     <Trans>Backlinks</Trans>
                   </Link>
@@ -270,11 +270,11 @@ class Sidebar extends Component {
                   {" "}
                   <Link
                     className={
-                      this.isPathActive("/tables/basic-table-2")
+                      this.isPathActive("/marketplace/basic-table-2")
                         ? "nav-link active"
                         : "nav-link"
                     }
-                    to="/tables/basic-table-2"
+                    to="/marketplace/basic-table-2"
                   >
                     <Trans>Link Bundles</Trans>
                   </Link>
