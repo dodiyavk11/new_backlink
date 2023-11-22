@@ -31,9 +31,19 @@ class Navbar extends Component {
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex justify-content-center">
-          <Link className="navbar-brand brand-logo d-flex justify-content-center" to="/">
-            <div><img src={require("../../assets/images/logo_new.png")} alt="logo" /></div>
-            <div className="text-light align-items-center justify-content-center ml-2"><span className="h6 extraLogoText">Fairlinked</span></div>
+          <Link
+            className="navbar-brand brand-logo d-flex justify-content-center"
+            to="/"
+          >
+            <div>
+              <img
+                src={require("../../assets/images/logo_new.png")}
+                alt="logo"
+              />
+            </div>
+            <div className="text-light align-items-center justify-content-center ml-2">
+              <span className="h6 extraLogoText">Fairlinked</span>
+            </div>
           </Link>
           <Link className="navbar-brand brand-logo-mini" to="/">
             <img src={require("../../assets/images/logo_new.png")} alt="logo" />
@@ -146,7 +156,7 @@ class Navbar extends Component {
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    style={{color:"#707070"}}
+                    style={{ color: "#707070" }}
                   >
                     <path
                       strokeLinecap="round"
@@ -261,19 +271,13 @@ class Navbar extends Component {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="navbar-dropdown">
-                  <Dropdown.Item
-                    href="!#"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <i className="mdi mdi-wallet mr-2 text-primary"></i>
-                    <Trans>Payments</Trans>
+                  <Dropdown.Item>
+                    <i className="mdi mdi-wallet mr-2 text-primary"></i>                    
+                    <Link to="/account/payments"><Trans>Payments</Trans></Link>
                   </Dropdown.Item>
-                  <Dropdown.Item
-                    href="!#"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
+                  <Dropdown.Item>
                     <i className="mdi mdi-account-circle mr-2 text-primary"></i>
-                    <Trans>Profile</Trans>
+                    <Link to="/settings/profile"><Trans>Profile</Trans></Link>                    
                   </Dropdown.Item>
                   <Dropdown.Item
                     href="!#"

@@ -9,6 +9,9 @@ const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const Projects = lazy(() => import("./projects/Projects"));
 const ContentLinks = lazy(() => import("./general-pages/ContentLinks"));
 const ContentLinksHome = lazy(() => import("./contentLinks/ContentLinks"));
+const LinkBundles = lazy(() => import("./linkBundle/LinkBundles"));
+const Payments = lazy(() => import("./payments/Payments"));
+const Profile = lazy(() => import("./setting/Profile"));
 const Buttons = lazy(() => import("./basic-ui/Buttons"));
 const Dropdowns = lazy(() => import("./basic-ui/Dropdowns"));
 const Typography = lazy(() => import("./basic-ui/Typography"));
@@ -149,15 +152,21 @@ class AppRoutes extends Component {
                   />
                   <ProtectedRoute
                     exact
-                    path="/marketplace/basic-table-2"
-                    component={BasicTable}
+                    path="/marketplace/linkbundle"
+                    component={LinkBundles}
                     isAuthenticated={this.state.isAuthenticated}
                   />
                   <Route exact path="/icons/mdi" component={Mdi} />
                   <ProtectedRoute
                     exact
-                    path="/charts/chart-js"
-                    component={ChartJs}
+                    path="/account/payments"
+                    component={Payments}
+                    isAuthenticated={this.state.isAuthenticated}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/settings/profile"
+                    component={Profile}
                     isAuthenticated={this.state.isAuthenticated}
                   />
                   <ProtectedRoute

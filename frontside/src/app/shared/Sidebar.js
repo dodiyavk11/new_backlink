@@ -270,11 +270,11 @@ class Sidebar extends Component {
                   {" "}
                   <Link
                     className={
-                      this.isPathActive("/marketplace/basic-table-2")
+                      this.isPathActive("/marketplace/linkbundle")
                         ? "nav-link active"
                         : "nav-link"
                     }
-                    to="/marketplace/basic-table-2"
+                    to="/marketplace/linkbundle"
                   >
                     <Trans>Link Bundles</Trans>
                   </Link>

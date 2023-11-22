@@ -14,6 +14,7 @@ export class ContentLinksHome extends Component {
     super(props);
     this.state = {
       value: "1",
+      qualityfilter: true,
     };
   }
   handleChange = (event, newValue) => {
@@ -21,6 +22,11 @@ export class ContentLinksHome extends Component {
   };
   togglePopover = () => {
     this.setState((prevState) => ({ showPopover: !prevState.showPopover }));
+  };
+  handleCheckboxChange = () => {
+    this.setState((prevState) => ({
+      qualityfilter: !prevState.qualityfilter,
+    }));
   };
   render() {
     const { value } = this.state;
@@ -90,7 +96,11 @@ export class ContentLinksHome extends Component {
                       </Tabs>
                     </Box>
                   </Paper>
-                  <div className={`p-2 bd-highlight d-flex align-items-center justify-content-center ${value === '2' ? 'disabled-div' : ''}`}>
+                  <div
+                    className={`p-2 bd-highlight d-flex align-items-center justify-content-center ${
+                      value === "2" ? "disabled-div" : ""
+                    }`}
+                  >
                     <svg
                       width={20}
                       id="lock-closed"
@@ -128,8 +138,16 @@ export class ContentLinksHome extends Component {
                     <span className="align-items-center ml-1 justify-content-center mr-2 fontSize13">
                       Quality filter
                     </span>
+                    <label className="switch mr-2">
+                      <input
+                        type="checkbox"
+                        checked={this.state.qualityfilter}
+                        onChange={this.handleCheckboxChange}
+                      />
+                      <span className="slider round"></span>
+                    </label>
                     <CPopover
-                      trigger="focus"
+                      // trigger="focus"
                       content={<TableFilter />}
                       placement="bottom"
                     >
@@ -156,10 +174,8 @@ export class ContentLinksHome extends Component {
                 </div>
                 <hr style={{ marginTop: "0rem" }} />
                 <div className="Tabcontent">
-                  {value === "1" && (
-                    <MarketPlace />
-                  )}
-                  {value === "2" && <DailyDeals/>}
+                  {value === "1" && <MarketPlace />}
+                  {value === "2" && <DailyDeals />}
                 </div>
               </div>
             </div>
