@@ -216,7 +216,7 @@ export class Dashboard extends Component {
                   <div className="card bRadius cRadiusTop">                    
                     <div className="card-body text-center">
                       <hr/>
-                      <Link to="/basic-ui/buttons" className="hrefTitle">
+                      <Link to="/orders" className="hrefTitle">
                         View all
                       </Link>
                     </div>

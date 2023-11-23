@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Dropdown } from "react-bootstrap";
-import { Link, withRouter } from "react-router-dom";
+import { Link, NavLink, withRouter } from "react-router-dom";
 import { Trans } from "react-i18next";
 class Navbar extends Component {
   constructor(props) {
@@ -57,95 +57,7 @@ class Navbar extends Component {
           >
             <span className="mdi mdi-menu"></span>
           </button>
-          <ul className="navbar-nav navbar-nav-right">
-            {/* <li className="nav-item">
-              <div>
-                <div style={{cursor:'pointer',color:'#222',lineHeight: '1.5'}}>
-                  <span className="font-bold text-bl-black" style={{fontWeight:'500'}}>$0.0<i style={{color:'#b66dff'}} className="mdi mdi-plus-circle"></i></span>                
-                </div>
-                <span className="text-sm text-bl-dark-gray" style={{color:'#222'}}>Available balance</span>
-                </div>
-            </li> */}
-            {/* <li className="nav-item">
-              <Dropdown alignRight>
-                <Dropdown.Toggle className="nav-link count-indicator">
-                  <i className="mdi mdi-cart-outline"></i>
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu className="preview-list navbar-dropdown">
-                  <h6 className="p-3 mb-0">
-                    <Trans>Messages</Trans>
-                  </h6>
-                  <div className="dropdown-divider"></div>
-                  <Dropdown.Item
-                    className="dropdown-item preview-item"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <div className="preview-thumbnail">
-                      <img
-                        src={require("../../assets/images/faces/face4.jpg")}
-                        alt="user"
-                        className="profile-pic"
-                      />
-                    </div>
-                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal">
-                        <Trans>Mark send you a message</Trans>
-                      </h6>
-                      <p className="text-gray mb-0">
-                        1 <Trans>Minutes ago</Trans>
-                      </p>
-                    </div>
-                  </Dropdown.Item>
-                  <div className="dropdown-divider"></div>
-                  <Dropdown.Item
-                    className="dropdown-item preview-item"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <div className="preview-thumbnail">
-                      <img
-                        src={require("../../assets/images/faces/face2.jpg")}
-                        alt="user"
-                        className="profile-pic"
-                      />
-                    </div>
-                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal">
-                        <Trans>Cregh send you a message</Trans>
-                      </h6>
-                      <p className="text-gray mb-0">
-                        15 <Trans>Minutes ago</Trans>
-                      </p>
-                    </div>
-                  </Dropdown.Item>
-                  <div className="dropdown-divider"></div>
-                  <Dropdown.Item
-                    className="dropdown-item preview-item"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <div className="preview-thumbnail">
-                      <img
-                        src={require("../../assets/images/faces/face3.jpg")}
-                        alt="user"
-                        className="profile-pic"
-                      />
-                    </div>
-                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal">
-                        <Trans>Profile picture updated</Trans>
-                      </h6>
-                      <p className="text-gray mb-0">
-                        18 <Trans>Minutes ago</Trans>
-                      </p>
-                    </div>
-                  </Dropdown.Item>
-                  <div className="dropdown-divider"></div>
-                  <h6 className="p-3 mb-0 text-center cursor-pointer">
-                    4 <Trans>new messages</Trans>
-                  </h6>
-                </Dropdown.Menu>
-              </Dropdown>
-            </li> */}
+          <ul className="navbar-nav navbar-nav-right">            
             <li className="nav-item">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">
@@ -265,34 +177,38 @@ class Navbar extends Component {
                         src={require("../../assets/images/faces/face1.jpg")}
                         alt="user"
                       />
-                    )}
-                    {/* <span className="availability-status online"></span> */}
+                    )}                   
                   </div>
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="navbar-dropdown">
-                  <Dropdown.Item>
-                    <i className="mdi mdi-wallet mr-2 text-primary"></i>                    
-                    <Link to="/account/payments"><Trans>Payments</Trans></Link>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
+                  {/* <Dropdown.Item> */}
+
+                  <Link to="/account/payments" className="dropdown-item">
+                    <i className="mdi mdi-wallet mr-2 text-primary"></i>
+                    <Trans>Payments</Trans>
+                  </Link>
+                  {/* </Dropdown.Item> */}
+                  {/* <Dropdown.Item onClick={(evt) => evt.preventDefault()}> */}
+                  <Link to="/settings/profile" className="dropdown-item">
                     <i className="mdi mdi-account-circle mr-2 text-primary"></i>
-                    <Link to="/settings/profile"><Trans>Profile</Trans></Link>                    
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    href="!#"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
+                    <Trans>Profile</Trans>
+                  </Link>
+                  {/* </Dropdown.Item> */}
+                  {/* <Dropdown.Item onClick={(evt) => evt.preventDefault()}> */}
+                  {/* <i className="mdi mdi-account-check mr-2 text-primary"></i> */}
+                  <Link to="/settings/account" className="dropdown-item">
                     <i className="mdi mdi-account-check mr-2 text-primary"></i>
                     <Trans>Account</Trans>
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    href="!#"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
+                  </Link>
+                  {/* </Dropdown.Item> */}
+                  {/* <Dropdown.Item onClick={(evt) => evt.preventDefault()}> */}
+                  {/* <i className="mdi mdi-bell-ring mr-2 text-primary"></i> */}
+                  <Link to="/settings/notifications" className="dropdown-item">
                     <i className="mdi mdi-bell-ring mr-2 text-primary"></i>
                     <Trans>Notification</Trans>
-                  </Dropdown.Item>
+                  </Link>
+                  {/* </Dropdown.Item> */}
                   <Dropdown.Item onClick={this.handleLogouts}>
                     <i className="mdi mdi-logout mr-2 text-primary"></i>
                     <Trans>Log out</Trans>

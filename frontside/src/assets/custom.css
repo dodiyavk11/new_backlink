@@ -197,11 +197,11 @@ spann.createProject
 }
 .customText
 {
-    font-size: 12px;
+    font-size: 12px !important;
 }
 .customText2
 {
-    font-size: 14px;
+    font-size: 14px !important;
 }
 .projectsCard
 {
@@ -255,7 +255,7 @@ html
 }
 .fontBold500
 {
-    font-weight: 500;
+    font-weight: 500 !important;
 }
 .fontBold400
 {
@@ -279,7 +279,7 @@ html
 }
 .bRadius
 {
-    border-radius: 16px;
+    border-radius: 16px !important;
 }
 .blRadius
 {
@@ -869,4 +869,16 @@ span.psale
 }
 .settingPage .MuiTab-root {
     min-width: 80px !important;
+}
+.MuiPaper-root.MuiCard-root.MuiPaper-outlined.MuiPaper-rounded
+{
+    border-radius: 16px;
+}
+.textColorCls
+{
+    color:  rgb(255, 151, 86) !important;
+}
+.notificationTab .form-group
+{
+    margin-bottom: 0.000rem;
 }

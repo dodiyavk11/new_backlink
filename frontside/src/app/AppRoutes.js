@@ -12,18 +12,9 @@ const ContentLinksHome = lazy(() => import("./contentLinks/ContentLinks"));
 const LinkBundles = lazy(() => import("./linkBundle/LinkBundles"));
 const Payments = lazy(() => import("./payments/Payments"));
 const Profile = lazy(() => import("./setting/Profile"));
-const Buttons = lazy(() => import("./basic-ui/Buttons"));
-const Dropdowns = lazy(() => import("./basic-ui/Dropdowns"));
-const Typography = lazy(() => import("./basic-ui/Typography"));
 const Orders = lazy(() => import("./orders/Orders"));
-const BasicTable = lazy(() => import("./tables/BasicTable"));
-const Mdi = lazy(() => import("./icons/Mdi"));
-const ChartJs = lazy(() => import("./charts/ChartJs"));
-const Error404 = lazy(() => import("./error-pages/Error404"));
-const Error500 = lazy(() => import("./error-pages/Error500"));
 const Login = lazy(() => import("./user-pages/Login"));
 const Register = lazy(() => import("./user-pages/Register"));
-const Lockscreen = lazy(() => import("./user-pages/Lockscreen"));
 const BlankPage = lazy(() => import("./general-pages/BlankPage"));
 
 class AppRoutes extends Component {
@@ -128,26 +119,8 @@ class AppRoutes extends Component {
                   />
                   <ProtectedRoute
                     exact
-                    path="/basic-ui/dropdowns"
-                    component={Dropdowns}
-                    isAuthenticated={this.state.isAuthenticated}
-                  />
-                  <ProtectedRoute
-                    exact
-                    path="/basic-ui/typography"
-                    component={Typography}
-                    isAuthenticated={this.state.isAuthenticated}
-                  />
-                  <ProtectedRoute
-                    exact
                     path="/orders"
                     component={Orders}
-                    isAuthenticated={this.state.isAuthenticated}
-                  />
-                  <ProtectedRoute
-                    exact
-                    path="/tables/basic-table"
-                    component={BasicTable}
                     isAuthenticated={this.state.isAuthenticated}
                   />
                   <ProtectedRoute
@@ -156,7 +129,6 @@ class AppRoutes extends Component {
                     component={LinkBundles}
                     isAuthenticated={this.state.isAuthenticated}
                   />
-                  <Route exact path="/icons/mdi" component={Mdi} />
                   <ProtectedRoute
                     exact
                     path="/account/payments"
@@ -171,28 +143,16 @@ class AppRoutes extends Component {
                   />
                   <ProtectedRoute
                     exact
-                    path="/user-pages/lockscreen"
-                    component={Lockscreen}
+                    path="/settings/account"
+                    component={Profile}
                     isAuthenticated={this.state.isAuthenticated}
                   />
                   <ProtectedRoute
                     exact
-                    path="/error-pages/error-404"
-                    component={Error404}
+                    path="/settings/notifications"
+                    component={Profile}
                     isAuthenticated={this.state.isAuthenticated}
-                  />
-                  <ProtectedRoute
-                    exact
-                    path="/error-pages/error-500"
-                    component={Error500}
-                    isAuthenticated={this.state.isAuthenticated}
-                  />
-                  <ProtectedRoute
-                    exact
-                    path="/general-pages/blank-page"
-                    component={BlankPage}
-                    isAuthenticated={this.state.isAuthenticated}
-                  />                  
+                  />               
                   <ProtectedRoute
                     exact
                     path="/order/:order_id"
