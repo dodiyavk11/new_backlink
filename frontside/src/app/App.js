@@ -34,6 +34,7 @@ class App extends Component {
     const fullPageLayoutRoutes = [
       "/login",
       "/register",
+      "/forgot-password",
     ];
     for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
       if (this.props.location.pathname === fullPageLayoutRoutes[i]) {

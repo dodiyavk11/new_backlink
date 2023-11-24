@@ -5,12 +5,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthService from "../services/auth.service";
 import "../../assets/custom.css";
-export class Login extends Component {
+export class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: "",
       error: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,54 +21,9 @@ export class Login extends Component {
   };
   postLoginDetails = () => {
     const { email, password } = this.state;
-    if (!password || !email) {
+    if (!email) {
       this.setState({ error: "Email and Password are required fields." });
     } else {
-      AuthService.login(email, password).then(
-        () => {
-          this.props.handleLoginSuccess();
-          // this.props.router.navigate("/dashboard");
-          // this.props.history.push('/dashboard');
-          // window.location.reload();
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          toast.error(resMessage, {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
-      );
-      // fetch("http://localhost:3000/signin", {
-      //   method: "POST",
-      //   body: JSON.stringify({
-      //     email: email,
-      //     password: password,
-      //   }),
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     if (!data.status) {
-      //       toast.error(data.message, {
-      //         position: "top-center",
-      //         autoClose: 2000,
-      //       });
-      //     } else {
-      //       localStorage.setItem("email", data.data.email);
-      //       localStorage.setItem("token", data.token);
-      //       localStorage.setItem("userData", JSON.stringify(data.data));
-      //       window.location.reload();
-      //     }
-      //   })
-      //   .catch((err) => console.error(err));
     }
   };
   handleInputChange = (e) => {
@@ -97,8 +51,7 @@ export class Login extends Component {
                   />
                 </div>
                 <div className="text-center">
-                  <h3 className="fontBold800 latterSpace-0025">Sign in</h3>
-                  <span className="text-sm">Great to have you back.</span>
+                  <h3 className="fontBold800 latterSpace-0025">Forgot Password</h3>
                 </div>
                 <Form className="pt-3" onSubmit={this.handleSubmit}>
                   <Form.Group className="d-flex search-field">
@@ -112,42 +65,19 @@ export class Login extends Component {
                       onChange={this.handleInputChange}
                     />
                   </Form.Group>
-                  <Form.Group className="d-flex search-field">
-                    <Form.Control
-                      type="password"
-                      placeholder="Password"
-                      size="lg"
-                      name="password"
-                      className="h-auto"
-                      value={password}
-                      onChange={this.handleInputChange}
-                    />
-                  </Form.Group>
                   {error && <p className="text-danger">{error}</p>}
-                  <div className="my-2 d-flex justify-content-between align-items-center">
-                    <div className="form-check">
-                      <label className="form-check-label text-muted">
-                        <input type="checkbox" className="form-check-input" />
-                        <i className="input-helper"></i>
-                        Keep me signed in
-                      </label>
-                    </div>
-                    <Link to="/forgot-password" className="text-primary">
-                      Forgot password?
-                    </Link>
-                  </div>
                   <div className="mt-3">
                     <button
                       type="submit"
                       className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
                     >
-                      SIGN IN
+                     Send
                     </button>
                   </div>
                   <div className="text-center mt-4 fontBold400">
-                    Don't have an account?{" "}
-                    <Link to="/register" className="text-primary">
-                      Sign up
+                    Already have an account?{" "}
+                    <Link to="/login" className="text-primary">
+                      Login
                     </Link>
                   </div>
                 </Form>
@@ -171,4 +101,4 @@ export class Login extends Component {
   }
 }
 
-export default withRouter(Login);
+export default withRouter(ForgotPassword);

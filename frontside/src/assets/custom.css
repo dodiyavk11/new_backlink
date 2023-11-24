@@ -880,5 +880,5 @@ span.psale
 }
 .notificationTab .form-group
 {
-    margin-bottom: 0.000rem;
+    margin-bottom: 0.000rem !important;
 }

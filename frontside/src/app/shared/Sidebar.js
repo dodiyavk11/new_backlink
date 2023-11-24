@@ -5,11 +5,11 @@ import { Trans } from "react-i18next";
 
 class Sidebar extends Component {
   constructor(props) {
-    super(props);    
+    super(props);
     this.state = {
       user: {},
       isAuthenticated: this.props.isAuthenticated,
-    };    
+    };
   }
 
   toggleMenuState(menuState) {
@@ -25,7 +25,7 @@ class Sidebar extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {    
+  componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
       this.onRouteChanged();
     }
@@ -170,10 +170,91 @@ class Sidebar extends Component {
           </li>
           <li
             className={
-              this.isPathActive("/users") ? "nav-item active" : "nav-item"
+              this.isPathActive("/admin/orders") ? "nav-item active" : "nav-item"
             }
           >
-            <Link className="nav-link" to="/orders">
+            <Link className="nav-link" to="/admin/orders">
+              <svg
+                width={24}
+                className="mr-3"
+                id="newspaper"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                />
+              </svg>
+              <span className="menu-title">
+                <Trans>Orders(Admin)</Trans>
+              </span>
+            </Link>
+          </li>
+          <li
+            className={
+              this.isPathActive("/admin/contentlinks") ? "nav-item active" : "nav-item"
+            }
+          >
+            <Link className="nav-link" to="/admin/contentlinks">
+              <svg
+                width={24}
+                className="mr-3"
+                id="newspaper"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                />
+              </svg>
+              <span className="menu-title">
+                <Trans>Backlinks(Admin)</Trans>
+              </span>
+            </Link>
+          </li>
+          <li
+            className={
+              this.isPathActive("/admin/projects") ? "nav-item active" : "nav-item"
+            }
+          >
+            <Link className="nav-link" to="/admin/projects">
+              <svg
+                width="24"
+                className="mr-3"
+                id="clipboard-check"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                />
+              </svg>
+              <span className="menu-title">
+                <Trans>Projects(Admin)</Trans>
+              </span>
+            </Link>
+          </li>
+          <li
+            className={
+              this.isPathActive("/admin/users") ? "nav-item active" : "nav-item"
+            }
+          >
+            <Link className="nav-link" to="/admin/users">
               <svg
                 width={24}
                 className="mr-3"
@@ -191,16 +272,16 @@ class Sidebar extends Component {
                 />
               </svg>
               <span className="menu-title">
-                <Trans>Users</Trans>
+                <Trans>Users(Admin)</Trans>
               </span>
             </Link>
           </li>
           <li
             className={
-              this.isPathActive("/users") ? "nav-item active" : "nav-item"
+              this.isPathActive("/admin/plan") ? "nav-item active" : "nav-item"
             }
           >
-            <Link className="nav-link" to="/orders">
+            <Link className="nav-link" to="/admin/plan">
               <svg
                 id="local_play"
                 fill="#a2adb1"
@@ -212,7 +293,7 @@ class Sidebar extends Component {
                 <path d="M22 10V6c0-1.1-.9-2-2-2H4c-1.1 0-1.99.9-1.99 2v4c1.1 0 1.99.9 1.99 2s-.89 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2s.9-2 2-2zm-2-1.46c-1.19.69-2 1.99-2 3.46s.81 2.77 2 3.46V18H4v-2.54c1.19-.69 2-1.99 2-3.46 0-1.48-.8-2.77-1.99-3.46L4 6h16v2.54zM9.07 16L12 14.12 14.93 16l-.89-3.36 2.69-2.2-3.47-.21L12 7l-1.27 3.22-3.47.21 2.69 2.2z" />
               </svg>
               <span className="menu-title">
-                <Trans>Plan</Trans>
+                <Trans>Plan(Admin)</Trans>
               </span>
             </Link>
           </li>
@@ -253,7 +334,13 @@ class Sidebar extends Component {
             </div>
             <Collapse in={this.state.tablesMenuOpen}>
               <ul className="nav flex-column sub-menu">
-                <li className="nav-item">
+                <li
+                  className={
+                    this.isPathActive("/marketplace/contentlinks")
+                      ? "nav-item active"
+                      : "nav-item"
+                  }
+                >
                   {" "}
                   <Link
                     className={
@@ -266,7 +353,13 @@ class Sidebar extends Component {
                     <Trans>Backlinks</Trans>
                   </Link>
                 </li>
-                <li className="nav-item">
+                <li
+                  className={
+                    this.isPathActive("/marketplace/linkbundle")
+                      ? "nav-item active"
+                      : "nav-item"
+                  }
+                >
                   {" "}
                   <Link
                     className={
