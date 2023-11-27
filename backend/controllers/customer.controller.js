@@ -154,6 +154,7 @@ exports.getProjects = async(req, res) => {
 
 exports.setting = async (req, res) => {
   try {
+  	const userId = req.userId;
     const { q } = req.query;
     const baseQuery = {
       include: [
@@ -165,14 +166,14 @@ exports.setting = async (req, res) => {
       ],
     };
 
-    const setting = await Models.Setting.findAll(baseQuery);
+    const setting = await Models.Setting.findOne({ where: { user_id:userId }, ...baseQuery});
 
-    const settingsData = setting.map((val) => {
-      const settingData = val.dataValues;
-      return settingData;
-    });
+    // const settingsData = setting.map((val) => {
+    //   const settingData = val.dataValues;
+    //   return settingData;
+    // });
 
-    res.status(200).send({ status: true, message: "Setting fetched successfully", data: settingsData });
+    res.status(200).send({ status: true, message: "Setting fetched successfully", data: setting });
   } catch (err) {
     console.error(err);
     res.status(500).send({ status: false, message: "Unable to fetch Setting, Please try again later.", data: [], error: err.message });

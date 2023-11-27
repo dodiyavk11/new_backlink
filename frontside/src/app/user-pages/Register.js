@@ -52,15 +52,18 @@ export class Register extends Component {
             toast.error(res.data.message, {
               position: "top-center",
               autoClose: 2000,
-            });
+            });            
           } else {
             toast.success(res.data.message, {
               position: "top-center",
               autoClose: 2000,
-              onClose: () => {
-                window.location.reload();
-              },
+              // onClose: () => {
+              //   window.location.reload();
+              // },
             });
+            setTimeout(() => {
+              this.props.history.push("/login");
+            }, 2000);
           }
         })
         .catch((err) => {
@@ -142,7 +145,7 @@ export class Register extends Component {
                       onChange={this.handleInputChange}
                       name="password"
                       type="password"
-                      minlength="8"
+                      minLength="8"
                       className="form-control form-control-lg"
                       id="exampleInputPassword1"
                       placeholder="Password *"

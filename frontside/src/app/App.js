@@ -35,7 +35,19 @@ class App extends Component {
       "/login",
       "/register",
       "/forgot-password",
+      "/forgotPassword/:token",
     ];
+    const { location } = this.props;
+    const forgotPasswordPattern = /^\/forgotPassword\/[a-zA-Z0-9._-]+$/;
+    const isForgotPasswordTokenPath = forgotPasswordPattern.test(
+      location.pathname
+    );
+
+    const verifyEmailPattern = /^\/verify\/email\/[a-zA-Z0-9._-]+$/;
+    const isVerifyEmail = verifyEmailPattern.test(
+      location.pathname
+    );
+
     for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
       if (this.props.location.pathname === fullPageLayoutRoutes[i]) {
         this.setState({
@@ -53,6 +65,15 @@ class App extends Component {
           .querySelector(".page-body-wrapper")
           .classList.remove("full-page-wrapper");
       }
+    }
+    if(isForgotPasswordTokenPath || isVerifyEmail)
+    {
+      this.setState({
+        isFullPageLayout: true,
+      });
+      document
+        .querySelector(".page-body-wrapper")
+        .classList.add("full-page-wrapper");
     }
   }
 }

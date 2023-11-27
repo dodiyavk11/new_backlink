@@ -2,6 +2,7 @@ import React, { Component, Suspense, lazy } from "react";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import ProtectedRoute from "../app/ProtectedRoute";
 import AdminProtected from "../app/AdminProtected";
+import AuthProtected from "../app/AuthProtected";
 import Spinner from "../app/shared/Spinner";
 import Navbar from "./shared/Navbar";
 import Sidebar from "./shared/Sidebar";
@@ -23,45 +24,63 @@ const AdminOrders = lazy(() => import("./admin/orders/AdminOrders"));
 const Plan = lazy(() => import("./admin/plan/Plan"));
 const AdminContentLinks = lazy(() => import("./admin/contentLinks/ContentLinks"));
 const AdminProjects = lazy(() => import("./admin/projects/Projects"));
-const ForgotPassword = lazy(() => import("./user-pages/ForgotPassword"))
+const ForgotPassword = lazy(() => import("./user-pages/ForgotPassword"));
+const ChangePasswordViaLink = lazy(() => import("./user-pages/ChangePasswordViaLink"));
+const VerifyEmail = lazy(() => import("./user-pages/VerifyEmail"));
+
 class AppRoutes extends Component {
   constructor(props) {
     super(props);
     const token = localStorage.getItem("token");
+    const isAdmin = localStorage.getItem("isAdmin");
     this.state = {
       isAuthenticated: !!token,
-      isAdmin:null,
+      isAdmin: isAdmin,
     };
   }
   handleLoginSuccess = () => {
+    const isAdmin = localStorage.getItem("isAdmin");
     this.setState(
       {
         isAuthenticated: true,
+        isAdmin: isAdmin,
       },
       () => {
-        const userdata = JSON.parse(localStorage.getItem("userData"));
-        const isAdmin = userdata.isAdmin;
-        this.setState({ isAdmin:isAdmin })
-        // if(isAdmin)
-        // {
-        //   this.props.history.push("/admin/dashboard");
-        // }
-        // else{
-        //   this.props.history.push("/dashboard");
-        // }
+        if (isAdmin === "1") {
+          this.props.history.push("/admin/dashboard");
+        } else {
           this.props.history.push("/dashboard");
+        }
+        // this.props.history.push("/dashboard");
       }
     );
     // window.location.reload();
   };
+  
   isLoginPageOrRegister = () => {
     const { location } = this.props;
-    return location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/forgot-password";
+    const forgotPasswordPattern = /^\/forgotPassword\/[a-zA-Z0-9._-]+$/;
+    const isForgotPasswordTokenPath = forgotPasswordPattern.test(
+      location.pathname
+    );
+
+    const verifyEmailPattern = /^\/verify\/email\/[a-zA-Z0-9._-]+$/;
+    const isVerifyEmail = verifyEmailPattern.test(
+      location.pathname
+    );
+    return (
+      location.pathname === "/login" ||
+      location.pathname === "/register" ||
+      location.pathname === "/forgot-password" ||
+      isForgotPasswordTokenPath || isVerifyEmail
+    );
   };
   handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("userData");
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("isLoggedIn");
     this.setState({
       isAuthenticated: false,
     });
@@ -79,7 +98,10 @@ class AppRoutes extends Component {
       );
     let sidebarComponent =
       !this.isLoginPageOrRegister() && !this.state.isFullPageLayout ? (
-        <Sidebar />
+        <Sidebar
+          isAuthenticated={this.state.isAuthenticated}
+          isAdmin={this.state.isAdmin}
+        />
       ) : (
         ""
       );
@@ -93,131 +115,166 @@ class AppRoutes extends Component {
             <div className="content-wrapper">
               <Suspense fallback={<Spinner />}>
                 <Switch>
-                  <Route
+                  {/* <Route
                     path="/login"
                     render={(props) =>
                       this.state.isAuthenticated ? (
-                        <Redirect to="/dashboard" />
+                        this.state.isAdmin ? (
+                          <Redirect to="/admin/dashboard" />
+                        ) : (
+                          <Redirect to="/dashboard" />
+                        )
                       ) : (
-                        // <Route path="/login" component={(props) => <Login {...props} handleLoginSuccess={this.handleLoginSuccess} />} />
                         <Login
                           {...props}
                           handleLoginSuccess={this.handleLoginSuccess}
                         />
                       )
                     }
+                  /> */}
+                  <Route
+                    path="/login"
+                    render={(props) => (
+                      <Login
+                        {...props}
+                        handleLoginSuccess={this.handleLoginSuccess}
+                      />
+                    )}
                   />
+
                   <Route path="/register" component={Register} />
                   <Route path="/forgot-password" component={ForgotPassword} />
+                  <Route path="/forgotPassword/:token" component={ChangePasswordViaLink} />
+                  <Route path="/verify/email/:token" component={VerifyEmail} />
+
                   <ProtectedRoute
                     exact
                     path="/dashboard"
                     component={Dashboard}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
-                  <ProtectedRoute
-                    exact
-                    path="/admin/dashboard"
-                    component={AdminDashboard}
-                    isAuthenticated={this.state.isAuthenticated}
-                  />
+
                   <ProtectedRoute
                     exact
                     path="/content/:hash_id"
                     component={ContentLinks}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
                   <ProtectedRoute
                     exact
                     path="/projects"
                     component={Projects}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
                   <ProtectedRoute
                     exact
                     path="/projects/:hash_id"
                     component={BlankPage}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
                   <ProtectedRoute
                     exact
                     path="/marketplace/contentlinks"
                     component={ContentLinksHome}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
                   <ProtectedRoute
                     exact
                     path="/orders"
                     component={Orders}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
                   <ProtectedRoute
                     exact
                     path="/marketplace/linkbundle"
                     component={LinkBundles}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
                   <ProtectedRoute
                     exact
                     path="/account/payments"
                     component={Payments}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
-                  <ProtectedRoute
+                  <AuthProtected
                     exact
                     path="/settings/profile"
                     component={Profile}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
-                  <ProtectedRoute
+                  <AuthProtected
                     exact
                     path="/settings/account"
                     component={Profile}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
-                  <ProtectedRoute
+                  <AuthProtected
                     exact
                     path="/settings/notifications"
                     component={Profile}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
                   <ProtectedRoute
                     exact
                     path="/order/:order_id"
                     component={BlankPage}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
 
-                  <ProtectedRoute
+                  <AdminProtected
+                    exact
+                    path="/admin/dashboard"
+                    component={AdminDashboard}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  <AdminProtected
                     exact
                     path="/admin/users"
                     component={Users}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
-                  <ProtectedRoute
+                  <AdminProtected
                     exact
                     path="/admin/plan"
                     component={Plan}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
 
-                  <ProtectedRoute
+                  <AdminProtected
                     exact
                     path="/admin/orders"
                     component={AdminOrders}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
-                  <ProtectedRoute
+                  <AdminProtected
                     exact
                     path="/admin/contentlinks"
                     component={AdminContentLinks}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
-                  <ProtectedRoute
+                  <AdminProtected
                     exact
                     path="/admin/projects"
                     component={AdminProjects}
                     isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
                   {/* <Route path="/login" component={ Login } /> */}
                   {/* <Route path="/login" component={(props) => <Login {...props} handleLoginSuccess={this.handleLoginSuccess} />} /> */}

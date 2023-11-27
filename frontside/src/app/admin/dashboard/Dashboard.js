@@ -132,7 +132,7 @@ export class Dashboard extends Component {
           </Modal>
           <ToastContainer />
           <div className="page-header">
-            <h3 className="fontBold latterSpacing">Dashboard(U)</h3>
+            <h3 className="fontBold latterSpacing">Dashboard(A)</h3>
           </div>
           <div className="row">
             <div className="col-lg-6 grid-margin">

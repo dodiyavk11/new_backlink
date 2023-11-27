@@ -1,5 +1,6 @@
 require("dotenv").config()
 const Models = require("../models");
+const nodemailer = require('nodemailer');
 // const { decodeJWTToken } = require("../utils/jwtUtils");
 const { sendVerifyMail, emailTemplate,sendWelcomEmailWithAttachement } = require("../utils/emailsUtils")
 const { generateJWTToken, decodeJWTToken } = require("../utils/jwtUtils")
@@ -27,6 +28,31 @@ exports.VerifyEmail = async (req, res) => {
     {
         sendVerifyMail(email, subject, "", mail)
     }
+
+    /* dummy email start*/
+        var transport = nodemailer.createTransport({
+          host: "sandbox.smtp.mailtrap.io",
+          port: 2525,
+          auth: {
+            user: "5486eff1d5793c",
+            pass: "e17b0b8e8f08ac"
+          }
+        });
+
+        const mailOptions = {
+          from: 'rjnaghera@gmail.com',
+          to: email,
+          subject: subject,
+          text: mail,
+        };
+                transport.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+        /* dummy email end*/
     res.json({message:"Email Verify Success."});
     // res.status(200).send({ status: true, message: " Email verfiyed success and Welcome email send", data: [] })
   } catch (err) {    

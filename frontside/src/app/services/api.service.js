@@ -1,7 +1,7 @@
 import axios from "axios";
 const APP_URL = "http://localhost:3000/";
+// const APP_URL = "http://fairlinked.bestprojectmanagementtool.com/backend/";
 class ApiServices {
-  APP_URL = "http://localhost:3000";
   getDashboard() {
     const authToken = localStorage.getItem("token");
     return axios.get(APP_URL + "user/dashboard", {
@@ -23,6 +23,17 @@ class ApiServices {
     return axios
       .get(APP_URL + "user/projects",{
         headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+  getNotificationSetting()
+  {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(APP_URL + "user/setting",{
+        headers: { Authorization: `Bearer ${authToken}`}
       })
       .then((response) => {
         return response;

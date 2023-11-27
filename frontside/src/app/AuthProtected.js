@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import "../../src/assets/custom.css";
-const ProtectedRoute = ({
+const AuthProtected = ({
   component: Component,
   isAuthenticated,
   isAdmin,
@@ -10,7 +10,7 @@ const ProtectedRoute = ({
   <Route
     {...rest}
     render={(props) =>
-      isAuthenticated && isAdmin === "0" ? (
+      isAuthenticated ? (
         <Component {...props} />
       ) : (
         <Redirect to="/login" />
@@ -23,4 +23,4 @@ const ProtectedRoute = ({
   />
 );
 
-export default ProtectedRoute;
+export default AuthProtected;

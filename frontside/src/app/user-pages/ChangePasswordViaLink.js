@@ -5,34 +5,43 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthService from "../services/auth.service";
 import "../../assets/custom.css";
-export class ForgotPassword extends Component {
+export class ChangePasswordViaLink extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
+      password: "",
+      cPassword: "",
       error: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
   handleSubmit = (e) => {
-    e.preventDefault();
-    this.postLoginDetails();
+    e.preventDefault();    
+    const { password, cPassword } = this.state;
+    if (!password || !cPassword) {
+      this.setState({ error: "Password and Confirm Password are required fields." });
+    } else if (password !== cPassword) {
+      this.setState({ error: "Password and Confirm Password do not match." });
+    } else {    
+      this.postChnagePasswordDetails();
+    }    
   };
-  postLoginDetails = () => {
-    const { email } = this.state;
-    if (!email) {
-      this.setState({ error: "Email are required fields." });
-    } else {
-      AuthService.forgotPasswordLinkGenerate(email).then(
+  postChnagePasswordDetails = () => {
+    const { match } = this.props;
+    const token = match.params.token;
+    const { password,cPassword } = this.state;    
+      AuthService.tokenToChangePassword(password,token).then(
         (res) => {
-          console.log(res)
           if(res.data.status)
-          {
+          {            
             toast.success(res.data.message, {
               position: "top-center",
               autoClose: 2000,
             });
+            setTimeout(() => {
+              this.props.history.push("/login");
+            }, 2000);
           }          
         },
         (error) => {
@@ -42,13 +51,21 @@ export class ForgotPassword extends Component {
               error.response.data.message) ||
             error.message ||
             error.toString();
-          toast.error(resMessage, {
-            position: "top-center",
-            autoClose: 2000,
-          });
+            if(error.response.data.error === "jwt expired")
+            {
+              toast.error("Your link expired", {
+                position: "top-center",
+                autoClose: 2000,
+              });
+            }
+            else{
+              toast.error(resMessage, {
+                position: "top-center",
+                autoClose: 2000,
+              });
+            }          
         }
       );
-    }
   };
   handleInputChange = (e) => {
     this.setState({
@@ -60,7 +77,7 @@ export class ForgotPassword extends Component {
     this.props.history.push("/register");
   };
   render() {
-    const { password, email, error } = this.state;
+    const { password,cPassword, error } = this.state;
     return (
       <div className="">
         <div className="d-flex align-items-center auth px-0 bgColor">
@@ -76,18 +93,29 @@ export class ForgotPassword extends Component {
                 </div>
                 <div className="text-center">
                   <h3 className="fontBold800 latterSpace-0025">
-                    Forgot Password
+                    Chnage password
                   </h3>
                 </div>
                 <Form className="pt-3" onSubmit={this.handleSubmit}>
                   <Form.Group className="d-flex search-field">
                     <Form.Control
-                      type="email"
-                      placeholder="Email"
+                      type="password"
+                      placeholder="New password"
                       size="lg"
-                      name="email"
+                      name="password"
                       className="h-auto"
-                      value={email}
+                      value={password}
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group className="d-flex search-field">
+                    <Form.Control
+                      type="password"
+                      placeholder="Confirm password"
+                      size="lg"
+                      name="cPassword"
+                      className="h-auto"
+                      value={cPassword}
                       onChange={this.handleInputChange}
                     />
                   </Form.Group>
@@ -97,11 +125,10 @@ export class ForgotPassword extends Component {
                       type="submit"
                       className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
                     >
-                      Send
+                      Change
                     </button>
                   </div>
                   <div className="text-center mt-4 fontBold400">
-                    Already have an account?{" "}
                     <Link to="/login" className="text-primary">
                       Login
                     </Link>
@@ -127,4 +154,4 @@ export class ForgotPassword extends Component {
   }
 }
 
-export default withRouter(ForgotPassword);
+export default withRouter(ChangePasswordViaLink);

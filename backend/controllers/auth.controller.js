@@ -1,6 +1,7 @@
 require("dotenv").config()
 const Models = require("../models")
 const bcrypt = require("bcryptjs")
+const nodemailer = require('nodemailer');
 const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils")
 const { generateJWTToken, decodeJWTToken } = require("../utils/jwtUtils")
 const { unlinkProfile } = require("../utils/deleteFile")
@@ -42,11 +43,36 @@ exports.signUp = async (req, res) => {
             text = text.replace("{user_name}", firstName+" "+ lastName);
             text = text.replace("{user_email}", email);
             const EmailToken = generateJWTToken({ email: addUser.dataValues.email }, "10m")
-            const VerificationLink = `<a href="${process.env.BASE_URL}/verify/email/${EmailToken}">Click here</a>`
+            const VerificationLink = `<a href="${process.env.BASE_URL}/verify/email/${EmailToken}" target="_blank">Click here</a>`
             console.log(VerificationLink);
             text = text.replace("{verification_Link}", VerificationLink)
             const mail = await emailTemplate(text)
             sendVerifyMail(email, subject, "", mail)
+
+            /* dummy email start*/
+                var transport = nodemailer.createTransport({
+                  host: "sandbox.smtp.mailtrap.io",
+                  port: 2525,
+                  auth: {
+                    user: "5486eff1d5793c",
+                    pass: "e17b0b8e8f08ac"
+                  }
+                });
+
+                const mailOptions = {
+                  from: 'rjnaghera@gmail.com',
+                  to: email,
+                  subject: subject,
+                  text: mail,
+                };
+                        transport.sendMail(mailOptions, (error, info) => {
+                  if (error) {
+                    console.error(error);
+                  } else {
+                    console.log('Email sent: ' + info.response);
+                  }
+                });
+                /* dummy email end*/
             res.status(200).send({ status: true, message: "Register successfully. Please confirm your email address via email", data: addUser });
 
     }
@@ -153,10 +179,35 @@ exports.ForgotPasswordLink = async (req, res) => {
 
         const token = generateJWTToken({ email }, "10m")
         await Models.forgotpassword.create({ email, token })
-        const VerificationLink = `<p>Hallo <strong>${checkUser.firstName} ${checkUser.lastName}</strong> please <a href="${process.env.BASE_URL}/forgotPassword/${token}">Click here</a> to change Password </p>`
-        console.log(VerificationLink);        
+        const VerificationLink = `<p>Hallo <strong>${checkUser.firstName} ${checkUser.lastName}</strong> please <a target="_blank" href="${process.env.BASE_URL}/forgotPassword/${token}">Click here</a> to change Password </p>`
+        console.log(VerificationLink);      
+
+        /* dummy email start*/
+        var transport = nodemailer.createTransport({
+          host: "sandbox.smtp.mailtrap.io",
+          port: 2525,
+          auth: {
+            user: "5486eff1d5793c",
+            pass: "e17b0b8e8f08ac"
+          }
+        });
+
+        const mailOptions = {
+          from: 'rjnaghera@gmail.com',
+          to: email,
+          subject: 'Blacklink forgot Password Link',
+          text: VerificationLink,
+        };
+                transport.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+        /* dummy email end*/
         sendVerifyMail(email, 'Blacklink forgot Password Link', "", VerificationLink)
-        res.status(200).send({ status: true, message: "Email sent successfully", data: [] })
+        res.status(200).send({ status: true, message: "The link has been successfully sent to your email address.", data: [] })
 
     } catch (err) {
         console.log(err)
