@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 09, 2023 at 02:45 PM
+-- Generation Time: Nov 28, 2023 at 01:40 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -75,7 +75,8 @@ CREATE TABLE `customer_domain_data` (
 
 INSERT INTO `customer_domain_data` (`id`, `domain_id`, `traffic`, `anchor_text`, `delivery_time`, `link`, `language`, `visibility_index`, `domain_rating`, `rating`, `referring`, `citation_flow`, `trust_flow`, `authority`, `created_at`, `updated_at`) VALUES
 (13, 21, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-10-13 12:39:09', '2023-10-13 12:39:09'),
-(16, 6, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-11-09 12:01:48', '2023-11-09 12:01:48');
+(16, 6, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-11-09 12:01:48', '2023-11-09 12:01:48'),
+(17, 7, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-11-10 04:48:07', '2023-11-10 04:48:07');
 
 -- --------------------------------------------------------
 
@@ -103,7 +104,8 @@ CREATE TABLE `domains` (
 INSERT INTO `domains` (`id`, `domain_name`, `tld`, `budget`, `category_id`, `status`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
 (1, 'userdomain.com', 'com', '0.00', 15, 1, 15, 'nezrcrlx', '2023-11-06 07:38:26', '2023-11-06 07:38:26'),
 (2, 'besticoder.com', 'com', '0.00', 15, 1, 15, 'pnhtw15k', '2023-11-06 08:03:04', '2023-11-06 08:03:04'),
-(3, 'example.com', 'com', '0.00', 15, 1, 15, '13s9z77d', '2023-11-06 08:11:28', '2023-11-06 08:11:28');
+(3, 'example.com', 'com', '0.00', 15, 1, 15, '13s9z77d', '2023-11-06 08:11:28', '2023-11-06 08:11:28'),
+(7, 'youtube.com', 'com', '0.00', NULL, 1, 36, 'hf7l2mbq', '2023-11-10 04:47:34', '2023-11-10 04:47:34');
 
 -- --------------------------------------------------------
 
@@ -258,7 +260,23 @@ CREATE TABLE `forgotpasswords` (
 --
 
 INSERT INTO `forgotpasswords` (`id`, `email`, `token`, `createdAt`, `updatedAt`) VALUES
-(1, 'nagherajayesh2087@gmail.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hZ2hlcmFqYXllc2gyMDg3QGdtYWlsLmNvbSIsImlhdCI6MTY5NDYwNjc1OCwiZXhwIjoxNjk0NjA3MzU4fQ.VL8axfUjj3XkM1F3DR-FIgMCi86K4-KQgzljSyBKgP0', '2023-09-13 17:35:58', '2023-09-13 17:35:58');
+(1, 'nagherajayesh2087@gmail.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hZ2hlcmFqYXllc2gyMDg3QGdtYWlsLmNvbSIsImlhdCI6MTY5NDYwNjc1OCwiZXhwIjoxNjk0NjA3MzU4fQ.VL8axfUjj3XkM1F3DR-FIgMCi86K4-KQgzljSyBKgP0', '2023-09-13 17:35:58', '2023-09-13 17:35:58'),
+(2, 'test@gmail.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzAxMDY3OTE5LCJleHAiOjE3MDEwNjg1MTl9.NjwIHCehmNNh2ZzgmShqRP_8d7-ofNX2JtfMso9-gWs', '2023-11-27 12:21:59', '2023-11-27 12:21:59'),
+(3, 'test@gmail.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzAxMDY4MDU1LCJleHAiOjE3MDEwNjg2NTV9.JJx6HI8V9sxaC3ycrA1Gd8MCGgtbg6MHNszioUKCC4s', '2023-11-27 12:24:15', '2023-11-27 12:24:15'),
+(4, 'test1@gmail.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImlhdCI6MTcwMTA2ODA3MiwiZXhwIjoxNzAxMDY4NjcyfQ.XM-uExXLL9PEJBOvlKmUnHPQg_7G_CiYAW4tIBPQgmQ', '2023-11-27 12:24:32', '2023-11-27 12:24:32'),
+(5, 'test@gmail.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzAxMDY4MTA1LCJleHAiOjE3MDEwNjg3MDV9.FValjUL-WzhqZCj89H7TuLLtbpxpZwJyk1hdEiUKiw0', '2023-11-27 12:25:05', '2023-11-27 12:25:05'),
+(6, 'test@gmail.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNzAxMDY4MTkzLCJleHAiOjE3MDEwNjg3OTN9.zx2cgNbVEJRDtCCvARfyvEb0q2cBaFOHqC-ulHCnNbw', '2023-11-27 12:26:33', '2023-11-27 12:26:33'),
+(7, 'ko6a055dax@gixenmixen.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtvNmEwNTVkYXhAZ2l4ZW5taXhlbi5jb20iLCJpYXQiOjE3MDEwNjg1OTAsImV4cCI6MTcwMTA2OTE5MH0.FS1uKZsP2Wu0GZqCw3rTVi6hD3zOotSY2y7VQvTPDY8', '2023-11-27 12:33:10', '2023-11-27 12:33:10'),
+(8, 'ko6a055dax@gixenmixen.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtvNmEwNTVkYXhAZ2l4ZW5taXhlbi5jb20iLCJpYXQiOjE3MDEwNjg4MzMsImV4cCI6MTcwMTA2OTQzM30.0b1rnYRjWYJz4zgidNcQO4kA3YEBMxeabeqHCYqyMo4', '2023-11-27 12:37:13', '2023-11-27 12:37:13'),
+(9, 'ko6a055dax@gixenmixen.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtvNmEwNTVkYXhAZ2l4ZW5taXhlbi5jb20iLCJpYXQiOjE3MDEwNjg4NTgsImV4cCI6MTcwMTA2OTQ1OH0.DxO34_0bnlPg43XUGjDESRe8Fth9NQQxqVt-Th_sHQA', '2023-11-27 12:37:38', '2023-11-27 12:37:38'),
+(10, 'ko6a055dax@gixenmixen.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtvNmEwNTVkYXhAZ2l4ZW5taXhlbi5jb20iLCJpYXQiOjE3MDEwNzY5NDQsImV4cCI6MTcwMTA3NzU0NH0.LWDwd6VuB4PyvtE7dfPASWd0wWqXUCGg_wKPov9x_C4', '2023-11-27 14:52:24', '2023-11-27 14:52:24'),
+(11, 'ko6a055dax@gixenmixen.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtvNmEwNTVkYXhAZ2l4ZW5taXhlbi5jb20iLCJpYXQiOjE3MDEwNzcyMDIsImV4cCI6MTcwMTA3NzgwMn0.7oCBYhaVwaIthyBJS8UHN6nt_Pi_bnyNwpZfg7P3wik', '2023-11-27 14:56:42', '2023-11-27 14:56:42'),
+(12, 'ko6a055dax@gixenmixen.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtvNmEwNTVkYXhAZ2l4ZW5taXhlbi5jb20iLCJpYXQiOjE3MDEwNzcyNjksImV4cCI6MTcwMTA3Nzg2OX0.VbOEzutcciVnWg-QYEmWKvUnIY8-DyQo9nqxrfcvR4s', '2023-11-27 14:57:49', '2023-11-27 14:57:49'),
+(13, 'ko6a055dax@gixenmixen.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtvNmEwNTVkYXhAZ2l4ZW5taXhlbi5jb20iLCJpYXQiOjE3MDEwNzczNDAsImV4cCI6MTcwMTA3Nzk0MH0.0Gbr_GK_sXb4PrlyanASm0yF2YodVesO2UPkd1hLn14', '2023-11-27 14:59:00', '2023-11-27 14:59:00'),
+(14, 'ko6a055dax@gixenmixen.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtvNmEwNTVkYXhAZ2l4ZW5taXhlbi5jb20iLCJpYXQiOjE3MDEwNzc1MTAsImV4cCI6MTcwMTA3ODExMH0.7LN-qtOoBT3Dn-UcVb9zpeuMr1Zj_XL_3oO7oocKbYg', '2023-11-27 15:01:50', '2023-11-27 15:01:50'),
+(15, 'ko6a055dax@gixenmixen.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtvNmEwNTVkYXhAZ2l4ZW5taXhlbi5jb20iLCJpYXQiOjE3MDEwNzc2MTAsImV4cCI6MTcwMTA3ODIxMH0.8ycPlGcGCjMsHdTRoyPP_eM2nzb6GshWwYzWiHlJGKQ', '2023-11-27 15:03:30', '2023-11-27 15:03:30'),
+(16, '80n03reauii@bloheyz.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjgwbjAzcmVhdWlpQGJsb2hleXouY29tIiwiaWF0IjoxNzAxMDgzMTAwLCJleHAiOjE3MDEwODM3MDB9.phEpaVQSm8ysaf0T7Np8UjMBcbLCoFjqv2NFeuPy-rU', '2023-11-27 16:35:00', '2023-11-27 16:35:00'),
+(17, '80n03reaui@bloheyz.com', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjgwbjAzcmVhdWlAYmxvaGV5ei5jb20iLCJpYXQiOjE3MDEwODMxMDYsImV4cCI6MTcwMTA4MzcwNn0.N7UniHDjcJ5T5iYoTZhKeTDruAIM5datiUlfCvilFwo', '2023-11-27 16:35:06', '2023-11-27 16:35:06');
 
 -- --------------------------------------------------------
 
@@ -337,8 +355,9 @@ CREATE TABLE `notifications` (
 
 INSERT INTO `notifications` (`id`, `user_id`, `email_message_received`, `email_order_accepted`, `email_order_completed`, `email_order_created`, `email_order_declined`, `email_order_missing_details`, `email_payment_failed`, `email_payment_reminder`, `email_payment_succeeded`, `email_recommendations_available`, `created_at`, `updated_at`) VALUES
 (1, 11, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, '2023-09-20 07:53:06', '2023-09-20 13:22:20'),
-(5, 15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '2023-09-26 04:26:08', '2023-09-26 04:26:08'),
-(25, 36, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '2023-11-07 06:49:06', '2023-11-07 06:49:06');
+(5, 15, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, '2023-09-26 04:26:08', '2023-11-28 12:32:50'),
+(25, 36, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '2023-11-07 06:49:06', '2023-11-07 06:49:06'),
+(29, 40, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '2023-11-27 11:07:18', '2023-11-27 11:07:18');
 
 -- --------------------------------------------------------
 
@@ -543,6 +562,14 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `profile` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
+  `postal_code` int(11) NOT NULL DEFAULT 0,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(50) NOT NULL,
+  `country` varchar(50) NOT NULL DEFAULT 'Germany',
+  `company` varchar(255) NOT NULL,
+  `vat_id` varchar(100) DEFAULT NULL,
+  `bulk_invoice` int(1) NOT NULL DEFAULT 0,
+  `invoice_email` varchar(255) NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT 0 COMMENT '0:customer,1:admin,2:publisher',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
@@ -552,14 +579,15 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `password`, `profile`, `phone`, `isAdmin`, `created_at`, `updated_at`) VALUES
-(2, 'rjnaghera@gmail.com', 1, 'Admin', 'User', '$2a$11$fCg11cAgOk7RvVCffz7TuulHBoIYOMATc6iq6PjtlbbB5ieju4dG2', 'profileImg_1695097731854.jpeg', '09033389733', 1, '2023-09-13 17:40:39', '2023-09-19 10:02:11'),
-(6, 'test@gmail.com', 1, 'Test', 'Customer', '$2a$11$fRqk7yh94dGpBAXdZnlnnOvlJ3h8NC8IVqPF9Ykb1MQxABdgDqxjW', 'profileImg_1695101939136.png', '1234567809', 0, '2023-09-19 11:08:59', '2023-09-19 11:08:59'),
-(9, '123@gmail.com', 1, 'test', 'test', '$2a$11$uADreLR8rD3x7TF0dg54n.natIDMyUCFh/l1yKutPnLpkif5D5F1e', NULL, '1234567809', 0, '2023-09-20 10:55:10', '2023-09-20 10:55:10'),
-(10, 'devuser@gmail.com', 1, 'Dev', 'User', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1695188498849.jpg', '1234567809', 0, '2023-09-20 11:11:39', '2023-09-20 11:11:39'),
-(11, 'customer@test.com', 1, 'Customer', 'Customer', '$2a$11$zUU62EIftcI7V8bU8XCN6O8ynRwhalVmVzlG4EYCVTadW1ZbjK9iO', 'profileImg_1695188498849.jpg', '1234567809', 2, '2023-09-20 13:23:06', '2023-09-20 13:24:52'),
-(15, 'nagherajayesh2087@gmail.com', 1, 'Jayesh', 'Naghera', '$2a$11$bw6B8GeAU94tv01rXm4N..AiVoePSht4NmJpN71yIIRekbIYmXZc2', 'profileImg_1695188498849.jpg', '9033389733', 0, '2023-09-26 09:56:08', '2023-09-26 09:56:08'),
-(36, 'frontside@mail.com', 1, 'Front', 'Side', '$2a$11$vpE0TlfsF95/W6d2OPrSOeoi4P.ALDmcRphoZThPahlfUibRmmtJm', 'profileImg_1699339746336.png', '123456', 0, '2023-11-07 12:19:06', '2023-11-07 12:19:06');
+INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `password`, `profile`, `phone`, `postal_code`, `address`, `city`, `country`, `company`, `vat_id`, `bulk_invoice`, `invoice_email`, `isAdmin`, `created_at`, `updated_at`) VALUES
+(2, 'jayesh.besticoder@gmail.com', 1, 'Admin', 'User', '$2a$11$fCg11cAgOk7RvVCffz7TuulHBoIYOMATc6iq6PjtlbbB5ieju4dG2', 'profileImg_1695097731854.jpeg', '09033389733', 0, NULL, '', 'Germany', '', NULL, 0, '', 1, '2023-09-13 17:40:39', '2023-11-28 15:56:03'),
+(6, 'ko6a055dax@gixenmixen.com', 1, 'Test', 'Customer', '$2a$11$PWRnpkMPyKnyfK3TgoNDi.LNcOvfWNpn1D83/NFUsNkFhvlzzMR6K', 'profileImg_1695101939136.png', '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-19 11:08:59', '2023-11-27 15:03:59'),
+(9, '123@gmail.com', 1, 'test', 'test', '$2a$11$uADreLR8rD3x7TF0dg54n.natIDMyUCFh/l1yKutPnLpkif5D5F1e', NULL, '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-20 10:55:10', '2023-09-20 10:55:10'),
+(10, 'devuser@gmail.com', 1, 'Dev', 'User', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1695188498849.jpg', '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-20 11:11:39', '2023-09-20 11:11:39'),
+(11, 'customer@test.com', 1, 'Customer', 'Customer', '$2a$11$zUU62EIftcI7V8bU8XCN6O8ynRwhalVmVzlG4EYCVTadW1ZbjK9iO', 'profileImg_1695188498849.jpg', '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, '2023-09-20 13:23:06', '2023-09-20 13:24:52'),
+(15, 'dev@gmail.com', 1, 'Developer', 'Test', '$2a$11$ldVrLA2b42A5n4Q28RmjoOWytYhJmsM6vEfqaCRK3hjK1T8uRQQQa', 'profileImg_1695188498849.jpg', '9033389733', 362268, 'Bhalpara', 'Veraval', 'Germany', 'JJ Naghera', 'VAT123AT', 0, 'example@mail.com', 0, '2023-09-26 09:56:08', '2023-11-28 17:06:51'),
+(36, 'frontside@mail.com', 1, 'Front', 'Side', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1699339746336.png', '123456', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-11-07 12:19:06', '2023-11-07 12:19:06'),
+(40, '80n03reaui@bloheyz.com', 1, 'Api', 'Test', '$2a$11$8V40eVLSbQXK3jQJAt7X2ui6noiQ4HpikHbs5JDoiTr6Orwd4OIwu', NULL, '123456', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-11-27 16:37:18', '2023-11-27 16:37:55');
 
 -- --------------------------------------------------------
 
@@ -795,13 +823,13 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `customer_domain_data`
 --
 ALTER TABLE `customer_domain_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `domains`
 --
 ALTER TABLE `domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `domain_categories`
@@ -831,7 +859,7 @@ ALTER TABLE `faqs`
 -- AUTO_INCREMENT for table `forgotpasswords`
 --
 ALTER TABLE `forgotpasswords`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `messages`
@@ -849,7 +877,7 @@ ALTER TABLE `new_orders`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `orderfiles`
@@ -891,7 +919,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `users_wallet`

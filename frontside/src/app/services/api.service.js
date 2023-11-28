@@ -39,6 +39,61 @@ class ApiServices {
         return response;
       });
   }
+
+  updateNotificationSetting(formData)
+  {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .patch(APP_URL + "user/setting/notification", formData, {
+        headers: { 
+          Authorization: `Bearer ${authToken}`,
+          'Content-Type': 'application/json', 
+        },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+  getProfileData()
+  {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(APP_URL + "account/user/profile",{
+        headers: { Authorization: `Bearer ${authToken}`}
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+  updateProfileData(formData)
+  {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .patch(APP_URL + "account/user/profile", formData, {
+        headers: { 
+          Authorization: `Bearer ${authToken}`,
+          'Content-Type': 'application/json', 
+        },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  customProfileUpdateData(formData,url)
+  {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .patch(APP_URL + url, formData, {
+        headers: { 
+          Authorization: `Bearer ${authToken}`,
+          'Content-Type': 'application/json', 
+        },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
 }
 
 export default new ApiServices();

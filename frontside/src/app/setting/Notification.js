@@ -18,8 +18,23 @@ export class Notification extends Component {
   }
   handleDisableAll = () => {
     Object.values(this.checkboxRefs).forEach((checkboxRef) => {
-      checkboxRef.checked = false;
+      checkboxRef.checked = false;      
     });
+    const updatedNotificationData = {
+      ...this.state.notificationData,
+      email_message_received: 0,
+      email_order_accepted: 0,
+      email_order_completed: 0,
+      email_order_created: 0,
+      email_order_declined: 0,
+      email_order_missing_details: 0,
+      email_payment_failed: 0,
+      email_payment_reminder: 0,
+      email_payment_succeeded: 0,
+      email_recommendations_available: 0,
+    };
+  
+    this.setState({ notificationData: updatedNotificationData });
   };
 
   componentDidMount() {
@@ -33,7 +48,6 @@ export class Notification extends Component {
           this.setState({
             notificationData: res.data.data,
           });
-          console.log(this.state.notificationData);
         }
       },
       (error) => {
@@ -60,20 +74,50 @@ export class Notification extends Component {
   };
   handleSubmit = (e) => {
     e.preventDefault();
-    this.postUpdateNotification();
+    this.patchUpdateNotification();
   };
-  postUpdateNotification = () => {
-    const formData = new FormData(document.getElementById('notificationForm'));
-    // const { notificationData } = this.state;
-    // console.log(notificationData);
-    alert('Inprogress')
-  }
+  patchUpdateNotification = () => {
+    const formDatas = new FormData();
+    const { notificationData } = this.state;
+    delete notificationData.user;
+    Object.keys(notificationData).forEach((key) => {
+      formDatas.append(key, notificationData[key]);
+    });
+
+    ApiServices.updateNotificationSetting(formDatas).then(
+      (res) => {
+        if(res.data.status)
+        {
+          toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
   render() {
     const { notificationData } = this.state;
     return (
       <div className="notificationTab">
         <ToastContainer />
-        <form className="notificationForm" id="notificationForm" onSubmit={this.handleSubmit}>
+        <form
+          className="notificationForm"
+          id="notificationForm"
+          onSubmit={this.handleSubmit}
+        >
           <Box className="mt-4">
             <Card variant="outlined">
               {" "}
@@ -86,6 +130,7 @@ export class Notification extends Component {
                   </div>
                   <div className="col-sm-4 text-right">
                     <button
+                      type="button"
                       className="btn p-2 planRound fontBold500"
                       id="disableAll"
                       onClick={this.handleDisableAll}
@@ -93,262 +138,287 @@ export class Notification extends Component {
                       Disable all
                     </button>
                   </div>
-                </div>              
-                  <Form.Group className="row">
-                    <label htmlFor="oacpt" className="col-sm-8 col-form-label">
-                      Order accepted
-                      <Typography className="customText">
-                        You will receive this email as soon as the publisher has
-                        accepted your order.
-                      </Typography>
+                </div>
+                <Form.Group className="row">
+                  <label htmlFor="oacpt" className="col-sm-8 col-form-label">
+                    Order accepted
+                    <Typography className="customText">
+                      You will receive this email as soon as the publisher has
+                      accepted your order.
+                    </Typography>
+                  </label>
+                  <div className="col-sm-4 text-right mt-4">
+                    <label className="switch mr-2">
+                      <input
+                        type="checkbox"
+                        id="oacpt"
+                        name="orderAccepted"
+                        ref={(ref) =>
+                          (this.checkboxRefs["orderAccepted"] = ref)
+                        }
+                        checked={notificationData["email_order_accepted"] === 1}
+                        value={notificationData["email_order_accepted"]}
+                        onChange={() =>
+                          this.handleCheckboxChange("email_order_accepted")
+                        }
+                      />
+                      <span className="slider round"></span>
                     </label>
-                    <div className="col-sm-4 text-right mt-4">
-                      <label className="switch mr-2">
-                        <input
-                          type="checkbox"
-                          id="oacpt"
-                          name="orderAccepted"
-                          ref={(ref) =>
-                            (this.checkboxRefs["orderAccepted"] = ref)
-                          }
-                          checked={notificationData["email_order_accepted"] === 1}
-                          value={notificationData["email_order_accepted"]}
-                          onChange={() =>
-                            this.handleCheckboxChange("email_order_accepted")
-                          }
-                        />
-                        <span className="slider round"></span>
-                      </label>
-                    </div>
-                  </Form.Group>
-                  <Divider />
-                  <Form.Group className="row">
-                    <label htmlFor="ocomp" className="col-sm-8 col-form-label">
-                      Order completed
-                      <Typography className="customText">
-                        You will receive this email as soon as your order has been
-                        completed. Enclosed you will find the report for your
-                        order.
-                      </Typography>
+                  </div>
+                </Form.Group>
+                <Divider />
+                <Form.Group className="row">
+                  <label htmlFor="ocomp" className="col-sm-8 col-form-label">
+                    Order completed
+                    <Typography className="customText">
+                      You will receive this email as soon as your order has been
+                      completed. Enclosed you will find the report for your
+                      order.
+                    </Typography>
+                  </label>
+                  <div className="col-sm-4 text-right mt-4">
+                    <label className="switch mr-2">
+                      <input
+                        type="checkbox"
+                        id="ocomp"
+                        name="email_order_completed"
+                        ref={(ref) =>
+                          (this.checkboxRefs["email_order_completed"] = ref)
+                        }
+                        checked={
+                          notificationData["email_order_completed"] === 1
+                        }
+                        onChange={() =>
+                          this.handleCheckboxChange("email_order_completed")
+                        }
+                        value={notificationData["email_order_completed"]}
+                      />
+                      <span className="slider round"></span>
                     </label>
-                    <div className="col-sm-4 text-right mt-4">
-                      <label className="switch mr-2">
-                        <input
-                          type="checkbox"
-                          id="ocomp"
-                          name="email_order_completed"
-                          ref={(ref) =>
-                            (this.checkboxRefs["email_order_completed"] = ref)
-                          }
-                          checked={
-                            notificationData["email_order_completed"] === 1
-                          }
-                          onChange={() =>
-                            this.handleCheckboxChange("email_order_completed")
-                          }
-                          value={notificationData["email_order_completed"]}
-                        />
-                        <span className="slider round"></span>
-                      </label>
-                    </div>
-                  </Form.Group>
-                  <Divider />
-                  <Form.Group className="row">
-                    <label htmlFor="ocrt" className="col-sm-8 col-form-label">
-                      Order created
-                      <Typography className="customText">
-                        You will receive this email when we have received your
-                        order.
-                      </Typography>
+                  </div>
+                </Form.Group>
+                <Divider />
+                <Form.Group className="row">
+                  <label htmlFor="ocrt" className="col-sm-8 col-form-label">
+                    Order created
+                    <Typography className="customText">
+                      You will receive this email when we have received your
+                      order.
+                    </Typography>
+                  </label>
+                  <div className="col-sm-4 text-right mt-4">
+                    <label className="switch mr-2">
+                      <input
+                        type="checkbox"
+                        id="ocrt"
+                        name="email_order_created"
+                        ref={(ref) =>
+                          (this.checkboxRefs["email_order_created"] = ref)
+                        }
+                        checked={notificationData["email_order_created"] === 1}
+                        onChange={() =>
+                          this.handleCheckboxChange("email_order_created")
+                        }
+                        value={notificationData["email_order_created"]}
+                      />
+                      <span className="slider round"></span>
                     </label>
-                    <div className="col-sm-4 text-right mt-4">
-                      <label className="switch mr-2">
-                        <input
-                          type="checkbox"
-                          id="ocrt"
-                          name="email_order_created"
-                          ref={(ref) => (this.checkboxRefs["email_order_created"] = ref)}
-                          checked={notificationData["email_order_created"] === 1}
-                          onChange={() =>
-                            this.handleCheckboxChange("email_order_created")
-                          }
-                          value={notificationData["email_order_created"]}
-                        />
-                        <span className="slider round"></span>
-                      </label>
-                    </div>
-                  </Form.Group>
-                  <Divider />
-                  <Form.Group className="row">
-                    <label htmlFor="odcl" className="col-sm-8 col-form-label">
-                      Order declined
-                      <Typography className="customText">
-                        You will redeive this email if the publisher has declined
-                        you order.
-                      </Typography>
+                  </div>
+                </Form.Group>
+                <Divider />
+                <Form.Group className="row">
+                  <label htmlFor="odcl" className="col-sm-8 col-form-label">
+                    Order declined
+                    <Typography className="customText">
+                      You will redeive this email if the publisher has declined
+                      you order.
+                    </Typography>
+                  </label>
+                  <div className="col-sm-4 text-right mt-4">
+                    <label className="switch mr-2">
+                      <input
+                        type="checkbox"
+                        id="odcl"
+                        name="email_order_declined"
+                        ref={(ref) =>
+                          (this.checkboxRefs["email_order_declined"] = ref)
+                        }
+                        checked={notificationData["email_order_declined"] === 1}
+                        onChange={() =>
+                          this.handleCheckboxChange("email_order_declined")
+                        }
+                        value={notificationData["email_order_declined"]}
+                      />
+                      <span className="slider round"></span>
                     </label>
-                    <div className="col-sm-4 text-right mt-4">
-                      <label className="switch mr-2">
-                        <input
-                          type="checkbox"
-                          id="odcl"
-                          name="email_order_declined"
-                          ref={(ref) =>
-                            (this.checkboxRefs["email_order_declined"] = ref)
-                          }
-                          checked={notificationData["email_order_declined"] === 1}
-                          onChange={() =>
-                            this.handleCheckboxChange("email_order_declined")
-                          }
-                          value={notificationData["email_order_declined"]}
-                        />
-                        <span className="slider round"></span>
-                      </label>
-                    </div>
-                  </Form.Group>
-                  <Divider />
-                  <Form.Group className="row">
-                    <label htmlFor="oadd" className="col-sm-8 col-form-label">
-                      Order requires additional details
-                      <Typography className="customText">
-                        You will receive this email in case our team need more
-                        details regarding your order.
-                      </Typography>
+                  </div>
+                </Form.Group>
+                <Divider />
+                <Form.Group className="row">
+                  <label htmlFor="oadd" className="col-sm-8 col-form-label">
+                    Order requires additional details
+                    <Typography className="customText">
+                      You will receive this email in case our team need more
+                      details regarding your order.
+                    </Typography>
+                  </label>
+                  <div className="col-sm-4 text-right mt-4">
+                    <label className="switch mr-2">
+                      <input
+                        type="checkbox"
+                        id="oadd"
+                        name="email_order_missing_details"
+                        ref={(ref) =>
+                          (this.checkboxRefs["email_order_missing_details"] =
+                            ref)
+                        }
+                        checked={
+                          notificationData["email_order_missing_details"] === 1
+                        }
+                        onChange={() =>
+                          this.handleCheckboxChange(
+                            "email_order_missing_details"
+                          )
+                        }
+                        value={notificationData["email_order_missing_details"]}
+                      />
+                      <span className="slider round"></span>
                     </label>
-                    <div className="col-sm-4 text-right mt-4">
-                      <label className="switch mr-2">
-                        <input
-                          type="checkbox"
-                          id="oadd"
-                          name="email_order_missing_details"
-                          ref={(ref) =>
-                            (this.checkboxRefs["email_order_missing_details"] = ref)
-                          }
-                          checked={notificationData["email_order_missing_details"] === 1}
-                          onChange={() =>
-                            this.handleCheckboxChange("email_order_missing_details")
-                          }
-                          value={notificationData["email_order_missing_details"]}
-                        />
-                        <span className="slider round"></span>
-                      </label>
-                    </div>
-                  </Form.Group>
-                  <Divider />
-                  <Form.Group className="row">
-                    <label htmlFor="payf" className="col-sm-8 col-form-label">
-                      Payment failed
-                      <Typography className="customText">
-                        You will recieve this email if your pament failed.
-                      </Typography>
+                  </div>
+                </Form.Group>
+                <Divider />
+                <Form.Group className="row">
+                  <label htmlFor="payf" className="col-sm-8 col-form-label">
+                    Payment failed
+                    <Typography className="customText">
+                      You will recieve this email if your pament failed.
+                    </Typography>
+                  </label>
+                  <div className="col-sm-4 text-right mt-4">
+                    <label className="switch mr-2">
+                      <input
+                        type="checkbox"
+                        id="payf"
+                        name="email_payment_failed"
+                        ref={(ref) =>
+                          (this.checkboxRefs["email_payment_failed"] = ref)
+                        }
+                        checked={notificationData["email_payment_failed"] === 1}
+                        onChange={() =>
+                          this.handleCheckboxChange("email_payment_failed")
+                        }
+                        value={notificationData["email_payment_failed"]}
+                      />
+                      <span className="slider round"></span>
                     </label>
-                    <div className="col-sm-4 text-right mt-4">
-                      <label className="switch mr-2">
-                        <input
-                          type="checkbox"
-                          id="payf"
-                          name="email_payment_failed"
-                          ref={(ref) =>
-                            (this.checkboxRefs["email_payment_failed"] = ref)
-                          }
-                          checked={notificationData["email_payment_failed"] === 1}
-                          onChange={() =>
-                            this.handleCheckboxChange("email_payment_failed")
-                          }
-                          value={notificationData["email_payment_failed"]}
-                        />
-                        <span className="slider round"></span>
-                      </label>
-                    </div>
-                  </Form.Group>
-                  <Divider />
-                  <Form.Group className="row">
-                    <label htmlFor="pays" className="col-sm-8 col-form-label">
-                      Payment successful
-                      <Typography className="customText">
-                        You will receive this email if your payment was
-                        successful. Attached you will find the payment
-                        confirmation.
-                      </Typography>
+                  </div>
+                </Form.Group>
+                <Divider />
+                <Form.Group className="row">
+                  <label htmlFor="pays" className="col-sm-8 col-form-label">
+                    Payment successful
+                    <Typography className="customText">
+                      You will receive this email if your payment was
+                      successful. Attached you will find the payment
+                      confirmation.
+                    </Typography>
+                  </label>
+                  <div className="col-sm-4 text-right mt-4">
+                    <label className="switch mr-2">
+                      <input
+                        type="checkbox"
+                        id="pays"
+                        name="email_payment_succeeded"
+                        ref={(ref) =>
+                          (this.checkboxRefs["email_payment_succeeded"] = ref)
+                        }
+                        checked={
+                          notificationData["email_payment_succeeded"] === 1
+                        }
+                        onChange={() =>
+                          this.handleCheckboxChange("email_payment_succeeded")
+                        }
+                        value={notificationData["email_payment_succeeded"]}
+                      />
+                      <span className="slider round"></span>
                     </label>
-                    <div className="col-sm-4 text-right mt-4">
-                      <label className="switch mr-2">
-                        <input
-                          type="checkbox"
-                          id="pays"
-                          name="email_payment_succeeded"
-                          ref={(ref) =>
-                            (this.checkboxRefs["email_payment_succeeded"] = ref)
-                          }
-                          checked={notificationData["email_payment_succeeded"] === 1}
-                          onChange={() =>
-                            this.handleCheckboxChange("email_payment_succeeded")
-                          }
-                          value={notificationData["email_payment_succeeded"]}
-                        />
-                        <span className="slider round"></span>
-                      </label>
-                    </div>
-                  </Form.Group>
-                  <Divider />
-                  <Form.Group className="row">
-                    <label htmlFor="payrem" className="col-sm-8 col-form-label">
-                      Payment reminder
-                      <Typography className="customText">
-                        You will receive this email if your payment hasn't
-                        processed withing three days.
-                      </Typography>
+                  </div>
+                </Form.Group>
+                <Divider />
+                <Form.Group className="row">
+                  <label htmlFor="payrem" className="col-sm-8 col-form-label">
+                    Payment reminder
+                    <Typography className="customText">
+                      You will receive this email if your payment hasn't
+                      processed withing three days.
+                    </Typography>
+                  </label>
+                  <div className="col-sm-4 text-right mt-4">
+                    <label className="switch mr-2">
+                      <input
+                        type="checkbox"
+                        id="payrem"
+                        name="email_payment_reminder"
+                        ref={(ref) =>
+                          (this.checkboxRefs["email_payment_reminder"] = ref)
+                        }
+                        checked={
+                          notificationData["email_payment_reminder"] === 1
+                        }
+                        onChange={() =>
+                          this.handleCheckboxChange("email_payment_reminder")
+                        }
+                        value={notificationData["email_payment_reminder"]}
+                      />
+                      <span className="slider round"></span>
                     </label>
-                    <div className="col-sm-4 text-right mt-4">
-                      <label className="switch mr-2">
-                        <input
-                          type="checkbox"
-                          id="payrem"
-                          name="email_payment_reminder"
-                          ref={(ref) =>
-                            (this.checkboxRefs["email_payment_reminder"] = ref)
-                          }
-                          checked={notificationData["email_payment_reminder"] === 1}
-                          onChange={() =>
-                            this.handleCheckboxChange("email_payment_reminder")
-                          }
-                          value={notificationData["email_payment_reminder"]}
-                        />
-                        <span className="slider round"></span>
-                      </label>
-                    </div>
-                  </Form.Group>
-                  <Divider />
-                  <Form.Group className="row">
-                    <label htmlFor="newrec" className="col-sm-8 col-form-label">
-                      New recommendations
-                      <Typography className="customText">
-                        When one of your project gets a new recommendation, you
-                        will receive this email.
-                      </Typography>
+                  </div>
+                </Form.Group>
+                <Divider />
+                <Form.Group className="row">
+                  <label htmlFor="newrec" className="col-sm-8 col-form-label">
+                    New recommendations
+                    <Typography className="customText">
+                      When one of your project gets a new recommendation, you
+                      will receive this email.
+                    </Typography>
+                  </label>
+                  <div className="col-sm-4 text-right mt-4">
+                    <label className="switch mr-2">
+                      <input
+                        type="checkbox"
+                        id="newrec"
+                        name="email_recommendations_available"
+                        ref={(ref) =>
+                          (this.checkboxRefs[
+                            "email_recommendations_available"
+                          ] = ref)
+                        }
+                        checked={
+                          notificationData[
+                            "email_recommendations_available"
+                          ] === 1
+                        }
+                        onChange={() =>
+                          this.handleCheckboxChange(
+                            "email_recommendations_available"
+                          )
+                        }
+                        value={
+                          notificationData["email_recommendations_available"]
+                        }
+                      />
+                      <span className="slider round"></span>
                     </label>
-                    <div className="col-sm-4 text-right mt-4">
-                      <label className="switch mr-2">
-                        <input
-                          type="checkbox"
-                          id="newrec"
-                          name="email_recommendations_available"
-                          ref={(ref) => (this.checkboxRefs["email_recommendations_available"] = ref)}
-                          checked={notificationData["email_recommendations_available"] === 1}
-                          onChange={() =>
-                            this.handleCheckboxChange("email_recommendations_available")
-                          }
-                          value={notificationData["email_recommendations_available"]}
-                        />
-                        <span className="slider round"></span>
-                      </label>
-                    </div>
-                  </Form.Group>                
+                  </div>
+                </Form.Group>
               </CardContent>
             </Card>
           </Box>
-          <button type="submit" className="btn btn-rounded btn-lg mt-4">Save Changes</button>
-          </form>
+          <button type="submit" className="btn btn-rounded btn-lg mt-4">
+            Save Changes
+          </button>
+        </form>
       </div>
     );
   }

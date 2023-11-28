@@ -47,6 +47,14 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     profile: DataTypes.STRING,
     phone: DataTypes.STRING,
+    postal_code: DataTypes.INTEGER,
+    address: DataTypes.STRING,
+    city: DataTypes.STRING,
+    country: DataTypes.STRING,
+    company: DataTypes.STRING,
+    vat_id: DataTypes.STRING,
+    bulk_invoice: DataTypes.INTEGER,
+    invoice_email: DataTypes.STRING,
     isAdmin: DataTypes.INTEGER
   }, {
     sequelize,

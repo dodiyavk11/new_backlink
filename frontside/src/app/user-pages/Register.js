@@ -150,6 +150,9 @@ export class Register extends Component {
                       id="exampleInputPassword1"
                       placeholder="Password *"
                     />
+                    {this.state.password.length > 0 && this.state.password.length < 8 && (
+                      <span style={{ color: 'red' }}>Password must be at least 8 characters long</span>
+                    )}
                   </div>
                   <div className="mb-4">
                     <div className="form-check">
