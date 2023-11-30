@@ -1,4 +1,4 @@
-const { addNewOrder,getPublisherOrder,publisherUpdateOrderStatus,cancelOrder, getUserOrders,textFileUpload, addToCart, deleteItem, getCart, addCartOrder } = require("../controllers/newOrder.controller");
+const { addNewOrder,getPublisherOrder,publisherUpdateOrderStatus,cancelOrder, getUserOrders,textFileUpload, textFileDelete,addToCart, deleteItem, getCart, addCartOrder } = require("../controllers/newOrder.controller");
 const { isLogin, isCustomer,isAdmin,isPublisher } = require("../middleware/checkAuthenticate");
 const { uploadOrderFile, uploadOrderFinalFile,textFileUploadTemp } = require("../middleware/orderFileHandler")
 const { checkOrderLimitInSubscriptionPlan } = require("../middleware/checkIsPlanOrderAndDomainLimit");
@@ -15,6 +15,7 @@ module.exports = (app) => {
 	app.get("/user/cart",[isLogin, isCustomer],getCart)
 	/* backlink text file uploda */
 	app.post("/files",[isLogin,isCustomer,textFileUploadTemp.single("file")],textFileUpload)
+	app.get("/files/delete/:filename",[isLogin,isCustomer],textFileDelete)
 
 	/* publisher route */
 	app.post('/publisher/orders',[isLogin,isPublisher],getPublisherOrder)

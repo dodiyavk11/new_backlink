@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
 	      type: DataTypes.ENUM('Pending','Inprogress','Completed','Cancelled','Rejected','MissingDetails'),
 	    },
 	    total_price: DataTypes.DECIMAL(10,2),
+	    price: DataTypes.DECIMAL(10,2),
 	    anchortext: DataTypes.STRING,
 	    linktarget: DataTypes.STRING,
 	    publication_date: {
@@ -39,6 +40,12 @@ module.exports = (sequelize, DataTypes) => {
 	    note: DataTypes.STRING,
 	    project_id: DataTypes.STRING,
 	    hash_id: DataTypes.STRING,
+	    textCreation:DataTypes.STRING,
+	    wordCount:DataTypes.INTEGER,
+	    approveText:DataTypes.INTEGER,
+	    textCreationPrice:DataTypes.DECIMAL(10,2),
+	    approveTextPrice:DataTypes.DECIMAL(10,2),
+	    chooseByBacklink:DataTypes.INTEGER
 	},
 	{
 		sequelize,

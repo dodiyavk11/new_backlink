@@ -5,7 +5,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthService from "../services/auth.service";
 import "../../assets/custom.css";
-
+import Tooltip from "@material-ui/core/Tooltip";
+import ApiServices from "../services/api.service";
+import PlaceOrderDetailsModal from "../shared/PlaceOrderDetailsModal";
 export class ContentLinks extends Component {
   constructor(props) {
     const { hash_id } = props.match.params;
@@ -15,6 +17,8 @@ export class ContentLinks extends Component {
       contentInsideData: [],
       category: [],
       hash_id: hash_id,
+      showModalStep1: false,
+      showModalStep2: false,
       data: {
         labels: [
           "Jan 23",
@@ -42,7 +46,34 @@ export class ContentLinks extends Component {
       hoverLabel: null,
     };
   }
-  handleHover = (event, chartElements,type) => {
+  showProjectModal = () => this.setState({ showModalStep1: true });
+
+  handleNextStep = () => {
+    this.setState({
+      showModalStep1: false,
+      showModalStep2: true,
+    });
+  };
+  
+  handleBackStep = () => {
+    this.setState({
+      showModalStep1: true,
+      showModalStep2: false,
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      showModalStep1: false,
+      showModalStep2: false,
+    });
+  };
+
+  handleFormSubmit = (formData) => {
+    this.closeConfigureModal();
+  };
+
+  handleHover = (event, chartElements, type) => {
     if (chartElements.length > 0) {
       const datasetIndex = chartElements[0]._datasetIndex;
       const dataIndex = chartElements[0]._index;
@@ -95,7 +126,30 @@ export class ContentLinks extends Component {
         }
       });
   }
-
+  handleAddtoCart = (hash_id) => {
+    ApiServices.addToCartContentLink(hash_id).then(
+      (res) => {
+        if (res.data.status) {
+          toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
   render() {
     const contentData = this.state.contentData;
     const category = this.state.category;
@@ -151,7 +205,8 @@ export class ContentLinks extends Component {
                           <b>Visibility index</b>
                         </div>
                         <div>
-                          <img alt="Metrics"
+                          <img
+                            alt="Metrics"
                             src={require("../../assets/images/project/metrics.svg")}
                             className="rounded"
                             style={{ width: "1.5rem" }}
@@ -176,7 +231,7 @@ export class ContentLinks extends Component {
                           data={this.state.data}
                           options={{
                             onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements,"vIndex"),
+                              this.handleHover(event, chartElements, "vIndex"),
                             legend: {
                               display: false,
                             },
@@ -225,7 +280,8 @@ export class ContentLinks extends Component {
                           <b>Domain Rating</b>
                         </div>
                         <div>
-                          <img alt="ahrefs"
+                          <img
+                            alt="ahrefs"
                             src={require("../../assets/images/project/ahrefs.svg")}
                             className="rounded"
                             style={{ width: "1.5rem" }}
@@ -250,7 +306,7 @@ export class ContentLinks extends Component {
                           data={this.state.data}
                           options={{
                             onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements,"dRating"),
+                              this.handleHover(event, chartElements, "dRating"),
                             legend: {
                               display: false,
                             },
@@ -299,7 +355,8 @@ export class ContentLinks extends Component {
                           <b>Referring Domains</b>
                         </div>
                         <div>
-                          <img alt="ahrefs"
+                          <img
+                            alt="ahrefs"
                             src={require("../../assets/images/project/ahrefs.svg")}
                             className="rounded"
                             style={{ width: "1.5rem" }}
@@ -324,7 +381,7 @@ export class ContentLinks extends Component {
                           data={this.state.data}
                           options={{
                             onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements,"rDomain"),
+                              this.handleHover(event, chartElements, "rDomain"),
                             legend: {
                               display: false,
                             },
@@ -375,7 +432,8 @@ export class ContentLinks extends Component {
                           <b>Citation Flow</b>
                         </div>
                         <div>
-                          <img alt="majestic"
+                          <img
+                            alt="majestic"
                             src={require("../../assets/images/project/majestic.svg")}
                             className="rounded"
                             style={{ width: "1.5rem" }}
@@ -400,7 +458,7 @@ export class ContentLinks extends Component {
                           data={this.state.data}
                           options={{
                             onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements,"cFlow"),
+                              this.handleHover(event, chartElements, "cFlow"),
                             legend: {
                               display: false,
                             },
@@ -449,7 +507,8 @@ export class ContentLinks extends Component {
                           <b>Trust Flow</b>
                         </div>
                         <div>
-                          <img alt="majestic"
+                          <img
+                            alt="majestic"
                             src={require("../../assets/images/project/majestic.svg")}
                             className="rounded"
                             style={{ width: "1.5rem" }}
@@ -474,7 +533,7 @@ export class ContentLinks extends Component {
                           data={this.state.data}
                           options={{
                             onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements,"tFlow"),
+                              this.handleHover(event, chartElements, "tFlow"),
                             legend: {
                               display: false,
                             },
@@ -523,7 +582,8 @@ export class ContentLinks extends Component {
                           <b>Domain Authority</b>
                         </div>
                         <div>
-                          <img alt="moz"
+                          <img
+                            alt="moz"
                             src={require("../../assets/images/project/moz.svg")}
                             className="rounded"
                             style={{ width: "1.5rem" }}
@@ -548,7 +608,11 @@ export class ContentLinks extends Component {
                           data={this.state.data}
                           options={{
                             onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements,"dAuthority"),
+                              this.handleHover(
+                                event,
+                                chartElements,
+                                "dAuthority"
+                              ),
                             legend: {
                               display: false,
                             },
@@ -602,33 +666,177 @@ export class ContentLinks extends Component {
                   <table className="table">
                     <tbody>
                       <tr>
-                        <td>Traffic</td>
-                        <td>0</td>
+                        <td>
+                          Traffic{" "}
+                          <Tooltip
+                            title="Traffic describes the monthly users of a website. (organic only)"
+                            placement="right"
+                            arrow
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="14"
+                              height="14"
+                              fill="currentColor"
+                              className="bi bi-question-circle"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                              <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+                            </svg>
+                          </Tooltip>
+                        </td>
+                        <td className="text-end-ct">
+                          <span className="fontBold500">
+                            {contentInsideData.traffic}
+                          </span>
+                        </td>
                       </tr>
                       <tr>
-                        <td>Anchor text</td>
-                        <td>0</td>
+                        <td>
+                          Anchor text
+                          <Tooltip
+                            title="Anchor text refers to the clickable text of a link."
+                            placement="right"
+                            arrow
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="14"
+                              height="14"
+                              fill="currentColor"
+                              className="bi bi-question-circle ml-1"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                              <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+                            </svg>
+                          </Tooltip>
+                        </td>
+                        <td className="text-end-ct">0</td>
                       </tr>
                       <tr>
-                        <td>Delivery time</td>
-                        <td>0</td>
+                        <td>
+                          Delivery time
+                          <Tooltip
+                            title="Turnaround time is based on real data and is expressed in business days."
+                            placement="right"
+                            arrow
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="14"
+                              height="14"
+                              fill="currentColor"
+                              className="bi bi-question-circle ml-1"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                              <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+                            </svg>
+                          </Tooltip>
+                        </td>
+                        <td className="text-end-ct">0</td>
                       </tr>
                       <tr>
-                        <td>Link</td>
-                        <td>0</td>
+                        <td>
+                          Link
+                          <Tooltip
+                            title="Dofollow links are particularly high on Google, while nofollow links don't have much impact on your ranking. It is estimated by an independent thrid party."
+                            placement="right"
+                            arrow
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="14"
+                              height="14"
+                              fill="currentColor"
+                              className="bi bi-question-circle ml-1"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                              <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+                            </svg>
+                          </Tooltip>
+                        </td>
+                        <td className="text-end-ct">0</td>
                       </tr>
                       <tr>
-                        <td>Language</td>
-                        <td>0</td>
+                        <td>
+                          Language
+                          <Tooltip
+                            title="Language in which your article will be written by us."
+                            placement="right"
+                            arrow
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="14"
+                              height="14"
+                              fill="currentColor"
+                              className="bi bi-question-circle ml-1"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                              <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+                            </svg>
+                          </Tooltip>
+                        </td>
+                        <td className="text-end-ct">0</td>
                       </tr>
                       <tr>
-                        <td>TLD</td>
-                        <td>0</td>
+                        <td>
+                          TLD
+                          <Tooltip
+                            title="Domain extension of the selected website."
+                            placement="right"
+                            arrow
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="14"
+                              height="14"
+                              fill="currentColor"
+                              className="bi bi-question-circle ml-1"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                              <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
+                            </svg>
+                          </Tooltip>
+                        </td>
+                        <td className="text-end-ct">0</td>
                       </tr>
                       <tr>
                         <td>Price</td>
-                        <td>
-                          <span className="h2">0</span>
+                        <td className="text-end-ct">
+                          <span className="h3 fontBold600">
+                            ${contentData.price}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={2} className="text-center">
+                          <div className="btn-group-md mb-2">
+                            <button
+                              className="btn btn-rounded font-weight-medium auth-form-btn"
+                              style={{ width: "100%" }}
+                              onClick={this.showProjectModal}
+                            >
+                              Order now
+                            </button>
+                          </div>
+                          <div className="btn-group-md">
+                            <button
+                              className="btn btn-primary btn btn-rounded custamFilterBtn"
+                              onClick={() =>
+                                this.handleAddtoCart(contentData.hash_id)
+                              }
+                              style={{ width: "100%" }}
+                            >
+                              Add to cart
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     </tbody>
@@ -638,6 +846,15 @@ export class ContentLinks extends Component {
             </div>
           </div>
         </div>
+        <PlaceOrderDetailsModal
+          showModal={this.state.showModalStep1}
+          showModal2={this.state.showModalStep2}
+          handleClose={this.handleClose}
+          handleNextStep={this.handleNextStep}
+          handleBackStep={this.handleBackStep}
+          contetnPrice={contentData.price}
+          contentLinkId={this.state.hash_id}
+        />
       </div>
     );
   }

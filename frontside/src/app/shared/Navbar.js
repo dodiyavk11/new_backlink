@@ -27,7 +27,7 @@ class Navbar extends Component {
     console.log(this.props.isAuthenticated);
   };
   render() {
-    const imageUrl = `${process.env.REACT_APP_BASE_URL}/assets/profile/${this.state.user.profile}`;
+    const imageUrl = `${process.env.REACT_APP_BASE_URL}assets/profile/${this.state.user.profile}`;
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex justify-content-center">

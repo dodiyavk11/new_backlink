@@ -14,14 +14,28 @@ exports.addNewOrder = async (req, res) => {
         orderData.hash_id = hash_id;
 
         const schema = Joi.object({
+            textCreation: Joi.string().required(),
             anchortext: Joi.string().required(),
             hash_id: Joi.string().required(),
             linktarget: Joi.string().uri().required(),
-            publication_date: Joi.date().iso(),
-            note: Joi.string(),
-            project_id: Joi.string(),
-            filename: Joi.string().required(),
-            originalname: Joi.string().required(),
+            publication_date: Joi.date().iso().allow(""),
+            note: Joi.string().allow(""),
+            project_id: Joi.string().allow(""),
+            chooseByBacklink: Joi.boolean(),
+            textCreationPrice: Joi.number().integer(),
+            approveText: Joi.number().integer(),
+            approveTextPrice: Joi.number().integer(),
+            wordCount: Joi.number().integer(),
+            filename: Joi.string().when('textCreation', {
+                is: 'Own',
+                then: Joi.string().required(),
+                otherwise: Joi.string().allow(""),
+            }),
+            originalname: Joi.string().when('textCreation', {
+                is: 'Own',
+                then: Joi.string().required(),
+                otherwise: Joi.string().allow(""),
+            }),
         });
         const { error, value } = schema.validate(orderData);
 
@@ -41,7 +55,8 @@ exports.addNewOrder = async (req, res) => {
                     id: customer_id
                 }
             });
-            const userBalance = await checkUserBalance(customer_id, [hash_id]);
+            const extraAddOnPrice = orderData.textCreationPrice + orderData.approveTextPrice
+            const userBalance = await checkUserBalance(customer_id, [hash_id],extraAddOnPrice);
 
             if (!userBalance) {
                 return res.status(400).send({
@@ -62,7 +77,13 @@ exports.addNewOrder = async (req, res) => {
                     project_id,
                     hash_id,
                     filename,
-                    originalname
+                    originalname,
+                    textCreation,
+                    wordCount,
+                    approveText,
+                    textCreationPrice,
+                    approveTextPrice,
+                    chooseByBacklink
                 } = orderData; // Change product to orderData
 
                 const getPublisherDomain = await getPublisherDomainData(null, hash_id);
@@ -70,7 +91,12 @@ exports.addNewOrder = async (req, res) => {
                 const domain_id = getPublisherDomain.id;
                 const backlinkData = await getBacklinksData(domain_id);
                 const backlink_id = backlinkData.id;
-                const total_price = getPublisherDomain.price;
+                const total_price = (
+                  parseFloat(getPublisherDomain.price) +
+                  parseFloat(textCreationPrice) +
+                  parseFloat(approveTextPrice)
+                ).toFixed(2);
+                const price = getPublisherDomain.price
                 const status = "Pending";
                 const orderDataAdd = {
                     publisher_id,
@@ -79,40 +105,53 @@ exports.addNewOrder = async (req, res) => {
                     backlink_id,
                     status,
                     total_price,
+                    price,
                     anchortext,
                     linktarget,
                     publication_date,
                     note,
                     project_id,
                     hash_id,
+                    textCreation,
+                    wordCount,
+                    approveText,
+                    textCreationPrice,
+                    approveTextPrice,
+                    chooseByBacklink,
+                    originalname,
+                    filename
                 };
-
+                let sourcePath;
+                let destPath;
                 // Move the file from temp_file to order_assets
-                const sourceDir = './assets/temp_file';
-                const destDir = './assets/order_assets';
-                const sourcePath = path.join(sourceDir, filename);
-                const destPath = path.join(destDir, filename);
+                if(filename !== "")
+                {
+                    const sourceDir = './assets/temp_file';
+                    const destDir = './assets/order_assets';
+                    sourcePath = path.join(sourceDir, filename);
+                    destPath = path.join(destDir, filename);
 
-                if (!fs.existsSync(sourcePath)) {
-                    return res.status(422).send({
-                        status: false,
-                        message: "The Text file is not found, please upload it.",
-                        error: "The Text file is not found, please upload it."
-                    });
-                }
+                    if (!fs.existsSync(sourcePath)) {
+                        return res.status(422).send({
+                            status: false,
+                            message: "The Text file is not found, please upload it.",
+                            error: "The Text file is not found, please upload it."
+                        });
+                    }   
+                }                
 
                 const placeOrder = await Models.newOrder.create(orderDataAdd);
                 placeOrderData.push(placeOrder);
-
-                await Models.orderFiles.create({
-                    order_id: placeOrder.dataValues.id,
-                    file_name: filename,
-                    original_name: originalname,
-                    file_path: 'assets/order_assets/',
-                });
-
-                await moveFile(sourcePath, destPath);
-
+                if(filename !== "")
+                {
+                    await Models.orderFiles.create({
+                        order_id: placeOrder.dataValues.id,
+                        file_name: filename,
+                        original_name: originalname,
+                        file_path: 'assets/order_assets/',
+                    });
+                    await moveFile(sourcePath, destPath);
+                }                
                 // Deduct from user's wallet
                 await deductFromWallet(customer_id, total_price, "deduct");
 
@@ -222,7 +261,7 @@ exports.addCartOrder = async (req, res) => {
                     id: customer_id
                 }
             });
-            const userBalance = await checkUserBalance(customer_id, orderDatas.map((item) => item.hash_id));
+            const userBalance = await checkUserBalance(customer_id, orderDatas.map((item) => item.hash_id),0);
             if (!userBalance) {
                 return res.status(400).send({
                     status: false,
@@ -562,6 +601,25 @@ exports.textFileUpload = async(req, res) => {
 	}
 }
 
+exports.textFileDelete = async(req, res) => {
+    try {
+        const filename = req.params.filename;
+        const tempFileDirectory = './assets/temp_file/' + filename;
+        if (filename !== "") {
+            fs.unlink(tempFileDirectory, (err) => {
+                if (!err) {
+                    res.status(200).send({ status: true, message: "File successfully deleted" });
+                } else {
+                    // res.status(500).send({ status: false, message: "File deletion failed, an error occurred", error: err });
+                    res.status(200).send({ status: true, message: "File successfully deleted" });
+                }
+            });
+        }
+    } catch (err) {
+        res.status(500).send({ status: false, message: "File deletion failed, an error occurred", error: err.message });
+    }
+}
+
 exports.addToCart = async(req, res) => {
 	try{
 		const user_id = req.userId;
@@ -749,7 +807,7 @@ async function getBacklinksData(domain_id)
 	}
 }
 
-async function checkUserBalance(user_id,hash_id)
+async function checkUserBalance(user_id,hash_id,addOnPrice)
 {
 	try
 	{		
@@ -770,7 +828,7 @@ async function checkUserBalance(user_id,hash_id)
 				totalCartPrice += prices;
 			}						
 			const balance = parseFloat(userBalance.balance);
-      		const price = parseFloat(totalCartPrice);      		
+      		const price = parseFloat(totalCartPrice) + addOnPrice;      		
 			if (balance >= price)
 			{
 				return true;

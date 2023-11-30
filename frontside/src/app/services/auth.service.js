@@ -1,10 +1,11 @@
 import axios from "axios";
-const APP_URL = "http://localhost:3000/";
-// const APP_URL = "http://fairlinked.bestprojectmanagementtool.com/backend/";
+require('dotenv').config();
+
 class AuthService {
+  APP_URL = process.env.REACT_APP_BASE_URL;
   login(email, password) {
     return axios
-      .post(APP_URL + "signin", {
+      .post(this.APP_URL + "signin", {
         email,
         password,
       })
@@ -21,7 +22,7 @@ class AuthService {
   }
 
   SignUp(formData) {
-    return axios.post(APP_URL + "signup", formData);
+    return axios.post(this.APP_URL + "signup", formData);
   }
 
   logout() {
@@ -34,19 +35,19 @@ class AuthService {
 
   getContentLinksData(hash_id) {
     const authToken = localStorage.getItem("token");
-    return axios.get(APP_URL + "contentlinks/" + hash_id, {
+    return axios.get(this.APP_URL + "contentlinks/" + hash_id, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
   getCartData() {
     const authToken = localStorage.getItem("token");
-    return axios.get(APP_URL + "user/cart", {
+    return axios.get(this.APP_URL + "user/cart", {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
   forgotPasswordLinkGenerate(email) {
     return axios
-      .post(APP_URL + "ForgotPasswordLink", {
+      .post(this.APP_URL + "ForgotPasswordLink", {
         email,
       })
       .then((response) => {
@@ -55,7 +56,7 @@ class AuthService {
   }
   tokenToChangePassword(password, token) {
     return axios
-      .post(APP_URL + "forgotPassword/" + token, {
+      .post(this.APP_URL + "forgotPassword/" + token, {
         password,
       })
       .then((response) => {
@@ -64,7 +65,7 @@ class AuthService {
   }
   verifyEmail(token) {
     return axios
-      .get(APP_URL + "verify/email/" + token)
+      .get(this.APP_URL + "verify/email/" + token)
       .then((response) => {
         return response;
       });

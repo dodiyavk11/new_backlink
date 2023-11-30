@@ -186,11 +186,11 @@ spann.createProject
 {
     color: #ff9756;
 }
-.createProjectModal .modal-dialog
+.createProjectModal .modal-dialog, .orderConfigureStep1 .modal-dialog, .orderConfigureStep2 .modal-dialog
 {
     max-width: 670px;
 }
-.createProjectModal .modal-content
+.createProjectModal .modal-content, .orderConfigureStep1 .modal-content , .orderConfigureStep2 .modal-content
 {
     background-color: #fff;
     padding: 25px;
@@ -881,4 +881,66 @@ span.psale
 .notificationTab .form-group
 {
     margin-bottom: 0.000rem !important;
+}
+.text-end-ct
+{
+    text-align: end !important;
+}
+
+.custom-buttonRadio.checked {
+    display: inline-block;
+    padding: 9px 10px 9px 6px;
+    /* border: 2px solid rgb(255, 151, 86); */
+    border-radius: 5px;
+    /* text-align: center; */
+    text-decoration: none;
+    font-size: 16px;
+    color:rgb(211 89 12);
+    cursor: pointer;
+    background-color: rgb(255 151 86 / 26%);
+    width: 270px;
+  }
+
+  .custom-buttonRadio {
+    display: inline-block;
+    padding: 9px 10px 9px 6px;
+    border-radius: 5px;
+    /* text-align: center; */
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: aliceblue;
+    width: 270px;
+}
+.opacityDown-50
+{
+    opacity: .5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.textRight
+{
+    text-align: right !important;
+}
+.textLeft
+{
+    text-align: left !important;
+}
+.textCenter
+{
+    text-align: center !important;
+}
+.borderDashed
+{
+    border-style: dashed !important;
+    border-width: 2px !important;
+    border-radius: 0.375rem !important;
+}
+.iconFontSize
+{
+    font-size: 25px;
+}
+.verticalAlign
+{
+    vertical-align: sub;
 }

@@ -9,7 +9,7 @@ const ActiveProjects = ({ project, goToProjectViewLink }) => {
   useEffect(() => {
     const checkImageExists = async () => {
       try {
-        const response = await fetch(ApiServices.APP_URL + project.image_url);
+        const response = await fetch(ApiServices.APP_URL.replace(/\/$/, '') + project.image_url);
         setImageExists(response.ok);
       } catch (error) {
         console.error("Error checking image", error);
@@ -21,11 +21,11 @@ const ActiveProjects = ({ project, goToProjectViewLink }) => {
   }, [project.image_url]);
 
   return (
-    <div className="col-md-4 mb-3">
+    <div className="col-md-4 mb-2">
       <div className="card border rounded p-3 cursorClass" onClick={() => goToProjectViewLink(project.hash_id)}>
         {imageExists ? (
           <img
-            src={ApiServices.APP_URL + project.image_url}
+            src={ApiServices.APP_URL.replace(/\/$/, '') + project.image_url}
             className="card-img-top"
             alt=""
           />
