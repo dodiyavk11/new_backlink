@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2023 at 01:40 PM
+-- Generation Time: Nov 30, 2023 at 02:11 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -309,12 +309,19 @@ CREATE TABLE `new_orders` (
   `backlink_id` int(11) NOT NULL,
   `status` enum('Pending','Inprogress','Completed','Cancelled','Rejected','MissingDetails') DEFAULT NULL,
   `total_price` decimal(10,2) DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL DEFAULT 0.00,
   `anchortext` varchar(100) DEFAULT NULL,
   `linktarget` varchar(255) DEFAULT NULL,
   `publication_date` date DEFAULT NULL,
   `note` varchar(255) DEFAULT NULL,
   `project_id` varchar(50) DEFAULT NULL,
   `hash_id` varchar(50) DEFAULT NULL,
+  `textCreation` varchar(50) NOT NULL,
+  `wordCount` int(10) NOT NULL,
+  `approveText` int(1) NOT NULL,
+  `textCreationPrice` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `approveTextPrice` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `chooseByBacklink` int(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -323,8 +330,9 @@ CREATE TABLE `new_orders` (
 -- Dumping data for table `new_orders`
 --
 
-INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `backlink_id`, `status`, `total_price`, `anchortext`, `linktarget`, `publication_date`, `note`, `project_id`, `hash_id`, `created_at`, `updated_at`) VALUES
-(1, 11, 15, 1, 1, 'Pending', '5000.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'nezrcrlx', 'z5cirixk', '2023-11-06 07:51:35', '2023-11-06 09:59:08');
+INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `backlink_id`, `status`, `total_price`, `price`, `anchortext`, `linktarget`, `publication_date`, `note`, `project_id`, `hash_id`, `textCreation`, `wordCount`, `approveText`, `textCreationPrice`, `approveTextPrice`, `chooseByBacklink`, `created_at`, `updated_at`) VALUES
+(1, 11, 15, 1, 1, 'Pending', '5000.00', '0.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'nezrcrlx', 'z5cirixk', '', 0, 0, '0.00', '0.00', 0, '2023-11-06 07:51:35', '2023-11-06 09:59:08'),
+(10, 11, 15, 1, 1, 'Pending', '5077.00', '5000.00', 'Click Here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2024-12-01', 'Noteeee', 'pnhtw15k', 'z5cirixk', 'Editorial', 1000, 1, '50.00', '27.00', 0, '2023-11-30 11:49:03', '2023-11-30 11:49:03');
 
 -- --------------------------------------------------------
 
@@ -376,14 +384,6 @@ CREATE TABLE `orderfiles` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `orderfiles`
---
-
-INSERT INTO `orderfiles` (`id`, `order_id`, `file_name`, `original_name`, `file_path`, `isLink`, `link`, `created_at`, `updated_at`) VALUES
-(19, 1, 'textFile1697456552830.docx', 'Dummy.docx', 'assets/order_assets/', 0, NULL, '2023-11-06 07:49:29', '2023-11-06 07:49:29'),
-(20, 1, 'textFile1697456552830.docx', 'Dummy.docx', 'assets/order_assets/', 0, NULL, '2023-11-06 07:51:35', '2023-11-06 07:51:35');
 
 -- --------------------------------------------------------
 
@@ -545,7 +545,8 @@ INSERT INTO `transactions` (`id`, `user_id`, `amount`, `transaction_type`, `desc
 (14, 15, '200.00', 'checkout.session.completed', 'Order', '2023-09-28 10:49:48', 'pi_3NvHn6SC7x5vD10M0zoRivzA', 0, 'paid', '{\"id\":\"cs_test_a1U16LEtAJXfbO9mdJXWuM9hqP9795uGb7fo28yUPPjY9BjqUr2InQYEJm\",\"object\":\"checkout.session\",\"after_expiration\":null,\"allow_promotion_codes\":null,\"amount_subtotal\":20000,\"amount_total\":20000,\"automatic_tax\":{\"enabled\":false,\"status\":null},\"billing_address_collection\":null,\"cancel_url\":\"http://localhost:3000/cancel.html\",\"client_reference_id\":null,\"consent\":null,\"consent_collection\":null,\"created\":1695898188,\"currency\":\"inr\",\"currency_conversion\":null,\"custom_fields\":[],\"custom_text\":{\"shipping_address\":null,\"submit\":null,\"terms_of_service_acceptance\":null},\"customer\":\"cus_OijF8GZ2yhPahH\",\"customer_creation\":null,\"customer_details\":{\"address\":{\"city\":null,\"country\":\"IN\",\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":\"nagherajayesh2087@gmail.com\",\"name\":\"12321\",\"phone\":null,\"tax_exempt\":\"none\",\"tax_ids\":[]},\"customer_email\":null,\"expires_at\":1695984588,\"invoice\":null,\"invoice_creation\":{\"enabled\":false,\"invoice_data\":{\"account_tax_ids\":null,\"custom_fields\":null,\"description\":null,\"footer\":null,\"metadata\":{},\"rendering_options\":null}},\"livemode\":false,\"locale\":null,\"metadata\":{\"userid\":\"15\"},\"mode\":\"payment\",\"payment_intent\":\"pi_3NvHn6SC7x5vD10M0zoRivzA\",\"payment_link\":null,\"payment_method_collection\":\"if_required\",\"payment_method_configuration_details\":null,\"payment_method_options\":{},\"payment_method_types\":[\"card\"],\"payment_status\":\"paid\",\"phone_number_collection\":{\"enabled\":false},\"recovered_from\":null,\"setup_intent\":null,\"shipping_address_collection\":null,\"shipping_cost\":null,\"shipping_details\":null,\"shipping_options\":[],\"status\":\"complete\",\"submit_type\":null,\"subscription\":null,\"success_url\":\"https://4fef-103-247-54-225.ngrok-free.app/getPayments\",\"total_details\":{\"amount_discount\":0,\"amount_shipping\":0,\"amount_tax\":0},\"url\":null}', '2023-09-28 11:50:23'),
 (15, 15, '200.00', 'checkout.session.completed', 'Order', '2023-09-28 10:52:46', 'pi_3NvHpzSC7x5vD10M1WvKinxX', 0, 'paid', '{\"id\":\"cs_test_a1BQ7UifrzL89gePFEK4R1sAnXYXHvMBgOoi99wwbdLotc7VQgeUX0j8rj\",\"object\":\"checkout.session\",\"after_expiration\":null,\"allow_promotion_codes\":null,\"amount_subtotal\":20000,\"amount_total\":20000,\"automatic_tax\":{\"enabled\":false,\"status\":null},\"billing_address_collection\":null,\"cancel_url\":\"http://localhost:3000/cancel.html\",\"client_reference_id\":null,\"consent\":null,\"consent_collection\":null,\"created\":1695898366,\"currency\":\"inr\",\"currency_conversion\":null,\"custom_fields\":[],\"custom_text\":{\"shipping_address\":null,\"submit\":null,\"terms_of_service_acceptance\":null},\"customer\":\"cus_OijIhxkXDHoYGq\",\"customer_creation\":null,\"customer_details\":{\"address\":{\"city\":null,\"country\":\"IN\",\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":\"nagherajayesh2087@gmail.com\",\"name\":\"12321\",\"phone\":null,\"tax_exempt\":\"none\",\"tax_ids\":[]},\"customer_email\":null,\"expires_at\":1695984766,\"invoice\":null,\"invoice_creation\":{\"enabled\":false,\"invoice_data\":{\"account_tax_ids\":null,\"custom_fields\":null,\"description\":null,\"footer\":null,\"metadata\":{},\"rendering_options\":null}},\"livemode\":false,\"locale\":null,\"metadata\":{\"userid\":\"15\"},\"mode\":\"payment\",\"payment_intent\":\"pi_3NvHpzSC7x5vD10M1WvKinxX\",\"payment_link\":null,\"payment_method_collection\":\"if_required\",\"payment_method_configuration_details\":null,\"payment_method_options\":{},\"payment_method_types\":[\"card\"],\"payment_status\":\"paid\",\"phone_number_collection\":{\"enabled\":false},\"recovered_from\":null,\"setup_intent\":null,\"shipping_address_collection\":null,\"shipping_cost\":null,\"shipping_details\":null,\"shipping_options\":[],\"status\":\"complete\",\"submit_type\":null,\"subscription\":null,\"success_url\":\"https://4fef-103-247-54-225.ngrok-free.app/getPayments\",\"total_details\":{\"amount_discount\":0,\"amount_shipping\":0,\"amount_tax\":0},\"url\":null}', '2023-09-28 11:53:09'),
 (52, 15, '5000.00', 'Place order', 'Buy backlinks google.com', '2023-11-06 07:49:29', 'order_1', 0, 'paid', '{\"id\":1,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":1,\"backlink_id\":1,\"status\":\"Pending\",\"total_price\":\"5000.00\",\"anchortext\":\"Click Here\",\"linktarget\":\"https://www.example.com/test.html\",\"publication_date\":\"2023-12-15T00:00:00.000Z\",\"note\":\"test\",\"project_id\":\"y8n78xoy\",\"hash_id\":\"z5cirixk\",\"updated_at\":\"2023-11-06T07:49:29.640Z\",\"created_at\":\"2023-11-06T07:49:29.640Z\"}', '2023-11-06 07:49:29'),
-(53, 15, '5000.00', 'Place order', 'Buy backlinks google.com', '2023-11-06 07:51:35', 'order_1', 0, 'paid', '{\"id\":1,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":1,\"backlink_id\":1,\"status\":\"Pending\",\"total_price\":\"5000.00\",\"anchortext\":\"Click Here\",\"linktarget\":\"https://www.example.com/test.html\",\"publication_date\":\"2023-12-15T00:00:00.000Z\",\"note\":\"test\",\"project_id\":\"nezrcrlx\",\"hash_id\":\"z5cirixk\",\"updated_at\":\"2023-11-06T07:51:35.197Z\",\"created_at\":\"2023-11-06T07:51:35.197Z\"}', '2023-11-06 07:51:35');
+(53, 15, '5000.00', 'Place order', 'Buy backlinks google.com', '2023-11-06 07:51:35', 'order_1', 0, 'paid', '{\"id\":1,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":1,\"backlink_id\":1,\"status\":\"Pending\",\"total_price\":\"5000.00\",\"anchortext\":\"Click Here\",\"linktarget\":\"https://www.example.com/test.html\",\"publication_date\":\"2023-12-15T00:00:00.000Z\",\"note\":\"test\",\"project_id\":\"nezrcrlx\",\"hash_id\":\"z5cirixk\",\"updated_at\":\"2023-11-06T07:51:35.197Z\",\"created_at\":\"2023-11-06T07:51:35.197Z\"}', '2023-11-06 07:51:35'),
+(59, 15, '5077.00', 'Place order', 'Buy backlinks google.com', '2023-11-30 11:49:03', 'order_10', 0, 'paid', '{\"id\":10,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":1,\"backlink_id\":1,\"status\":\"Pending\",\"total_price\":\"5077.00\",\"price\":\"5000.00\",\"anchortext\":\"Click Here\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/\",\"publication_date\":\"2024-12-01T00:00:00.000Z\",\"note\":\"Noteeee\",\"project_id\":\"pnhtw15k\",\"hash_id\":\"z5cirixk\",\"textCreation\":\"Editorial\",\"wordCount\":1000,\"approveText\":1,\"textCreationPrice\":50,\"approveTextPrice\":27,\"chooseByBacklink\":false,\"updated_at\":\"2023-11-30T11:49:03.418Z\",\"created_at\":\"2023-11-30T11:49:03.418Z\"}', '2023-11-30 11:49:03');
 
 -- --------------------------------------------------------
 
@@ -580,7 +581,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `password`, `profile`, `phone`, `postal_code`, `address`, `city`, `country`, `company`, `vat_id`, `bulk_invoice`, `invoice_email`, `isAdmin`, `created_at`, `updated_at`) VALUES
-(2, 'jayesh.besticoder@gmail.com', 1, 'Admin', 'User', '$2a$11$fCg11cAgOk7RvVCffz7TuulHBoIYOMATc6iq6PjtlbbB5ieju4dG2', 'profileImg_1695097731854.jpeg', '09033389733', 0, NULL, '', 'Germany', '', NULL, 0, '', 1, '2023-09-13 17:40:39', '2023-11-28 15:56:03'),
+(2, 'jayesh.besticoder@gmail.com', 1, 'Admin', 'Side', '$2a$11$fCg11cAgOk7RvVCffz7TuulHBoIYOMATc6iq6PjtlbbB5ieju4dG2', 'profileImg_1695097731854.jpeg', '1234567890', 123, 'admin', 'admin', 'Germany', 'Admin', 'null', 0, '', 1, '2023-09-13 17:40:39', '2023-11-28 18:36:04'),
 (6, 'ko6a055dax@gixenmixen.com', 1, 'Test', 'Customer', '$2a$11$PWRnpkMPyKnyfK3TgoNDi.LNcOvfWNpn1D83/NFUsNkFhvlzzMR6K', 'profileImg_1695101939136.png', '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-19 11:08:59', '2023-11-27 15:03:59'),
 (9, '123@gmail.com', 1, 'test', 'test', '$2a$11$uADreLR8rD3x7TF0dg54n.natIDMyUCFh/l1yKutPnLpkif5D5F1e', NULL, '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-20 10:55:10', '2023-09-20 10:55:10'),
 (10, 'devuser@gmail.com', 1, 'Dev', 'User', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1695188498849.jpg', '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-20 11:11:39', '2023-09-20 11:11:39'),
@@ -608,7 +609,7 @@ CREATE TABLE `users_wallet` (
 --
 
 INSERT INTO `users_wallet` (`id`, `user_id`, `balance`, `created_at`, `updated_at`) VALUES
-(1, 15, '5040.00', '2023-11-06 07:51:35', '2023-11-06 07:51:35');
+(1, 15, '4923.00', '2023-11-30 11:49:03', '2023-11-30 11:49:03');
 
 -- --------------------------------------------------------
 
@@ -631,7 +632,10 @@ CREATE TABLE `user_cart` (
 --
 
 INSERT INTO `user_cart` (`id`, `cart_id`, `user_id`, `hash_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(13, 'kprgy83hx', 15, 'z5cirixk', 1, '2023-11-06 07:47:14', '2023-11-06 07:47:14');
+(14, '4jo7045le', 15, 'z5cirixk', 1, '2023-11-29 06:59:14', '2023-11-29 06:59:14'),
+(15, 'aaa6ctaud', 15, 'z5cirixk', 1, '2023-11-29 07:03:28', '2023-11-29 07:03:28'),
+(16, '2roevxio1', 15, 'z5cirixk', 1, '2023-11-30 11:01:01', '2023-11-30 11:01:01'),
+(17, 'zo0nfzyw7', 15, 'z5cirixk', 1, '2023-11-30 11:01:29', '2023-11-30 11:01:29');
 
 -- --------------------------------------------------------
 
@@ -871,7 +875,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `new_orders`
 --
 ALTER TABLE `new_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -883,7 +887,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `orderfiles`
 --
 ALTER TABLE `orderfiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -913,7 +917,7 @@ ALTER TABLE `subscription_plans`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -931,7 +935,7 @@ ALTER TABLE `users_wallet`
 -- AUTO_INCREMENT for table `user_cart`
 --
 ALTER TABLE `user_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `user_subscriptions`
