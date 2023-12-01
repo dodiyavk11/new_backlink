@@ -15,10 +15,22 @@ export class Register extends Component {
       profile: "",
       password: "",
       error: "",
+      isPublisher:0
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
+
+  componentDidMount() {
+    const currentPath = this.props.location.pathname;
+    if(currentPath === "/register/become-publisher")
+    {
+      this.setState({
+        isPublisher : 2
+      })
+    }
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.postRegister();
@@ -35,17 +47,18 @@ export class Register extends Component {
     });
   };
   postRegister() {
-    const { email, password, firstName, lastName, phone } = this.state;
+    const { email, password, firstName, lastName, phone,isPublisher,profile } = this.state;
     if (!password || !email || !firstName || !lastName || !phone) {
       this.setState({ error: "Please fill required fields." });
     } else {
       const formData = new FormData();
-      formData.append("firstName", this.state.firstName);
-      formData.append("lastName", this.state.lastName);
-      formData.append("email", this.state.email);
-      formData.append("phone", this.state.phone);
-      formData.append("password", this.state.password);
-      formData.append("file", this.state.profile);
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      formData.append("password", password);
+      formData.append("file", profile);
+      formData.append("isPublisher", isPublisher);
       AuthService.SignUp(formData)
         .then((res) => {
           if (!res.status) {
@@ -90,7 +103,7 @@ export class Register extends Component {
                   />
                 </div>
                 <div className="text-center">
-                  <h3 className="fontBold800 latterSpace-0025">Sign up</h3>
+                  <h3 className="fontBold800 latterSpace-0025">Sign up {this.state.isPublisher === 2 ? "for Publisher" : ""}</h3>
                   <span className="text-sm">Register for an account in the fairlinked Marketplace.</span>
                 </div>     
                 <form className="pt-3" onSubmit={this.handleSubmit}>
@@ -173,7 +186,7 @@ export class Register extends Component {
                     </button>
                   </div>
                   <div className="text-center mt-4 fontBold400">
-                    Already have an account?{" "} 
+                    Already have an {this.state.isPublisher === 2 ? "Publisher" : ""} account?{" "} 
                     <Link to="/login" className="text-primary">
                       Login
                     </Link>

@@ -28,9 +28,6 @@ export class Login extends Component {
       AuthService.login(email, password).then(
         () => {
           this.props.handleLoginSuccess();
-          // this.props.router.navigate("/dashboard");
-          // this.props.history.push('/dashboard');
-          // window.location.reload();
         },
         (error) => {
           const resMessage =
@@ -45,31 +42,6 @@ export class Login extends Component {
           });
         }
       );
-      // fetch("http://localhost:3000/signin", {
-      //   method: "POST",
-      //   body: JSON.stringify({
-      //     email: email,
-      //     password: password,
-      //   }),
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     if (!data.status) {
-      //       toast.error(data.message, {
-      //         position: "top-center",
-      //         autoClose: 2000,
-      //       });
-      //     } else {
-      //       localStorage.setItem("email", data.data.email);
-      //       localStorage.setItem("token", data.token);
-      //       localStorage.setItem("userData", JSON.stringify(data.data));
-      //       window.location.reload();
-      //     }
-      //   })
-      //   .catch((err) => console.error(err));
     }
   };
   handleInputChange = (e) => {
@@ -147,6 +119,12 @@ export class Login extends Component {
                   <div className="text-center mt-4 fontBold400">
                     Don't have an account?{" "}
                     <Link to="/register" className="text-primary">
+                      Sign up
+                    </Link>
+                  </div>
+                  <div className="text-center mt-4 fontBold400">
+                    <b>Become a publisher?{" "}</b>
+                    <Link to="/register/become-publisher" className="text-primary">
                       Sign up
                     </Link>
                   </div>

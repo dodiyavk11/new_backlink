@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Form } from "react-bootstrap";
+import ApiServices from "../services/api.service";
+import { ToastContainer, toast } from "react-toastify";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
+import TimeAgo from "timeago-react";
+import { CPopover, CButton } from "@coreui/react";
 import "../../assets/custom.css";
 
 export class Orders extends Component {
@@ -10,87 +14,178 @@ export class Orders extends Component {
     this.state = {
       orderData: [],
       showPopover: false,
+      selectedStatus: [],
+      selectedProject: [],
+      selectedProduct: [],
+      date: "",
+      showID: true,
+      showDate: true,
+      showProduct: true,
+      showStatus: true,
+      showProject: true,
+      showAnchor: true,
+      showTarget: false,
+      showAmount: true,
+      filterData: {},
+      selectedDate: "",
       status: [
         {
           id: 1,
+          value: "Pending",
           label: "Pending",
         },
         {
           id: 2,
+          value: "In Progress",
           label: "In Progress",
         },
         {
           id: 3,
+          value: "Completed",
           label: "Completed",
         },
         {
           id: 4,
+          value: "Cancelled",
           label: "Cancelled",
         },
         {
           id: 5,
+          value: "Rajected",
           label: "Rajected",
         },
         {
           id: 6,
+          value: "Missing Details",
           label: "Missing Details",
         },
       ],
       projectType: [
         {
           id: 1,
+          value: "Press Release",
           label: "Press Release",
         },
         {
           id: 2,
+          value: "SEO Content",
           label: "SEO Content",
         },
         {
           id: 3,
+          value: "Google Disavow",
           label: "Google Disavow",
         },
       ],
-      project: [
-        {
-          id: 1,
-          label: "example.com",
-        },
-        {
-          id: 2,
-          label: "abc.com",
-        },
-        {
-          id: 3,
-          label: "test.org",
-        },
-      ],
-      objectArray: [
-        { key: "Option 1", cat: "Group 1" },
-        { key: "Option 2", cat: "Group 1" },
-        { key: "Option 3", cat: "Group 1" },
-        { key: "Option 4", cat: "Group 2" },
-        { key: "Option 5", cat: "Group 2" },
-        { key: "Option 6", cat: "Group 2" },
-        { key: "Option 7", cat: "Group 2" },
-      ],
+      project: [],
     };
   }
+  handleStatusChange = (selectedOptions) => {
+    const selectedValues = selectedOptions.map((option) => option.value);
+    this.setState({ selectedStatus: selectedValues }, this.updateFilterData);
+  };
+  handleProjectChange = (selectedOptions) => {
+    const selectedValues = selectedOptions.map((option) => option.value);
+    this.setState({ selectedProject: selectedValues }, this.updateFilterData);
+  };
+  handleProjectTypeChange = (selectedOptions) => {
+    const selectedValues = selectedOptions.map((option) => option.value);
+    this.setState({ selectedProduct: selectedValues }, this.updateFilterData);
+  };
+  handleDateChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({ selectedDate: value }, this.updateFilterData);
+  };
+
+  toggleColumn = (columnName) => {
+    this.setState((prevState) => ({
+      [columnName]: !prevState[columnName],
+    }));
+  };
+  handleCheckboxChange = (event, columnName) => {
+    this.toggleColumn(columnName);
+  };
+
+  updateFilterData = () => {
+    const { selectedStatus, selectedProduct, selectedProject, selectedDate } =
+      this.state;
+    const filterData = {
+      status: selectedStatus.length ? selectedStatus : [],
+      productType: selectedProduct.length ? selectedProduct : {},
+      project: selectedProject.length ? selectedProject : {},
+      date: selectedDate || "",
+    };    
+    this.setState({ filterData });
+  };
+  componentDidMount() {
+    ApiServices.getUserOrderList()
+      .then((res) => {
+        if (!res.data.status) {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        } else {
+          if (res.data.data) {
+            this.setState({ orderData: res.data.data });
+          }
+        }
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 401 &&
+          err.response.data.message !== "You cannot access this page"
+        ) {
+          this.setState({ isAuthenticated: false });
+          this.props.history.push("/login");
+        } else {
+          toast.error(err.response.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      });
+    ApiServices.getUserProjects().then((res) => {
+      if (res.status) {
+        const jsonFormat = res.data.data.map((item) => ({
+          id: item.id,
+          value: item.hash_id,
+          label: item.domain_name,
+        }));
+        this.setState({ project: jsonFormat });
+      }
+    });
+  }
+
+  goToOrderViewLink = (order_id) => {
+    this.props.history.push(`/order/${order_id}`);
+  };
+
   togglePopover = () => {
     this.setState((prevState) => ({ showPopover: !prevState.showPopover }));
   };
   render() {
-    const { showPopover } = this.state;
-    const { objectArray } = this.state;
+    const {
+      showPopover,
+      showAnchor,
+      showDate,
+      showID,
+      showProduct,
+      showProject,
+      showStatus,
+      showTarget,
+      showAmount,
+    } = this.state;
     return (
-      <div className="ordersPage">
+      <div className="ordersListPage">
         <div className="d-flex justify-content-between">
           <div className="page-header">
             <h3 className="fontBold latterSpacing">Orders</h3>
           </div>
           <div className="ExportBtn">
             <button className="btn btn-rounded d-inline-flex btn-sm">
-                <i className="mdi mdi-exit-to-app mr-2"></i>
-                Export
+              <i className="mdi mdi-exit-to-app mr-2"></i>
+              Export
             </button>
           </div>
         </div>
@@ -125,19 +220,50 @@ export class Orders extends Component {
                       <ReactMultiSelectCheckboxes
                         options={this.state.status}
                         placeholderButtonLabel="Status"
+                        onChange={this.handleStatusChange}
                       />
                       <ReactMultiSelectCheckboxes
                         options={this.state.projectType}
                         placeholderButtonLabel="Product Type"
+                        onChange={this.handleProjectTypeChange}
                       />
                       <ReactMultiSelectCheckboxes
                         options={this.state.project}
                         placeholderButtonLabel="Project"
+                        onChange={this.handleProjectChange}
                       />
-                      <ReactMultiSelectCheckboxes
-                        options={[]}
-                        placeholderButtonLabel="Date"
-                      />
+                      <CPopover
+                        // trigger="focus"
+                        className="datepickerPopoverclass"
+                      >
+                        <button
+                          type="button"
+                          className="css-1r4vtzz custamFilterBtn"
+                        >
+                          <span className="css-1v99tuv">
+                            <input
+                              type="date"
+                              placeholder="Date"
+                              onChange={this.handleDateChange}
+                            />
+                          </span>
+                          <span className="css-1gpjby2">
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              focusable="false"
+                              role="presentation"
+                            >
+                              <path
+                                d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z"
+                                fill="currentColor"
+                                fillRule="evenodd"
+                              ></path>
+                            </svg>
+                          </span>
+                        </button>
+                      </CPopover>
                     </form>
                   </div>
                   <div
@@ -175,7 +301,13 @@ export class Orders extends Component {
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
                             <span className="mr-4 text-nowrap">ID</span>
                             <label className="switch">
-                              <input type="checkbox" />
+                              <input
+                                type="checkbox"
+                                checked={showID}
+                                onChange={(e) =>
+                                  this.handleCheckboxChange(e, "showID")
+                                }
+                              />
                               <span className="slider round"></span>
                             </label>
                           </div>
@@ -184,21 +316,39 @@ export class Orders extends Component {
                               Date & Time
                             </span>
                             <label className="switch">
-                              <input type="checkbox" />
+                              <input
+                                type="checkbox"
+                                checked={showDate}
+                                onChange={(e) =>
+                                  this.handleCheckboxChange(e, "showDate")
+                                }
+                              />
                               <span className="slider round"></span>
                             </label>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
                             <span className="mr-4">Product</span>
                             <label className="switch">
-                              <input type="checkbox" />
+                              <input
+                                type="checkbox"
+                                checked={showProduct}
+                                onChange={(e) =>
+                                  this.handleCheckboxChange(e, "showProduct")
+                                }
+                              />
                               <span className="slider round"></span>
                             </label>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
                             <span className="mr-4 text-nowrap">Status</span>
                             <label className="switch">
-                              <input type="checkbox" />
+                              <input
+                                type="checkbox"
+                                checked={showStatus}
+                                onChange={(e) =>
+                                  this.handleCheckboxChange(e, "showStatus")
+                                }
+                              />
                               <span className="slider round"></span>
                             </label>
                           </div>
@@ -207,7 +357,13 @@ export class Orders extends Component {
                               Project
                             </span>
                             <label className="switch pull-right">
-                              <input type="checkbox" />
+                              <input
+                                type="checkbox"
+                                checked={showProject}
+                                onChange={(e) =>
+                                  this.handleCheckboxChange(e, "showProject")
+                                }
+                              />
                               <span className="slider round"></span>
                             </label>
                           </div>
@@ -216,7 +372,39 @@ export class Orders extends Component {
                               Anchor text
                             </span>
                             <label className="switch">
-                              <input type="checkbox" />
+                              <input
+                                type="checkbox"
+                                checked={showAnchor}
+                                onChange={(e) =>
+                                  this.handleCheckboxChange(e, "showAnchor")
+                                }
+                              />
+                              <span className="slider round"></span>
+                            </label>
+                          </div>
+                          <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                            <span className="mr-4 text-nowrap">Target Url</span>
+                            <label className="switch">
+                              <input
+                                type="checkbox"
+                                checked={showTarget}
+                                onChange={(e) =>
+                                  this.handleCheckboxChange(e, "showTarget")
+                                }
+                              />
+                              <span className="slider round"></span>
+                            </label>
+                          </div>
+                          <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                            <span className="mr-4 text-nowrap">Amount</span>
+                            <label className="switch">
+                              <input
+                                type="checkbox"
+                                checked={showAmount}
+                                onChange={(e) =>
+                                  this.handleCheckboxChange(e, "showAmount")
+                                }
+                              />
                               <span className="slider round"></span>
                             </label>
                           </div>
@@ -225,7 +413,64 @@ export class Orders extends Component {
                     )}
                   </div>
                 </div>
-                <div className="">
+                <div className="table-responsive">
+                  <table className="table table-hover orderListTable">
+                    <thead>
+                      <tr>
+                        <th className={showID ? "show" : "hide"}>ID</th>
+                        <th className={showDate ? "show" : "hide"}>Date</th>
+                        <th className={showStatus ? "show" : "hide"}>Status</th>
+                        <th className={showProduct ? "show" : "hide"}>
+                          Product
+                        </th>
+                        <th className={showProject ? "show" : "hide"}>
+                          Project
+                        </th>
+                        <th className={showAnchor ? "show" : "hide"}>
+                          Anchor text
+                        </th>
+                        <th className={showTarget ? "show" : "hide"}>
+                          Target url
+                        </th>
+                        <th className={showAmount ? "show" : "hide"}>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.orderData.map((order) => (
+                        <tr
+                          key={order.id}
+                          onClick={() => this.goToOrderViewLink(order.id)}
+                        >
+                          <td className={showID ? "show" : "hide"}>
+                            {order.id}
+                          </td>
+                          <td className={showDate ? "show" : "hide"}>
+                            {order.created_at}
+                          </td>
+                          <td className={showStatus ? "show" : "hide"}>
+                            {order.status}
+                          </td>
+                          <td className={showProduct ? "show" : "hide"}>
+                            {order.domain.domain_name}
+                          </td>
+                          <td className={showProject ? "show" : "hide"}>
+                            {order.project.domain_name}
+                          </td>
+                          <td className={showAnchor ? "show" : "hide"}>
+                            {order.anchortext}
+                          </td>
+                          <td className={showTarget ? "show" : "hide"}>
+                            {order.linktarget}
+                          </td>
+                          <td className={showAmount ? "show" : "hide"}>
+                            ${order.total_price}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {/* <div className="">
                   <center>
                     <div className="mt-5 mx-auto">
                       <img
@@ -247,7 +492,7 @@ export class Orders extends Component {
                       </span>
                     </button>
                   </center>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-const { dashboard,setting,updateNotification,addCustomerDomain,getProjects,addMessageToOrder,transactionHistory,imageTest,getUserDomain } = require("../controllers/customer.controller")
+const { dashboard,setting,updateNotification,addCustomerDomain,getProjects,addMessageToOrder,transactionHistory,imageTest,getUserDomain,userAddStaticAmount } = require("../controllers/customer.controller")
 const { isLogin, isCustomer } = require("../middleware/checkAuthenticate")
 const { checkDomainLimitInSubscriptionPlan } = require("../middleware/checkIsPlanOrderAndDomainLimit");
 module.exports = (app) =>{
@@ -9,4 +9,6 @@ module.exports = (app) =>{
     app.post("/user/project",[isLogin,isCustomer,checkDomainLimitInSubscriptionPlan],addCustomerDomain)
     app.get("/user/transactionHistory",[isLogin,isCustomer],transactionHistory)
     app.get("/user/domain/:domainId",[isLogin,isCustomer],getUserDomain)
+
+    app.post("/user/static/amount",[isLogin,isCustomer],userAddStaticAmount)
 }

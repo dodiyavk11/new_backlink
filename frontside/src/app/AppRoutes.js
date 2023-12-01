@@ -2,6 +2,7 @@ import React, { Component, Suspense, lazy } from "react";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import ProtectedRoute from "../app/ProtectedRoute";
 import AdminProtected from "../app/AdminProtected";
+import PublisherProtected from "./PublisherProtected";
 import AuthProtected from "../app/AuthProtected";
 import Spinner from "../app/shared/Spinner";
 import Navbar from "./shared/Navbar";
@@ -27,6 +28,7 @@ const AdminProjects = lazy(() => import("./admin/projects/Projects"));
 const ForgotPassword = lazy(() => import("./user-pages/ForgotPassword"));
 const ChangePasswordViaLink = lazy(() => import("./user-pages/ChangePasswordViaLink"));
 const VerifyEmail = lazy(() => import("./user-pages/VerifyEmail"));
+const publisherDomain = lazy(() => import("./publisher/domain/Domain"))
 
 class AppRoutes extends Component {
   constructor(props) {
@@ -48,7 +50,10 @@ class AppRoutes extends Component {
       () => {
         if (isAdmin === "1") {
           this.props.history.push("/admin/dashboard");
-        } else {
+        } else if(isAdmin === "2") {
+          this.props.history.push("/publisher/domain");
+        }
+        else{
           this.props.history.push("/dashboard");
         }
         // this.props.history.push("/dashboard");
@@ -71,7 +76,7 @@ class AppRoutes extends Component {
     return (
       location.pathname === "/login" ||
       location.pathname === "/register" ||
-      location.pathname === "/forgot-password" ||
+      location.pathname === "/forgot-password" || location.pathname === "/register/become-publisher" ||
       isForgotPasswordTokenPath || isVerifyEmail
     );
   };
@@ -143,6 +148,7 @@ class AppRoutes extends Component {
                   />
 
                   <Route path="/register" component={Register} />
+                  <Route path="/register/become-publisher" component={Register} />
                   <Route path="/forgot-password" component={ForgotPassword} />
                   <Route path="/forgotPassword/:token" component={ChangePasswordViaLink} />
                   <Route path="/verify/email/:token" component={VerifyEmail} />
@@ -273,6 +279,14 @@ class AppRoutes extends Component {
                     exact
                     path="/admin/projects"
                     component={AdminProjects}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+
+                  <PublisherProtected 
+                    exact
+                    path="/publisher/domain"
+                    component={publisherDomain}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />

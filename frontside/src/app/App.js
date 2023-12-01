@@ -36,6 +36,7 @@ class App extends Component {
       "/register",
       "/forgot-password",
       "/forgotPassword/:token",
+      "/register/become-publisher",
     ];
     const { location } = this.props;
     const forgotPasswordPattern = /^\/forgotPassword\/[a-zA-Z0-9._-]+$/;

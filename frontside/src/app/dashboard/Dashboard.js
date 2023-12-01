@@ -23,6 +23,7 @@ export class Dashboard extends Component {
       contentData: [],
       show: false,
       showModal: false,
+      amount: 0,
     };
   }
   showProjectModal = () => this.setState({ showModal: true });
@@ -31,6 +32,42 @@ export class Dashboard extends Component {
   handleClose = () => {
     this.setState({ show: false });
   };
+
+  handleAmountChange = (event) => {
+    this.setState({ amount: event.target.value });
+  };
+
+  handleAddAmountSubmit = () => {
+    const amount = this.state.amount;
+    ApiServices.userAddStaticAmountTesting(amount).then(
+      (res) => {
+        if (res.data.status) {
+          this.setState({
+            amount: 0,
+            balance:res.data.data.balance,
+            show:false
+          });          
+          toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
+
   goToContentLink = (hash_id) => {
     this.props.history.push(`/content/${hash_id}`);
   };
@@ -110,6 +147,7 @@ export class Dashboard extends Component {
         <div className="dashboardHome">
           <Modal
             size="md"
+            className="addBalanceModal"
             show={this.state.show}
             onHide={this.handleClose}
             backdrop="static"
@@ -129,6 +167,23 @@ export class Dashboard extends Component {
               Save Changes
             </Button>
           </Modal.Footer> */}
+            <div className="form-group">
+              <label htmlFor="exampleInputName1">Amount</label>
+              <input
+                value={this.state.amount}
+                onChange={this.handleAmountChange}
+                placeholder="Enter amount"
+                type="number"
+                className="form-control"
+              />
+            </div>
+            <button
+              className="btn btn-rounded btn-fw btn-block"
+              type="submit"
+              onClick={this.handleAddAmountSubmit}
+            >
+              Add amount
+            </button>
           </Modal>
           <ToastContainer />
           <div className="page-header">
@@ -177,7 +232,11 @@ export class Dashboard extends Component {
                 </div>
               </div>
               {this.state.domains.map((item) => (
-                <DomainComponent key={item.id} item={item} goToProjectViewLink={this.goToProjectViewLink}/>
+                <DomainComponent
+                  key={item.id}
+                  item={item}
+                  goToProjectViewLink={this.goToProjectViewLink}
+                />
               ))}
               {!this.state.domains.length && (
                 <div className="card bRadius cRadiusTop">
@@ -189,7 +248,7 @@ export class Dashboard extends Component {
               {this.state.domains.length > 0 && (
                 <div className="card bRadius cRadiusTop">
                   <div className="card-body text-center">
-                    <hr/>
+                    <hr />
                     <Link to="/projects" className="hrefTitle">
                       View all
                     </Link>
@@ -213,9 +272,9 @@ export class Dashboard extends Component {
                   )}
                 </div>
                 {this.state.orders.length > 0 && (
-                  <div className="card bRadius cRadiusTop">                    
+                  <div className="card bRadius cRadiusTop">
                     <div className="card-body text-center">
-                      <hr/>
+                      <hr />
                       <Link to="/orders" className="hrefTitle">
                         View all
                       </Link>
@@ -256,12 +315,12 @@ export class Dashboard extends Component {
                 </div>
                 <div className="card bRadius cRadiusTop">
                   <div className="card-body text-center">
-                    <hr/>
+                    <hr />
                     <Link to="/basic-ui/buttons" className="hrefTitle">
                       View all
                     </Link>
                   </div>
-                  </div>
+                </div>
               </div>
             </div>
             <div className="col-lg-4 grid-margin stretch-card">
@@ -376,11 +435,11 @@ export class Dashboard extends Component {
                     </div>
                   </div>
                 </div>
-                  <div className="card-body text-center">
-                    <Link to="/basic-ui/buttons" className="hrefTitle">
-                      Discover more
-                    </Link>
-                  </div>
+                <div className="card-body text-center">
+                  <Link to="/basic-ui/buttons" className="hrefTitle">
+                    Discover more
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

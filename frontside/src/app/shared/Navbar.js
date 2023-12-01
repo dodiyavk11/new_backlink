@@ -57,7 +57,7 @@ class Navbar extends Component {
           >
             <span className="mdi mdi-menu"></span>
           </button>
-          <ul className="navbar-nav navbar-nav-right">            
+          <ul className="navbar-nav navbar-nav-right">
             <li className="nav-item">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">
@@ -161,7 +161,11 @@ class Navbar extends Component {
                           </b>
                           <br />
                           <span>
-                            {this.state.user.isAdmin ? "Admin" : "User"}
+                            {this.state.user.isAdmin === 1
+                              ? "Admin"
+                              : this.state.user.isAdmin === 2
+                              ? "Publisher"
+                              : "User"}
                           </span>
                         </Trans>
                       ) : (
@@ -177,7 +181,7 @@ class Navbar extends Component {
                         src={require("../../assets/images/faces/face1.jpg")}
                         alt="user"
                       />
-                    )}                   
+                    )}
                   </div>
                 </Dropdown.Toggle>
 

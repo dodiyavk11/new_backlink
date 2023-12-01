@@ -9,6 +9,19 @@ class ApiServices {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
+
+  userAddStaticAmountTesting(amount)
+  {
+    const authToken = localStorage.getItem("token");
+    return axios.post(this.APP_URL + "user/static/amount", {"amount":amount}, {
+      headers: { Authorization: `Bearer ${authToken}` },
+      "Content-Type": "application/json",
+    })
+    .then((response) => {
+      return response;
+    });
+  }
+
   addUserProject(formData) {
     const authToken = localStorage.getItem("token");
     return axios
@@ -176,6 +189,42 @@ class ApiServices {
           approveText,
           wordCount,
         },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+  getUserOrderList() {    
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "user/orders";
+    return axios
+      .post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+  userOrderListFilter(filterData){
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "user/orders";
+    return axios
+      .post(
+        url,
+        {filterData},
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

@@ -381,3 +381,35 @@ exports.transactionHistory = async(req, res) =>
 		res.status(500).send({ status: false, message: "Something went to wrong.",data: [], error: err.message })
 	}
 }
+
+exports.userAddStaticAmount = async(req, res) => {
+	try
+	{
+		const userId = req.userId;
+		const { amount } = req.body;
+		if(amount)
+		{			
+			const tranInfo = { user_id:userId,amount,transaction_type:"Manual Added",description:"For Testing",status:"paid" }
+			await Models.Transactions.create(tranInfo);
+			const walletInfo = await Models.UserWallet.findOne({ where:{ user_id:userId }});	
+			let walletInfoData;
+			if (walletInfo) {
+		    	const balance = parseFloat(amount) + parseFloat(walletInfo.balance);
+				const updateOnfo = { balance }
+		       	walletInfoData = await Models.UserWallet.update(updateOnfo, {
+					      where: { id: walletInfo.dataValues.id },
+					    });
+		    } else {
+				walletInfoData = await Models.UserWallet.create({ user_id:userId, balance: amount });
+		    }		  
+		    const newBalance = await Models.UserWallet.findOne({ where:{ user_id:userId }, attributes: ['balance'] });			   
+		    return res.status(200).send({ status: true, message: "Amount added in your wallet successfully.",data:newBalance })
+		}
+		return res.status(400).send({ status: false, message: "Amount can not be zero",data:[] })
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message: "Amount can not added, an error occured.", error: err.message })
+	}
+}

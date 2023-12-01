@@ -11,7 +11,11 @@ const moment = require('moment');
 // add customer - both user and admin side
 exports.signUp = async (req, res) => {
     try {       
-        const { email, firstName, lastName, password,phone } = req.body        
+        const { email, firstName, lastName, password,phone,isPublisher } = req.body      
+        if(isPublisher !== "0" && isPublisher !== "2")
+        {
+            return res.status(401).send({ status: false, message: "Your request could not be proccess due to some unwanted activity", data: [] })
+        }  
         const profile = req.file
         const checkUser = await Models.Users.findOne({ where: { email } })
         if (checkUser && checkUser.dataValues.email) {
@@ -19,7 +23,7 @@ exports.signUp = async (req, res) => {
             return res.status(409).send({ status: false, message: "User already registered ", data: [] })
         }
             const hashedPassword = await bcrypt.hash(password, 11);
-            const userInfo = { email, firstName, lastName, password: hashedPassword, phone }
+            const userInfo = { email, firstName, lastName, password: hashedPassword, phone, isAdmin:isPublisher }
 
             if (profile) userInfo.profile = profile.filename
 
