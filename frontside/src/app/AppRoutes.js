@@ -290,6 +290,13 @@ class AppRoutes extends Component {
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
+                  <PublisherProtected 
+                    exact
+                    path="/domain/:hash_id"
+                    component={BlankPage}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
                   {/* <Route path="/login" component={ Login } /> */}
                   {/* <Route path="/login" component={(props) => <Login {...props} handleLoginSuccess={this.handleLoginSuccess} />} /> */}
                   <Redirect to="/login" />

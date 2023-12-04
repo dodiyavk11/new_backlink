@@ -186,11 +186,11 @@ spann.createProject
 {
     color: #ff9756;
 }
-.createProjectModal .modal-dialog, .orderConfigureStep1 .modal-dialog, .orderConfigureStep2 .modal-dialog, .addBalanceModal .modal-dialog
+.createProjectModal .modal-dialog, .orderConfigureStep1 .modal-dialog, .orderConfigureStep2 .modal-dialog, .addBalanceModal .modal-dialog, .addPublisherDomainModal .modal-dialog
 {
     max-width: 670px;
 }
-.createProjectModal .modal-content, .orderConfigureStep1 .modal-content , .orderConfigureStep2 .modal-content, .addBalanceModal .modal-content
+.createProjectModal .modal-content, .orderConfigureStep1 .modal-content , .orderConfigureStep2 .modal-content, .addBalanceModal .modal-content, .addPublisherDomainModal .modal-content
 {
     background-color: #fff;
     padding: 25px;

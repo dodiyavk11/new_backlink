@@ -48,6 +48,17 @@ async function captureScreenshot(url, hash_id,domainId,type) {
         }
       }
   } catch (error) {
+    const domain_rating = 0;
+    const domain_id = domainId;
+    const addData = { domain_id,domain_rating };
+    if(type === "user")
+    {
+      const addDataDomain = await Models.customerDomainData.create(addData);          
+    }        
+    else
+    {
+      const addDataDomain = await Models.publisherDomainData.create(addData);          
+    }
     console.error('Screenshot capture error:', error);
     parentPort.postMessage('Screenshot capture failed.');
   }

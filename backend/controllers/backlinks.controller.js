@@ -4,6 +4,8 @@ const { Op } = require('sequelize');
 const generateUniqueId = require('generate-unique-id');
 const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils");
 const { Worker, isMainThread } = require('worker_threads');
+const ExcelJS = require('exceljs');
+const fs = require('fs');
 
 exports.getPublisherDomainList = async(req, res) => {
 	try
@@ -64,7 +66,7 @@ exports.getPublisherDomain = async(req, res) => {
 exports.addPublisherDomain = async(req, res) => {
 	try
 	{
-		const { domain_name,category_id,price } = req.body;
+		const { domain_name,category_id,price,anchorText,deliveryTime,attribute,sensitiveTopic,sensitiveTopicCharge,minWordCount,textByCustomer,textInclude,language } = req.body;
 		const userId = req.userId;
 		const domainPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+(\.[a-zA-Z]{2,}){1,2})(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
 
@@ -92,7 +94,7 @@ exports.addPublisherDomain = async(req, res) => {
 
             const domainParts = domain_name.split('.');
 		  	const tld = domainParts[domainParts.length - 1];
-            const addData = { domain_name: mainDomain, tld, category_id, price, user_id:userId, hash_id };
+            const addData = { domain_name: mainDomain, tld, category_id, price, user_id:userId, hash_id,anchorText,deliveryTime,attribute,sensitiveTopic,sensitiveTopicCharge,minWordCount,textByCustomer,textInclude,language,status:0 };            
             const addDomain = await Models.publisherDomain.create(addData);
 
             /* send publisher notification email to successed added domain */
@@ -304,4 +306,101 @@ function extractMainDomain(url) {
 	let mainDomain = url.replace(/^https?:\/\//, '');	  
 	mainDomain = mainDomain.split("/")[0];
 	return mainDomain;
+}
+
+exports.publisherExcelFileDataAdd = async(req, res) => {
+	try {
+	    const file = req.file;
+	    const userId = req.userId;
+	    const path = "./assets/excel_temp/" + file.filename;
+	    const workbook = new ExcelJS.Workbook();
+	    const domainPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+(\.[a-zA-Z]{2,}){1,2})(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+	    const result = await new Promise((resolve, reject) => {
+      		workbook.xlsx.readFile(path).then(() => {
+	        const worksheet = workbook.getWorksheet(1);
+	        const columnIndex = 2;
+	        const data = [];
+
+	        worksheet.eachRow({ includeEmpty: false }, async (row, rowNumber) => {
+	          if (rowNumber > 1) {
+	            const domain_name = row.getCell(1).value;
+	            const price = row.getCell(2).value;
+	            const anchorText = row.getCell(3).value;
+	            const deliveryTime = row.getCell(4).value;
+	            const attribute = row.getCell(5).value;
+	            const sensitiveTopic = row.getCell(6).value;
+	            const sensitiveTopicCharge = row.getCell(7).value;
+	            const minWordCount = row.getCell(8).value;
+	            const textByCustomer = row.getCell(9).value;
+	            const textInclude = row.getCell(10).value;
+	            const language = row.getCell(11).value;
+
+	            if (domainPattern.test(domain_name)) {
+            		let mainDomain = extractMainDomain(domain_name);        
+		            mainDomain = mainDomain.trim().replace(/\/+$/, '');            
+		            const existingDomain = await Models.publisherDomain.findOne({
+		                where: {
+		                    domain_name: {
+		                        [Sequelize.Op.substring]: mainDomain.replace("www",""),
+		                    },
+		                    user_id: userId,
+		                },
+		            });
+		            if (!existingDomain) {
+		            	let hash_id = generateUniqueId({
+			                length: 8,
+			                useLetters: true
+			            });
+
+			            const domainParts = domain_name.split('.');
+					  	const tld = domainParts[domainParts.length - 1];
+			            const addData = { domain_name: mainDomain, tld, category_id:23, price, user_id:userId, hash_id,anchorText,deliveryTime,attribute,sensitiveTopic,sensitiveTopicCharge,minWordCount,textByCustomer,textInclude,language,status:0 };            
+			            const addDomain = await Models.publisherDomain.create(addData);
+			            if (isMainThread) {
+			            	const domainId = addDomain.id;
+			            	const type = "publisher";
+							const worker = new Worker('./controllers/domainBackgroundProcesses.js', { workerData: { url: mainDomain, hash_id,domainId,type } });
+
+							worker.on('message', (message) => {
+								console.log(message);
+							});
+
+							worker.on('error', (error) => {
+								console.error(`Worker error: ${error}`);
+							});
+
+							worker.on('exit', (code) => {
+							if (code !== 0) {
+							  console.error(`Worker stopped with exit code ${code}`);
+							}
+							});
+						}
+		            }
+	            }	            
+
+	            data.push({
+	              domain_name,
+	              price,
+	              anchorText,
+	              deliveryTime,
+	              attribute,
+	              sensitiveTopic,
+	              sensitiveTopicCharge,
+	              minWordCount,
+	              textByCustomer,
+	              textInclude,
+	              language
+	            });
+	          }
+	        });
+	    fs.unlinkSync(path);
+        resolve(data);
+      });
+    });
+
+    res.status(200).json({ status: true, message: 'File uploaded successfully, If there are any issues with the file data, it will be skipped from being stored in our portal. Otherwise, after some time, the data will be displayed here.', data: result });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ status: false, message: 'Error occurred while reading the file.' });
+  }
 }

@@ -42,6 +42,16 @@ class ApiServices {
         return response;
       });
   }
+  getDomainCategoryList() {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(this.APP_URL + "domainCategory/list", {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
   getNotificationSetting() {
     const authToken = localStorage.getItem("token");
     return axios
@@ -229,6 +239,53 @@ class ApiServices {
           headers: {
             Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+
+  getPublisherDomainList() {    
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "publisher/domains";
+    return axios
+      .get(
+        url,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+
+  publisherAddDomain(formData) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .post(this.APP_URL + "publisher/addDomain", formData, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+  async publisherUploadExcelFile(fileData)
+  {
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "publisher/domain/excelUpload";
+    return await axios
+      .post(
+        url,
+        fileData,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            'Content-Type': 'multipart/form-data'
           },
         }
       )

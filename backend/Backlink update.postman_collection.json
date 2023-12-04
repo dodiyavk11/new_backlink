@@ -400,12 +400,12 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY5NDYwNzA3MCwiZXhwIjoxNjk4MjA3MDcwfQ.p8FRm6BUwiInwEO_8Fu-nnwrSduItyicJPQqCZAPWjk",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ0LCJpYXQiOjE3MDE2NjEyODMsImV4cCI6MTcwMTY5NzI4M30.U3BSJwa3PRQ9H2HajlLZzSTbkLAsLpmTxIC-Z9axirE",
 							"type": "string"
 						}
 					]
 				},
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:3000/domainCategory/list",
@@ -3507,6 +3507,86 @@
 							"key": "filename",
 							"value": ""
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User add amount in wallet (for testing)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3MDE0MTg0MDEsImV4cCI6MTcwMTQ1NDQwMX0.VA5oQFEgibXf0xqIfunQeKvnD9T6nqGv927AIkIE1KI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\":500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/user/static/amount",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"static",
+						"amount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publisher excel file upload for domain add",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MDE2NjkyMzQsImV4cCI6MTcwMTcwNTIzNH0.g__xfBOOmp6SBClJmxJvB5X4WbofHXzPko67orADOpI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fileData",
+							"type": "file",
+							"src": "/C:/Users/rjnag/Downloads/sample_excel (2).xlsx"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/publisher/domain/excelUpload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"domain",
+						"excelUpload"
 					]
 				}
 			},

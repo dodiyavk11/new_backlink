@@ -114,7 +114,7 @@ export class Orders extends Component {
       productType: selectedProduct.length ? selectedProduct : {},
       project: selectedProject.length ? selectedProject : {},
       date: selectedDate || "",
-    };    
+    };
     this.setState({ filterData });
   };
   componentDidMount() {
@@ -413,86 +413,93 @@ export class Orders extends Component {
                     )}
                   </div>
                 </div>
-                <div className="table-responsive">
-                  <table className="table table-hover orderListTable">
-                    <thead>
-                      <tr>
-                        <th className={showID ? "show" : "hide"}>ID</th>
-                        <th className={showDate ? "show" : "hide"}>Date</th>
-                        <th className={showStatus ? "show" : "hide"}>Status</th>
-                        <th className={showProduct ? "show" : "hide"}>
-                          Product
-                        </th>
-                        <th className={showProject ? "show" : "hide"}>
-                          Project
-                        </th>
-                        <th className={showAnchor ? "show" : "hide"}>
-                          Anchor text
-                        </th>
-                        <th className={showTarget ? "show" : "hide"}>
-                          Target url
-                        </th>
-                        <th className={showAmount ? "show" : "hide"}>Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.orderData.map((order) => (
-                        <tr
-                          key={order.id}
-                          onClick={() => this.goToOrderViewLink(order.id)}
-                        >
-                          <td className={showID ? "show" : "hide"}>
-                            {order.id}
-                          </td>
-                          <td className={showDate ? "show" : "hide"}>
-                            {order.created_at}
-                          </td>
-                          <td className={showStatus ? "show" : "hide"}>
-                            {order.status}
-                          </td>
-                          <td className={showProduct ? "show" : "hide"}>
-                            {order.domain.domain_name}
-                          </td>
-                          <td className={showProject ? "show" : "hide"}>
-                            {order.project.domain_name}
-                          </td>
-                          <td className={showAnchor ? "show" : "hide"}>
-                            {order.anchortext}
-                          </td>
-                          <td className={showTarget ? "show" : "hide"}>
-                            {order.linktarget}
-                          </td>
-                          <td className={showAmount ? "show" : "hide"}>
-                            ${order.total_price}
-                          </td>
+                {this.state.orderData.length > 0 ? (
+                  <div className="table-responsive">
+                    <table className="table table-hover orderListTable">
+                      <thead>
+                        <tr>
+                          <th className={showID ? "show" : "hide"}>ID</th>
+                          <th className={showDate ? "show" : "hide"}>Date</th>
+                          <th className={showStatus ? "show" : "hide"}>
+                            Status
+                          </th>
+                          <th className={showProduct ? "show" : "hide"}>
+                            Product
+                          </th>
+                          <th className={showProject ? "show" : "hide"}>
+                            Project
+                          </th>
+                          <th className={showAnchor ? "show" : "hide"}>
+                            Anchor text
+                          </th>
+                          <th className={showTarget ? "show" : "hide"}>
+                            Target url
+                          </th>
+                          <th className={showAmount ? "show" : "hide"}>
+                            Amount
+                          </th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                {/* <div className="">
-                  <center>
-                    <div className="mt-5 mx-auto">
-                      <img
-                        src={require("../../assets/images/empty.png")}
-                        alt="No data found..."
-                      />
-                    </div>
-                    <h4>No Orders</h4>
-                    <p style={{maxWidth:"400px"}}>
-                      No Project You do not have any Project yet. As soon as you
-                      add your first Project, it will show up here.
-                    </p>
-                    <button className="btn btn-rounded btn-fw">
-                      <span
-                        className="createProject"
-                        onClick={this.showProjectModal}
-                      >
-                        <i className="mdi mdi-plus mr-2"></i>Create Project
-                      </span>
-                    </button>
-                  </center>
-                </div> */}
+                      </thead>
+                      <tbody>
+                        {this.state.orderData.map((order) => (
+                          <tr
+                            key={order.id}
+                            onClick={() => this.goToOrderViewLink(order.id)}
+                          >
+                            <td className={showID ? "show" : "hide"}>
+                              {order.id}
+                            </td>
+                            <td className={showDate ? "show" : "hide"}>
+                              {order.created_at}
+                            </td>
+                            <td className={showStatus ? "show" : "hide"}>
+                              {order.status}
+                            </td>
+                            <td className={showProduct ? "show" : "hide"}>
+                              {order.domain.domain_name}
+                            </td>
+                            <td className={showProject ? "show" : "hide"}>
+                              {order.project.domain_name}
+                            </td>
+                            <td className={showAnchor ? "show" : "hide"}>
+                              {order.anchortext}
+                            </td>
+                            <td className={showTarget ? "show" : "hide"}>
+                              {order.linktarget}
+                            </td>
+                            <td className={showAmount ? "show" : "hide"}>
+                              ${order.total_price}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="">
+                    <center>
+                      <div className="mt-5 mx-auto">
+                        <img
+                          src={require("../../assets/images/empty.png")}
+                          alt="No data found..."
+                        />
+                      </div>
+                      <h4>No Orders</h4>
+                      <p style={{ maxWidth: "400px" }}>
+                        No Project You do not have any Project yet. As soon as
+                        you add your first Project, it will show up here.
+                      </p>
+                      {/* <button className="btn btn-rounded btn-fw">
+                        <span
+                          className="createProject"
+                          onClick={this.showProjectModal}
+                        >
+                          <i className="mdi mdi-plus mr-2"></i>Create Project
+                        </span>
+                      </button> */}
+                    </center>
+                  </div>
+                )}
               </div>
             </div>
           </div>

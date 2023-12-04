@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2023 at 02:03 PM
+-- Generation Time: Dec 04, 2023 at 02:14 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -439,6 +439,15 @@ CREATE TABLE `publisher_domains` (
   `price` decimal(8,2) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
   `status` int(1) NOT NULL DEFAULT 1,
+  `anchorText` varchar(100) DEFAULT NULL,
+  `deliveryTime` int(11) NOT NULL DEFAULT 0,
+  `attribute` varchar(50) DEFAULT NULL,
+  `sensitiveTopic` int(1) NOT NULL,
+  `sensitiveTopicCharge` decimal(10,2) DEFAULT NULL,
+  `minWordCount` int(11) NOT NULL DEFAULT 0,
+  `textByCustomer` int(1) NOT NULL DEFAULT 0,
+  `textInclude` int(1) NOT NULL,
+  `language` varchar(15) NOT NULL DEFAULT 'en',
   `user_id` int(11) NOT NULL,
   `hash_id` varchar(25) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -449,8 +458,9 @@ CREATE TABLE `publisher_domains` (
 -- Dumping data for table `publisher_domains`
 --
 
-INSERT INTO `publisher_domains` (`id`, `domain_name`, `tld`, `price`, `category_id`, `status`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
-(1, 'google.com', 'com', '5000.00', 18, 1, 11, 'z5cirixk', '2023-11-06 07:44:47', '2023-11-07 10:33:28');
+INSERT INTO `publisher_domains` (`id`, `domain_name`, `tld`, `price`, `category_id`, `status`, `anchorText`, `deliveryTime`, `attribute`, `sensitiveTopic`, `sensitiveTopicCharge`, `minWordCount`, `textByCustomer`, `textInclude`, `language`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
+(1, 'google.com', 'com', '5000.00', 18, 1, NULL, 0, NULL, 0, NULL, 0, 0, 0, 'en', 11, 'z5cirixk', '2023-11-06 07:44:47', '2023-12-04 07:18:14'),
+(4, 'backlinked.com', 'com', '255.00', 6, 0, 'As desired', 0, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 11, 'zulhjrwm', '2023-12-04 09:32:34', '2023-12-04 09:32:34');
 
 -- --------------------------------------------------------
 
@@ -482,7 +492,8 @@ CREATE TABLE `publisher_domain_data` (
 --
 
 INSERT INTO `publisher_domain_data` (`id`, `domain_id`, `traffic`, `anchor_text`, `delivery_time`, `link`, `language`, `visibility_index`, `domain_rating`, `rating`, `referring`, `citation_flow`, `trust_flow`, `authority`, `created_at`, `updated_at`) VALUES
-(1, 1, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-11-06 07:44:54', '2023-11-07 12:46:23');
+(1, 1, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-11-06 07:44:54', '2023-11-07 12:46:23'),
+(3, 4, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-12-04 09:32:42', '2023-12-04 09:32:42');
 
 -- --------------------------------------------------------
 
@@ -850,13 +861,13 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `customer_domain_data`
 --
 ALTER TABLE `customer_domain_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `domains`
 --
 ALTER TABLE `domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `domain_categories`
@@ -922,13 +933,13 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `publisher_domains`
 --
 ALTER TABLE `publisher_domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `publisher_domain_data`
 --
 ALTER TABLE `publisher_domain_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `subscription_plans`
