@@ -982,3 +982,32 @@ input[type="date"]
 {
     display: none;
 }
+.form-check .form-check-label input[type="radio"] + .input-helper:before
+{
+    border: solid #ff9756 !important;
+}
+
+.orderViewPage .form-check .form-check-label input[type="radio"] + .input-helper:before
+{
+    width: 33px !important;
+    height: 33px !important;
+}
+.orderViewPage .form-check .form-check-label
+{
+    margin-left: 2.75rem !important;
+    font-size: 1.2rem !important;
+    font-weight: 500;
+}
+.customYes
+{
+    background-color:#fff !important;
+    color: #222;
+}
+.customNo
+{
+    background-color:red !important;
+}
+.orderViewPage label
+{
+    cursor: pointer;
+}

@@ -3002,7 +3002,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2OTcxODQ1NDYsImV4cCI6MTY5NzIyMDU0Nn0.L4b4Loh2AB6xWP3kZ3zAvYcqiZyVERiWHDnSEZLw1us",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MDE3NDc4NTMsImV4cCI6MTcwMTc4Mzg1M30.4UiLVnuY15-SuKQ4-c-JNVa-7o7LK6ZKwe6gr0Pcxwc",
 							"type": "string"
 						}
 					]
@@ -3011,7 +3011,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"status\": [\"Inprogress\"],\r\n    \"date\": {\r\n        \"min\": \"2023-10-10\",\r\n        \"max\": \"2023-10-13\"\r\n    },\r\n    \"search\": \"example.com\"\r\n}",
+					"raw": "{\r\n    \"status\": [\"Pending\"],\r\n    \"date\": {\r\n        \"min\": \"2023-11-30\",\r\n        \"max\": \"2023-11-30\"\r\n    },\r\n    \"search\": \"com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3587,6 +3587,68 @@
 						"publisher",
 						"domain",
 						"excelUpload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publisher Single Order view ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MDE3NDc4NTMsImV4cCI6MTcwMTc4Mzg1M30.4UiLVnuY15-SuKQ4-c-JNVa-7o7LK6ZKwe6gr0Pcxwc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/publisher/order/view/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"order",
+						"view",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User single Order view",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3MDE3NDc4ODAsImV4cCI6MTcwMTc4Mzg4MH0.kdTRcThNtCjS6FhXq2n7MAgHK1y1GtoqYkxFM3480cQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/user/order/view/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"order",
+						"view",
+						"1"
 					]
 				}
 			},

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 04, 2023 at 02:14 PM
+-- Generation Time: Dec 05, 2023 at 02:00 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -104,7 +104,6 @@ CREATE TABLE `domains` (
 INSERT INTO `domains` (`id`, `domain_name`, `tld`, `budget`, `category_id`, `status`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
 (1, 'userdomain.com', 'com', '0.00', 15, 1, 15, 'nezrcrlx', '2023-11-06 07:38:26', '2023-11-06 07:38:26'),
 (2, 'besticoder.com', 'com', '0.00', 15, 1, 15, 'pnhtw15k', '2023-11-06 08:03:04', '2023-11-06 08:03:04'),
-(3, 'example.com', 'com', '0.00', 15, 1, 15, '13s9z77d', '2023-11-06 08:11:28', '2023-11-06 08:11:28'),
 (7, 'youtube.com', 'com', '0.00', NULL, 1, 36, 'hf7l2mbq', '2023-11-10 04:47:34', '2023-11-10 04:47:34');
 
 -- --------------------------------------------------------
@@ -331,9 +330,10 @@ CREATE TABLE `new_orders` (
 --
 
 INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `backlink_id`, `status`, `total_price`, `price`, `anchortext`, `linktarget`, `publication_date`, `note`, `project_id`, `hash_id`, `textCreation`, `wordCount`, `approveText`, `textCreationPrice`, `approveTextPrice`, `chooseByBacklink`, `created_at`, `updated_at`) VALUES
-(1, 11, 15, 1, 1, 'Pending', '5000.00', '0.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'nezrcrlx', 'z5cirixk', '', 0, 0, '0.00', '0.00', 0, '2023-11-06 07:51:35', '2023-11-06 09:59:08'),
-(10, 11, 15, 1, 1, 'Pending', '5077.00', '5000.00', 'Click Here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2024-12-01', 'Noteeee', 'pnhtw15k', 'z5cirixk', 'Editorial', 1000, 1, '50.00', '27.00', 0, '2023-11-30 11:49:03', '2023-11-30 11:49:03'),
-(11, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'Click here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-08', 'ggs', 'pnhtw15k', 'z5cirixk', 'Own', 0, 0, '0.00', '0.00', 0, '2023-11-30 13:49:35', '2023-11-30 13:49:35');
+(1, 11, 15, 1, 1, 'Pending', '5000.00', '0.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'nezrcrlx', 'z5cirixk', '', 0, 0, '0.00', '0.00', 0, '2023-11-06 07:51:35', '2023-12-05 07:19:30'),
+(10, 11, 15, 1, 1, 'Pending', '5077.00', '5000.00', 'Click Here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2024-12-01', 'Noteeee', 'pnhtw15k', 'z5cirixk', 'Editorial', 1000, 1, '50.00', '27.00', 0, '2023-11-30 11:49:03', '2023-12-05 05:11:37'),
+(11, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'Click here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-08', 'ggs', 'pnhtw15k', 'z5cirixk', 'Own', 0, 0, '0.00', '0.00', 0, '2023-11-30 13:49:35', '2023-12-05 12:33:29'),
+(12, 11, 15, 4, 3, 'Pending', '282.00', '255.00', 'Test Anchor', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-13', 'Test note', '', 'zulhjrwm', 'Editorial', 500, 1, '0.00', '27.00', 0, '2023-12-05 06:25:01', '2023-12-05 12:32:14');
 
 -- --------------------------------------------------------
 
@@ -459,7 +459,7 @@ CREATE TABLE `publisher_domains` (
 --
 
 INSERT INTO `publisher_domains` (`id`, `domain_name`, `tld`, `price`, `category_id`, `status`, `anchorText`, `deliveryTime`, `attribute`, `sensitiveTopic`, `sensitiveTopicCharge`, `minWordCount`, `textByCustomer`, `textInclude`, `language`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
-(1, 'google.com', 'com', '5000.00', 18, 1, NULL, 0, NULL, 0, NULL, 0, 0, 0, 'en', 11, 'z5cirixk', '2023-11-06 07:44:47', '2023-12-04 07:18:14'),
+(1, 'google.com', 'com', '5000.00', 18, 1, NULL, 2, 'dofollow', 0, NULL, 0, 0, 0, 'de', 11, 'z5cirixk', '2023-11-06 07:44:47', '2023-12-05 08:27:37'),
 (4, 'backlinked.com', 'com', '255.00', 6, 0, 'As desired', 0, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 11, 'zulhjrwm', '2023-12-04 09:32:34', '2023-12-04 09:32:34');
 
 -- --------------------------------------------------------
@@ -579,7 +579,8 @@ INSERT INTO `transactions` (`id`, `user_id`, `amount`, `transaction_type`, `desc
 (72, 15, '2.00', 'Manual Added', 'For Testing', '2023-12-01 07:02:36', NULL, 0, 'paid', NULL, '2023-12-01 07:02:36'),
 (73, 15, '98.00', 'Manual Added', 'For Testing', '2023-12-01 07:02:41', NULL, 0, 'paid', NULL, '2023-12-01 07:02:41'),
 (74, 15, '400.00', 'Manual Added', 'For Testing', '2023-12-01 07:51:59', NULL, 0, 'paid', NULL, '2023-12-01 07:51:59'),
-(75, 15, '500.00', 'Manual Added', 'For Testing', '2023-12-01 13:02:45', NULL, 0, 'paid', NULL, '2023-12-01 13:02:45');
+(75, 15, '500.00', 'Manual Added', 'For Testing', '2023-12-01 13:02:45', NULL, 0, 'paid', NULL, '2023-12-01 13:02:45'),
+(76, 15, '282.00', 'Place order', 'Buy backlinks backlinked.com', '2023-12-05 06:25:01', 'order_12', 0, 'paid', '{\"id\":12,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"282.00\",\"price\":\"255.00\",\"anchortext\":\"Test Anchor\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/\",\"publication_date\":\"2023-12-13T00:00:00.000Z\",\"note\":\"Test note\",\"project_id\":\"\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Editorial\",\"wordCount\":500,\"approveText\":1,\"textCreationPrice\":0,\"approveTextPrice\":27,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-05T06:25:01.444Z\",\"created_at\":\"2023-12-05T06:25:01.444Z\"}', '2023-12-05 06:25:01');
 
 -- --------------------------------------------------------
 
@@ -618,7 +619,7 @@ INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `
 (6, 'ko6a055dax@gixenmixen.com', 1, 'Test', 'Customer', '$2a$11$PWRnpkMPyKnyfK3TgoNDi.LNcOvfWNpn1D83/NFUsNkFhvlzzMR6K', 'profileImg_1695101939136.png', '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-19 11:08:59', '2023-11-27 15:03:59'),
 (9, '123@gmail.com', 1, 'test', 'test', '$2a$11$uADreLR8rD3x7TF0dg54n.natIDMyUCFh/l1yKutPnLpkif5D5F1e', NULL, '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-20 10:55:10', '2023-09-20 10:55:10'),
 (10, 'devuser@gmail.com', 1, 'Dev', 'User', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1695188498849.jpg', '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-20 11:11:39', '2023-09-20 11:11:39'),
-(11, 'itpubli@test.com', 1, 'Customers', 'Customers', '$2a$11$zUU62EIftcI7V8bU8XCN6O8ynRwhalVmVzlG4EYCVTadW1ZbjK9iO', 'profileImg_1695188498849.jpg', '1234567890', 12345, 'Vrl', 'lll', 'Germany', 'Coooo', 'ooooo', 0, '', 2, '2023-09-20 13:23:06', '2023-12-01 10:05:54'),
+(11, 'itpubli@test.com', 1, 'Publisher2', 'Account2', '$2a$11$zUU62EIftcI7V8bU8XCN6O8ynRwhalVmVzlG4EYCVTadW1ZbjK9iO', 'profileImg_1695188498849.jpg', '1234567890', 12345, 'Vrl', 'Veraval', 'Germany', 'Publisher Company', 'SAD122A', 0, '', 2, '2023-09-20 13:23:06', '2023-12-05 18:07:29'),
 (15, 'dev@gmail.com', 1, 'Developer', 'Test', '$2a$11$ldVrLA2b42A5n4Q28RmjoOWytYhJmsM6vEfqaCRK3hjK1T8uRQQQa', 'profileImg_1695188498849.jpg', '9033389733', 362268, 'Bhalpara', 'Veraval', 'Germany', 'JJ Naghera', 'VAT123AT', 0, 'example@mail.com', 0, '2023-09-26 09:56:08', '2023-11-28 17:06:51'),
 (36, 'frontside@mail.com', 1, 'Front', 'Side', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1699339746336.png', '123456', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-11-07 12:19:06', '2023-11-07 12:19:06'),
 (44, 'publisher@mail.com', 1, 'Publisher', 'Account', '$2a$11$p2Az5D0NM9xRAwygZLi3qupjlLjtkN8wJTAFy5Oh.OUn03pkrlJJ.', 'profileImg_1701410251380.png', '123456', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, '2023-12-01 11:27:31', '2023-12-01 11:27:48');
@@ -642,7 +643,7 @@ CREATE TABLE `users_wallet` (
 --
 
 INSERT INTO `users_wallet` (`id`, `user_id`, `balance`, `created_at`, `updated_at`) VALUES
-(1, 15, '11000.00', '2023-12-01 13:02:45', '2023-12-01 13:02:45');
+(1, 15, '10718.00', '2023-12-05 06:25:01', '2023-12-05 06:25:01');
 
 -- --------------------------------------------------------
 
@@ -909,7 +910,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `new_orders`
 --
 ALTER TABLE `new_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -951,7 +952,7 @@ ALTER TABLE `subscription_plans`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `users`

@@ -29,7 +29,9 @@ const ForgotPassword = lazy(() => import("./user-pages/ForgotPassword"));
 const ChangePasswordViaLink = lazy(() => import("./user-pages/ChangePasswordViaLink"));
 const VerifyEmail = lazy(() => import("./user-pages/VerifyEmail"));
 const publisherDomain = lazy(() => import("./publisher/domain/Domain"))
-
+const PublisherOrders = lazy(() => import("./publisher/order/PublisherOrders"));
+const PublisherViewOrderDetails = lazy(() => import("./publisher/order/PublisherViewOrderDetails"))
+const UserViewOrderDetails = lazy(() => import("./orders/UserViewOrderDetails"));
 class AppRoutes extends Component {
   constructor(props) {
     super(props);
@@ -234,7 +236,7 @@ class AppRoutes extends Component {
                   <ProtectedRoute
                     exact
                     path="/order/:order_id"
-                    component={BlankPage}
+                    component={UserViewOrderDetails}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
@@ -294,6 +296,20 @@ class AppRoutes extends Component {
                     exact
                     path="/domain/:hash_id"
                     component={BlankPage}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  <PublisherProtected
+                    exact
+                    path="/publisher/orders"
+                    component={PublisherOrders}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  <PublisherProtected
+                    exact
+                    path="/publisher/order/:order_id"
+                    component={PublisherViewOrderDetails}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />

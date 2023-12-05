@@ -1,4 +1,4 @@
-const { addNewOrder,getPublisherOrder,publisherUpdateOrderStatus,cancelOrder, getUserOrders,textFileUpload, textFileDelete,addToCart, deleteItem, getCart, addCartOrder } = require("../controllers/newOrder.controller");
+const { addNewOrder,getPublisherOrder,publisherUpdateOrderStatus,cancelOrder, getUserOrders,textFileUpload, textFileDelete,addToCart, deleteItem, getCart, addCartOrder,viewSingleOrderPublisher,viewSingleOrderUser } = require("../controllers/newOrder.controller");
 const { isLogin, isCustomer,isAdmin,isPublisher } = require("../middleware/checkAuthenticate");
 const { uploadOrderFile, uploadOrderFinalFile,textFileUploadTemp } = require("../middleware/orderFileHandler")
 const { checkOrderLimitInSubscriptionPlan } = require("../middleware/checkIsPlanOrderAndDomainLimit");
@@ -20,4 +20,8 @@ module.exports = (app) => {
 	/* publisher route */
 	app.post('/publisher/orders',[isLogin,isPublisher],getPublisherOrder)
 	app.post('/publisher/updateOrderStatus/:orderId',[isLogin,isPublisher],publisherUpdateOrderStatus)
+
+	/* for publisher and user both view single order */
+	app.get("/publisher/order/view/:orderId",[isLogin,isPublisher],viewSingleOrderPublisher);
+	app.get("/user/order/view/:orderId",[isLogin,isCustomer],viewSingleOrderUser);
 }

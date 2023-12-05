@@ -10,7 +10,12 @@ const OrderComponent = ({ order }) => (
             <td>
               <h4>{order.domain.domain_name}</h4>
               <div className="extraInfo flex-wrap d-flex justify-content-between">
-                <div>{order.project.domain_name}</div>
+                <div>
+                  {order.project && order.project.domain_name
+                    ? order.project.domain_name 
+                    : "No project"}
+                </div>
+
                 <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
                 <div
                   style={{ padding: "3px" }}

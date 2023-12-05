@@ -234,7 +234,7 @@ class ApiServices {
     return axios
       .post(
         url,
-        {filterData},
+        filterData,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -246,7 +246,23 @@ class ApiServices {
         return response;
       });
   }
-
+  UsererOrderView(orderId)
+  {
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "user/order/view/" + orderId;
+    return axios
+      .get(
+        url,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
   getPublisherDomainList() {    
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "publisher/domains";
@@ -286,6 +302,77 @@ class ApiServices {
           headers: {
             Authorization: `Bearer ${authToken}`,
             'Content-Type': 'multipart/form-data'
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+  getPublisherOrderList()
+  {
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "publisher/orders";
+    return axios
+      .post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+  publisherOrderFilter(filterData)
+  {
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "publisher/orders";
+    return axios
+      .post(
+        url,
+        filterData,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+  publisherOrderView(orderId)
+  {
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "publisher/order/view/" + orderId;
+    return axios
+      .get(
+        url,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+  publisherUpdateOrderStatus(order_id,status)
+  {
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "publisher/updateOrderStatus/"+order_id;
+    return axios
+      .post(
+        url,
+        {status},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
           },
         }
       )

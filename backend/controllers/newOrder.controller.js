@@ -685,6 +685,68 @@ exports.getCart = async(req, res) => {
 	}
 }
 
+exports.viewSingleOrderPublisher = async(req, res) => {
+    try
+    {
+        const userId = req.userId;
+        const { orderId } = req.params;
+        const getOrderData = await getViewOrderData(userId,orderId,"publisher");
+        res.status(200).send({ staus: true, message:"Order fetched successfully", data: getOrderData });
+    }
+    catch(err)
+    {
+        console.log(err);
+        res.status(500).send({ status: false, message: "Something went to wrong please try again.", error:err.message });
+    }
+}
+
+exports.viewSingleOrderUser = async(req, res) => {
+    try
+    {
+        const userId = req.userId;
+        const { orderId } = req.params;
+        const getOrderData = await getViewOrderData(userId,orderId,"customer");
+        res.status(200).send({ staus: true, message:"Order fetched successfully", data: getOrderData });
+    }
+    catch(err)
+    {
+        res.status(500).send({ status: false, message: "Something went to wrong please try again.", error:err.message });
+    }
+}
+
+async function getViewOrderData(userId,orderId,type)
+{    
+    let wheres;
+    if(type === "customer")
+    {
+        wheres = { customer_id: userId, id: orderId }
+    }
+    else
+    {
+        wheres = { publisher_id: userId, id: orderId }
+    }
+    const baseQuery = {
+      include: [
+        {
+          model: Models.publisherDomain,
+          as: 'domain',
+          attributes: { exclude: ['updated_at', 'created_at', 'id'] }
+        },
+        {
+          model: Models.Domains,
+          as: 'project',
+          attributes: { exclude: ['updated_at', 'created_at', 'id'] }
+        },
+        {
+          model: Models.orderFiles,
+          as: 'orderFile',
+        },
+      ],
+      where: wheres,
+    };
+    return await Models.newOrder.findOne(baseQuery);
+}
+
 async function getCartData(user_id)
 {
 	try{
@@ -713,16 +775,17 @@ async function createFilterQuery(body,type,baseQuery)
 		const { status,project,date,search } = body;
 		const filters = {
 		  	'status': status,
-		  	'project_id': project,
+		  	'project_id': project ? project : '',
 		  	'date': date,
 		  	'search': search,
 		};
 
 		if (filters['status'] && filters['status'].length > 0) {
-		  	baseQuery.where['status'] = filters['status'];
+            baseQuery.where['status'] = filters['status'];
 		}
 
 		if (filters['date'] && filters['date'].min) {
+            // console.log("date")
 			let maxDateTime;
 			if(filters['date'].max)
 			{
@@ -742,22 +805,38 @@ async function createFilterQuery(body,type,baseQuery)
 		}
 		if(type === "user")
 		{
-			if (filters['project_id'] && filters['project_id'] !== '') { 
-			  baseQuery.where['project.hash_id'] = filters['project_id'];
+			if (filters['project_id'] !== undefined && filters['project_id'] !== null && filters['project_id'] !== '' && Object.keys(filters['project_id']).length > 0) {
+             // console.log("user project hasid")
+             // model: Models.Domains,
+             //  as: 'project',
+
+              baseQuery.include.push({
+                model: Models.Domains,
+                as: 'project',
+                where: {
+                  hash_id: {
+                    [Op.in]: filters['project_id'],
+                  },
+                },
+          });
+			  // baseQuery.where['project.hash_id'] = filters['project_id'];
 			}
 		}
 
 		if (filters['search'] !== undefined && filters['search'] !== '') {
+            // console.log("searecyh")
 		  	baseQuery.include.push({
 			    model: Models.publisherDomain,
 			    as: 'domain',
 			    where: {
 			      domain_name: {
-			        [Op.like]: `%${filters['search']}%`,
+			        // [Op.like]: `%${filters['search']}%`,
+                    [Op.like]: `%${filters['search']}%`,
 			      },
 			    },
 		  });
 		}
+        // console.log(baseQuery)
 		return baseQuery;
 	}
 	catch(err)

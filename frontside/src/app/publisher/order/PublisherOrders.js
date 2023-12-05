@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Form } from "react-bootstrap";
-import ApiServices from "../services/api.service";
+import ApiServices from "../../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import TimeAgo from "timeago-react";
 import { CPopover, CButton } from "@coreui/react";
-import "../../assets/custom.css";
+import "../../../assets/custom.css";
 
-export class Orders extends Component {
+export class PublisherOrders extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -57,7 +57,7 @@ export class Orders extends Component {
         },
         {
           id: 6,
-          value: "MissingDetails",
+          value: "Missing Details",
           label: "Missing Details",
         },
       ],
@@ -97,11 +97,9 @@ export class Orders extends Component {
     const { name, value } = e.target;
     this.setState({ selectedDate: value }, this.updateFilterData);
   };
-
   handleOnSearch = (e) => {
     this.setState({ searchValue: e.target.value }, this.updateFilterData);
   }
-
   toggleColumn = (columnName) => {
     this.setState((prevState) => ({
       [columnName]: !prevState[columnName],
@@ -116,12 +114,12 @@ export class Orders extends Component {
       this.state;
     const filterData = {
       status: selectedStatus.length ? selectedStatus : [],
-      productType: selectedProduct.length ? selectedProduct : {},
-      project: selectedProject.length ? selectedProject : {},
+    //   productType: selectedProduct.length ? selectedProduct : {},
+    //   project: selectedProject.length ? selectedProject : {},
       date: { min:selectedDate || "", max:selectedDate || "" },
       search:searchValue
     };
-    ApiServices.userOrderListFilter(filterData)
+    ApiServices.publisherOrderFilter(filterData)
       .then((res) => {
         if (!res.data.status) {
           toast.error(res.data.message, {
@@ -151,7 +149,7 @@ export class Orders extends Component {
     this.setState({ filterData });
   };
   componentDidMount() {
-    ApiServices.getUserOrderList()
+    ApiServices.getPublisherOrderList()
       .then((res) => {
         if (!res.data.status) {
           toast.error(res.data.message, {
@@ -178,7 +176,7 @@ export class Orders extends Component {
           });
         }
       });
-    ApiServices.getUserProjects().then((res) => {
+    ApiServices.getPublisherDomainList().then((res) => {
       if (res.status) {
         const jsonFormat = res.data.data.map((item) => ({
           id: item.id,
@@ -191,9 +189,9 @@ export class Orders extends Component {
   }
 
   goToOrderViewLink = (order_id) => {
-    this.props.history.push(`/order/${order_id}`);
+    this.props.history.push(`/publisher/order/${order_id}`);
   };
-
+   
   togglePopover = () => {
     this.setState((prevState) => ({ showPopover: !prevState.showPopover }));
   };
@@ -247,7 +245,7 @@ export class Orders extends Component {
                         </div>
                         <input
                           type="search"
-                          placeholder="Backlink name like google.com"
+                          placeholder="Search"
                           onChange={this.handleOnSearch}
                           value={searchValue}
                           className="form-control border-left-0 customSearch"
@@ -258,16 +256,16 @@ export class Orders extends Component {
                         placeholderButtonLabel="Status"
                         onChange={this.handleStatusChange}
                       />
-                      <ReactMultiSelectCheckboxes
+                      {/* <ReactMultiSelectCheckboxes
                         options={this.state.projectType}
                         placeholderButtonLabel="Product Type"
                         onChange={this.handleProjectTypeChange}
-                      />
-                      <ReactMultiSelectCheckboxes
+                      /> */}
+                      {/* <ReactMultiSelectCheckboxes
                         options={this.state.project}
-                        placeholderButtonLabel="Project"
+                        placeholderButtonLabel="Domain"
                         onChange={this.handleProjectChange}
-                      />
+                      /> */}
                       <CPopover
                         // trigger="focus"
                         className="datepickerPopoverclass"
@@ -363,7 +361,7 @@ export class Orders extends Component {
                             </label>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                            <span className="mr-4">Product</span>
+                            <span className="mr-4">Domain</span>
                             <label className="switch">
                               <input
                                 type="checkbox"
@@ -388,7 +386,7 @@ export class Orders extends Component {
                               <span className="slider round"></span>
                             </label>
                           </div>
-                          <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                          {/* <div className="d-flex justify-content-between align-items-center mb-3 bdr">
                             <span className="mr-4 pull-left text-nowrap">
                               Project
                             </span>
@@ -402,7 +400,7 @@ export class Orders extends Component {
                               />
                               <span className="slider round"></span>
                             </label>
-                          </div>
+                          </div> */}
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
                             <span className="mr-4 text-nowrap">
                               Anchor text
@@ -460,11 +458,11 @@ export class Orders extends Component {
                             Status
                           </th>
                           <th className={showProduct ? "show" : "hide"}>
-                            Product
+                            Domain
                           </th>
-                          <th className={showProject ? "show" : "hide"}>
+                          {/* <th className={showProject ? "show" : "hide"}>
                             Project
-                          </th>
+                          </th> */}
                           <th className={showAnchor ? "show" : "hide"}>
                             Anchor text
                           </th>
@@ -494,11 +492,9 @@ export class Orders extends Component {
                             <td className={showProduct ? "show" : "hide"}>
                               {order.domain.domain_name}
                             </td>
-                            <td className={showProject ? "show" : "hide"}>
-                              {order.project && order.project.domain_name
-                                ? order.project.domain_name 
-                                : "N/A"}
-                            </td>
+                            {/* <td className={showProject ? "show" : "hide"}>
+                              {order.project.domain_name}
+                            </td> */}
                             <td className={showAnchor ? "show" : "hide"}>
                               {order.anchortext}
                             </td>
@@ -518,7 +514,7 @@ export class Orders extends Component {
                     <center>
                       <div className="mt-5 mx-auto">
                         <img
-                          src={require("../../assets/images/empty.png")}
+                          src={require("../../../assets/images/empty.png")}
                           alt="No data found..."
                         />
                       </div>
@@ -546,4 +542,4 @@ export class Orders extends Component {
     );
   }
 }
-export default withRouter(Orders);
+export default withRouter(PublisherOrders);

@@ -1,5 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
+const moment = require('moment');
 
 module.exports = (sequelize, DataTypes) => {
 	class newOrder extends Model
@@ -17,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
 		        foreignKey: 'project_id',
 		        targetKey: 'hash_id',
 		        as: 'project',
+		    });
+		    this.belongsTo(models.orderFiles, {
+		        foreignKey: 'id',
+		        targetKey: 'order_id',
+		        as: 'orderFile',
 		    });
 		}
 	}
@@ -45,7 +51,16 @@ module.exports = (sequelize, DataTypes) => {
 	    approveText:DataTypes.INTEGER,
 	    textCreationPrice:DataTypes.DECIMAL(10,2),
 	    approveTextPrice:DataTypes.DECIMAL(10,2),
-	    chooseByBacklink:DataTypes.INTEGER
+	    chooseByBacklink:DataTypes.INTEGER,
+	    created_at: {
+	        type: DataTypes.DATE,
+	        allowNull: true,
+	        defaultValue: null,
+	        get() {
+	          const rawValue = this.getDataValue('created_at');
+	          return moment(rawValue).format('YYYY-MM-DD HH:mm:ss');
+	        },
+	      },
 	},
 	{
 		sequelize,
