@@ -19,7 +19,8 @@ module.exports = (sequelize,DataTypes) => {
 		description: DataTypes.STRING
 	}, {
 		sequelize,
-		modelName: "domain_category"
+		modelName: "domain_category",
+		tableName: "domain_categories"
 	});
 	return domain_category;
 };

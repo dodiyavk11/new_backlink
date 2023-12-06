@@ -222,7 +222,8 @@ exports.getConetentLinks = async(req, res) => {
 			'category_id': category_id,
 			'tld': tld,
 			'price': price,
-			'contentData.language': language,
+			// 'contentData.language': language,
+			'language': language,
 			'domain_name': domain_name
 		};
 		const baseQuery = {
@@ -237,7 +238,7 @@ exports.getConetentLinks = async(req, res) => {
 				  as: 'contentData',
 				},
 			],
-		  	where: {},
+		  	where: { status:1},
 		};
 
 		if (filters['category_id'] && filters['category_id'].length > 0) {
@@ -245,10 +246,12 @@ exports.getConetentLinks = async(req, res) => {
 		}
 
 		if (filters['tld'] && filters['tld'].length > 0) {
+			console.log(filters['tld'])
 			baseQuery.where['tld'] = filters['tld'];
 		}
 
 		if (filters['price'] && filters['price'].min && filters['price'].max) {
+			console.log(filters['price'].max)
 			baseQuery.where['price'] = {
 				[Op.gte]: filters['price'].min,
 				[Op.lte]: filters['price'].max,

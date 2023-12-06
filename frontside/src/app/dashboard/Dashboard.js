@@ -261,7 +261,7 @@ export class Dashboard extends Component {
                 <div className="card-body">
                   <h4 className="card-title">Orders</h4>
                   {this.state.orders.map((order) => (
-                    <OrderComponent key={order.id} order={order} />
+                    <OrderComponent key={order.id} order={order} viewOrder={this.goToOrderLink}/>
                   ))}
                   {!this.state.orders.length && (
                     <div className="card">
@@ -316,7 +316,7 @@ export class Dashboard extends Component {
                 <div className="card bRadius cRadiusTop">
                   <div className="card-body text-center">
                     <hr />
-                    <Link to="/basic-ui/buttons" className="hrefTitle">
+                    <Link to="/marketplace/contentlinks" className="hrefTitle">
                       View all
                     </Link>
                   </div>

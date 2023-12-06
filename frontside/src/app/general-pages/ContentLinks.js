@@ -54,7 +54,7 @@ export class ContentLinks extends Component {
       showModalStep2: true,
     });
   };
-  
+
   handleBackStep = () => {
     this.setState({
       showModalStep1: true,
@@ -655,10 +655,22 @@ export class ContentLinks extends Component {
                     </div>
                   </div>
                 </div>
+                <div className="row g-2 mt-4 pl-3">
+                  <div className="col-sm-12 warrantyClass">
+                    <div className="mt-2 mb-2 p-2">
+                      <span className="fontBold700">FairLinked warranty</span>
+                      <p className="customText2 pt-1">
+                        We give you a <b>12 month warranty</b> on every link you buy
+                        (from the date of publication). Usually our links stay
+                        online for much longer.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div className="col-lg-4 grid-margin stretch-card">
+          <div className="col-lg-4 grid-margin">
             <div className="card">
               <div className="card-body">
                 <h4 className="card-title">Orders</h4>
@@ -713,7 +725,9 @@ export class ContentLinks extends Component {
                             </svg>
                           </Tooltip>
                         </td>
-                        <td className="text-end-ct">0</td>
+                        <td className="text-end-ct">
+                          {contentData.anchorText}
+                        </td>
                       </tr>
                       <tr>
                         <td>
@@ -736,7 +750,9 @@ export class ContentLinks extends Component {
                             </svg>
                           </Tooltip>
                         </td>
-                        <td className="text-end-ct">0</td>
+                        <td className="text-end-ct">
+                          {contentData.deliveryTime}
+                        </td>
                       </tr>
                       <tr>
                         <td>
@@ -759,7 +775,7 @@ export class ContentLinks extends Component {
                             </svg>
                           </Tooltip>
                         </td>
-                        <td className="text-end-ct">0</td>
+                        <td className="text-end-ct">{contentData.attribute}</td>
                       </tr>
                       <tr>
                         <td>
@@ -782,7 +798,9 @@ export class ContentLinks extends Component {
                             </svg>
                           </Tooltip>
                         </td>
-                        <td className="text-end-ct">0</td>
+                        <td className="text-end-ct">
+                          {contentData.language === "de" ? "German" : "English"}
+                        </td>
                       </tr>
                       <tr>
                         <td>
@@ -805,7 +823,7 @@ export class ContentLinks extends Component {
                             </svg>
                           </Tooltip>
                         </td>
-                        <td className="text-end-ct">0</td>
+                        <td className="text-end-ct">.{contentData.tld}</td>
                       </tr>
                       <tr>
                         <td>Price</td>
@@ -842,6 +860,25 @@ export class ContentLinks extends Component {
                     </tbody>
                   </table>
                 </div>
+              </div>
+            </div>
+            <div className="card mt-4">
+              <div className="card-body">
+                <h4 className="card-title">Orders process</h4>
+                <p>
+                  After configuring and ordering your backlink, the site owner
+                  must first accept your order.
+                </p>
+
+                <p>
+                  We will then immediately begin with the text creation. As soon
+                  as the text is ready, we send it to the site operator for
+                  publication.
+                </p>
+                <p>
+                  As soon as the text is online, we will inform you by mail. You
+                  can find the finished backlink on the orders detail page.
+                </p>
               </div>
             </div>
           </div>

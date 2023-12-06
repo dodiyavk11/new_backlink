@@ -633,7 +633,7 @@ exports.addToCart = async(req, res) => {
 	        });		
 			const addcart = await Models.userCart.create({ user_id, cart_id, hash_id, quantity:1 })
 		 	const cartItem = await getCartData(user_id);
-			return res.status(200).send({ status:true, message: "Added to cart.", data: cartItem })
+			return res.status(200).send({ status:true, message: "The item has been successfully added to your cart.", data: cartItem })
 		}
 		else
 		{

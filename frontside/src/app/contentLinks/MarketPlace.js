@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import { CPopover, CButton } from "@coreui/react";
+import ApiServices from "../services/api.service";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Typography,
   Slider,
@@ -15,11 +18,15 @@ import {
   TableRow,
   TableSortLabel,
 } from "@material-ui/core";
+
 export class MarketPlace extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      rows: [],
+      isDisable:false,
       page: 0,
+      searchValue: "",
       rowsPerPage: 10,
       orderBy: "name",
       order: "asc",
@@ -27,7 +34,7 @@ export class MarketPlace extends Component {
       orderData: [],
       showPopover: false,
       min: 30,
-      max: 2000,
+      max: 200000,
       dMin: 0,
       dMax: 94,
       daMin: 0,
@@ -45,78 +52,58 @@ export class MarketPlace extends Component {
       selectedProductType: [],
       selectedTlds: [],
       isMoreFilter: false,
-      status: [
-        {
-          id: 1,
-          label: "Pending",
-        },
-        {
-          id: 2,
-          label: "In Progress",
-        },
-        {
-          id: 3,
-          label: "Completed",
-        },
-        {
-          id: 4,
-          label: "Cancelled",
-        },
-        {
-          id: 5,
-          label: "Rajected",
-        },
-        {
-          id: 6,
-          label: "Missing Details",
-        },
-      ],
+      category: [],
       projectType: [
         {
           id: 1,
+          value: "Press Release",
           label: "Press Release",
         },
         {
           id: 2,
+          value: "SEO",
           label: "SEO Content",
         },
         {
           id: 3,
+          value: "Google",
           label: "Google Disavow",
         },
       ],
       tlds: [
         {
           id: 1,
+          value: "com",
           label: "com",
         },
         {
           id: 2,
+          value: "org",
           label: "org",
         },
         {
           id: 3,
+          value: "edu",
           label: "edu",
         },
-      ],
-      objectArray: [
-        { key: "Option 1", cat: "Group 1" },
-        { key: "Option 2", cat: "Group 1" },
-        { key: "Option 3", cat: "Group 1" },
-        { key: "Option 4", cat: "Group 2" },
-        { key: "Option 5", cat: "Group 2" },
-        { key: "Option 6", cat: "Group 2" },
-        { key: "Option 7", cat: "Group 2" },
       ],
     };
   }
 
   // Datatable start
-  handleRowClick = (event, index) => {
-    if (event.target.tagName === "TD") {
-      this.setState({ selectedRow: index });
+  // handleRowClick = (event, index) => {
+  //   // if (event.target.tagName === "TD") {
+  //   this.setState({ selectedRow: index });
+  //   // }
+  // };
+
+  gotoViewContentLink = (hash_id, event, index) => {
+    const nonClickableTags = ["button", "svg", "path"];
+    if (!nonClickableTags.includes(event.target.tagName.toLowerCase())) {
+      this.props.history.push(`/content/${hash_id}`);
     }
   };
+
   handleChangePage = (event, newPage) => {
     this.setState({ page: newPage });
   };
@@ -151,10 +138,13 @@ export class MarketPlace extends Component {
   // Datatable End
 
   handleSliderChange = (event, newValue) => {
-    this.setState({
-      min: newValue[0],
-      max: newValue[1],
-    });
+    this.setState(
+      {
+        min: newValue[0],
+        max: newValue[1],
+      },
+      this.updateFilterData
+    );
   };
   handleSliderChangeD = (event, newValue) => {
     this.setState({
@@ -193,41 +183,178 @@ export class MarketPlace extends Component {
     });
   };
   handleReset = () => {
-    this.setState({
-      min: 30,
-      max: 2000,
-      dMax: 96,
-      dMin: 0,
-      viMax: 96,
-      viMin: 0,
-      daMax: 96,
-      tMin: 0,
-      tMax: 84,
-      trMin: 0,
-      trMax: 1000000,
-      rdMin: 0,
-      rdMax: 50000,
-      selectedCategory: [],
-      selectedProductType: [],
-      selectedTlds: [],
-    });
+    this.setState(
+      {
+        min: 30,
+        max: 200000,
+        dMax: 96,
+        dMin: 0,
+        viMax: 96,
+        viMin: 0,
+        daMax: 96,
+        tMin: 0,
+        tMax: 84,
+        trMin: 0,
+        trMax: 1000000,
+        rdMin: 0,
+        rdMax: 50000,
+        selectedCategory: [],
+        selectedProductType: [],
+        selectedTlds: [],
+      },
+      this.updateFilterData
+    );
   };
   handleInputChange = (event, inputType) => {
     const inputValue = parseInt(event.target.value, 10);
     if (!isNaN(inputValue)) {
-      this.setState({
-        [inputType]: inputValue,
-      });
+      this.setState(
+        {
+          [inputType]: inputValue,
+        },
+        this.updateFilterData
+      );
     }
+  };
+  handleMultiSelectChange = (name, selectedOptions) => {
+    this.setState({ [name]: selectedOptions }, this.updateFilterData);
   };
   toggleDivVisibility = () => {
     this.setState((prevState) => ({
       isMoreFilter: !prevState.isMoreFilter,
     }));
   };
+  handleOnSearch = (e) => {
+    this.setState({ searchValue: e.target.value }, this.updateFilterData);
+  };
+  handleOpenContentDomain = (url) => {
+    window.open("https://" + url, "_blank");
+  };
+  updateFilterData = () => {
+    this.setState({
+      isDisable:true
+    })
+    const {
+      selectedCategory,
+      selectedProductType,
+      selectedTlds,
+      searchValue,
+      min,
+      max,
+    } = this.state;
+    const filterData = {
+      category_id: selectedCategory.length
+        ? selectedCategory.map((category) => category.id)
+        : [],
+      tld: selectedTlds.length ? selectedTlds.map((tld) => tld.value) : {},
+      price: { min: min || "", max: max || "" },
+      domain_name: searchValue,
+    };
+    ApiServices.getContentLinkList(filterData).then(
+      (res) => {
+        if (res.data.status) {
+          this.setState({
+            rows: res.data.data,
+            isDisable:false
+          });          
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
+  handleAddtoCart = (hash_id) => {
+    ApiServices.addToCartContentLink(hash_id).then(
+      (res) => {
+        if (res.data.status) {
+          toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
+  fetchContentLinkData(filter = null) {
+    ApiServices.getContentLinkList(filter).then(
+      (res) => {
+        if (res.data.status) {
+          this.setState({
+            rows: res.data.data,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  }
+
+  componentDidMount() {
+    this.fetchContentLinkData();
+
+    ApiServices.getDomainCategoryList().then(
+      (res) => {
+        if (res.data.status) {
+          const transformedData = res.data.data.map((category) => ({
+            id: category.id,
+            value: category.id,
+            label: category.name,
+          }));
+          this.setState({
+            category: transformedData,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  }
   render() {
     const {
       min,
+      rows,
       max,
       dMin,
       dMax,
@@ -245,9 +372,217 @@ export class MarketPlace extends Component {
       rowsPerPage,
       orderBy,
       order,
+      isDisable,
+      searchValue,
     } = this.state;
+    const columns = [
+      {
+        id: "name",
+        label: "Name",
+        height: 70,
+        width: 345,
+        sortable: false,
+        renderCell: (row) => (
+          <div style={{ display: "flex" }}>
+            <button
+              className="customBtn2 mr-2"
+              onClick={() => this.handleOpenContentDomain(row.domain_name)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="50"
+                height="30"
+                viewBox="0,0,256,256"
+              >
+                <g transform="">
+                  <g
+                    fillOpacity="0.6902"
+                    fill="#000000"
+                    fillRule="nonzero"
+                    stroke="none"
+                    strokeWidth="1"
+                    strokeLinecap="butt"
+                    strokeLinejoin="miter"
+                    strokeMiterlimit="10"
+                    strokeDasharray=""
+                    strokeDashoffset="0"
+                    fontFamily="none"
+                    fontWeight="none"
+                    fontSize="none"
+                    textAnchor="none"
+                  >
+                    <g
+                      transform="scale(2,2)"
+                      style={{ mixBlendMode: "normal" }}
+                    >
+                      <path d="M84,11c-1.7,0 -3,1.3 -3,3c0,1.7 1.3,3 3,3h22.80078l-46.40039,46.40039c-1.2,1.2 -1.2,3.09922 0,4.19922c0.6,0.6 1.39961,0.90039 2.09961,0.90039c0.7,0 1.49961,-0.30039 2.09961,-0.90039l46.40039,-46.40039v22.80078c0,1.7 1.3,3 3,3c1.7,0 3,-1.3 3,-3v-30c0,-1.7 -1.3,-3 -3,-3zM24,31c-7.2,0 -13,5.8 -13,13v60c0,7.2 5.8,13 13,13h60c7.2,0 13,-5.8 13,-13v-45c0,-1.7 -1.3,-3 -3,-3c-1.7,0 -3,1.3 -3,3v45c0,3.9 -3.1,7 -7,7h-60c-3.9,0 -7,-3.1 -7,-7v-60c0,-3.9 3.1,-7 7,-7h45c1.7,0 3,-1.3 3,-3c0,-1.7 -1.3,-3 -3,-3z"></path>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </button>
+            <div className="block">
+              <Typography className="fontBold600">{row.domain_name}</Typography>
+              <Typography className="font-light text-sm customTextTable">
+                {" "}
+                {row.category.name}
+              </Typography>
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: "language",
+        label: "Language",
+        width: 130,
+        sortable: false,
+        renderCell: (row) => (
+          <div>
+            {row.language === "en" && (
+              <img src={require("../../assets/images/US.svg")} alt="EN" />
+            )}
+            {row.language === "de" && (
+              <img
+                src={require("../../assets/images/de.svg")}
+                alt="DE"
+                width={20}
+              />
+            )}
+            &nbsp;&nbsp;{row.language.toUpperCase()}
+          </div>
+        ),
+      },
+      {
+        id: "rating",
+        label: "Rating",
+        width: 130,
+        align: "right",
+        format: (value) => value.toLocaleString("en-US"),
+        renderCell: (row) => (
+          <div className="flex">
+            <span
+              className="text-yellow-700"
+              style={{ transform: "scale(0.6)" }}
+            >
+              <svg
+                className="mr-1"
+                width={15}
+                id="star"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="#fbc02d"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                style={{ color: "#fbc02d" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                />
+              </svg>
+              {row.contentData.rating}
+            </span>
+          </div>
+        ),
+      },
+      {
+        id: "dr",
+        label: "DR",
+        align: "right",
+        width: 90,
+        renderCell: (row) => <span>{row.contentData.domain_rating}</span>,
+      },
+      {
+        id: "da",
+        label: "DA",
+        align: "right",
+        width: 90,
+        renderCell: (row) => <span>{row.contentData.authority}</span>,
+      },
+      {
+        id: "svi",
+        label: "SI",
+        align: "right",
+        width: 90,
+        renderCell: (row) => <span>{row.contentData.visibility_index}</span>,
+      },
+      {
+        id: "tf",
+        label: "TF",
+        align: "right",
+        width: 90,
+        renderCell: (row) => <span>{row.contentData.trust_flow}</span>,
+      },
+      {
+        id: "rd",
+        label: "RD",
+        align: "right",
+        width: 90,
+        renderCell: (row) => <span>{row.contentData.referring}</span>,
+      },
+      {
+        id: "traffic",
+        label: "TRAFFIC",
+        width: 90,
+        align: "right",
+        renderCell: (row) => <span>{row.contentData.traffic}</span>,
+      },
+      {
+        id: "price",
+        label: "PRICE",
+        width: 160,
+        align: "right",
+        renderCell: (row) => (
+          <span className="fontBold700 textColorCls">${row.price}</span>
+        ),
+      },
+      {
+        id: "aciton",
+        label: "",
+        width: 160,
+        align: "right",
+        sortable: false,
+        renderCell: (row) => (
+          <div>
+            <svg
+              onClick={() => this.handleAddtoCart(row.hash_id)}
+              xmlns="http://www.w3.org/2000/svg"
+              width={20}
+              fill="currentColor"
+              className="bi bi-bag"
+              viewBox="0 0 16 16"
+              style={{ color: "#757575c9", fontWeight: "bold" }}
+            >
+              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+            </svg>
+            <svg
+              width={22}
+              className="ml-2"
+              id="heart"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              style={{ color: "#757575c9", fontWeight: "bold" }}
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
+            </svg>
+          </div>
+        ),
+      },
+    ];
+
     return (
       <>
+        <ToastContainer />
         <div className="d-flex justify-content-between MarketPlaceTab">
           <div className="float-left flex">
             <form className="form-inline">
@@ -270,26 +605,37 @@ export class MarketPlace extends Component {
                   type="search"
                   placeholder="Search"
                   className="form-control border-left-0 customSearch"
+                  onChange={this.handleOnSearch}
+                  value={searchValue}
                 />
               </div>
               <ReactMultiSelectCheckboxes
-                options={this.state.status}
+                options={this.state.category}
                 value={this.selectedCategory}
                 onChange={(selectedOptions) =>
-                  this.setState({ selectedCategory: selectedOptions })
+                  this.handleMultiSelectChange(
+                    "selectedCategory",
+                    selectedOptions
+                  )
                 }
                 placeholderButtonLabel="Categories"
               />
               <ReactMultiSelectCheckboxes
                 options={this.state.projectType}
                 placeholderButtonLabel="Product Type"
+                onChange={(selectedOptions) =>
+                  this.handleMultiSelectChange(
+                    "selectedProjectType",
+                    selectedOptions
+                  )
+                }
               />
               <ReactMultiSelectCheckboxes
                 options={this.state.tlds}
                 placeholderButtonLabel="TLDs"
                 value={this.selectedTlds}
                 onChange={(selectedOptions) =>
-                  this.setState({ selectedTlds: selectedOptions })
+                  this.handleMultiSelectChange("selectedTlds", selectedOptions)
                 }
               />
               <CPopover
@@ -305,7 +651,7 @@ export class MarketPlace extends Component {
                 placement="bottom"
               >
                 <CButton className="css-1r4vtzz custamFilterBtn">
-                  {min !== 30 || max !== 2000 ? (
+                  {min !== 30 || max !== 200000 ? (
                     <span className="css-1v99tuv">
                       Prize: ${min} - ${max}
                     </span>
@@ -353,7 +699,7 @@ export class MarketPlace extends Component {
               </svg>
               More Filters
             </button>
-            <button
+            {/* <button
               className="customBtn ml-2"
               data-toggle="tooltip"
               data-placement="top"
@@ -380,7 +726,7 @@ export class MarketPlace extends Component {
                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                 />
               </svg>
-            </button>
+            </button> */}
             <button
               className="customBtn ml-3"
               data-toggle="tooltip"
@@ -696,14 +1042,15 @@ export class MarketPlace extends Component {
           </div>
         )}
         <hr style={{ marginBottom: "0px" }} />
-        <div className="tableData">
+        <div className={`tableData ${isDisable ? 'disabled-div' : ''}`}>
           <Paper style={{ width: "100%", overflow: "hidden" }}>
             <TableContainer style={{ maxHeight: 440 }}>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
                     {columns.map((column) => (
-                      <TableCell className="text-uppercase"
+                      <TableCell
+                        className="text-uppercase"
                         key={column.id}
                         align={column.align}
                         style={{ minWidth: column.minWidth }}
@@ -733,14 +1080,12 @@ export class MarketPlace extends Component {
                           hover
                           role="checkbox"
                           tabIndex={-1}
-                          key={row.code}
+                          key={row.id}
                           selected={isSelected}
-                          onClick={(event) => this.handleRowClick(event, index)}
-                          style={
-                            isSelected
-                              ? { backgroundColor: "rgba(30, 41, 59, 0.12)" }
-                              : {}
+                          onClick={(event) =>
+                            this.gotoViewContentLink(row.hash_id, event, index)
                           }
+                          style={{ cursor: "pointer" }}
                         >
                           {columns.map((column) => (
                             <TableCell
@@ -787,20 +1132,20 @@ const PriceRangeSlider = (props) => {
           value={min}
           type="number"
           onChange={(e) => handleInputChange(e, "min")}
-          ariaLabelledby="input-slider"
+          aria-labelledby="input-slider"
           step={1}
           min={0}
-          max={100}
+          max={200000}
         />
         <input
           className="form-control form-control inpRound"
           value={max}
           type="number"
           onChange={(e) => handleInputChange(e, "max")}
-          ariaLabelledby="input-slider"
+          aria-labelledby="input-slider"
           step={1}
           min={0}
-          max={100}
+          max={200000}
         />
       </div>
       <Slider
@@ -809,173 +1154,10 @@ const PriceRangeSlider = (props) => {
         valueLabelDisplay="auto"
         aria-labelledby="range-slider"
         min={30}
-        max={2000}
+        max={200000}
         style={{ color: "#ff9756" }}
       />
     </>
   );
 };
-const columns = [
-  {
-    id: "name",
-    label: "Name",
-    height: 70,
-    width: 345,
-    sortable: false,
-    renderCell: (row) => (
-      <div style={{ display: "flex" }}>
-        <button className="customBtn2 mr-2">
-          <svg
-            width={24}
-            id="lock-closed"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-            />
-          </svg>
-        </button>
-        <div className="block">
-          <Typography className="fontBold600">{row.name}</Typography>
-          <Typography className="font-light text-sm customTextTable">
-            {" "}
-            sdfsdfsdfsdfsdfsdfsdf
-          </Typography>
-        </div>
-      </div>
-    ),
-  },
-  {
-    id: "language",
-    label: "Language",
-    width: 130,
-    sortable: false,
-    renderCell: (row) => (
-      <div>
-        <img src={require("../../assets/images/US.svg")} /> EN
-      </div>
-    ),
-  },
-  {
-    id: "rating",
-    label: "Rating",
-    width: 130,
-    align: "right",
-    format: (value) => value.toLocaleString("en-US"),
-    renderCell: (row) => (
-      <div className="flex">
-        <span className="text-yellow-700" style={{ transform: "scale(0.6)" }}>
-          <svg
-            className="mr-1"
-            width={15}
-            id="star"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="#fbc02d"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            style={{ color: "#fbc02d" }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-            />
-          </svg>
-          {row.rating}
-        </span>
-      </div>
-    ),
-  },
-  {
-    id: "dr",
-    label: "DR",
-    align: "right",
-    width: 90,
-  },
-  {
-    id: "da",
-    label: "DA",
-    align: "right",
-    width: 90,
-  },
-  {
-    id: "traffic",
-    label: "TRAFFIC",
-    width: 90,
-    align: "right",
-  },
-  {
-    id: "price",
-    label: "PRICE",
-    width: 160,
-    align: "right",
-  },
-  {
-    id: "aciton",
-    label: "",
-    width: 160,
-    align: "right",
-    sortable: false,
-    renderCell: (row) => (
-      <div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={20}
-          fill="currentColor"
-          className="bi bi-bag"
-          viewBox="0 0 16 16"
-          style={{ color: "#757575c9", fontWeight: "bold" }}
-        >
-          <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-        </svg>
-        <svg
-          width={22}
-          className="ml-2"
-          id="heart"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          style={{ color: "#757575c9", fontWeight: "bold" }}
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-          />
-        </svg>
-      </div>
-    ),
-  },
-];
-
-const rows = [
-  createData(1, "****.net", "en", 3.5, 65, 89, 89565, "$2323"),
-  createData(2, "****.net", "en", 3.5, 65, 89, 89565, "$2323"),
-  createData(3, "****.net", "en", 3.5, 65, 89, 89565, "$2323"),
-  createData(4, "****.net", "en", 3.5, 65, 89, 89565, "$2323"),
-  createData(5, "****.net", "en", 3.5, 65, 89, 89565, "$2323"),
-  createData(6, "****.net", "AU", 3.5, 65, 89, 89565, "$2323"),
-  createData(7, "****.net", "DE", 3.5, 65, 89, 89565, "$2323"),
-  createData(8, "****.net", "IE", 3.5, 65, 89, 89565, "$2323"),
-  createData(9, "****.net", "MX", 3.5, 65, 89, 89565, "$2323"),
-  createData(10, "****.net", "JP", 3.5, 65, 89, 89565, "$2323"),
-  createData(11, "****.net", "FR", 3.5, 65, 89, 89565, "$2323"),
-  createData(12, "****.net", "GB", 3.5, 65, 89, 89565, "$2323"),
-  createData(13, "****.net", "RU", 3.5, 65, 89, 89565, "$2323"),
-  createData(14, "****.net", "NG", 3.5, 65, 89, 89565, "$2323"),
-  createData(15, "****.net", "BR", 3.5, 65, 89, 89565, "$2323"),
-];
-
-function createData(id, name, language, rating, dr, da, traffic, price) {
-  return { id, name, language, rating, dr, da, traffic, price };
-}
 export default withRouter(MarketPlace);

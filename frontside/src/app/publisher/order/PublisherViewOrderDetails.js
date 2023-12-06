@@ -402,7 +402,7 @@ export class PublisherViewOrderDetails extends Component {
                       <tr>
                         <td className="p-1">
                           <div className="form-group">
-                            <div className="form-check">
+                            {/* <div className="form-check">
                               <label
                                 className="form-check-label mb-4"
                                 htmlFor="pending"
@@ -419,7 +419,7 @@ export class PublisherViewOrderDetails extends Component {
                                 />
                                 <i className="input-helper"></i>Pending{" "}
                               </label>
-                            </div>
+                            </div> */}
                             <div className="form-check">
                               <label
                                 className="form-check-label mb-4"
@@ -456,7 +456,7 @@ export class PublisherViewOrderDetails extends Component {
                                 <i className="input-helper"></i>Completed{" "}
                               </label>
                             </div>
-                            <div className="form-check">
+                            {/* <div className="form-check">
                               <label
                                 className="form-check-label mb-4"
                                 htmlFor="Cancelled"
@@ -473,7 +473,7 @@ export class PublisherViewOrderDetails extends Component {
                                 />
                                 <i className="input-helper"></i>Cancelled{" "}
                               </label>
-                            </div>
+                            </div> */}
                             <div className="form-check">
                               <label
                                 className="form-check-label mb-4"

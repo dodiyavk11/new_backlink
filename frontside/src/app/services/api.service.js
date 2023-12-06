@@ -10,16 +10,20 @@ class ApiServices {
     });
   }
 
-  userAddStaticAmountTesting(amount)
-  {
+  userAddStaticAmountTesting(amount) {
     const authToken = localStorage.getItem("token");
-    return axios.post(this.APP_URL + "user/static/amount", {"amount":amount}, {
-      headers: { Authorization: `Bearer ${authToken}` },
-      "Content-Type": "application/json",
-    })
-    .then((response) => {
-      return response;
-    });
+    return axios
+      .post(
+        this.APP_URL + "user/static/amount",
+        { amount: amount },
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+          "Content-Type": "application/json",
+        }
+      )
+      .then((response) => {
+        return response;
+      });
   }
 
   addUserProject(formData) {
@@ -210,7 +214,7 @@ class ApiServices {
         return response;
       });
   }
-  getUserOrderList() {    
+  getUserOrderList() {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "user/orders";
     return axios
@@ -228,29 +232,39 @@ class ApiServices {
         return response;
       });
   }
-  userOrderListFilter(filterData){
+  userOrderListFilter(filterData) {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "user/orders";
     return axios
-      .post(
-        url,
-        filterData,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      .post(url, filterData, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
         return response;
       });
   }
-  UsererOrderView(orderId)
-  {
+  UsererOrderView(orderId) {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "user/order/view/" + orderId;
     return axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  userCancelOrder(orderId)
+  {
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "order/cancelOrder/" + orderId;
+    return axios
       .get(
         url,
         {
@@ -263,18 +277,40 @@ class ApiServices {
         return response;
       });
   }
-  getPublisherDomainList() {    
+
+  getContentLinkList(filterdata = null)
+  {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .post(this.APP_URL + "contentlinks", filterdata, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  getUserCartData(filterdata = null)
+  {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(this.APP_URL + "user/cart", {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  getPublisherDomainList() {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "publisher/domains";
     return axios
-      .get(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      )
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
       .then((response) => {
         return response;
       });
@@ -290,27 +326,21 @@ class ApiServices {
         return response;
       });
   }
-  async publisherUploadExcelFile(fileData)
-  {
+  async publisherUploadExcelFile(fileData) {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "publisher/domain/excelUpload";
     return await axios
-      .post(
-        url,
-        fileData,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            'Content-Type': 'multipart/form-data'
-          },
-        }
-      )
+      .post(url, fileData, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         return response;
       });
   }
-  getPublisherOrderList()
-  {
+  getPublisherOrderList() {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "publisher/orders";
     return axios
@@ -327,49 +357,39 @@ class ApiServices {
         return response;
       });
   }
-  publisherOrderFilter(filterData)
-  {
+  publisherOrderFilter(filterData) {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "publisher/orders";
     return axios
-      .post(
-        url,
-        filterData,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      )
+      .post(url, filterData, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
       .then((response) => {
         return response;
       });
   }
-  publisherOrderView(orderId)
-  {
+  publisherOrderView(orderId) {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "publisher/order/view/" + orderId;
     return axios
-      .get(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      )
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
       .then((response) => {
         return response;
       });
   }
-  publisherUpdateOrderStatus(order_id,status)
-  {
+  publisherUpdateOrderStatus(order_id, status) {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "publisher/updateOrderStatus/"+order_id;
+    const url = this.APP_URL + "publisher/updateOrderStatus/" + order_id;
     return axios
       .post(
         url,
-        {status},
+        { status },
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

@@ -20,7 +20,8 @@ module.exports = (sequelize,DataTypes) => {
 	    updatedAt: 'updated_at',
 	    timestamps: true,
 	    modelName: 'Faqs',
-	    paranoid: false
+	    paranoid: false,
+	    tableName: "faqs"
 	});
 	return faq;
 };

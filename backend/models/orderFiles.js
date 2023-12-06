@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: 'updated_at',
     timestamps: true,
     paranoid: false,
+    tableName:'orderfiles'
   });
   return orderFiles;
 };

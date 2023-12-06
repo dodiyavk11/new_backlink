@@ -35,7 +35,8 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: false,
     timestamps: true,
     modelName: 'Transactions',
-    paranoid: false
+    paranoid: false,
+    tableName: "transactions"
   });
   return transaction;
 };

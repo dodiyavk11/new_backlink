@@ -569,10 +569,11 @@ html
 }
 .customBtn2
 {
-    padding: 4px;
+    padding: 6px;
     color: #757575c9;
-    background-color: transparent;
+    background-color: #fff;
     border: none;
+    border-radius: 9999px;
 }
 .dailTableC p
 {
@@ -1010,4 +1011,9 @@ input[type="date"]
 .orderViewPage label
 {
     cursor: pointer;
+}
+.warrantyClass
+{
+    background-color: #ff975657;
+    border-radius: 0.5rem;
 }

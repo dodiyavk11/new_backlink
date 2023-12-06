@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'email_format',
+    tableName:"email_formats"
   });
   return email_format;
 };

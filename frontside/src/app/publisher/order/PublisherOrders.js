@@ -208,6 +208,22 @@ export class PublisherOrders extends Component {
       showAmount,
       searchValue
     } = this.state;
+    const getStatusClass = (status) => {
+      switch (status) {
+        case 'Pending':
+          return 'badge-primary';
+        case 'Completed':
+          return 'badge-success';
+        case 'Cancelled':
+          return 'badge-danger';
+        case 'Rejected':
+          return 'badge-warning';
+        case 'Inprogress':
+          return 'badge-secondary';
+        default:
+          return 'badge-info';
+      }
+    };
     return (
       <div className="ordersListPage">
         <div className="d-flex justify-content-between">
@@ -487,7 +503,7 @@ export class PublisherOrders extends Component {
                               {order.created_at}
                             </td>
                             <td className={showStatus ? "show" : "hide"}>
-                              {order.status}
+                              <span className={`fontSize13 badge ${getStatusClass(order.status)}`}>{order.status}</span>
                             </td>
                             <td className={showProduct ? "show" : "hide"}>
                               {order.domain.domain_name}

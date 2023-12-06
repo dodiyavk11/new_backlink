@@ -2,18 +2,40 @@ import React, { Component } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link, NavLink, withRouter } from "react-router-dom";
 import { Trans } from "react-i18next";
+import ApiServices from "../services/api.service";
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: {},
       isAuthenticated: this.props.isAuthenticated,
+      cartData: [],
     };
     this.handleLogouts = this.handleLogouts.bind(this);
   }
-
+  getCartData = () => {
+    ApiServices.getUserCartData().then(
+      (res) => {
+        if (res.data.status) {
+          this.setState({
+            cartData: res.data.data,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        alert(resMessage);
+      }
+    );
+  };
   componentDidMount() {
     const userData = JSON.parse(localStorage.getItem("userData"));
+    this.getCartData();
     if (userData) {
       this.setState({ user: userData });
     }
@@ -27,7 +49,9 @@ class Navbar extends Component {
     console.log(this.props.isAuthenticated);
   };
   render() {
+    const { cartData } = this.state;
     const imageUrl = `${process.env.REACT_APP_BASE_URL}assets/profile/${this.state.user.profile}`;
+
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex justify-content-center">
@@ -58,6 +82,101 @@ class Navbar extends Component {
             <span className="mdi mdi-menu"></span>
           </button>
           <ul className="navbar-nav navbar-nav-right">
+            <li className="nav-item">
+              {/* <Dropdown alignRight>
+                <Dropdown.Toggle className="nav-link count-indicator">
+                  <i className="mdi mdi-cart-outline"></i>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu className="preview-list navbar-dropdown">
+                  <h6 className="p-3 mb-0">
+                    <Trans>Cart</Trans>
+                  </h6>
+                  <div className="dropdown-divider"></div>
+                  {cartData.map((order) => (
+                    <Dropdown.Item
+                      className="dropdown-item preview-item"
+                      onClick={(evt) => evt.preventDefault()}
+                    >
+                      <div className="preview-thumbnail">
+                        <h4>{order.cartItems.domain_name}</h4>
+                      </div>
+                      <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                        <h6 className="preview-subject ellipsis mb-1 font-weight-normal">
+                          <Trans>{order.cartItems.price}</Trans>
+                        </h6>                        
+                      </div>
+                    </Dropdown.Item>
+                  ))}
+                  <Dropdown.Item
+                    className="dropdown-item preview-item"
+                    onClick={(evt) => evt.preventDefault()}
+                  >
+                    <div className="preview-thumbnail">
+                      <img
+                        src={require("../../assets/images/faces/face4.jpg")}
+                        alt="user"
+                        className="profile-pic"
+                      />
+                    </div>
+                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal">
+                        <Trans>Mark send you a message</Trans>
+                      </h6>
+                      <p className="text-gray mb-0">
+                        1 <Trans>Minutes ago</Trans>
+                      </p>
+                    </div>
+                  </Dropdown.Item>
+                  <div className="dropdown-divider"></div>
+                  <Dropdown.Item
+                    className="dropdown-item preview-item"
+                    onClick={(evt) => evt.preventDefault()}
+                  >
+                    <div className="preview-thumbnail">
+                      <img
+                        src={require("../../assets/images/faces/face2.jpg")}
+                        alt="user"
+                        className="profile-pic"
+                      />
+                    </div>
+                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal">
+                        <Trans>Cregh send you a message</Trans>
+                      </h6>
+                      <p className="text-gray mb-0">
+                        15 <Trans>Minutes ago</Trans>
+                      </p>
+                    </div>
+                  </Dropdown.Item>
+                  <div className="dropdown-divider"></div>
+                  <Dropdown.Item
+                    className="dropdown-item preview-item"
+                    onClick={(evt) => evt.preventDefault()}
+                  >
+                    <div className="preview-thumbnail">
+                      <img
+                        src={require("../../assets/images/faces/face3.jpg")}
+                        alt="user"
+                        className="profile-pic"
+                      />
+                    </div>
+                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal">
+                        <Trans>Profile picture updated</Trans>
+                      </h6>
+                      <p className="text-gray mb-0">
+                        18 <Trans>Minutes ago</Trans>
+                      </p>
+                    </div>
+                  </Dropdown.Item>
+                  <div className="dropdown-divider"></div>
+                  <h6 className="p-3 mb-0 text-center cursor-pointer">
+                    4 <Trans>new messages</Trans>
+                  </h6>
+                </Dropdown.Menu>
+              </Dropdown> */}
+            </li>
             <li className="nav-item">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">

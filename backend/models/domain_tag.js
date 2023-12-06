@@ -15,7 +15,8 @@ module.exports = (sequelize,DataTypes) => {
 		status: DataTypes.INTEGER
 	}, {
 		sequelize,
-		modelName: "domain_tag"
+		modelName: "domain_tag",
+		tableName: "domain_tags",
 	});
 	return domain_tag;
 };
