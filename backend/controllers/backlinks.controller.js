@@ -246,12 +246,10 @@ exports.getConetentLinks = async(req, res) => {
 		}
 
 		if (filters['tld'] && filters['tld'].length > 0) {
-			console.log(filters['tld'])
 			baseQuery.where['tld'] = filters['tld'];
 		}
 
 		if (filters['price'] && filters['price'].min && filters['price'].max) {
-			console.log(filters['price'].max)
 			baseQuery.where['price'] = {
 				[Op.gte]: filters['price'].min,
 				[Op.lte]: filters['price'].max,

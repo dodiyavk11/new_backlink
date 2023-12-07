@@ -8,6 +8,7 @@ import Spinner from "../app/shared/Spinner";
 import Navbar from "./shared/Navbar";
 import Sidebar from "./shared/Sidebar";
 import Footer from "./shared/Footer";
+import ApiServices from "./services/api.service";
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const AdminDashboard = lazy(() => import("./admin/dashboard/Dashboard"));
 const Projects = lazy(() => import("./projects/Projects"));
@@ -23,15 +24,23 @@ const BlankPage = lazy(() => import("./general-pages/BlankPage"));
 const Users = lazy(() => import("./admin/users/Users"));
 const AdminOrders = lazy(() => import("./admin/orders/AdminOrders"));
 const Plan = lazy(() => import("./admin/plan/Plan"));
-const AdminContentLinks = lazy(() => import("./admin/contentLinks/ContentLinks"));
+const AdminContentLinks = lazy(() =>
+  import("./admin/contentLinks/ContentLinks")
+);
 const AdminProjects = lazy(() => import("./admin/projects/Projects"));
 const ForgotPassword = lazy(() => import("./user-pages/ForgotPassword"));
-const ChangePasswordViaLink = lazy(() => import("./user-pages/ChangePasswordViaLink"));
+const ChangePasswordViaLink = lazy(() =>
+  import("./user-pages/ChangePasswordViaLink")
+);
 const VerifyEmail = lazy(() => import("./user-pages/VerifyEmail"));
-const publisherDomain = lazy(() => import("./publisher/domain/Domain"))
+const publisherDomain = lazy(() => import("./publisher/domain/Domain"));
 const PublisherOrders = lazy(() => import("./publisher/order/PublisherOrders"));
-const PublisherViewOrderDetails = lazy(() => import("./publisher/order/PublisherViewOrderDetails"))
-const UserViewOrderDetails = lazy(() => import("./orders/UserViewOrderDetails"));
+const PublisherViewOrderDetails = lazy(() =>
+  import("./publisher/order/PublisherViewOrderDetails")
+);
+const UserViewOrderDetails = lazy(() =>
+  import("./orders/UserViewOrderDetails")
+);
 class AppRoutes extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +49,10 @@ class AppRoutes extends Component {
     this.state = {
       isAuthenticated: !!token,
       isAdmin: isAdmin,
+      cartLength: 0,
+      cartData:[],
     };
+    this.updateCartLength = this.updateCartLength.bind(this);
   }
   handleLoginSuccess = () => {
     const isAdmin = localStorage.getItem("isAdmin");
@@ -52,10 +64,9 @@ class AppRoutes extends Component {
       () => {
         if (isAdmin === "1") {
           this.props.history.push("/admin/dashboard");
-        } else if(isAdmin === "2") {
+        } else if (isAdmin === "2") {
           this.props.history.push("/publisher/domain");
-        }
-        else{
+        } else {
           this.props.history.push("/dashboard");
         }
         // this.props.history.push("/dashboard");
@@ -63,7 +74,7 @@ class AppRoutes extends Component {
     );
     // window.location.reload();
   };
-  
+
   isLoginPageOrRegister = () => {
     const { location } = this.props;
     const forgotPasswordPattern = /^\/forgotPassword\/[a-zA-Z0-9._-]+$/;
@@ -72,14 +83,14 @@ class AppRoutes extends Component {
     );
 
     const verifyEmailPattern = /^\/verify\/email\/[a-zA-Z0-9._-]+$/;
-    const isVerifyEmail = verifyEmailPattern.test(
-      location.pathname
-    );
+    const isVerifyEmail = verifyEmailPattern.test(location.pathname);
     return (
       location.pathname === "/login" ||
       location.pathname === "/register" ||
-      location.pathname === "/forgot-password" || location.pathname === "/register/become-publisher" ||
-      isForgotPasswordTokenPath || isVerifyEmail
+      location.pathname === "/forgot-password" ||
+      location.pathname === "/register/become-publisher" ||
+      isForgotPasswordTokenPath ||
+      isVerifyEmail
     );
   };
   handleLogout = () => {
@@ -93,12 +104,68 @@ class AppRoutes extends Component {
     });
     this.props.history.push("/login");
   };
+  updateCartLength = (newCartLength) => {
+    this.setState({ cartLength: newCartLength });
+    this.getCartData();
+  };
+  getCartData = () => {
+    ApiServices.getUserCartData().then(
+      (res) => {
+        if (res.data.status) {
+          this.setState({
+            cartLength: res.data.data.length,
+            cartData: res.data.data,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        // alert(resMessage);
+      }
+    );
+  }
+  handleAddtoCart = (hash_id) => {
+    ApiServices.addToCartContentLink(hash_id).then(
+      (res) => {
+        if (res.data.status) {
+          this.setState({
+            cartLength: res.data.data.length,
+            cartData: res.data.data,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        // toast.error(resMessage, {
+        //   position: "top-center",
+        //   autoClose: 2000,
+        // });
+      }
+    );
+  };
+  componentDidMount() {
+    this.getCartData();
+  }
   render() {
     let navbarComponent =
       !this.isLoginPageOrRegister() && !this.state.isFullPageLayout ? (
         <Navbar
           handleLogout={this.handleLogout}
           isAuthenticated={this.state.isAuthenticated}
+          cartLength={this.state.cartLength}
+          updateCartLength={this.updateCartLength}
+          getCartData={this.getCartData}
+          cartData={this.state.cartData}
         />
       ) : (
         ""
@@ -150,9 +217,15 @@ class AppRoutes extends Component {
                   />
 
                   <Route path="/register" component={Register} />
-                  <Route path="/register/become-publisher" component={Register} />
+                  <Route
+                    path="/register/become-publisher"
+                    component={Register}
+                  />
                   <Route path="/forgot-password" component={ForgotPassword} />
-                  <Route path="/forgotPassword/:token" component={ChangePasswordViaLink} />
+                  <Route
+                    path="/forgotPassword/:token"
+                    component={ChangePasswordViaLink}
+                  />
                   <Route path="/verify/email/:token" component={VerifyEmail} />
 
                   <ProtectedRoute
@@ -169,6 +242,7 @@ class AppRoutes extends Component {
                     component={ContentLinks}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
+                    handleAddtoCart={this.handleAddtoCart}
                   />
                   <ProtectedRoute
                     exact
@@ -190,6 +264,11 @@ class AppRoutes extends Component {
                     component={ContentLinksHome}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
+                    cartLength={this.state.cartLength}
+                    updateCartLength={this.updateCartLength}
+                    handleAddtoCart={this.handleAddtoCart}
+                    getCartData={this.getCartData}
+                    cartData={this.state.cartData}
                   />
                   <ProtectedRoute
                     exact
@@ -285,14 +364,14 @@ class AppRoutes extends Component {
                     isAdmin={this.state.isAdmin}
                   />
 
-                  <PublisherProtected 
+                  <PublisherProtected
                     exact
                     path="/publisher/domain"
                     component={publisherDomain}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
-                  <PublisherProtected 
+                  <PublisherProtected
                     exact
                     path="/domain/:hash_id"
                     component={BlankPage}

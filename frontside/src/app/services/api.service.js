@@ -260,26 +260,21 @@ class ApiServices {
       });
   }
 
-  userCancelOrder(orderId)
-  {
+  userCancelOrder(orderId) {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "order/cancelOrder/" + orderId;
     return axios
-      .get(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      )
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
       .then((response) => {
         return response;
       });
   }
 
-  getContentLinkList(filterdata = null)
-  {
+  getContentLinkList(filterdata = null) {
     const authToken = localStorage.getItem("token");
     return axios
       .post(this.APP_URL + "contentlinks", filterdata, {
@@ -290,11 +285,21 @@ class ApiServices {
       });
   }
 
-  getUserCartData(filterdata = null)
-  {
+  getUserCartData(filterdata = null) {
     const authToken = localStorage.getItem("token");
     return axios
       .get(this.APP_URL + "user/cart", {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  deleteItemFromCart(cartId) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .delete(this.APP_URL + "user/cart/" + cartId, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {

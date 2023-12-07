@@ -174,8 +174,18 @@ export class ContentLinksHome extends Component {
                 </div>
                 <hr style={{ marginTop: "0rem" }} />
                 <div className="Tabcontent">
-                  {value === "1" && <MarketPlace />}
-                  {value === "2" && <DailyDeals />}
+                  {value === "1" && (
+                    <MarketPlace
+                      updateCartLength={this.props.updateCartLength}
+                      handleAddtoCart={this.props.handleAddtoCart}
+                    />
+                  )}
+                  {value === "2" && (
+                    <DailyDeals
+                      updateCartLength={this.props.updateCartLength}
+                      handleAddtoCart={this.props.handleAddtoCart}
+                    />
+                  )}
                 </div>
               </div>
             </div>

@@ -1017,3 +1017,31 @@ input[type="date"]
     background-color: #ff975657;
     border-radius: 0.5rem;
 }
+.nvCartDropDown
+{
+    min-width: 20rem;
+}
+.nvCartDropDown a {
+    text-decoration: none !important;
+    color: #222222db;
+}
+.customBadge.count-symbol
+{
+    top: 11px !important;
+    right: 0px !important;    
+    left: 13px !important;
+}
+.customBadge.count-symbol b
+{
+    width: 18px;
+    height: 18px;
+    background-color: #ff9756;
+    padding: 5px;
+    border-radius: 50%;
+    font-size: 11px;
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

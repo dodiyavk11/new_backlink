@@ -250,52 +250,7 @@ export class MarketPlace extends Component {
       price: { min: min || "", max: max || "" },
       domain_name: searchValue,
     };
-    ApiServices.getContentLinkList(filterData).then(
-      (res) => {
-        if (res.data.status) {
-          this.setState({
-            rows: res.data.data,
-            isDisable:false
-          });          
-        }
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        toast.error(resMessage, {
-          position: "top-center",
-          autoClose: 2000,
-        });
-      }
-    );
-  };
-  handleAddtoCart = (hash_id) => {
-    ApiServices.addToCartContentLink(hash_id).then(
-      (res) => {
-        if (res.data.status) {
-          toast.success(res.data.message, {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        toast.error(resMessage, {
-          position: "top-center",
-          autoClose: 2000,
-        });
-      }
-    );
+    this.fetchContentLinkData(filterData)    
   };
   fetchContentLinkData(filter = null) {
     ApiServices.getContentLinkList(filter).then(
@@ -303,6 +258,7 @@ export class MarketPlace extends Component {
         if (res.data.status) {
           this.setState({
             rows: res.data.data,
+            isDisable:false
           });
         }
       },
@@ -548,7 +504,7 @@ export class MarketPlace extends Component {
         renderCell: (row) => (
           <div>
             <svg
-              onClick={() => this.handleAddtoCart(row.hash_id)}
+              onClick={() => this.props.handleAddtoCart(row.hash_id)}
               xmlns="http://www.w3.org/2000/svg"
               width={20}
               fill="currentColor"

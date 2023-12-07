@@ -1,6 +1,6 @@
 const Models = require("../models");
 const Sequelize = require('sequelize');
-const ahrefs = require('ahrefs')({ token: '39e2a384240099a388dc58c63c17f7a7cc8db6a0' });
+const ahrefs = require('ahrefs')({ token: 'N847BTHmnvtJy8Iig9CS6ehO2oIQh_EF-WQaXYQm' });
 
 exports.getBacklinksForDomain = async(req, res) => {
 	try
@@ -10,7 +10,6 @@ exports.getBacklinksForDomain = async(req, res) => {
 			.target(domain)
 			.mode('domain')
 			.output('json')
-			.from('backlinks')
 			.limit(10)
 			.offset(5);
 		const result = ahrefs.get(query, function(err, result) {

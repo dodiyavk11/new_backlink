@@ -847,9 +847,10 @@ export class ContentLinks extends Component {
                           <div className="btn-group-md">
                             <button
                               className="btn btn-primary btn btn-rounded custamFilterBtn"
-                              onClick={() =>
-                                this.handleAddtoCart(contentData.hash_id)
-                              }
+                              // onClick={() =>
+                              //   this.handleAddtoCart(contentData.hash_id)
+                              // }
+                              onClick={() => this.props.handleAddtoCart(contentData.hash_id)}
                               style={{ width: "100%" }}
                             >
                               Add to cart

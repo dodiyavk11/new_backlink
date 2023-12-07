@@ -9,16 +9,17 @@ class Navbar extends Component {
     this.state = {
       user: {},
       isAuthenticated: this.props.isAuthenticated,
-      cartData: [],
+      cartDatas: [],
     };
     this.handleLogouts = this.handleLogouts.bind(this);
   }
-  getCartData = () => {
-    ApiServices.getUserCartData().then(
+  deleteCartItem = (cartId) => {
+    ApiServices.deleteItemFromCart(cartId).then(
       (res) => {
         if (res.data.status) {
+          this.props.updateCartLength(res.data.data.length);
           this.setState({
-            cartData: res.data.data,
+            cartDatas: res.data.data,
           });
         }
       },
@@ -29,13 +30,38 @@ class Navbar extends Component {
             error.response.data.message) ||
           error.message ||
           error.toString();
-        alert(resMessage);
+        // alert(resMessage);
       }
     );
   };
+  getCartData = () => {
+    this.setState({
+      cartDatas: this.props.cartData,
+    });
+    //   ApiServices.getUserCartData().then(
+    //     (res) => {
+    //       if (res.data.status) {
+    //         this.setState({
+    //           cartData: res.data.data,
+    //         });
+    //       }
+    //     },
+    //     (error) => {
+    //       const resMessage =
+    //         (error.response &&
+    //           error.response.data &&
+    //           error.response.data.message) ||
+    //         error.message ||
+    //         error.toString();
+    //       // alert(resMessage);
+    //     }
+    //   );
+  };
   componentDidMount() {
+    this.setState({
+      cartDatas: this.props.cartData,
+    });
     const userData = JSON.parse(localStorage.getItem("userData"));
-    this.getCartData();
     if (userData) {
       this.setState({ user: userData });
     }
@@ -46,10 +72,9 @@ class Navbar extends Component {
   handleLogouts = (e) => {
     e.preventDefault();
     this.props.handleLogout();
-    console.log(this.props.isAuthenticated);
   };
   render() {
-    const { cartData } = this.state;
+    const { cartDatas } = this.state;
     const imageUrl = `${process.env.REACT_APP_BASE_URL}assets/profile/${this.state.user.profile}`;
 
     return (
@@ -83,99 +108,67 @@ class Navbar extends Component {
           </button>
           <ul className="navbar-nav navbar-nav-right">
             <li className="nav-item">
-              {/* <Dropdown alignRight>
+              <Dropdown alignRight onClick={this.getCartData}>
                 <Dropdown.Toggle className="nav-link count-indicator">
                   <i className="mdi mdi-cart-outline"></i>
+                  <span className="customBadge count-symbol">
+                    <b>{this.props.cartLength}</b>
+                  </span>
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu className="preview-list navbar-dropdown">
-                  <h6 className="p-3 mb-0">
-                    <Trans>Cart</Trans>
-                  </h6>
+                <Dropdown.Menu className="preview-list navbar-dropdown nvCartDropDown">
+                  {cartDatas.length > 0 ? (
+                    <div className="d-flex justify-content-between">
+                      <h5 className="p-3 mb-0">
+                        <Trans>Cart</Trans>
+                      </h5>
+                      <h6 className="p-3 mb-0">{cartDatas.length} items</h6>
+                    </div>
+                  ) : (
+                    <div className="d-flex justify-content-center p-3">
+                      <center>
+                        <div className="mt-5 mx-auto">
+                          <img
+                            src={require("../../assets/images/empty.png")}
+                            alt="No data found..."
+                          />
+                        </div>
+                        <h4>Your cart is empty.</h4>
+                        <p style={{ maxWidth: "400px" }}>
+                          You can add contentlinks to your cart.
+                        </p>
+                      </center>
+                    </div>
+                  )}
                   <div className="dropdown-divider"></div>
-                  {cartData.map((order) => (
-                    <Dropdown.Item
-                      className="dropdown-item preview-item"
-                      onClick={(evt) => evt.preventDefault()}
-                    >
-                      <div className="preview-thumbnail">
-                        <h4>{order.cartItems.domain_name}</h4>
+                  {cartDatas.map((order, index) => (
+                    <React.Fragment key={index}>
+                      <div className="dropdown-divider"></div>
+                      <div className="d-flex justify-content-between p-3">
+                        <div>
+                          <Link to={`/content/${order.hash_id}`}>
+                            <h5>{order.cartItems.domain_name}</h5>
+                          </Link>
+                        </div>
+                        <div>
+                          <h6>
+                            <Link to={`/content/${order.hash_id}`}>
+                              <Trans>
+                                <b>${order.cartItems.price}</b>
+                              </Trans>
+                            </Link>
+                            <i
+                              className="mdi mdi-delete pl-1"
+                              style={{ color: "#ff9756",cursor:"pointer" }}
+                              onClick={() => this.deleteCartItem(order.cart_id)}
+                            ></i>
+                          </h6>
+                        </div>
                       </div>
-                      <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                        <h6 className="preview-subject ellipsis mb-1 font-weight-normal">
-                          <Trans>{order.cartItems.price}</Trans>
-                        </h6>                        
-                      </div>
-                    </Dropdown.Item>
+                    </React.Fragment>
                   ))}
-                  <Dropdown.Item
-                    className="dropdown-item preview-item"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <div className="preview-thumbnail">
-                      <img
-                        src={require("../../assets/images/faces/face4.jpg")}
-                        alt="user"
-                        className="profile-pic"
-                      />
-                    </div>
-                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal">
-                        <Trans>Mark send you a message</Trans>
-                      </h6>
-                      <p className="text-gray mb-0">
-                        1 <Trans>Minutes ago</Trans>
-                      </p>
-                    </div>
-                  </Dropdown.Item>
-                  <div className="dropdown-divider"></div>
-                  <Dropdown.Item
-                    className="dropdown-item preview-item"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <div className="preview-thumbnail">
-                      <img
-                        src={require("../../assets/images/faces/face2.jpg")}
-                        alt="user"
-                        className="profile-pic"
-                      />
-                    </div>
-                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal">
-                        <Trans>Cregh send you a message</Trans>
-                      </h6>
-                      <p className="text-gray mb-0">
-                        15 <Trans>Minutes ago</Trans>
-                      </p>
-                    </div>
-                  </Dropdown.Item>
-                  <div className="dropdown-divider"></div>
-                  <Dropdown.Item
-                    className="dropdown-item preview-item"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <div className="preview-thumbnail">
-                      <img
-                        src={require("../../assets/images/faces/face3.jpg")}
-                        alt="user"
-                        className="profile-pic"
-                      />
-                    </div>
-                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal">
-                        <Trans>Profile picture updated</Trans>
-                      </h6>
-                      <p className="text-gray mb-0">
-                        18 <Trans>Minutes ago</Trans>
-                      </p>
-                    </div>
-                  </Dropdown.Item>
-                  <div className="dropdown-divider"></div>
-                  <h6 className="p-3 mb-0 text-center cursor-pointer">
-                    4 <Trans>new messages</Trans>
-                  </h6>
                 </Dropdown.Menu>
-              </Dropdown> */}
+              </Dropdown>
             </li>
             <li className="nav-item">
               <Dropdown alignRight>
