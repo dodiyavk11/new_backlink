@@ -19,6 +19,10 @@ module.exports = (sequelize,DataTypes) => {
 			  foreignKey: 'hash_id',
 			  as: 'domainData',
 			});
+			this.hasMany(models.newOrder, {
+			  foreignKey: 'domain_id',
+			  as: 'orderData',
+			});
 		}
 	}
 	publisherDomain.init({

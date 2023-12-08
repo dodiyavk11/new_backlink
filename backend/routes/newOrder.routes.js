@@ -12,7 +12,7 @@ module.exports = (app) => {
 	app.post("/user/orders",[isLogin,isCustomer],getUserOrders)
 	app.post("/user/cart/add-item/:hash_id",[isLogin,isCustomer],addToCart)
 	app.delete("/user/cart/:cart_id",[isLogin,isCustomer],deleteItem)
-	app.get("/user/cart",[isLogin, isCustomer],getCart)
+	app.get("/user/cart",[isLogin],getCart)
 	/* backlink text file uploda */
 	app.post("/files",[isLogin,isCustomer,textFileUploadTemp.single("file")],textFileUpload)
 	app.get("/files/delete/:filename",[isLogin,isCustomer],textFileDelete)

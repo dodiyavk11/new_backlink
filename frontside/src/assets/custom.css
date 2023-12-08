@@ -1045,3 +1045,14 @@ input[type="date"]
     align-items: center;
     justify-content: center;
 }
+.contactCardview
+{
+    background-color: #ff9756;
+    color: #fff;
+}
+.contactCardview p {
+    font-size: 12px;
+}
+.contactCardview button {
+    background-color:#354252 !important
+}

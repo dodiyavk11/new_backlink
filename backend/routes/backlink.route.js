@@ -8,7 +8,7 @@ module.exports = (app) => {
 	app.post('/publisher/updateDomain/:domainId',[isLogin,isPublisher],editPublisherDomain)
 	app.get('/publisher/deleteDomain/:id',[isLogin,isPublisher],deletePublisherDomain)
 	app.get('/publisher/domains',[isLogin,isPublisher],getPublisherDomainList)
-	app.get('/publisher/domain/:domainId',[isLogin,isPublisher], getPublisherDomain)
+	app.get('/publisher/domain/:hash_id',[isLogin,isPublisher], getPublisherDomain)
 	app.post('/publisher/domain/excelUpload',[isLogin,isPublisher,uploadExcel.single('file')], publisherExcelFileDataAdd)
 	/* customer route */
 	app.post('/contentlinks',[isLogin,isCustomer], getConetentLinks)

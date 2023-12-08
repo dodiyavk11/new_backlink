@@ -125,7 +125,7 @@ exports.getProjects = async(req, res) => {
 			        Sequelize.literal(`(
 			          SELECT COUNT(*)
 			          FROM new_orders
-			          WHERE new_orders.domain_id = Domains.id
+			          WHERE new_orders.project_id = Domains.hash_id
 			        )`),
 			        'order_count',
 			      ],
@@ -298,7 +298,7 @@ exports.addCustomerDomain = async (req, res) => {
 exports.getUserDomain = async(req, res) => {
 	try{
 		const userId = req.userId;
-		const { domainId } = req.params;
+		const { hash_id } = req.params;
 		const baseQuery = {
 		  include: [
 		    {
@@ -309,10 +309,22 @@ exports.getUserDomain = async(req, res) => {
 		    {
 		      model: Models.customerDomainData,
 		      as: 'contentData',
-		    },
+		    },		    
 		  ],
 		}
-		const domainData = await Models.Domains.findOne({ where:{ user_id:userId, id:domainId }, ...baseQuery });
+		const domainData = await Models.Domains.findOne({ where:{ user_id:userId, hash_id:hash_id }, ...baseQuery });
+		const getOrders = await Models.newOrder.findAll({
+							  where: { project_id: hash_id,customer_id:userId  },
+							  limit: 3,
+							  include: [
+							    {
+							      model: Models.publisherDomain,
+							      as: 'domain',
+							      attributes: ['domain_name'],
+							    },
+							  ],
+							});
+		domainData.dataValues.orderData = getOrders;
 		res.status(200).send({ status: true, message: "Domain fetch successfully.", data: domainData });
 	}
 	catch(err)
@@ -379,6 +391,20 @@ exports.transactionHistory = async(req, res) =>
 	{
 		console.log(err);
 		res.status(500).send({ status: false, message: "Something went to wrong.",data: [], error: err.message })
+	}
+}
+
+exports.updateMonthlyBudget = async(req, res) => {
+	try
+	{
+		const userId = req.userId;
+		const { budget,id,hash_id } = req.body
+		const updateData = await Models.Domains.update({ budget }, { where: { id }});
+		res.status(200).send({ status: true, message: "Monthly budget update successfully.",data: updateData })
+	}
+	catch(err)
+	{
+		res.status(500).send({ status: false, message: "Monthly amount can not update, an error occured.",error: err.message });
 	}
 }
 

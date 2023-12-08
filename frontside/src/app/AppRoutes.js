@@ -41,6 +41,10 @@ const PublisherViewOrderDetails = lazy(() =>
 const UserViewOrderDetails = lazy(() =>
   import("./orders/UserViewOrderDetails")
 );
+
+const ProjectView = lazy(() => import("./projects/ProjectView"));
+const DomainView = lazy(() => import("./publisher/domain/DomainView"));
+
 class AppRoutes extends Component {
   constructor(props) {
     super(props);
@@ -254,7 +258,7 @@ class AppRoutes extends Component {
                   <ProtectedRoute
                     exact
                     path="/projects/:hash_id"
-                    component={BlankPage}
+                    component={ProjectView}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
@@ -389,6 +393,13 @@ class AppRoutes extends Component {
                     exact
                     path="/publisher/order/:order_id"
                     component={PublisherViewOrderDetails}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                   <PublisherProtected
+                    exact
+                    path="/publisher/domain/:hash_id"
+                    component={DomainView}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />

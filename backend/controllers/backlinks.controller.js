@@ -39,7 +39,7 @@ exports.getPublisherDomain = async(req, res) => {
 	try
 	{
 		const userId = req.userId
-		const { domainId } = req.params
+		const { hash_id } = req.params
 		const baseQuery = {
 			include: [
 				{
@@ -51,9 +51,13 @@ exports.getPublisherDomain = async(req, res) => {
 					model: Models.publisherDomainData,
 					as: "contentData",					
 				},
+				{
+					model: Models.newOrder,
+					as: "orderData",					
+				},
 			],
 		}
-		const domainData = await Models.publisherDomain.findOne({ where:{ user_id: userId, id: domainId },...baseQuery });
+		const domainData = await Models.publisherDomain.findOne({ where:{ user_id: userId, hash_id: hash_id },...baseQuery });
 		res.status(200).send({ status: true, message: "Domain fetch succesfully.", data: domainData });
 	}
 	catch(err)

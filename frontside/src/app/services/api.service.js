@@ -307,6 +307,27 @@ class ApiServices {
       });
   }
 
+  getProjectViewData(hash_id) {
+    const authToken = localStorage.getItem("token");
+    return axios.get(this.APP_URL + "user/domain/" + hash_id, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  updateMonthlyBudget(formData)
+  {
+    const authToken = localStorage.getItem("token");
+    return axios.post(this.APP_URL + "user/project/budget",formData,{
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  getPublisherDomainViewData(hash_id) {
+    const authToken = localStorage.getItem("token");
+    return axios.get(this.APP_URL + "publisher/domain/" + hash_id, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
   getPublisherDomainList() {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "publisher/domains";

@@ -23,7 +23,7 @@ export class Domain extends Component {
   closeAddExcelModal = () => this.setState({ showModalExcel: false });
 
   goToDomainViewLink = (hash_id) => {
-    this.props.history.push(`/domain/${hash_id}`);
+    this.props.history.push(`/publisher/domain/${hash_id}`);
   };
 
   checkImageExists = async (imageUrl) => {

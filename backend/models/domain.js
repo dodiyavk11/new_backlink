@@ -23,10 +23,11 @@ module.exports = (sequelize,DataTypes) => {
 				foreignKey: 'domain_id',
 				as: 'contentData',
 			});
-		    this.hasMany(models.newOrder,{
-		      	foreignKey: 'domain_id', 
-		      	as: 'orders'
-		    });
+		    this.hasMany(models.newOrder, {
+			  foreignKey: 'hash_id',
+			  targetKey: 'project_id',
+			  as: 'orders'
+			});
 		}
 	}
 	Domain.init({

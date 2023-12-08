@@ -10,6 +10,7 @@ exports.getBacklinksForDomain = async(req, res) => {
 			.target(domain)
 			.mode('domain')
 			.output('json')
+			.from('backlinks')
 			.limit(10)
 			.offset(5);
 		const result = ahrefs.get(query, function(err, result) {
