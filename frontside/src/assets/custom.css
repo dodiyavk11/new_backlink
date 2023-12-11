@@ -1056,3 +1056,8 @@ input[type="date"]
 .contactCardview button {
     background-color:#354252 !important
 }
+.messageTime
+{
+    font-size: 10px;
+    color: #4d4f50b3;
+}

@@ -314,10 +314,9 @@ class ApiServices {
     });
   }
 
-  updateMonthlyBudget(formData)
-  {
+  updateMonthlyBudget(formData) {
     const authToken = localStorage.getItem("token");
-    return axios.post(this.APP_URL + "user/project/budget",formData,{
+    return axios.post(this.APP_URL + "user/project/budget", formData, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
@@ -416,6 +415,68 @@ class ApiServices {
       .post(
         url,
         { status },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+  publisherDomainUpdate(domain_id, formData) {
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "publisher/updateDomain/" + domain_id;
+    return axios
+      .post(url, formData, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  getOrderMessageHistory(orderId) {
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "message/get/" + orderId;
+    return axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+  orderMessageSend(orderId, message) {
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "message/send/" + orderId;
+    return axios
+      .post(
+        url,
+        { message },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+
+  orderMessageDelete(orderId, msgId) {
+    const authToken = localStorage.getItem("token");
+    const url = this.APP_URL + "message/delete/" + msgId;
+    return axios
+      .post(
+        url,
+        { order_id:orderId },
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

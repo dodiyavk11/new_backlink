@@ -8,13 +8,14 @@ class UpdatePublisherProjects extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      domain_id:0,
       domain_name: "",
       category_id: "",
       price: 0,
       anchorText: "As desired",
       deliveryTime: 0,
       attribute: "dofollow",
-      sensitiveTopic: 0,
+      sensitiveTopic: "0",
       sensitiveTopicCharge: 0,
       minWordCount: 0,
       textByCustomer: 0,
@@ -65,6 +66,7 @@ class UpdatePublisherProjects extends Component {
       const { domainData } = this.props;
 
       this.setState({
+        domain_id:domainData.id,
         domain_name: domainData.domain_name,
         category_id: domainData.category_id,
         price: domainData.price,
@@ -72,7 +74,7 @@ class UpdatePublisherProjects extends Component {
         deliveryTime:domainData.deliveryTime,
         attribute:domainData.attribute,
         sensitiveTopic:domainData.sensitiveTopic,
-        sensitiveTopicCharge:domainData.sensitiveTopicCharge ? domainData.sensitiveTopicCharge :  0,
+        sensitiveTopicCharge:domainData.sensitiveTopicCharge ? domainData.sensitiveTopicCharge :  "0",
         minWordCount:domainData.minWordCount,
         textByCustomer: domainData.textByCustomer,
         textInclude: domainData.textInclude,
@@ -95,9 +97,10 @@ class UpdatePublisherProjects extends Component {
         textByCustomer,
         textInclude,
         language,
+        domain_id,
       } = this.state;
       
-      const addDomainData = {
+      const updateDomainData = {
         domain_name,
         price,
         category_id,
@@ -110,32 +113,31 @@ class UpdatePublisherProjects extends Component {
         textByCustomer,
         textInclude,
         language,
-      };
-      console.log(addDomainData)
-    // ApiServices.publisherAddDomain(addDomainData).then(
-    //   (res) => {
-    //     this.props.handleClose();
-    //     if (res.status) {
-    //       toast.success(res.data.message, {
-    //         position: "top-center",
-    //         autoClose: 2000,
-    //         onClose: this.props.refreshData(),
-    //       });
-    //     }        
-    //   },
-    //   (error) => {
-    //     const resMessage =
-    //       (error.response &&
-    //         error.response.data &&
-    //         error.response.data.message) ||
-    //       error.message ||
-    //       error.toString();
-    //     toast.error(resMessage, {
-    //       position: "top-center",
-    //       autoClose: 2000,
-    //     });
-    //   }
-    // );
+      };      
+    ApiServices.publisherDomainUpdate(domain_id, updateDomainData).then(
+      (res) => {        
+        if (res.status) {
+          this.props.handleClose();
+          this.props.refreshData()
+          toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }        
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
   };
   render() {
     const {
@@ -185,7 +187,8 @@ class UpdatePublisherProjects extends Component {
                   id="domain_name"
                   aria-label="domain_name"
                   value={domain_name}
-                  onChange={this.handleChange}
+                  disabled
+                  // onChange={this.handleChange}
                 />
               </Form.Group>
               <Form.Group>
@@ -315,8 +318,8 @@ class UpdatePublisherProjects extends Component {
                       className="form-check-input"
                       name="sensitiveTopic"
                       id="sensitiveTopic"
-                      value={1}
-                      checked={sensitiveTopic === 1}
+                      value={"1"}
+                      checked={sensitiveTopic == "1"}
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
@@ -331,8 +334,8 @@ class UpdatePublisherProjects extends Component {
                       name="sensitiveTopic"
                       id="sensitiveTopic2"
                       onChange={this.handleChange}
-                      checked={sensitiveTopic === 0}
-                      value={0}
+                      checked={sensitiveTopic == "0"}
+                      value={"0"}
                     />
                     <i className="input-helper"></i>
                     No
@@ -384,7 +387,7 @@ class UpdatePublisherProjects extends Component {
                       name="textByCustomer"
                       id="textByCustomer"
                       value={1}
-                      checked={textByCustomer === 1}
+                      checked={textByCustomer == "1"}
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
@@ -399,7 +402,7 @@ class UpdatePublisherProjects extends Component {
                       name="textByCustomer"
                       id="textByCustomer2"
                       onChange={this.handleChange}
-                      checked={textByCustomer === 0}
+                      checked={textByCustomer == "0"}
                       value={0}
                     />
                     <i className="input-helper"></i>
@@ -417,7 +420,7 @@ class UpdatePublisherProjects extends Component {
                       name="textInclude"
                       id="textInclude"
                       value={1}
-                      checked={textInclude === 1}
+                      checked={textInclude == 1}
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
@@ -432,7 +435,7 @@ class UpdatePublisherProjects extends Component {
                       name="textInclude"
                       id="textInclude2"
                       onChange={this.handleChange}
-                      checked={textInclude === 0}
+                      checked={textInclude == 0}
                       value={0}
                     />
                     <i className="input-helper"></i>

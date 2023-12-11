@@ -12,7 +12,7 @@ exports.addMessageToOrder = async(req, res) => {
 	    const { files } = req.body;
 
 	    const getUserInfo = await Models.Users.findOne({ where: { id: userId } });
-	    if(!message && image.length === 0 ) return res.status(404).send({ status: false, message: "Please send a message or file", data: [] });
+	    if(!message && image.length === 0 ) return res.status(404).send({ status: false, message: "Please send a message", data: [] });
 	    let chatData = { sender_id: userId, order_id }
 	    if (message || message !== "") { chatData.message = message }
 
@@ -77,6 +77,8 @@ exports.deleteOrderMessage = async(req, res) => {
 	try
 	{
 		const { id } = req.params
+		const userId = req.userId;
+		const { order_id } = req.body;
 		const messageData = await Models.Message.findOne({ where:{ id } });
 		if(messageData != null && messageData.dataValues.files)
 		{
@@ -87,7 +89,7 @@ exports.deleteOrderMessage = async(req, res) => {
 			    })
 			);
 		}
-		const deleteMessageData = await Models.Message.destroy({ where: { id } });
+		const deleteMessageData = await Models.Message.destroy({ where: { id,order_id,sender_id:userId } });
 		res.status(200).send({ status: true, message: "Message deleted success.",data: deleteMessageData })
 	}
 	catch(err)

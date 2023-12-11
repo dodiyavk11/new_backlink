@@ -44,6 +44,7 @@ const UserViewOrderDetails = lazy(() =>
 
 const ProjectView = lazy(() => import("./projects/ProjectView"));
 const DomainView = lazy(() => import("./publisher/domain/DomainView"));
+const CartPage = lazy(() => import("./shared/Cart"));
 
 class AppRoutes extends Component {
   constructor(props) {
@@ -67,7 +68,7 @@ class AppRoutes extends Component {
       },
       () => {
         if (isAdmin === "1") {
-          this.props.history.push("/admin/dashboard");
+          this.props.history.push("/admin/orders");
         } else if (isAdmin === "2") {
           this.props.history.push("/publisher/domain");
         } else {
@@ -292,6 +293,13 @@ class AppRoutes extends Component {
                     exact
                     path="/account/payments"
                     component={Payments}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/cart"
+                    component={CartPage}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />

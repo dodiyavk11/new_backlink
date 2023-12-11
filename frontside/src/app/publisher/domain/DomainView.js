@@ -868,7 +868,7 @@ export class DomainView extends Component {
                               className="btn btn-rounded font-weight-medium auth-form-btn"
                               style={{ width: "100%" }} onClick={this.showAddDomainModal}
                             >
-                              Update
+                              Edit
                             </button>
                           </div>
                           {/* <div className="btn-group-md">

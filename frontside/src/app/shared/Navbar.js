@@ -57,6 +57,7 @@ class Navbar extends Component {
     //     }
     //   );
   };
+
   componentDidMount() {
     this.setState({
       cartDatas: this.props.cartData,
@@ -69,6 +70,11 @@ class Navbar extends Component {
   toggleOffcanvas() {
     document.querySelector(".sidebar-offcanvas").classList.toggle("active");
   }
+
+  gotoCartPage = () => {    
+    this.props.history.push('/cart');
+  };
+
   handleLogouts = (e) => {
     e.preventDefault();
     this.props.handleLogout();
@@ -76,7 +82,11 @@ class Navbar extends Component {
   render() {
     const { cartDatas } = this.state;
     const imageUrl = `${process.env.REACT_APP_BASE_URL}assets/profile/${this.state.user.profile}`;
-
+    const totalItemPrice = cartDatas
+      .reduce((total, item) => {
+        return total + parseFloat(item.cartItems.price || 0);
+      }, 0)
+      .toFixed(2);
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex justify-content-center">
@@ -159,7 +169,7 @@ class Navbar extends Component {
                             </Link>
                             <i
                               className="mdi mdi-delete pl-1"
-                              style={{ color: "#ff9756",cursor:"pointer" }}
+                              style={{ color: "#ff9756", cursor: "pointer" }}
                               onClick={() => this.deleteCartItem(order.cart_id)}
                             ></i>
                           </h6>
@@ -167,6 +177,32 @@ class Navbar extends Component {
                       </div>
                     </React.Fragment>
                   ))}
+                  {cartDatas.length > 0 && (
+                    <>
+                      <div className="dropdown-divider"></div>
+                      <div className="d-flex justify-content-between p-3">
+                        <div>
+                          <h5>Total</h5>
+                        </div>
+                        <div>
+                          <h3>
+                            <b>${totalItemPrice}</b>
+                          </h3>
+                        </div>
+                      </div>
+                      <div className="d-flex justify-content-center p-3">
+                        <button
+                          className="btn btn-rounded btn-fw btn-block"
+                          onClick={(event) =>
+                            this.gotoCartPage()
+                          }
+                          type="button"
+                        >
+                          Go to cart
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </Dropdown.Menu>
               </Dropdown>
             </li>

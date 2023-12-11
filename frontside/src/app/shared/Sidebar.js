@@ -302,7 +302,7 @@ class Sidebar extends Component {
           
           {props.isAdmin === "1" ? (
             <>
-              <li
+              {/* <li
                 className={
                   this.isPathActive("/admin/dashboard")
                     ? "nav-item active"
@@ -336,7 +336,7 @@ class Sidebar extends Component {
                     <Trans>Dashboard</Trans>
                   </span>
                 </Link>
-              </li>
+              </li> */}
               <li
                 className={
                   this.isPathActive("/admin/orders")

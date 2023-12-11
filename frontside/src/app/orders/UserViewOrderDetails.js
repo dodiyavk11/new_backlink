@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "../../assets/custom.css";
 import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../services/api.service";
+import MessageComponents from "../shared/MessageComponents";
+
 export class UserViewOrderDetails extends Component {
   constructor(props) {
     const { order_id } = props.match.params;
@@ -439,6 +441,7 @@ export class UserViewOrderDetails extends Component {
                 </div>
               </div>
             </div>
+            <MessageComponents order_id={this.state.order_id}/>
           </div>
         </div>
       </div>

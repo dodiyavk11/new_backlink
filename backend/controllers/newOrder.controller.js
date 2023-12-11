@@ -676,6 +676,22 @@ exports.getCart = async(req, res) => {
 	{
 		const user_id = req.userId;
 		const cartItem = await getCartData(user_id);
+        cartItem.map(cartItem => {        
+            cartItem.cartItems.dataValues.hash_id = cartItem.hash_id;
+            cartItem.cartItems.dataValues.anchortext = '';
+            cartItem.cartItems.dataValues.linktarget = '';
+            cartItem.cartItems.dataValues.publication_date = '';
+            cartItem.cartItems.dataValues.note = '';
+            cartItem.cartItems.dataValues.project_id = '';
+            cartItem.cartItems.dataValues.filename = '';
+            cartItem.cartItems.dataValues.originalname = '';
+            cartItem.cartItems.dataValues.textCreation = '';
+            cartItem.cartItems.dataValues.wordCount = '';
+            cartItem.cartItems.dataValues.approveText = '';
+            cartItem.cartItems.dataValues.textCreationPrice = '';
+            cartItem.cartItems.dataValues.approveTextPrice = '';
+            cartItem.cartItems.dataValues.chooseByBacklink = '';        
+        });
 		res.status(200).send({ status: true, message: "Cart items get successfully.", data: cartItem })
 	}
 	catch(err)

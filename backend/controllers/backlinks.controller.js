@@ -161,39 +161,39 @@ exports.addPublisherDomain = async(req, res) => {
 exports.editPublisherDomain = async(req, res) => {
 	try
 	{
-		const { domain_name, price, category_id } = req.body;
+		const { category_id,price,anchorText,deliveryTime,attribute,sensitiveTopic,sensitiveTopicCharge,minWordCount,textByCustomer,textInclude,language } = req.body;
 		const user_id = req.userId;
 		const { domainId } = req.params;
-		const domainPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+(\.[a-zA-Z]{2,}){1,2})(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
-		if(domainPattern.test(domain_name))
-		{
-			let mainDomain = extractMainDomain(domain_name);
-			mainDomain = mainDomain.trim().replace(/\/+$/,'');
-			const existingDomain = await Models.publisherDomain.findOne({
-				where: {
-					domain_name: {
-						[Sequelize.Op.substring] : mainDomain.replace("wwww",""),
-					},
-					user_id:user_id,
-					id: {
-				      [Op.not]: domainId,
-				    },
-				}
-			})
-			if(existingDomain)
-			{
-				return res.status(400).send({ status: false, message: "A Domain with a similar name already exists."})
-			}
-			const domainParts = domain_name.split(".");
-			const tld = domainParts[domainParts.length - 1];
-			const updateData = { domain_name:mainDomain ,category_id, price, tld };
-			const updateDomain = await Models.publisherDomain.update(updateData, { where: { id:domainId } });
+		// const domainPattern = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+(\.[a-zA-Z]{2,}){1,2})(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+		// if(domainPattern.test(domain_name))
+		// {
+		// 	let mainDomain = extractMainDomain(domain_name);
+		// 	mainDomain = mainDomain.trim().replace(/\/+$/,'');
+		// 	const existingDomain = await Models.publisherDomain.findOne({
+		// 		where: {
+		// 			domain_name: {
+		// 				[Sequelize.Op.substring] : mainDomain.replace("wwww",""),
+		// 			},
+		// 			user_id:user_id,
+		// 			id: {
+		// 		      [Op.not]: domainId,
+		// 		    },
+		// 		}
+		// 	})
+		// 	if(existingDomain)
+		// 	{
+		// 		return res.status(400).send({ status: false, message: "A Domain with a similar name already exists."})
+		// 	}
+			// const domainParts = domain_name.split(".");
+			// const tld = domainParts[domainParts.length - 1];
+			const updateData = { category_id, price,anchorText,deliveryTime,attribute,sensitiveTopic,sensitiveTopicCharge,minWordCount,textByCustomer,textInclude,language,status:0 };
+			const updateDomain = await Models.publisherDomain.update(updateData, { where: { id:domainId, user_id:user_id } });
 			res.status(200).send({ status: true, message: "Domain updated successfully.", data: updateDomain })
-		}
-		else
-		{
-			res.status(400).send({ status: false, message: "Domain name Invalid." })
-		}
+		// }
+		// else
+		// {
+		// 	res.status(400).send({ status: false, message: "Domain name Invalid." })
+		// }
 	}
 	catch(err)
 	{
