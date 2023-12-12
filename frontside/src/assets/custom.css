@@ -1061,3 +1061,12 @@ input[type="date"]
     font-size: 10px;
     color: #4d4f50b3;
 }
+.toggle-arrow {
+    display: inline-block;
+    color: #ff9756;
+    cursor: pointer;
+}  
+.toggleContent
+{
+    transition: max-height 0.3s ease-in-out;
+}

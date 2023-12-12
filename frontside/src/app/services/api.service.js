@@ -214,6 +214,26 @@ class ApiServices {
         return response;
       });
   }
+
+  cartPlaceOrder(orderData) {
+    const authToken = localStorage.getItem("token");    
+    const url = `${this.APP_URL}order/cart/order`;
+    return axios
+      .post(
+        url,
+        orderData,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+
   getUserOrderList() {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "user/orders";

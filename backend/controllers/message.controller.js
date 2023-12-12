@@ -29,8 +29,8 @@ exports.addMessageToOrder = async(req, res) => {
 
 	    const data = await Models.Message.create(chatData)
 
-	    getUserInfo.dataValues.isAdmin !== 0 && await Models.Orders.update({ update_status: 2 }, { where: { id: order_id } })
-	    getUserInfo.dataValues.isAdmin === 0 && await Models.Orders.update({ update_status_admin: 2 }, { where: { id: order_id } })
+	    // getUserInfo.dataValues.isAdmin !== 0 && await Models.Orders.update({ update_status: 2 }, { where: { id: order_id } })
+	    // getUserInfo.dataValues.isAdmin === 0 && await Models.Orders.update({ update_status_admin: 2 }, { where: { id: order_id } })
 
 	    res.status(200).send({ status: true, message: "Order message saved success", data: data })
 	}

@@ -302,6 +302,10 @@ class AppRoutes extends Component {
                     component={CartPage}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
+                    cartLength={this.state.cartLength}
+                    updateCartLength={this.updateCartLength}
+                    getCartData={this.getCartData}
+                    cartData={this.state.cartData}
                   />
                   <AuthProtected
                     exact
