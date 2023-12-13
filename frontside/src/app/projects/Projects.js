@@ -123,7 +123,11 @@ export class Projects extends Component {
                               Active Projects
                               <span className="notification-icon--fixed">
                                 <small className="notification-badge fontBold500">
-                                  {this.state.projectsData.length}
+                                  {
+                                    this.state.projectsData.filter(
+                                      (project) => project.isArchieved === 0
+                                    ).length
+                                  }
                                 </small>
                               </span>
                             </div>
@@ -139,7 +143,11 @@ export class Projects extends Component {
                               Archived Projects
                               <span className="notification-icon--fixed">
                                 <small className="notification-badge fontBold500">
-                                  {this.state.projectsData.length}
+                                  {
+                                    this.state.projectsData.filter(
+                                      (project) => project.isArchieved === 1
+                                    ).length
+                                  }
                                 </small>
                               </span>
                             </div>
@@ -162,74 +170,94 @@ export class Projects extends Component {
                 </div>
                 <hr style={{ marginTop: "0rem" }} />
                 <div className="Tabcontent">
-                  {value === "1" &&
-                    (this.state.projectsData.length > 0 ? (
-                      <div className="row">
-                        {this.state.projectsData.map((project) => (
-                          <ActiveProjects
-                            key={project.id}
-                            project={project}
-                            goToProjectViewLink={this.goToProjectViewLink}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <center>
-                        <div className="mt-5 mx-auto">
-                          <img
-                            src={require("../../assets/images/empty.png")}
-                            alt="No data found..."
-                          />
+                  {value === "1" && (
+                    <div>
+                      {this.state.projectsData.filter(
+                        (project) => project.isArchieved === 0
+                      ).length > 0 ? (
+                        <div className="row">
+                          {/* Render projects where isArchived is 1 */}
+                          {this.state.projectsData
+                            .filter((project) => project.isArchieved === 0)
+                            .map((project) => (
+                              <ActiveProjects
+                                key={project.id}
+                                project={project}
+                                goToProjectViewLink={this.goToProjectViewLink}
+                              />
+                            ))}
                         </div>
-                        <h2>No Project</h2>
-                        <p>
-                          No Project You do not have any Project yet. As soon as
-                          you add your first Project, it will show up here.
-                        </p>
-                        <button className="btn btn-rounded btn-fw">
-                          <span
-                            className="createProject"
-                            onClick={this.showProjectModal}
-                          >
-                            <i className="mdi mdi-plus mr-2"></i>Create Project
-                          </span>
-                        </button>
-                      </center>
-                    ))}
-                  {value === "2" &&
-                    (this.state.projectsData.length > 0 ? (
-                      <div className="row">
-                        {this.state.projectsData.map((project) => (
-                          <ArchivedProjects
-                            key={project.id}
-                            project={project}
-                            goToProjectViewLink={this.goToProjectViewLink}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <center>
-                        <div className="mt-5 mx-auto">
-                          <img
-                            src={require("../../assets/images/empty.png")}
-                            alt="No data found..."
-                          />
+                      ) : (
+                        // Render content when length is 0
+                        <center>
+                          <div className="mt-5 mx-auto">
+                            <img
+                              src={require("../../assets/images/empty.png")}
+                              alt="No data found..."
+                            />
+                          </div>
+                          <h2>No Project</h2>
+                          <p>
+                            No Project You do not have any Project yet. As soon
+                            as you add your first Project, it will show up here.
+                          </p>
+                          <button className="btn btn-rounded btn-fw">
+                            <span
+                              className="createProject"
+                              onClick={this.showProjectModal}
+                            >
+                              <i className="mdi mdi-plus mr-2"></i>Create
+                              Project
+                            </span>
+                          </button>
+                        </center>
+                      )}
+                    </div>
+                  )}
+
+                  {value === "2" && (
+                    <div>
+                      {this.state.projectsData.filter(
+                        (project) => project.isArchieved === 1
+                      ).length > 0 ? (
+                        <div className="row">
+                          {this.state.projectsData
+                            .filter((project) => project.isArchieved === 1)
+                            .map((project) => (
+                              <ArchivedProjects
+                                key={project.id}
+                                project={project}
+                                goToProjectViewLink={this.goToProjectViewLink}
+                              />
+                            ))}
                         </div>
-                        <h2>No Project</h2>
-                        <p>
-                          No Project You do not have any Project yet. As soon as
-                          you add your first Project, it will show up here.
-                        </p>
-                        <button className="btn btn-rounded btn-fw">
-                          <span
-                            className="createProject"
-                            onClick={this.showProjectModal}
-                          >
-                            <i className="mdi mdi-plus mr-2"></i>Create Project
-                          </span>
-                        </button>
-                      </center>
-                    ))}
+                      ) : (
+                        // Render content when length is 0
+                        <center>
+                          <div className="mt-5 mx-auto">
+                            <img
+                              src={require("../../assets/images/empty.png")}
+                              alt="No data found..."
+                            />
+                          </div>
+                          <h2>No Project</h2>
+                          <p>
+                            No Project You do not have any Project yet. As soon
+                            as you add your first Project, it will show up here.
+                          </p>
+                          <button className="btn btn-rounded btn-fw">
+                            <span
+                              className="createProject"
+                              onClick={this.showProjectModal}
+                            >
+                              <i className="mdi mdi-plus mr-2"></i>Create
+                              Project
+                            </span>
+                          </button>
+                        </center>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

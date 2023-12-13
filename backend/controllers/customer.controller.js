@@ -33,6 +33,7 @@ exports.dashboard = async(req, res) => {
 		    {
 	          model: Models.newOrder,
 	          as: 'orders',
+	          limit:5,
 	          include: [
 			    {
 			      model: Models.publisherDomain,
@@ -437,5 +438,25 @@ exports.userAddStaticAmount = async(req, res) => {
 	{
 		console.log(err);
 		res.status(500).send({ status: false, message: "Amount can not added, an error occured.", error: err.message })
+	}
+}
+
+exports.updateArchiveProject = async(req, res) => {
+	try
+	{
+		const user_id = req.userId;
+		const { hash_id,status } = req.params;
+
+		const updateData = await Models.Domains.update(
+		  { isArchieved: status },
+		  {
+		    where: { hash_id, user_id },
+		  }
+		);
+		res.status(200).send({ status: true, message: "Update successfully.", data: updateData })
+	}
+	catch(err)
+	{
+		res.status(500).send({ status: false, message: "Project Archive can not update, an error occured.",error:err.message });
 	}
 }

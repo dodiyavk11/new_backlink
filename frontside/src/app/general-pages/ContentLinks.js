@@ -55,6 +55,28 @@ export class ContentLinks extends Component {
     });
   };
 
+  handleFavorite = (id) => {
+    ApiServices.userFavoriteUpdate(id).then(
+      (res) => {
+        if (res.data.status) {
+          this.getContentLinkData();
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
+
   handleBackStep = () => {
     this.setState({
       showModalStep1: true,
@@ -89,7 +111,7 @@ export class ContentLinks extends Component {
   handleGoBack = () => {
     this.props.history.goBack();
   };
-  componentDidMount() {
+  getContentLinkData = () => {
     AuthService.getContentLinksData(this.state.hash_id)
       .then((res) => {
         if (!res.status) {
@@ -125,6 +147,9 @@ export class ContentLinks extends Component {
           }
         }
       });
+  };
+  componentDidMount() {
+    this.getContentLinkData();
   }
   handleAddtoCart = (hash_id) => {
     ApiServices.addToCartContentLink(hash_id).then(
@@ -174,20 +199,45 @@ export class ContentLinks extends Component {
           <div className="col-lg-8 grid-margin">
             <div className="card">
               <div className="card-img-top d-flex flex-row justify-content-between p-4">
-                <button
-                  className="btn btn-rounded font-weight-medium auth-form-btn"
-                  onClick={this.handleGoBack}
-                >
-                  <i className="mdi mdi-arrow-left"></i> Back
-                </button>
-                <a
-                  className="btn btn-rounded font-weight-medium auth-form-btn"
-                  href={`http://${contentData.domain_name}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <i className="mdi mdi-arrow-top-right"></i> Visit domain
-                </a>
+                <div>
+                  <button
+                    className="btn btn-rounded font-weight-medium auth-form-btn"
+                    onClick={this.handleGoBack}
+                  >
+                    <i className="mdi mdi-arrow-left"></i> Back
+                  </button>
+                </div>
+                <div>
+                  <a
+                    className="btn btn-rounded font-weight-medium auth-form-btn"
+                    href={`http://${contentData.domain_name}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="mdi mdi-arrow-top-right"></i> Visit domain
+                  </a>
+                  <svg
+                    onClick={() => this.handleFavorite(contentData.id)}
+                    width={22}
+                    className="ml-2"
+                    id="heart"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill={contentData.isFovarite ? "red" : "none"}
+                    viewBox="0 0 24 24"
+                    style={{
+                      color: contentData.isFovarite ? "red" : "#757575c9",
+                      fontWeight: "bold",
+                    }}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    />
+                  </svg>
+                </div>
               </div>
               <div className="card-body dashboardCard">
                 <h2 className="h2">Domain: {contentData.domain_name}</h2>
@@ -660,9 +710,9 @@ export class ContentLinks extends Component {
                     <div className="mt-2 mb-2 p-2">
                       <span className="fontBold700">FairLinked warranty</span>
                       <p className="customText2 pt-1">
-                        We give you a <b>12 month warranty</b> on every link you buy
-                        (from the date of publication). Usually our links stay
-                        online for much longer.
+                        We give you a <b>12 month warranty</b> on every link you
+                        buy (from the date of publication). Usually our links
+                        stay online for much longer.
                       </p>
                     </div>
                   </div>
@@ -850,7 +900,9 @@ export class ContentLinks extends Component {
                               // onClick={() =>
                               //   this.handleAddtoCart(contentData.hash_id)
                               // }
-                              onClick={() => this.props.handleAddtoCart(contentData.hash_id)}
+                              onClick={() =>
+                                this.props.handleAddtoCart(contentData.hash_id)
+                              }
                               style={{ width: "100%" }}
                             >
                               Add to cart

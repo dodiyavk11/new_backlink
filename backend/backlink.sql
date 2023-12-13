@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2023 at 02:00 PM
+-- Generation Time: Dec 13, 2023 at 02:05 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -74,7 +74,7 @@ CREATE TABLE `customer_domain_data` (
 --
 
 INSERT INTO `customer_domain_data` (`id`, `domain_id`, `traffic`, `anchor_text`, `delivery_time`, `link`, `language`, `visibility_index`, `domain_rating`, `rating`, `referring`, `citation_flow`, `trust_flow`, `authority`, `created_at`, `updated_at`) VALUES
-(13, 21, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-10-13 12:39:09', '2023-10-13 12:39:09'),
+(13, 2, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-10-13 12:39:09', '2023-12-08 04:14:01'),
 (16, 6, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-11-09 12:01:48', '2023-11-09 12:01:48'),
 (17, 7, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-11-10 04:48:07', '2023-11-10 04:48:07');
 
@@ -91,6 +91,7 @@ CREATE TABLE `domains` (
   `budget` decimal(8,2) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
   `status` int(1) NOT NULL DEFAULT 1,
+  `isArchieved` int(1) NOT NULL DEFAULT 0,
   `user_id` int(11) NOT NULL,
   `hash_id` varchar(25) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -101,10 +102,10 @@ CREATE TABLE `domains` (
 -- Dumping data for table `domains`
 --
 
-INSERT INTO `domains` (`id`, `domain_name`, `tld`, `budget`, `category_id`, `status`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
-(1, 'userdomain.com', 'com', '0.00', 15, 1, 15, 'nezrcrlx', '2023-11-06 07:38:26', '2023-11-06 07:38:26'),
-(2, 'besticoder.com', 'com', '0.00', 15, 1, 15, 'pnhtw15k', '2023-11-06 08:03:04', '2023-11-06 08:03:04'),
-(7, 'youtube.com', 'com', '0.00', NULL, 1, 36, 'hf7l2mbq', '2023-11-10 04:47:34', '2023-11-10 04:47:34');
+INSERT INTO `domains` (`id`, `domain_name`, `tld`, `budget`, `category_id`, `status`, `isArchieved`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
+(1, 'userdomain.com', 'com', '100.00', 15, 1, 0, 15, 'nezrcrlx', '2023-11-06 07:38:26', '2023-12-13 05:50:49'),
+(2, 'besticoder.com', 'com', '130.00', 15, 1, 0, 15, 'pnhtw15k', '2023-11-06 08:03:04', '2023-12-13 12:44:01'),
+(7, 'youtube.com', 'com', '0.00', NULL, 1, 0, 36, 'hf7l2mbq', '2023-11-10 04:47:34', '2023-11-10 04:47:34');
 
 -- --------------------------------------------------------
 
@@ -243,6 +244,26 @@ INSERT INTO `faqs` (`id`, `question`, `answer`, `status`, `created_at`, `updated
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `favorite_products`
+--
+
+CREATE TABLE `favorite_products` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `favorite_products`
+--
+
+INSERT INTO `favorite_products` (`id`, `user_id`, `product_id`, `created_at`) VALUES
+(28, 15, 1, '2023-12-13 13:03:54');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `forgotpasswords`
 --
 
@@ -294,6 +315,23 @@ CREATE TABLE `messages` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `sender_id`, `order_id`, `message`, `files`, `role`, `created_at`, `updated_at`) VALUES
+(29, 11, 10, 'Hi i am buy your backlinks', NULL, 0, '2023-12-11 04:18:37', '2023-12-11 04:18:37'),
+(30, 15, 10, 'Ok how can i help you', NULL, 0, '2023-12-11 04:19:01', '2023-12-11 04:19:01'),
+(31, 11, 10, 'gfg', NULL, 0, '2023-12-11 04:19:12', '2023-12-11 04:19:12'),
+(32, 15, 10, 'dfdfd', NULL, 0, '2023-12-11 04:19:15', '2023-12-11 04:19:15'),
+(33, 15, 10, 'fssccf', NULL, 0, '2023-12-11 04:19:19', '2023-12-11 04:19:19'),
+(34, 15, 10, 'fdscscs', NULL, 0, '2023-12-11 04:19:22', '2023-12-11 04:19:22'),
+(35, 15, 10, 'fdsscsc', NULL, 0, '2023-12-11 04:19:25', '2023-12-11 04:19:25'),
+(36, 15, 10, 'dvdwq', NULL, 0, '2023-12-11 04:19:29', '2023-12-11 04:19:29'),
+(38, 11, 10, 'fdfdff ', NULL, 0, '2023-12-11 04:25:14', '2023-12-11 04:25:14'),
+(39, 15, 13, '123', NULL, 0, '2023-12-11 04:26:41', '2023-12-11 04:26:41'),
+(40, 11, 13, '456', NULL, 0, '2023-12-11 04:27:02', '2023-12-11 04:27:02');
+
 -- --------------------------------------------------------
 
 --
@@ -330,10 +368,21 @@ CREATE TABLE `new_orders` (
 --
 
 INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `backlink_id`, `status`, `total_price`, `price`, `anchortext`, `linktarget`, `publication_date`, `note`, `project_id`, `hash_id`, `textCreation`, `wordCount`, `approveText`, `textCreationPrice`, `approveTextPrice`, `chooseByBacklink`, `created_at`, `updated_at`) VALUES
-(1, 11, 15, 1, 1, 'Pending', '5000.00', '0.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'nezrcrlx', 'z5cirixk', '', 0, 0, '0.00', '0.00', 0, '2023-11-06 07:51:35', '2023-12-05 07:19:30'),
+(1, 11, 15, 1, 1, 'Cancelled', '5000.00', '0.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'nezrcrlx', 'z5cirixk', '', 0, 0, '0.00', '0.00', 0, '2023-11-06 07:51:35', '2023-12-06 05:25:02'),
 (10, 11, 15, 1, 1, 'Pending', '5077.00', '5000.00', 'Click Here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2024-12-01', 'Noteeee', 'pnhtw15k', 'z5cirixk', 'Editorial', 1000, 1, '50.00', '27.00', 0, '2023-11-30 11:49:03', '2023-12-05 05:11:37'),
-(11, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'Click here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-08', 'ggs', 'pnhtw15k', 'z5cirixk', 'Own', 0, 0, '0.00', '0.00', 0, '2023-11-30 13:49:35', '2023-12-05 12:33:29'),
-(12, 11, 15, 4, 3, 'Pending', '282.00', '255.00', 'Test Anchor', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-13', 'Test note', '', 'zulhjrwm', 'Editorial', 500, 1, '0.00', '27.00', 0, '2023-12-05 06:25:01', '2023-12-05 12:32:14');
+(11, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'Click here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-08', 'ggs', 'pnhtw15k', 'z5cirixk', 'Own', 0, 0, '0.00', '0.00', 0, '2023-11-30 13:49:35', '2023-12-06 04:56:27'),
+(12, 11, 15, 4, 3, 'Pending', '282.00', '255.00', 'Test Anchor', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-13', 'Test note', '', 'zulhjrwm', 'Editorial', 500, 1, '0.00', '27.00', 0, '2023-12-05 06:25:01', '2023-12-05 12:32:14'),
+(13, 11, 15, 4, 3, 'Pending', '255.00', '255.00', 'Test here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-19', '', 'pnhtw15k', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, '2023-12-07 11:14:37', '2023-12-07 11:14:37'),
+(22, 11, 15, 4, 3, 'Pending', '328.50', '251.50', 'Backlinked', 'https://backlinked.com/', '2023-12-13', 'Backlined', 'pnhtw15k', 'zulhjrwm', 'Editorial', 1000, 1, '50.00', '27.00', 0, '2023-12-12 12:40:28', '2023-12-12 12:40:28'),
+(23, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'Best I Coder', 'https://besticoder.com/', '2023-12-14', 'Best I coder notesss', 'nezrcrlx', 'z5cirixk', 'Own', 0, 0, '0.00', '0.00', 0, '2023-12-12 12:40:28', '2023-12-12 12:40:28'),
+(24, 11, 15, 4, 3, 'Pending', '278.50', '251.50', 'dsdsdsd', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '2023-12-15', 'sdsd', '', 'zulhjrwm', 'Editorial', 500, 1, '0.00', '27.00', 0, '2023-12-12 12:42:40', '2023-12-12 12:42:40'),
+(25, 11, 15, 4, 3, 'Pending', '251.50', '251.50', 'Example', 'https://example.com', '2023-12-15', '15 12 2023', 'pnhtw15k', 'zulhjrwm', 'Own', 0, 0, '0.00', '0.00', 0, '2023-12-12 12:47:11', '2023-12-12 12:47:11'),
+(26, 11, 15, 1, 1, 'Pending', '5050.00', '5000.00', 'Testing', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'z5cirixk', 'Editorial', 1000, 0, '50.00', '0.00', 0, '2023-12-12 12:51:18', '2023-12-12 12:51:18'),
+(27, 11, 15, 4, 3, 'Pending', '251.50', '251.50', 'Backlinked', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, '2023-12-12 12:56:12', '2023-12-12 12:56:12'),
+(28, 11, 15, 4, 3, 'Pending', '251.50', '251.50', '22222222222222222', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, '2023-12-12 12:59:58', '2023-12-12 12:59:58'),
+(29, 11, 15, 4, 3, 'Pending', '251.50', '251.50', 'sdsd', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, '2023-12-12 13:02:14', '2023-12-12 13:02:14'),
+(30, 11, 15, 4, 3, 'Pending', '301.50', '251.50', '22222222222222222', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 1000, 0, '50.00', '0.00', 0, '2023-12-12 13:03:13', '2023-12-12 13:03:13'),
+(31, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'ChatOpen', 'https://chat.openai.com/1312', '2023-12-16', 'Chat GTP', 'nezrcrlx', 'z5cirixk', 'Editorial', 500, 0, '0.00', '0.00', 0, '2023-12-13 04:24:26', '2023-12-13 04:24:26');
 
 -- --------------------------------------------------------
 
@@ -391,7 +440,9 @@ CREATE TABLE `orderfiles` (
 --
 
 INSERT INTO `orderfiles` (`id`, `order_id`, `file_name`, `original_name`, `file_path`, `isLink`, `link`, `created_at`, `updated_at`) VALUES
-(2, 11, 'textFile1701352127079.docx', 'Dummy.docx', 'assets/order_assets/', 0, NULL, '2023-11-30 13:49:35', '2023-11-30 13:49:35');
+(2, 11, 'textFile1701352127079.docx', 'Dummy.docx', 'assets/order_assets/', 0, NULL, '2023-11-30 13:49:35', '2023-11-30 13:49:35'),
+(9, 23, 'textFile1702384812175.docx', 'Dummy.docx', 'assets/order_assets/', 0, NULL, '2023-12-12 12:40:28', '2023-12-12 12:40:28'),
+(10, 25, 'textFile1702385212399.docx', 'textFile1702383698191.docx', 'assets/order_assets/', 0, NULL, '2023-12-12 12:47:11', '2023-12-12 12:47:11');
 
 -- --------------------------------------------------------
 
@@ -416,15 +467,6 @@ CREATE TABLE `orders` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `soft_delete` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `customer_id`, `publisher_id`, `domain_id`, `total_amount`, `ordername`, `description`, `orderfile`, `orderstatus`, `orderpriority`, `update_status_admin`, `update_status`, `created_at`, `updated_at`, `soft_delete`) VALUES
-(48, 15, 0, 2, '0.00', 'This order updated', 'This order updated by api', NULL, 1, 2, 2, 0, '2023-09-27 18:30:00', '2023-09-29 12:20:37', ''),
-(49, 15, 0, 2, '0.00', 'Second Name', 'Description', NULL, 1, 1, 1, 1, '2023-09-28 05:09:32', '2023-09-29 13:09:06', ''),
-(51, 15, 0, 1, '0.00', 'Second Name', 'Description', NULL, 1, 1, 1, 0, '2023-10-04 12:37:18', '2023-10-04 12:38:33', '');
 
 -- --------------------------------------------------------
 
@@ -459,8 +501,8 @@ CREATE TABLE `publisher_domains` (
 --
 
 INSERT INTO `publisher_domains` (`id`, `domain_name`, `tld`, `price`, `category_id`, `status`, `anchorText`, `deliveryTime`, `attribute`, `sensitiveTopic`, `sensitiveTopicCharge`, `minWordCount`, `textByCustomer`, `textInclude`, `language`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
-(1, 'google.com', 'com', '5000.00', 18, 1, NULL, 2, 'dofollow', 0, NULL, 0, 0, 0, 'de', 11, 'z5cirixk', '2023-11-06 07:44:47', '2023-12-05 08:27:37'),
-(4, 'backlinked.com', 'com', '255.00', 6, 0, 'As desired', 0, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 11, 'zulhjrwm', '2023-12-04 09:32:34', '2023-12-04 09:32:34');
+(1, 'google.com', 'com', '5000.00', 18, 1, NULL, 2, 'dofollow', 0, NULL, 0, 0, 0, 'de', 11, 'z5cirixk', '2023-11-06 07:44:47', '2023-12-11 04:02:38'),
+(4, 'backlinked.com', 'com', '251.50', 7, 1, 'No restrictions', 150, 'nofollow', 1, '150.00', 150, 1, 1, 'en', 11, 'zulhjrwm', '2023-12-04 09:32:34', '2023-12-11 10:57:49');
 
 -- --------------------------------------------------------
 
@@ -580,7 +622,22 @@ INSERT INTO `transactions` (`id`, `user_id`, `amount`, `transaction_type`, `desc
 (73, 15, '98.00', 'Manual Added', 'For Testing', '2023-12-01 07:02:41', NULL, 0, 'paid', NULL, '2023-12-01 07:02:41'),
 (74, 15, '400.00', 'Manual Added', 'For Testing', '2023-12-01 07:51:59', NULL, 0, 'paid', NULL, '2023-12-01 07:51:59'),
 (75, 15, '500.00', 'Manual Added', 'For Testing', '2023-12-01 13:02:45', NULL, 0, 'paid', NULL, '2023-12-01 13:02:45'),
-(76, 15, '282.00', 'Place order', 'Buy backlinks backlinked.com', '2023-12-05 06:25:01', 'order_12', 0, 'paid', '{\"id\":12,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"282.00\",\"price\":\"255.00\",\"anchortext\":\"Test Anchor\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/\",\"publication_date\":\"2023-12-13T00:00:00.000Z\",\"note\":\"Test note\",\"project_id\":\"\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Editorial\",\"wordCount\":500,\"approveText\":1,\"textCreationPrice\":0,\"approveTextPrice\":27,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-05T06:25:01.444Z\",\"created_at\":\"2023-12-05T06:25:01.444Z\"}', '2023-12-05 06:25:01');
+(76, 15, '282.00', 'Place order', 'Buy backlinks backlinked.com', '2023-12-05 06:25:01', 'order_12', 0, 'paid', '{\"id\":12,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"282.00\",\"price\":\"255.00\",\"anchortext\":\"Test Anchor\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/\",\"publication_date\":\"2023-12-13T00:00:00.000Z\",\"note\":\"Test note\",\"project_id\":\"\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Editorial\",\"wordCount\":500,\"approveText\":1,\"textCreationPrice\":0,\"approveTextPrice\":27,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-05T06:25:01.444Z\",\"created_at\":\"2023-12-05T06:25:01.444Z\"}', '2023-12-05 06:25:01'),
+(77, 15, '5000.00', 'Cancel order refund', 'Cancel backlink google.com', '2023-12-06 05:20:41', 'cancel_order_1', 0, 'refunded', '{\"created_at\":\"2023-11-06 13:21:35\",\"id\":1,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":1,\"backlink_id\":1,\"status\":\"Pending\",\"total_price\":\"5000.00\",\"price\":\"0.00\",\"anchortext\":\"Click Here\",\"linktarget\":\"https://www.example.com/test.html\",\"publication_date\":\"2023-12-15\",\"note\":\"test\",\"project_id\":\"nezrcrlx\",\"hash_id\":\"z5cirixk\",\"textCreation\":\"\",\"wordCount\":0,\"approveText\":0,\"textCreationPrice\":\"0.00\",\"approveTextPrice\":\"0.00\",\"chooseByBacklink\":0,\"updated_at\":\"2023-12-05T07:19:30.000Z\"}', '2023-12-06 05:20:41'),
+(78, 15, '78.00', 'Manual Added', 'For Testing', '2023-12-06 05:43:08', NULL, 0, 'paid', NULL, '2023-12-06 05:43:08'),
+(79, 15, '4.00', 'Manual Added', 'For Testing', '2023-12-06 05:43:15', NULL, 0, 'paid', NULL, '2023-12-06 05:43:15'),
+(85, 15, '328.50', 'Place order', 'Buy backlinks backlinked.com', '2023-12-12 12:40:28', 'order_22', 0, 'paid', '{\"created_at\":\"2023-12-12 18:10:28\",\"id\":22,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"328.50\",\"price\":\"251.50\",\"anchortext\":\"Backlinked\",\"linktarget\":\"https://backlinked.com/\",\"publication_date\":\"2023-12-13T00:00:00.000Z\",\"note\":\"Backlined\",\"project_id\":\"pnhtw15k\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Editorial\",\"wordCount\":1000,\"approveText\":1,\"textCreationPrice\":50,\"approveTextPrice\":27,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-12T12:40:28.354Z\"}', '2023-12-12 12:40:28'),
+(86, 15, '5000.00', 'Place order', 'Buy backlinks google.com', '2023-12-12 12:40:28', 'order_23', 0, 'paid', '{\"created_at\":\"2023-12-12 18:10:28\",\"id\":23,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":1,\"backlink_id\":1,\"status\":\"Pending\",\"total_price\":\"5000.00\",\"price\":\"5000.00\",\"anchortext\":\"Best I Coder\",\"linktarget\":\"https://besticoder.com/\",\"publication_date\":\"2023-12-14T00:00:00.000Z\",\"note\":\"Best I coder notesss\",\"project_id\":\"nezrcrlx\",\"hash_id\":\"z5cirixk\",\"textCreation\":\"Own\",\"wordCount\":0,\"approveText\":0,\"textCreationPrice\":0,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-12T12:40:28.410Z\"}', '2023-12-12 12:40:28'),
+(87, 15, '278.50', 'Place order', 'Buy backlinks backlinked.com', '2023-12-12 12:42:40', 'order_24', 0, 'paid', '{\"created_at\":\"2023-12-12 18:12:40\",\"id\":24,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"278.50\",\"price\":\"251.50\",\"anchortext\":\"dsdsdsd\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/111\",\"publication_date\":\"2023-12-15T00:00:00.000Z\",\"note\":\"sdsd\",\"project_id\":\"\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Editorial\",\"wordCount\":500,\"approveText\":1,\"textCreationPrice\":0,\"approveTextPrice\":27,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-12T12:42:40.109Z\"}', '2023-12-12 12:42:40'),
+(88, 15, '251.50', 'Place order', 'Buy backlinks backlinked.com', '2023-12-12 12:47:11', 'order_25', 0, 'paid', '{\"created_at\":\"2023-12-12 18:17:11\",\"id\":25,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"251.50\",\"price\":\"251.50\",\"anchortext\":\"Example\",\"linktarget\":\"https://example.com\",\"publication_date\":\"2023-12-15T00:00:00.000Z\",\"note\":\"15 12 2023\",\"project_id\":\"pnhtw15k\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Own\",\"wordCount\":0,\"approveText\":0,\"textCreationPrice\":0,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-12T12:47:11.325Z\"}', '2023-12-12 12:47:11'),
+(89, 15, '3813.00', 'Manual Added', 'For Testing', '2023-12-12 12:51:14', NULL, 0, 'paid', NULL, '2023-12-12 12:51:14'),
+(90, 15, '5050.00', 'Place order', 'Buy backlinks google.com', '2023-12-12 12:51:18', 'order_26', 0, 'paid', '{\"created_at\":\"2023-12-12 18:21:18\",\"id\":26,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":1,\"backlink_id\":1,\"status\":\"Pending\",\"total_price\":\"5050.00\",\"price\":\"5000.00\",\"anchortext\":\"Testing\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/111\",\"publication_date\":\"\",\"note\":\"\",\"project_id\":\"\",\"hash_id\":\"z5cirixk\",\"textCreation\":\"Editorial\",\"wordCount\":1000,\"approveText\":0,\"textCreationPrice\":50,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-12T12:51:18.544Z\"}', '2023-12-12 12:51:18'),
+(91, 15, '251.50', 'Place order', 'Buy backlinks backlinked.com', '2023-12-12 12:56:12', 'order_27', 0, 'paid', '{\"created_at\":\"2023-12-12 18:26:12\",\"id\":27,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"251.50\",\"price\":\"251.50\",\"anchortext\":\"Backlinked\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/111\",\"publication_date\":\"\",\"note\":\"\",\"project_id\":\"\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Editorial\",\"wordCount\":500,\"approveText\":0,\"textCreationPrice\":0,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-12T12:56:12.970Z\"}', '2023-12-12 12:56:12'),
+(92, 15, '251.50', 'Place order', 'Buy backlinks backlinked.com', '2023-12-12 12:59:58', 'order_28', 0, 'paid', '{\"created_at\":\"2023-12-12 18:29:58\",\"id\":28,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"251.50\",\"price\":\"251.50\",\"anchortext\":\"22222222222222222\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/111\",\"publication_date\":\"\",\"note\":\"\",\"project_id\":\"\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Editorial\",\"wordCount\":500,\"approveText\":0,\"textCreationPrice\":0,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-12T12:59:58.190Z\"}', '2023-12-12 12:59:58'),
+(93, 15, '251.50', 'Place order', 'Buy backlinks backlinked.com', '2023-12-12 13:02:14', 'order_29', 0, 'paid', '{\"created_at\":\"2023-12-12 18:32:14\",\"id\":29,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"251.50\",\"price\":\"251.50\",\"anchortext\":\"sdsd\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/111\",\"publication_date\":\"\",\"note\":\"\",\"project_id\":\"\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Editorial\",\"wordCount\":500,\"approveText\":0,\"textCreationPrice\":0,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-12T13:02:14.057Z\"}', '2023-12-12 13:02:14'),
+(94, 15, '301.50', 'Place order', 'Buy backlinks backlinked.com', '2023-12-12 13:03:13', 'order_30', 0, 'paid', '{\"created_at\":\"2023-12-12 18:33:13\",\"id\":30,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"301.50\",\"price\":\"251.50\",\"anchortext\":\"22222222222222222\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/\",\"publication_date\":\"\",\"note\":\"\",\"project_id\":\"\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Editorial\",\"wordCount\":1000,\"approveText\":0,\"textCreationPrice\":50,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-12T13:03:13.047Z\"}', '2023-12-12 13:03:13'),
+(95, 15, '3500.00', 'Manual Added', 'For Testing', '2023-12-13 04:24:23', NULL, 0, 'paid', NULL, '2023-12-13 04:24:23'),
+(96, 15, '5000.00', 'Place order', 'Buy backlinks google.com', '2023-12-13 04:24:26', 'order_31', 0, 'paid', '{\"created_at\":\"2023-12-13 09:54:26\",\"id\":31,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":1,\"backlink_id\":1,\"status\":\"Pending\",\"total_price\":\"5000.00\",\"price\":\"5000.00\",\"anchortext\":\"ChatOpen\",\"linktarget\":\"https://chat.openai.com/1312\",\"publication_date\":\"2023-12-16T00:00:00.000Z\",\"note\":\"Chat GTP\",\"project_id\":\"nezrcrlx\",\"hash_id\":\"z5cirixk\",\"textCreation\":\"Editorial\",\"wordCount\":500,\"approveText\":0,\"textCreationPrice\":0,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-13T04:24:26.566Z\"}', '2023-12-13 04:24:26');
 
 -- --------------------------------------------------------
 
@@ -643,7 +700,7 @@ CREATE TABLE `users_wallet` (
 --
 
 INSERT INTO `users_wallet` (`id`, `user_id`, `balance`, `created_at`, `updated_at`) VALUES
-(1, 15, '10718.00', '2023-12-05 06:25:01', '2023-12-05 06:25:01');
+(1, 15, '20.00', '2023-12-13 04:24:26', '2023-12-13 04:24:26');
 
 -- --------------------------------------------------------
 
@@ -666,11 +723,7 @@ CREATE TABLE `user_cart` (
 --
 
 INSERT INTO `user_cart` (`id`, `cart_id`, `user_id`, `hash_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(14, '4jo7045le', 15, 'z5cirixk', 1, '2023-11-29 06:59:14', '2023-11-29 06:59:14'),
-(15, 'aaa6ctaud', 15, 'z5cirixk', 1, '2023-11-29 07:03:28', '2023-11-29 07:03:28'),
-(16, '2roevxio1', 15, 'z5cirixk', 1, '2023-11-30 11:01:01', '2023-11-30 11:01:01'),
-(17, 'zo0nfzyw7', 15, 'z5cirixk', 1, '2023-11-30 11:01:29', '2023-11-30 11:01:29'),
-(18, '3cy2vm2so', 15, 'z5cirixk', 1, '2023-11-30 13:47:59', '2023-11-30 13:47:59');
+(223, 'lb3sv4322', 15, 'zulhjrwm', 1, '2023-12-13 12:41:03', '2023-12-13 12:41:03');
 
 -- --------------------------------------------------------
 
@@ -748,6 +801,12 @@ ALTER TABLE `email_formats`
 -- Indexes for table `faqs`
 --
 ALTER TABLE `faqs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `favorite_products`
+--
+ALTER TABLE `favorite_products`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -895,6 +954,12 @@ ALTER TABLE `faqs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `favorite_products`
+--
+ALTER TABLE `favorite_products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
 -- AUTO_INCREMENT for table `forgotpasswords`
 --
 ALTER TABLE `forgotpasswords`
@@ -904,13 +969,13 @@ ALTER TABLE `forgotpasswords`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `new_orders`
 --
 ALTER TABLE `new_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -922,13 +987,13 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `orderfiles`
 --
 ALTER TABLE `orderfiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `publisher_domains`
@@ -952,7 +1017,7 @@ ALTER TABLE `subscription_plans`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -970,7 +1035,7 @@ ALTER TABLE `users_wallet`
 -- AUTO_INCREMENT for table `user_cart`
 --
 ALTER TABLE `user_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
 
 --
 -- AUTO_INCREMENT for table `user_subscriptions`

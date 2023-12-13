@@ -98,3 +98,48 @@ exports.deleteOrderMessage = async(req, res) => {
 		res.status(500).send({ status: true, message: "Something went to wrong", data: [], error: err.message })
 	}
 }
+
+exports.publisherMessageMenu = async(req, res) => {
+	try
+	{
+		const publisher_id = req.userId;
+		const baseQuery = {
+			attributes: [
+			    'order_id',
+			    [
+			      Sequelize.literal(`
+			        (SELECT CONCAT(message, ',,', created_at) 
+			         FROM messages 
+			         WHERE id = (SELECT MAX(id) 
+			                     FROM messages 
+			                     WHERE order_id = \`order\`.id)
+			        ) 
+			      `),
+			      'message',
+			    ],
+			  ],
+			include: [
+			{
+			  model: Models.newOrder,
+		      as: 'order',
+		      attributes: ['id'],
+		      where: { publisher_id },
+		      include: [
+		        {
+		          model: Models.publisherDomain,
+		          as: 'domain',
+		          attributes: ['domain_name'],
+		        },
+		      ],
+			},	        
+			],
+			group: ['order_id'],
+		};
+	    const messageData =  await Models.Message.findAll(baseQuery);
+		res.status(200).send({ status: true, data:messageData });
+	}
+	catch(err)
+	{
+		res.status(500).send({ status: false, message: "Something went to wrong.", error: err.message });
+	}
+}

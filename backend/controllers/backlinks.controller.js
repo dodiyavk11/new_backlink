@@ -53,7 +53,8 @@ exports.getPublisherDomain = async(req, res) => {
 				},
 				{
 					model: Models.newOrder,
-					as: "orderData",					
+					as: "orderData",		
+					limit:3,			
 				},
 			],
 		}
@@ -220,15 +221,15 @@ exports.deletePublisherDomain = async(req, res) => {
 exports.getConetentLinks = async(req, res) => {
 	try
 	{		
-		const { category_id,tld,price,language,domain_name } = req.body;
-
+		const { category_id,tld,price,language,domain_name,favoriteFilter } = req.body;
+		const userId = req.userId;
 		const filters = {
 			'category_id': category_id,
 			'tld': tld,
 			'price': price,
 			// 'contentData.language': language,
 			'language': language,
-			'domain_name': domain_name
+			'domain_name': domain_name,
 		};
 		const baseQuery = {
 			include: [
@@ -269,8 +270,25 @@ exports.getConetentLinks = async(req, res) => {
 			    [Op.like]: `%${filters['domain_name']}%`,
 			  };
 		}
+		if(favoriteFilter)
+		{
+			const favoriteProducts = await Models.favoriteProducts.findAll({
+			  where: {
+			    user_id:userId,
+			  },
+			});
+			const favoriteProductIds = favoriteProducts.map((favoriteProduct) => favoriteProduct.product_id);
+			baseQuery.where['id'] = favoriteProductIds;
+		}
+
 		const contentData = await Models.publisherDomain.findAll({ ...baseQuery,order: [['id', 'DESC']] });
-		res.status(200).send({ status: true, message: "Content links get successfully.", data: contentData });
+		const favoriteProducts = await Models.favoriteProducts.findAll({
+		  where: {
+		    user_id: userId,
+		    product_id: contentData.map(data => data.id),
+		  },
+		});
+		res.status(200).send({ status: true, message: "Content links get successfully.", data: { contentData,favoriteProducts } });
 	}
 	catch(err)
 	{
@@ -283,6 +301,7 @@ exports.getSingleConetentLinks = async(req, res) => {
 	try
 	{
 		const { hash_id } = req.params;
+		const userId = req.userId;
 		const baseQuery = {
 			include: [
 				{
@@ -296,8 +315,15 @@ exports.getSingleConetentLinks = async(req, res) => {
 				},
 			],
 		  	where: {},
-		};
+		};		
 		const contentData = await Models.publisherDomain.findOne({ ...baseQuery,where: { hash_id: hash_id },order: [['id', 'DESC']] });
+		const favoriteProducts = await Models.favoriteProducts.findOne({
+		  where: {
+		    user_id:userId,
+		    product_id:contentData.id
+		  },
+		});
+		contentData.dataValues.isFovarite = favoriteProducts ? 1 : 0;
 		res.status(200).send({ status: true, data:contentData })
 	}
 	catch(err)
@@ -409,3 +435,31 @@ exports.publisherExcelFileDataAdd = async(req, res) => {
     res.status(500).json({ status: false, message: 'Error occurred while reading the file.' });
   }
 }
+
+exports.addToFavorite = async(req, res) => {
+	try
+	{
+		const { id } = req.params;
+		const user_id = req.userId;
+		const [favorite, created] = await Models.favoriteProducts.findOrCreate({
+	      where: { user_id, product_id:id },
+	      defaults: { user_id, product_id:id },
+	    });
+
+	    if (!created) {
+	      await Models.favoriteProducts.destroy({
+	        where: { user_id, product_id:id },
+	      });	      
+	    }
+	    const favoriteProducts = await Models.favoriteProducts.findAll({
+		  where: {
+		    user_id,
+		  },
+		});
+	    res.status(200).send({ status: true, message: "Content link added in favorite,", data:favoriteProducts })
+	}
+	catch(err)
+	{
+		res.status(500).send({ status: false, message: "Contetn link can not added in Favorite, an error occurred.",error:err.message });
+	}
+} 

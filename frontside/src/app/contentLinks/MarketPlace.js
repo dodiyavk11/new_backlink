@@ -24,7 +24,9 @@ export class MarketPlace extends Component {
     super(props);
     this.state = {
       rows: [],
-      isDisable:false,
+      favoriteProducts: [],
+      isDisable: false,
+      isFavoriteFilter: 0,
       page: 0,
       searchValue: "",
       rowsPerPage: 10,
@@ -232,8 +234,8 @@ export class MarketPlace extends Component {
   };
   updateFilterData = () => {
     this.setState({
-      isDisable:true
-    })
+      isDisable: true,
+    });
     const {
       selectedCategory,
       selectedProductType,
@@ -250,15 +252,48 @@ export class MarketPlace extends Component {
       price: { min: min || "", max: max || "" },
       domain_name: searchValue,
     };
-    this.fetchContentLinkData(filterData)    
+    this.fetchContentLinkData(filterData);
   };
+
+  handleFavorite = (id) => {
+    ApiServices.userFavoriteUpdate(id).then(
+      (res) => {
+        if (res.data.status) {
+          this.setState({ favoriteProducts: res.data.data });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
+  handleFavoriteFilter = () => {
+    this.setState((prevState) => ({
+      isFavoriteFilter: prevState.isFavoriteFilter === 0 ? 1 : 0,
+    }), () => {
+      const filterData = {
+        favoriteFilter: this.state.isFavoriteFilter,
+      };    
+      this.fetchContentLinkData(filterData);
+    });    
+  }
   fetchContentLinkData(filter = null) {
     ApiServices.getContentLinkList(filter).then(
       (res) => {
         if (res.data.status) {
           this.setState({
-            rows: res.data.data,
-            isDisable:false
+            rows: res.data.data.contentData,
+            favoriteProducts: res.data.data.favoriteProducts,
+            isDisable: false,
           });
         }
       },
@@ -330,6 +365,7 @@ export class MarketPlace extends Component {
       order,
       isDisable,
       searchValue,
+      favoriteProducts,
     } = this.state;
     const columns = [
       {
@@ -501,38 +537,48 @@ export class MarketPlace extends Component {
         width: 160,
         align: "right",
         sortable: false,
-        renderCell: (row) => (
-          <div>
-            <svg
-              onClick={() => this.props.handleAddtoCart(row.hash_id)}
-              xmlns="http://www.w3.org/2000/svg"
-              width={20}
-              fill="currentColor"
-              className="bi bi-bag"
-              viewBox="0 0 16 16"
-              style={{ color: "#757575c9", fontWeight: "bold" }}
-            >
-              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-            </svg>
-            <svg
-              width={22}
-              className="ml-2"
-              id="heart"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              style={{ color: "#757575c9", fontWeight: "bold" }}
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
-          </div>
-        ),
+        renderCell: (row) => {
+          const isFavorite = favoriteProducts.some(
+            (favorite) => favorite.product_id === row.id
+          );
+
+          return (
+            <div>
+              <svg
+                onClick={() => this.props.handleAddtoCart(row.hash_id)}
+                xmlns="http://www.w3.org/2000/svg"
+                width={20}
+                fill="currentColor"
+                className="bi bi-bag"
+                viewBox="0 0 16 16"
+                style={{ color: "#757575c9", fontWeight: "bold" }}
+              >
+                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+              </svg>
+              <svg
+                onClick={() => this.handleFavorite(row.id)}
+                width={22}
+                className="ml-2"
+                id="heart"
+                xmlns="http://www.w3.org/2000/svg"
+                fill={isFavorite ? "red" : "none"}
+                viewBox="0 0 24 24"
+                style={{
+                  color: isFavorite ? "red" : "#757575c9",
+                  fontWeight: "bold",
+                }}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+            </div>
+          );
+        },
       },
     ];
 
@@ -688,12 +734,17 @@ export class MarketPlace extends Component {
               data-toggle="tooltip"
               data-placement="top"
               title="Show only favorites"
+              onClick={this.handleFavoriteFilter}
             >
               <svg
                 width={24}
                 id="heart"
                 xmlns="http://www.w3.org/2000/svg"
-                fill="none"
+                fill={this.state.isFavoriteFilter ? "red" : "none"}
+                style={{
+                  color: this.state.isFavoriteFilter ? "red" : "#757575c9",
+                  fontWeight: "bold",
+                }}
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
@@ -998,7 +1049,7 @@ export class MarketPlace extends Component {
           </div>
         )}
         <hr style={{ marginBottom: "0px" }} />
-        <div className={`tableData ${isDisable ? 'disabled-div' : ''}`}>
+        <div className={`tableData ${isDisable ? "disabled-div" : ""}`}>
           <Paper style={{ width: "100%", overflow: "hidden" }}>
             <TableContainer style={{ maxHeight: 440 }}>
               <Table stickyHeader aria-label="sticky table">

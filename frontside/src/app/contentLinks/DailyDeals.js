@@ -19,7 +19,7 @@ export class DailyDeals extends Component {
       (res) => {
         if (res.data.status) {
           this.setState({
-            dailyData: res.data.data,
+            dailyData: res.data.data.contentData,
           });
         }
       },

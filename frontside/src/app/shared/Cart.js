@@ -146,10 +146,10 @@ export class Cart extends Component {
     const total = this.calculateTotal();
     return (
       <div className="CartPage">
-        <div className="page-header">
-        <ToastContainer />
+        <div className="page-header">        
           <h3 className="fontBold latterSpacing">Cart</h3>
         </div>
+        <ToastContainer />
         {cartItems.length > 0 ? (
           <div className="row">
             <div className="col-lg-8 grid-margin">

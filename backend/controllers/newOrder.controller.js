@@ -227,224 +227,220 @@ exports.addNewOrder = async (req, res) => {
 exports.addCartOrder = async (req, res) => {
     try {
         const orderDatas = req.body;
-       const schema = Joi.array().items(
-              Joi.object({
-                textCreation: Joi.string().required(),
-                anchortext: Joi.string().required(),
-                hash_id: Joi.string().required(),
-                linktarget: Joi.string().uri().required(),
-                publication_date: Joi.date().iso().allow(''),
-                note: Joi.string().allow(''),
-                project_id: Joi.string().allow(''),
-                domain_name: Joi.string().allow(''),
-                tld: Joi.string().allow(''),
-                cart_id: Joi.string().allow(''),
-                id: Joi.number().integer(),
-                total_price: Joi.number().precision(2).required(),
-                price: Joi.number().precision(2).required(),
-                chooseByBacklink: Joi.boolean(),
-                textCreationPrice: Joi.number().integer(),
-                approveText: Joi.number().integer(),
-                approveTextPrice: Joi.number().integer(),
-                wordCount: Joi.number().integer(),
-                filename: Joi.string().when('textCreation', {
-                  is: 'Own',
-                  then: Joi.string().required(),
-                  otherwise: Joi.string().allow(''),
-                }),
-                originalname: Joi.string().when('textCreation', {
-                  is: 'Own',
-                  then: Joi.string().required(),
-                  otherwise: Joi.string().allow(''),
-                }),
-              })
+        const schema = Joi.array().items(
+                Joi.object({
+                    textCreation: Joi.string().required(),
+                    anchortext: Joi.string().required().label('Anchortext'),
+                    hash_id: Joi.string().required(),
+                    linktarget: Joi.string().uri().required().label('Link Target'),
+                    publication_date: Joi.date().iso().allow(''),
+                    note: Joi.string().allow(''),
+                    project_id: Joi.string().allow(''),
+                    domain_name: Joi.string().allow(''),
+                    tld: Joi.string().allow(''),
+                    cart_id: Joi.string().allow(''),
+                    id: Joi.number().integer(),
+                    total_price: Joi.number().precision(2).required(),
+                    price: Joi.number().precision(2).required(),
+                    chooseByBacklink: Joi.boolean(),
+                    textCreationPrice: Joi.number().integer(),
+                    approveText: Joi.number().integer(),
+                    approveTextPrice: Joi.number().integer(),
+                    wordCount: Joi.number().integer(),
+                    filename: Joi.string().when('textCreation', {
+                      is: 'Own',
+                      then: Joi.string().required().label('File'),
+                      otherwise: Joi.string().allow('').label('File'),
+                    }),
+                    originalname: Joi.string().when('textCreation', {
+                      is: 'Own',
+                      then: Joi.string().required().label('File'),
+                      otherwise: Joi.string().allow('').label('File'),
+                    }),
+                })
             );
-        const {
-            error,
-            value
-        } = schema.validate(orderDatas);
+        const { error, value } = schema.validate(orderDatas, { abortEarly: false });
 
         if (error) {
+            const errorMessage = error.details.map(err => {
+                const label = err.context.label ? `${err.context.label} ` : '';
+                return `${err.path[0]+1}.${err.message.replace(/["\[\]]/g, '')}`;
+            }).join(', ');
+
             return res.status(422).send({
                 status: false,
                 message: 'Validation error',
-                error: error.details,
+                error: errorMessage,
             });
         }
-
         // Process the orders
-        // const processOrders = async (orderDatas) => {
-        //     const customer_id = req.userId;
-        //     const checkUser = await Models.Users.findOne({
-        //         where: {
-        //             id: customer_id
-        //         }
-        //     });
-        //     const userBalance = await checkUserBalance(customer_id, orderDatas.map((item) => item.hash_id),orderDatas.map((item) => parseFloat(item.textCreationPrice)+parseFloat(item.approveTextPrice)));
-        //     if (!userBalance) {
-        //         return res.status(400).send({
-        //             status: false,
-        //             message: "Insufficient balance",
-        //             error: "Insufficient balance"
-        //         });
-        //     }
-
-        //     const placeOrderData = [];
-
-        //     try {
-        //         for (const product of orderDatas) {
-        //             const {
-        //                 anchortext,
-        //                 linktarget,
-        //                 publication_date,
-        //                 note,
-        //                 project_id,
-        //                 hash_id,
-        //                 filename,
-        //                 originalname,
-        //                 textCreation,
-        //                 wordCount,
-        //                 approveText,
-        //                 textCreationPrice,
-        //                 approveTextPrice,
-        //                 chooseByBacklink
-        //             } = product;
-
-        //             const getPublisherDomain = await getPublisherDomainData(null, hash_id);
-        //             const publisher_id = getPublisherDomain.user_id;
-        //             const domain_id = getPublisherDomain.id;
-        //             const backlinkData = await getBacklinksData(domain_id);
-        //             const backlink_id = backlinkData.id;
-        //             const total_price = (
-        //               parseFloat(getPublisherDomain.price) +
-        //               parseFloat(textCreationPrice) +
-        //               parseFloat(approveTextPrice)
-        //             ).toFixed(2);
-        //             const price = getPublisherDomain.price;
-        //             const status = "Pending";
-        //             const orderData = {
-        //                 publisher_id,
-        //                 customer_id,
-        //                 domain_id,
-        //                 backlink_id,
-        //                 status,
-        //                 total_price,
-        //                 price,
-        //                 anchortext,
-        //                 linktarget,
-        //                 publication_date,
-        //                 note,
-        //                 project_id,
-        //                 hash_id,
-        //                 textCreation,
-        //                 wordCount,
-        //                 approveText,
-        //                 textCreationPrice,
-        //                 approveTextPrice,
-        //                 chooseByBacklink,
-        //                 originalname,
-        //                 filename
-        //             };
-
-        //             let sourcePath;
-        //             let destPath;
-        //             // Move the file from temp_file to order_assets
-        //             if(filename !== "")
-        //             {
-        //                 const sourceDir = './assets/temp_file';
-        //                 const destDir = './assets/order_assets';
-        //                 sourcePath = path.join(sourceDir, filename);
-        //                 destPath = path.join(destDir, filename);
-
-        //                 if (!fs.existsSync(sourcePath)) {
-        //                     return res.status(422).send({
-        //                         status: false,
-        //                         message: "The Text file is not found, please upload it.",
-        //                         error: "The Text file is not found, please upload it."
-        //                     });
-        //                 }   
-        //             }
-        //             const placeOrder = await Models.newOrder.create(orderData);
-        //             placeOrderData.push(placeOrder);
-        //             if(filename !== "")
-        //             {
-        //                 await Models.orderFiles.create({
-        //                     order_id: placeOrder.dataValues.id,
-        //                     file_name: filename,
-        //                     original_name: originalname,
-        //                     file_path: 'assets/order_assets/',
-        //                 });
-        //                 await moveFile(sourcePath, destPath);
-        //             }                           
-
-        //             // Deduct from user's wallet
-        //             await deductFromWallet(customer_id, total_price, "deduct");
-
-        //             // Create a transaction
-        //             const transaction_type = "Place order";
-        //             const description = "Buy backlinks " + getPublisherDomain.domain_name;
-        //             const now = new Date();
-        //             const payment_created = now.toISOString();
-        //             const transaction_id = 'order_' + placeOrder.dataValues.id;
-        //             const statusN = "paid";
-        //             const tranInfo = {
-        //                 user_id: customer_id,
-        //                 amount: total_price,
-        //                 transaction_type,
-        //                 description,
-        //                 payment_created,
-        //                 transaction_id,
-        //                 status: statusN,
-        //                 paymentData: placeOrder,
-        //             };
-
-        //             await Models.Transactions.create(tranInfo);
-
-        //             // Send email to admin
-        //             const admin = await Models.Users.findAll({
-        //                 where: {
-        //                     isAdmin: 1
-        //                 }
-        //             });
-        //             const mailTexts = await Models.email_format.findOne({
-        //                 where: {
-        //                     email_type: "create_new_order"
-        //                 }
-        //             });
-
-        //             let text = mailTexts.email_content;
-        //             let subject = mailTexts.header;
-        //             text = text.replace("{order_name}", getPublisherDomain.domain_name);
-        //             text = text.replace("{name}", checkUser.dataValues.firstName + " " + checkUser.dataValues.lastName);
-        //             const mail = await emailTemplate(text);
-
-        //             admin.map((val) => {
-        //                 sendVerifyMail(val.dataValues.email, subject, "", mail);
-        //             });
-        //         }
-        //         await Models.userCart.destroy({
-        //         	where: { user_id : customer_id }
-        //         });
-        //         return res.status(200).send({
-        //             status: true,
-        //             message: "Orders placed successfully",
-        //             data: placeOrderData
-        //         });
-        //     } catch (err) {
-        //         console.log(err);
-        //         return res.status(500).send({
-        //             status: false,
-        //             message: "Something went wrong",
-        //             error: err.message
-        //         });
-        //     }
-        // };
-        // processOrders(req.body);
-        return res.status(422).send({
-                status: true,
-                message: "Your cart not have proper data",
-                data: []
+        const processOrders = async (orderDatas) => {
+            const customer_id = req.userId;
+            const checkUser = await Models.Users.findOne({
+                where: {
+                    id: customer_id
+                }
             });
+            const userBalance = await checkUserBalance(customer_id, orderDatas.map((item) => item.hash_id),orderDatas.map((item) => parseFloat(item.textCreationPrice)+parseFloat(item.approveTextPrice)));
+            if (!userBalance) {
+                return res.status(400).send({
+                    status: false,
+                    message: "Insufficient balance",
+                    error: "Insufficient balance"
+                });
+            }
+
+            const placeOrderData = [];
+
+            try {
+                for (const product of orderDatas) {
+                    const {
+                        anchortext,
+                        linktarget,
+                        publication_date,
+                        note,
+                        project_id,
+                        hash_id,
+                        filename,
+                        originalname,
+                        textCreation,
+                        wordCount,
+                        approveText,
+                        textCreationPrice,
+                        approveTextPrice,
+                        chooseByBacklink
+                    } = product;
+
+                    const getPublisherDomain = await getPublisherDomainData(null, hash_id);
+                    const publisher_id = getPublisherDomain.user_id;
+                    const domain_id = getPublisherDomain.id;
+                    const backlinkData = await getBacklinksData(domain_id);
+                    const backlink_id = backlinkData.id;
+                    const total_price = (
+                      parseFloat(getPublisherDomain.price) +
+                      parseFloat(textCreationPrice) +
+                      parseFloat(approveTextPrice)
+                    ).toFixed(2);
+                    const price = getPublisherDomain.price;
+                    const status = "Pending";
+                    const orderData = {
+                        publisher_id,
+                        customer_id,
+                        domain_id,
+                        backlink_id,
+                        status,
+                        total_price,
+                        price,
+                        anchortext,
+                        linktarget,
+                        publication_date,
+                        note,
+                        project_id,
+                        hash_id,
+                        textCreation,
+                        wordCount,
+                        approveText,
+                        textCreationPrice,
+                        approveTextPrice,
+                        chooseByBacklink,
+                        originalname,
+                        filename
+                    };
+
+                    let sourcePath;
+                    let destPath;
+                    // Move the file from temp_file to order_assets
+                    if(filename !== "")
+                    {
+                        const sourceDir = './assets/temp_file';
+                        const destDir = './assets/order_assets';
+                        sourcePath = path.join(sourceDir, filename);
+                        destPath = path.join(destDir, filename);
+
+                        if (!fs.existsSync(sourcePath)) {
+                            return res.status(422).send({
+                                status: false,
+                                message: "The Text file is not found, please upload it.",
+                                error: "The Text file is not found, please upload it."
+                            });
+                        }   
+                    }
+                    const placeOrder = await Models.newOrder.create(orderData);
+                    placeOrderData.push(placeOrder);
+                    if(filename !== "")
+                    {
+                        await Models.orderFiles.create({
+                            order_id: placeOrder.dataValues.id,
+                            file_name: filename,
+                            original_name: originalname,
+                            file_path: 'assets/order_assets/',
+                        });
+                        await moveFile(sourcePath, destPath);
+                    }                           
+
+                    // Deduct from user's wallet
+                    await deductFromWallet(customer_id, total_price, "deduct");
+
+                    // Create a transaction
+                    const transaction_type = "Place order";
+                    const description = "Buy backlinks " + getPublisherDomain.domain_name;
+                    const now = new Date();
+                    const payment_created = now.toISOString();
+                    const transaction_id = 'order_' + placeOrder.dataValues.id;
+                    const statusN = "paid";
+                    const tranInfo = {
+                        user_id: customer_id,
+                        amount: total_price,
+                        transaction_type,
+                        description,
+                        payment_created,
+                        transaction_id,
+                        status: statusN,
+                        paymentData: placeOrder,
+                    };
+
+                    await Models.Transactions.create(tranInfo);
+
+                    // Send email to admin
+                    const admin = await Models.Users.findAll({
+                        where: {
+                            isAdmin: 1
+                        }
+                    });
+                    const mailTexts = await Models.email_format.findOne({
+                        where: {
+                            email_type: "create_new_order"
+                        }
+                    });
+
+                    let text = mailTexts.email_content;
+                    let subject = mailTexts.header;
+                    text = text.replace("{order_name}", getPublisherDomain.domain_name);
+                    text = text.replace("{name}", checkUser.dataValues.firstName + " " + checkUser.dataValues.lastName);
+                    const mail = await emailTemplate(text);
+
+                    admin.map((val) => {
+                        sendVerifyMail(val.dataValues.email, subject, "", mail);
+                    });
+                }
+                await Models.userCart.destroy({
+                	where: { user_id : customer_id }
+                });
+                return res.status(200).send({
+                    status: true,
+                    message: "Orders placed successfully",
+                    data: placeOrderData
+                });
+            } catch (err) {
+                console.log(err);
+                return res.status(500).send({
+                    status: false,
+                    message: "Something went wrong",
+                    error: err.message
+                });
+            }
+        };
+        processOrders(req.body);        
     } catch (err) {
         console.log(err);
         res.status(500).send({

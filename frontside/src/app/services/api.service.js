@@ -216,19 +216,15 @@ class ApiServices {
   }
 
   cartPlaceOrder(orderData) {
-    const authToken = localStorage.getItem("token");    
+    const authToken = localStorage.getItem("token");
     const url = `${this.APP_URL}order/cart/order`;
     return axios
-      .post(
-        url,
-        orderData,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
+      .post(url, orderData, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
         return response;
       });
@@ -496,13 +492,51 @@ class ApiServices {
     return axios
       .post(
         url,
-        { order_id:orderId },
+        { order_id: orderId },
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
         }
       )
+      .then((response) => {
+        return response;
+      });
+  }
+
+  userProjectUpdateToArchive(status, hash_id) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .patch(
+        this.APP_URL + "domain/archive/" + hash_id + "/" + status,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+
+  userFavoriteUpdate(id) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(this.APP_URL + "contentlinks/"+id+"/favorite", {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+  getPublisherMessageList(id) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(this.APP_URL + "publisher/message/list", {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
       .then((response) => {
         return response;
       });

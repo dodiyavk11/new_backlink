@@ -67,6 +67,42 @@ export class ProjectView extends Component {
   handleGoBack = () => {
     this.props.history.goBack();
   };
+
+  addToArchive = (status, hash_id) => {
+    ApiServices.userProjectUpdateToArchive(status, hash_id)
+      .then((res) => {
+        if (res.status) {
+          this.getProjecViewtData();
+          toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        } else {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      })
+      .catch((err) => {
+        if (
+          err.response &&
+          err.response.status === 401 &&
+          err.response.data.message !== "You cannot access this page"
+        ) {
+          this.setState({ isAuthenticated: false });
+          AuthService.logout();
+          this.props.history.push("/login");
+        } else {
+          if (err.response) {
+            toast.error(err.response.data.message, {
+              position: "top-center",
+              autoClose: 2000,
+            });
+          }
+        }
+      });
+  };
   handleInputChange = (event) => {
     this.setState({
       monthlyBudget: event.target.value,
@@ -116,7 +152,8 @@ export class ProjectView extends Component {
         }
       });
   };
-  componentDidMount() {
+
+  getProjecViewtData = () => {
     ApiServices.getProjectViewData(this.state.hash_id)
       .then((res) => {
         if (!res.status) {
@@ -159,6 +196,10 @@ export class ProjectView extends Component {
           }
         }
       });
+  };
+
+  componentDidMount() {
+    this.getProjecViewtData();
   }
 
   render() {
@@ -205,14 +246,18 @@ export class ProjectView extends Component {
                 >
                   <i className="mdi mdi-arrow-left"></i> Back
                 </button>
-                <a
+                <button
                   className="btn btn-rounded font-weight-medium auth-form-btn"
-                  href={`http://${contentData.domain_name}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={() =>
+                    this.addToArchive(
+                      contentData.isArchieved ? 0 : 1,
+                      contentData.hash_id
+                    )
+                  }
                 >
-                  <i className="mdi mdi-arrow-top-right"></i> Visit domain
-                </a>
+                  <i className="mdi mdi-archive"></i>{" "}
+                  {contentData.isArchieved ? "Unarchive" : "Archive"}
+                </button>
               </div>
               <div className="card-body dashboardCard">
                 <h2 className="h2">Domain: {contentData.domain_name}</h2>
@@ -803,7 +848,8 @@ export class ProjectView extends Component {
                     >
                       Make Appointment
                     </button>
-                    <button onClick={this.handleCallClick}
+                    <button
+                      onClick={this.handleCallClick}
                       className="btn btn-rounded p-2"
                       type="button"
                       style={{ backgroundColor: "#354252 !important" }}

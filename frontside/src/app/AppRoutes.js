@@ -38,6 +38,7 @@ const PublisherOrders = lazy(() => import("./publisher/order/PublisherOrders"));
 const PublisherViewOrderDetails = lazy(() =>
   import("./publisher/order/PublisherViewOrderDetails")
 );
+const PublisherMessages = lazy(() => import("./publisher/message/Messages"));
 const UserViewOrderDetails = lazy(() =>
   import("./orders/UserViewOrderDetails")
 );
@@ -55,7 +56,7 @@ class AppRoutes extends Component {
       isAuthenticated: !!token,
       isAdmin: isAdmin,
       cartLength: 0,
-      cartData:[],
+      cartData: [],
     };
     this.updateCartLength = this.updateCartLength.bind(this);
   }
@@ -133,7 +134,7 @@ class AppRoutes extends Component {
         // alert(resMessage);
       }
     );
-  }
+  };
   handleAddtoCart = (hash_id) => {
     ApiServices.addToCartContentLink(hash_id).then(
       (res) => {
@@ -408,10 +409,17 @@ class AppRoutes extends Component {
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
-                   <PublisherProtected
+                  <PublisherProtected
                     exact
                     path="/publisher/domain/:hash_id"
                     component={DomainView}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  <PublisherProtected
+                    exact
+                    path="/publisher/messages"
+                    component={PublisherMessages}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />

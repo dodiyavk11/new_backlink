@@ -3692,6 +3692,36 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Publisher message menu",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE3MDI0NjE0MDYsImV4cCI6MTcwMjQ5NzQwNn0.YyYVNPhOu37e8iEjgL4oRI0yRV8QVg0GP4S3GAZyLV0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/publisher/message/list",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"message",
+						"list"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

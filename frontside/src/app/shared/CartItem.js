@@ -314,7 +314,7 @@ class CartItem extends Component {
     ).toFixed(2);
     return (
       <Form>
-        <ToastContainer />
+        <ToastContainer/>
         <div className="modal1">
           <div className="d-flex justify-content-between">
             <div>

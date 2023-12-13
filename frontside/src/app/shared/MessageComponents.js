@@ -90,7 +90,7 @@ export class MessageComponents extends Component {
     }
   }
   scrollToBottom = () => {
-    // this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   render() {
@@ -193,7 +193,7 @@ export class MessageComponents extends Component {
                   className="ml-2 h1 mt-3 cursorClass mdi mdi-send" title="Send"
                   onClick={this.sendMessage}
                 ></i>
-                {/* <div ref={this.messagesEndRef}></div> */}
+                <div ref={this.messagesEndRef}></div>
               </div>
             </div>
           </div>

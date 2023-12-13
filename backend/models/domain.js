@@ -35,6 +35,7 @@ module.exports = (sequelize,DataTypes) => {
 		tld:DataTypes.STRING,
 		category_id:DataTypes.INTEGER,
 		status:DataTypes.INTEGER,
+		isArchieved:DataTypes.INTEGER,
 		user_id:DataTypes.INTEGER,
 		budget:DataTypes.DECIMAL(8, 2),
 		hash_id:DataTypes.STRING

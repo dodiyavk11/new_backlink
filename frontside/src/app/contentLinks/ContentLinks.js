@@ -62,12 +62,7 @@ export class ContentLinksHome extends Component {
                                 fontSize: "13px",
                               }}
                             >
-                              Marketplace
-                              <span className="notification-icon--fixed">
-                                <small className="notification-badge fontBold500">
-                                  1
-                                </small>
-                              </span>
+                              Marketplace                             
                             </div>
                           }
                           className="mb-1"
@@ -83,12 +78,7 @@ export class ContentLinksHome extends Component {
                                 fontSize: "13px",
                               }}
                             >
-                              Daily Deals
-                              <span className="notification-icon--fixed">
-                                <small className="notification-badge fontBold500">
-                                  5
-                                </small>
-                              </span>
+                              Daily Deals                              
                             </div>
                           }
                           className="mb-1"

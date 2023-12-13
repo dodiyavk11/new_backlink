@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
 		        targetKey: 'order_id',
 		        as: 'orderFile',
 		    });
+		    this.hasMany(models.Message, {
+			  foreignKey: 'order_id',
+			  as: 'messages',
+			});
 		}
 	}
 	newOrder.init({
