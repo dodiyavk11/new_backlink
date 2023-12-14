@@ -558,6 +558,35 @@ exports.getUserOrders = async(req, res) => {
 		res.status(500).send({ status: false, message: "Something went to wrong, Please try again.", error: err.message });
 	}
 }
+exports.getAdminAllOrders = async(req, res) => {
+    try{
+        const userId = req.userId;
+        const baseQuery = {
+          include: [
+            {
+              model: Models.publisherDomain,
+              as: 'domain',
+              attributes: { exclude: ['updated_at', 'created_at', 'id'] }
+            },
+            {
+              model: Models.Domains,
+              as: 'project',
+              attributes: { exclude: ['updated_at', 'created_at', 'id'] }
+            },
+          ],
+          where: {},
+        };
+
+        const getFilterQuery = await createFilterQuery(req.body,"user",baseQuery)
+        const getOrderData = await Models.newOrder.findAll(getFilterQuery);
+        res.status(200).send({ status: true, message: "Order fetched successfully.", data: getOrderData });
+    }
+    catch(err)
+    {
+        console.log(err);
+        res.status(500).send({ status: false, message: "Something went to wrong, Please try again.", error: err.message });
+    }
+}
 /* publisher get their backlink(domain) order placed by customer */
 exports.getPublisherOrder = async(req, res) => {
 	try{
@@ -781,6 +810,20 @@ exports.viewSingleOrderUser = async(req, res) => {
     }
 }
 
+exports.viewSingleOrderAdmin = async(req, res) => {
+    try
+    {
+        const userId = req.userId;
+        const { orderId } = req.params;
+        const getOrderData = await getViewOrderData(userId,orderId,"admin");
+        res.status(200).send({ staus: true, message:"Order fetched successfully", data: getOrderData });
+    }
+    catch(err)
+    {
+        res.status(500).send({ status: false, message: "Something went to wrong please try again.", error:err.message });
+    }
+}
+
 async function getViewOrderData(userId,orderId,type)
 {    
     let wheres;
@@ -788,9 +831,13 @@ async function getViewOrderData(userId,orderId,type)
     {
         wheres = { customer_id: userId, id: orderId }
     }
-    else
+    else if(type === "publisher")
     {
         wheres = { publisher_id: userId, id: orderId }
+    }
+    else
+    {
+        wheres = { id: orderId }
     }
     const baseQuery = {
       include: [
@@ -852,24 +899,23 @@ async function createFilterQuery(body,type,baseQuery)
 		}
 
 		if (filters['date'] && filters['date'].min) {
-            // console.log("date")
-			let maxDateTime;
-			if(filters['date'].max)
-			{
-				maxDateTime = `${filters['date'].max} 23:59:59`;
-			}  			
-			else
-			{
-				const today = new Date();
-    			maxDateTime = today.toISOString().split('T')[0] + ' 23:59:59';
-			}
-			const minDateTime = `${filters['date'].min} 00:00:00`;
-		  	baseQuery.where['created_at'] = {
-			    // [Op.gte]: filters['date'].min,
-			    // [Op.lte]: filters['date'].max,
-			     [Op.between]: [minDateTime, maxDateTime],
-			  };
-		}
+          let maxDateTime;
+
+          if (filters['date'].max) {
+            maxDateTime = `${filters['date'].max} 23:59:59`;
+          } else {
+            const today = new Date();
+            maxDateTime = today.toISOString().split('T')[0] + ' 23:59:59';
+          }
+
+          const minDateTime = `${filters['date'].min} 00:00:00`;
+
+          baseQuery.where['created_at'] = {
+            // [Op.gte]: filters['date'].min,
+                // [Op.lte]: filters['date'].max,
+            [Op.between]: [minDateTime, maxDateTime],
+          };
+        }
 		if(type === "user")
 		{
 			if (filters['project_id'] !== undefined && filters['project_id'] !== null && filters['project_id'] !== '' && Object.keys(filters['project_id']).length > 0) {

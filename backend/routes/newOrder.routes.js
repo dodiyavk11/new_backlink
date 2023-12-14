@@ -1,4 +1,4 @@
-const { addNewOrder,getPublisherOrder,publisherUpdateOrderStatus,cancelOrder, getUserOrders,textFileUpload, textFileDelete,addToCart, deleteItem, getCart, addCartOrder,viewSingleOrderPublisher,viewSingleOrderUser } = require("../controllers/newOrder.controller");
+const { addNewOrder,getPublisherOrder,publisherUpdateOrderStatus,cancelOrder, getUserOrders, getAdminAllOrders,textFileUpload, textFileDelete,addToCart, deleteItem, getCart, addCartOrder,viewSingleOrderPublisher,viewSingleOrderUser,viewSingleOrderAdmin } = require("../controllers/newOrder.controller");
 const { isLogin, isCustomer,isAdmin,isPublisher } = require("../middleware/checkAuthenticate");
 const { uploadOrderFile, uploadOrderFinalFile,textFileUploadTemp } = require("../middleware/orderFileHandler")
 const { checkOrderLimitInSubscriptionPlan } = require("../middleware/checkIsPlanOrderAndDomainLimit");
@@ -10,6 +10,7 @@ module.exports = (app) => {
 	app.post("/order/cart/order",[isLogin,isCustomer],addCartOrder);
 	app.get("/order/cancelOrder/:orderId",[isLogin,isCustomer],cancelOrder);
 	app.post("/user/orders",[isLogin,isCustomer],getUserOrders)
+	app.post("/admin/orders",[isLogin,isAdmin],getAdminAllOrders)
 	app.post("/user/cart/add-item/:hash_id",[isLogin,isCustomer],addToCart)
 	app.delete("/user/cart/:cart_id",[isLogin,isCustomer],deleteItem)
 	app.get("/user/cart",[isLogin],getCart)
@@ -24,4 +25,5 @@ module.exports = (app) => {
 	/* for publisher and user both view single order */
 	app.get("/publisher/order/view/:orderId",[isLogin,isPublisher],viewSingleOrderPublisher);
 	app.get("/user/order/view/:orderId",[isLogin,isCustomer],viewSingleOrderUser);
+	app.get("/admin/order/view/:orderId",[isLogin,isAdmin],viewSingleOrderAdmin);
 }

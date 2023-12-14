@@ -74,7 +74,7 @@ export class UserViewOrderDetails extends Component {
   };
 
   loadOrderData = () => {
-    ApiServices.UsererOrderView(this.state.order_id)
+    ApiServices.SingleOrderView(this.state.order_id,"user/order/view/")
       .then((res) => {
         if (!res.status) {
           toast.error(res.data.message, {
@@ -441,7 +441,7 @@ export class UserViewOrderDetails extends Component {
                 </div>
               </div>
             </div>
-            <MessageComponents order_id={this.state.order_id}/>
+            <MessageComponents order_id={this.state.order_id} isShowTypeMsg={true}/>
           </div>
         </div>
       </div>

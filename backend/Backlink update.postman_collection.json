@@ -1082,7 +1082,7 @@
 						}
 					]
 				},
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:3000/account/user/delete/5",
@@ -3718,6 +3718,38 @@
 						"publisher",
 						"message",
 						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin single order view",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTcwMjUzMzAzNCwiZXhwIjoxNzAyNTY5MDM0fQ.Hfs2tNk-5X8nJI9V7yX4rqq2SGVB0xmkbiNDY_paq9U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/admin/order/view/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"order",
+						"view",
+						"10"
 					]
 				}
 			},

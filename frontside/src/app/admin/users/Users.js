@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
-import { CPopover, CButton } from "@coreui/react";
+import ApiServices from "../../services/api.service";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Modal, Button, Form } from "react-bootstrap";
 import "../../../assets/custom.css";
 import {
   Typography,
@@ -22,11 +24,24 @@ export class Users extends Component {
     this.state = {
       page: 0,
       rowsPerPage: 10,
-      orderBy: "name",
-      order: "asc",
+      orderBy: "id",
+      order: "desc",
       selectedRow: null,
       orderData: [],
+      rows: [],
+      email: "",
+      firstName: "",
+      lastName: "",
+      phone: "",
+      password: "",
+      error: "",
+      type: "",
+      selectedUser: null,
+      userId: null,
+      showModal: false,
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   // Datatable start
@@ -66,16 +81,168 @@ export class Users extends Component {
     });
     return stabilizedThis.map((el) => el[0]);
   };
-  handleDeleteClick = (id) => {
-    console.log(`Delete clicked for row with ID: ${id}`);
-  };
+
   handleEditClick = (id) => {
-    console.log(`Edit clicked for row with ID: ${id}`);
+    const selectedUser = this.state.rows.find((user) => user.id === id);
+    this.setState({
+      selectedUser,
+      showModal: true,
+      userId: selectedUser.id,
+      email: selectedUser.email,
+      firstName: selectedUser.firstName,
+      lastName: selectedUser.lastName,
+      phone: selectedUser.phone,
+      type: selectedUser.isAdmin,
+    });
   };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const userType = this.state.selectedUser ? 1 : 0;
+    this.postRegister(userType);
+  };
+  handleInputChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+      error: null,
+    });
+  };
+
+  handletoClearState() {
+    this.setState({
+      selectedUser: null,
+      showModal: false,
+      userId: null,
+      email: "",
+      firstName: "",
+      lastName: "",
+      phone: "",
+      type: "",
+    });
+  }
+
+  showUserCreateModal = () => this.setState({ showModal: true });
+  closeUserCreateModal = () => {
+    this.handletoClearState();
+  };
+
+  postRegister(isEdit) {
+    const { email, password, firstName, lastName, phone, type, selectedUser } =
+      this.state;
+    let formData = new FormData();
+    if (isEdit) {
+      if (!firstName || !lastName || !phone) {
+        this.setState({ error: "Please fill required fields." });
+        return;
+      }
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("phone", phone);
+      formData.append("id", selectedUser.id);
+    } else {
+      if (!password || !email || !firstName || !lastName || !phone || !type) {
+        this.setState({ error: "Please fill required fields." });
+        return;
+      }
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      formData.append("password", password);
+      formData.append("type", type);
+    }
+    ApiServices.createUpdateUser(formData, isEdit)
+      .then((res) => {
+        if (!res.status) {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        } else {
+          toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+          this.closeUserCreateModal();
+          this.getUserList();
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      });
+  }
+  handleDeleteClick = (id, isDeleted) => {
+    ApiServices.blockUser(id, isDeleted ? 0 : 1)
+      .then((res) => {
+        if (!res.status) {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        } else {
+          toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+          this.getUserList();
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      });
+  };
+  getUserList = () => {
+    ApiServices.adminUserList()
+      .then((res) => {
+        if (!res.data.status) {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        } else {
+          if (res.data.data) {
+            this.setState({ rows: res.data.data });
+          }
+        }
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 401 &&
+          err.response.data.message !== "You cannot access this page"
+        ) {
+          this.setState({ isAuthenticated: false });
+          this.props.history.push("/login");
+        } else {
+          toast.error(err.response.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      });
+  };
+
+  componentDidMount() {
+    this.getUserList();
+  }
   // Datatable End
   render() {
-    const { page, rowsPerPage, orderBy, order } = this.state;
+    const { page, rowsPerPage, orderBy, order, rows, error, selectedUser } =
+      this.state;
     const columns = [
+      {
+        id: "id",
+        label: "ID",
+        height: 70,
+        width: 300,
+        align: "left",
+        sortable: true,
+      },
       {
         id: "name",
         label: "Name",
@@ -83,28 +250,7 @@ export class Users extends Component {
         width: 300,
         align: "left",
         sortable: false,
-        renderCell: (row) => (
-          <div style={{ display: "flex" }}>
-            <button className="customBtn2 mr-2">
-              <svg
-                width={20}
-                id="user"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                style={{ color: "#655656", fontWeight: "bold" }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-            </button>
-          </div>
-        ),
+        renderCell: (row) => <span>{row.firstName + " " + row.lastName}</span>,
       },
       {
         id: "email",
@@ -114,210 +260,98 @@ export class Users extends Component {
         align: "left",
       },
       {
-        id: "links",
-        label: "Links",
+        id: "phone",
+        label: "Phone",
         width: 200,
         align: "left",
       },
       {
-        id: "orders",
-        label: "Orders",
+        id: "city",
+        label: "City",
+        align: "left",
+        width: 200,
+        sortable: false,
+      },
+      {
+        id: "postal_code",
+        label: "Postal Code",
         align: "left",
         width: 200,
       },
       {
-        id: "projects",
-        label: "Projects",
+        id: "isAdmin",
+        label: "Type",
         align: "left",
+        sortable: true,
         width: 200,
+        renderCell: (row) => (
+          <div
+            className={
+              row.isAdmin === 1
+                ? "text-danger"
+                : row.isAdmin === 2
+                ? "text-primary"
+                : "text-info"
+            }
+          >
+            {row.isAdmin === 1
+              ? "Admin"
+              : row.isAdmin === 2
+              ? "Publisher"
+              : "User"}
+          </div>
+        ),
       },
       {
         id: "aciton",
-        label: "",
+        label: "Action",
         align: "left",
         sortable: false,
         renderCell: (row) => (
           <div>
-            <svg
+            <i
+              className="mdi mdi-pencil mr-2"
+              style={{
+                color: "#655656",
+                fontWeight: "bold",
+                cursor: "pointer",
+                fontSize: "25px",
+              }}
               onClick={() => this.handleEditClick(row.id)}
-              width={20}
-              id="pencil"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              className="mr-2"
+            ></i>
+            <i
+              className="mdi mdi-delete"
+              onClick={() => this.handleDeleteClick(row.id, row.isDeleted)}
               style={{
-                color: "#655656",
+                color: row.isDeleted === 1 ? "red" : "#655656",
                 fontWeight: "bold",
                 cursor: "pointer",
+                fontSize: "25px",
               }}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-              />
-            </svg>
-            <svg
-              onClick={() => this.handleDeleteClick(row.id)}
-              width={20}
-              id="trash"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              style={{
-                color: "#655656",
-                fontWeight: "bold",
-                cursor: "pointer",
-              }}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
+            ></i>
           </div>
         ),
       },
     ];
 
-    const rows = [
-      createData(
-        1,
-        "First Name Last Name",
-        "abc@demo.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        2,
-        "First Name Last Name",
-        "abc@demo.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        3,
-        "First Name Last Name",
-        "abc@demo.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        4,
-        "First Name Last Name",
-        "abc@demo.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        5,
-        "First Name Last Name",
-        "abc@demo.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        6,
-        "First Name Last Name",
-        "example@demo.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        7,
-        "First Name Last Name",
-        "abc@demo.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        8,
-        "First Name Last Name",
-        "test@mail.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        9,
-        "First Name Last Name",
-        "test@mail.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        10,
-        "First Name Last Name",
-        "test@mail.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        11,
-        "First Name Last Name",
-        "test@mail.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        12,
-        "First Name Last Name",
-        "test@mail.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        13,
-        "First Name Last Name",
-        "test@mail.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        14,
-        "First Name Last Name",
-        "test@mail.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-      createData(
-        15,
-        "First Name Last Name",
-        "test@mail.com",
-        "LINKS.COM",
-        65,
-        89
-      ),
-    ];
-
-    function createData(id, name, email, links, orders, projects) {
-      return { id, name, email, links, orders, projects };
-    }
     return (
       <>
-        <div className="ContentLinkHomePage">
-          <div className="page-header">
-            <h3 className="fontBold latterSpacing">All Users</h3>
+        <div className="adminUserList">
+          <div className="d-flex justify-content-between">
+            <div className="page-header">
+              <h3 className="fontBold latterSpacing">All Users</h3>
+            </div>
+            <div className="ExportBtn">
+              <button
+                className="btn btn-rounded d-inline-flex btn-sm"
+                onClick={this.showUserCreateModal}
+              >
+                <i className="mdi mdi-account-plus mr-2"></i>
+                Create new user
+              </button>
+            </div>
           </div>
+          <ToastContainer />
           <div className="row">
             <div className="col-lg-12 grid-margin">
               <div className="card mb-4 bRadius">
@@ -371,19 +405,20 @@ export class Users extends Component {
                                     hover
                                     role="checkbox"
                                     tabIndex={-1}
-                                    key={row.code}
+                                    key={index}
                                     selected={isSelected}
                                     onClick={(event) =>
                                       this.handleRowClick(event, index)
                                     }
-                                    style={
-                                      isSelected
+                                    style={{
+                                      ...(isSelected
                                         ? {
                                             backgroundColor:
                                               "rgba(30, 41, 59, 0.12)",
                                           }
-                                        : {}
-                                    }
+                                        : {}),
+                                      height: "55px",
+                                    }}
                                   >
                                     {columns.map((column) => (
                                       <TableCell
@@ -420,6 +455,111 @@ export class Users extends Component {
               </div>
             </div>
           </div>
+          <Modal
+            className="createUserModal"
+            centered
+            backdrop="static"
+            keyboard={false}
+            show={this.state.showModal}
+            onHide={this.closeUserCreateModal}
+          >
+            <Modal.Header closeButton>
+              <div>
+                <span className="modal-title h3 font-weight-bold">
+                  {this.state.selectedUser ? "Edit user" : "Create new user"}
+                </span>
+              </div>
+            </Modal.Header>
+            <Modal.Body>
+              <form className="pt-3" onSubmit={this.handleSubmit}>
+                <div className="form-group">
+                  <input
+                    onChange={this.handleInputChange}
+                    type="text"
+                    className="form-control form-control-lg"
+                    name="firstName"
+                    id="exampleInputfname"
+                    placeholder="First Name *"
+                    value={this.state.firstName}
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    onChange={this.handleInputChange}
+                    className="form-control form-control-lg"
+                    type="text"
+                    name="lastName"
+                    placeholder="Last Name *"
+                    value={this.state.lastName}
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    onChange={this.handleInputChange}
+                    type="email"
+                    name="email"
+                    className="form-control form-control-lg"
+                    id="exampleInputEmail1"
+                    placeholder="Email *"
+                    disabled={selectedUser}
+                    value={this.state.email}
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    onChange={this.handleInputChange}
+                    type="text"
+                    name="phone"
+                    className="form-control form-control-lg"
+                    placeholder="Phone *"
+                    value={this.state.phone}
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    onChange={this.handleInputChange}
+                    name="password"
+                    type="password"
+                    minLength="8"
+                    className="form-control form-control-lg"
+                    id="exampleInputPassword1"
+                    placeholder="Password *"
+                    disabled={selectedUser}
+                  />
+                  {this.state.password.length > 0 &&
+                    this.state.password.length < 8 && (
+                      <span style={{ color: "red" }}>
+                        Password must be at least 8 characters long
+                      </span>
+                    )}
+                </div>
+                <div className="form-group">
+                  <select
+                    name="type"
+                    className="form-control form-control-lg"
+                    style={{ color: "#222" }}
+                    value={this.state.type}
+                    disabled={selectedUser}
+                    onChange={this.handleInputChange}
+                  >
+                    <option value="">select User Type</option>
+                    <option value="1">Admin</option>
+                    <option value="2">Publisher</option>
+                    <option value="0">User</option>
+                  </select>
+                </div>
+                {error && <p className="text-danger">{error}</p>}
+                <div className="mt-3">
+                  <button
+                    type="submit"
+                    className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
+                  >
+                    Create
+                  </button>
+                </div>
+              </form>
+            </Modal.Body>
+          </Modal>
         </div>
       </>
     );

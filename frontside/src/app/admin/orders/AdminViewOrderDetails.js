@@ -7,7 +7,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../../services/api.service";
 import MessageComponents from "../../shared/MessageComponents";
 
-export class PublisherViewOrderDetails extends Component {
+export class AdminViewOrderDetails extends Component {
   constructor(props) {
     const { order_id } = props.match.params;
     super(props);
@@ -17,70 +17,15 @@ export class PublisherViewOrderDetails extends Component {
       orderFile: [],
       projectData: [],
       order_id: order_id,
-      updateStatus: "",
     };
   }
 
   handleGoBack = () => {
     this.props.history.goBack();
-  };
+  };  
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  };
-  handleShowAlert = () => {
-    toast.error(
-      <div>
-        <div className="p-2">Are you sure you want to Update status?</div>
-        <center>
-          <button
-            className="btn btn-rounded customYes"
-            onClick={this.handleConfirmUpadate}
-          >
-            Yes
-          </button>
-          <button
-            className="btn btn-rounded customNo"
-            onClick={this.handleCancelUpdate}
-          >
-            No
-          </button>
-        </center>
-      </div>,
-      {
-        position: toast.POSITION.TOP_CENTER,
-        autoClose: false,
-        draggable: true,
-        closeButton: false,
-        hideProgressBar: true,
-        className: "confirmation-toast",
-      }
-    );
-  };
-  handleConfirmUpadate = () => {
-    const status = this.state.updateStatus;
-    ApiServices.publisherUpdateOrderStatus(this.state.order_id, status).then(
-      (res) => {
-        if (res.status) {
-          toast.success(res.data.message, {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        } else {
-          toast.error(res.data.message, {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
-      }
-    );
-  };
-  handleCancelUpdate = () => {
-    console.log("abort action");
-  };
-  componentDidMount() {
-    ApiServices.SingleOrderView(this.state.order_id,"publisher/order/view/")
+  loadOrderData = () => {
+    ApiServices.SingleOrderView(this.state.order_id,"admin/order/view/")
       .then((res) => {
         if (!res.status) {
           toast.error(res.data.message, {
@@ -91,7 +36,6 @@ export class PublisherViewOrderDetails extends Component {
           this.setState({
             orderData: res.data.data,
             domainData: res.data.data.domain,
-            updateStatus: res.data.data.status,
           });
           if (res.data.data.project) {
             this.setState({
@@ -122,8 +66,12 @@ export class PublisherViewOrderDetails extends Component {
         }
       });
   }
+
+  componentDidMount() {
+    this.loadOrderData();
+  }
   render() {
-    const { orderData, domainData, orderFile, updateStatus } = this.state;
+    const { orderData, category, domainData, orderFile } = this.state;
     if (orderData.length === 0) {
       return (
         <div className="text-danger">
@@ -137,8 +85,24 @@ export class PublisherViewOrderDetails extends Component {
         </div>
       );
     }
+    const getStatusClass = (status) => {
+      switch (status) {
+        case "Pending":
+          return "badge-primary";
+        case "Completed":
+          return "badge-success";
+        case "Cancelled":
+          return "badge-danger";
+        case "Rejected":
+          return "badge-warning";
+        case "Inprogress":
+          return "badge-secondary";
+        default:
+          return "badge-info";
+      }
+    };
     return (
-      <div className="orderViewPage">
+      <div>
         <ToastContainer />
         <style>{`
           .confirmation-toast {
@@ -153,7 +117,7 @@ export class PublisherViewOrderDetails extends Component {
           }
         `}</style>
         <div className="row">
-          <div className="col-lg-8 grid-margin">
+          <div className="col-lg-12 grid-margin">
             <div className="card">
               <div className="card-img-top d-flex flex-row justify-content-between p-4">
                 <button
@@ -161,11 +125,30 @@ export class PublisherViewOrderDetails extends Component {
                   onClick={this.handleGoBack}
                 >
                   <i className="mdi mdi-arrow-left"></i> Back
-                </button>
+                </button>                
               </div>
               <div className="card-body dashboardCard">
-                <h2 className="h2">Order for {domainData.domain_name}</h2>
-                <h5>Placed at: {orderData.created_at}</h5>
+                <div className="card-img-top d-flex flex-row justify-content-between">
+                  <div>
+                    <h2 className="h2">{domainData.domain_name}</h2>
+                    <h5>Placed at: {orderData.created_at}</h5>
+                  </div>
+                  <div>
+                    <h4 className="h4">
+                      Status:{" "}
+                      <span
+                        className={`fontSize13 badge ${getStatusClass(
+                          orderData.status
+                        )}`}
+                      >
+                        {orderData.status}
+                      </span>
+                    </h4>
+                    <h5>
+                      Amount: <b>${orderData.total_price}</b>
+                    </h5>
+                  </div>
+                </div>
                 <hr />
               </div>
               <div className="card">
@@ -393,147 +376,7 @@ export class PublisherViewOrderDetails extends Component {
                 </div>
               </div>
             </div>
-            <MessageComponents order_id={this.state.order_id} isShowTypeMsg={true}/>
-          </div>
-          <div className="col-lg-4 grid-margin stretch-card">
-            <div className="card">
-              <div className="card-body">
-                <h4 className="card-title">Update order status</h4>
-                <div className="table-responsive">
-                  <table className="table">
-                    <tbody>
-                      <tr>
-                        <td className="p-1">
-                          <div className="form-group">
-                            {/* <div className="form-check">
-                              <label
-                                className="form-check-label mb-4"
-                                htmlFor="pending"
-                              >
-                                <input
-                                  type="radio"
-                                  className="form-check-input"
-                                  name="updateStatus"
-                                  id="pending"
-                                  onChange={this.handleChange}
-                                  checked={updateStatus === "Pending"}
-                                  value={"Pending"}
-                                  // disabled={orderData.status === "Pending"}
-                                />
-                                <i className="input-helper"></i>Pending{" "}
-                              </label>
-                            </div> */}
-                            <div className="form-check">
-                              <label
-                                className="form-check-label mb-4"
-                                htmlFor="Inprogress"
-                              >
-                                <input
-                                  type="radio"
-                                  className="form-check-input"
-                                  name="updateStatus"
-                                  id="Inprogress"
-                                  onChange={this.handleChange}
-                                  checked={updateStatus === "Inprogress"}
-                                  value={"Inprogress"}
-                                  // disabled={orderData.status === "Inprogress"}
-                                />
-                                <i className="input-helper"></i>Inprogress{" "}
-                              </label>
-                            </div>
-                            <div className="form-check">
-                              <label
-                                className="form-check-label mb-4"
-                                htmlFor="Completed"
-                              >
-                                <input
-                                  type="radio"
-                                  className="form-check-input"
-                                  name="updateStatus"
-                                  id="Completed"
-                                  onChange={this.handleChange}
-                                  checked={updateStatus === "Completed"}
-                                  value={"Completed"}
-                                  // disabled={orderData.status === "Completed"}
-                                />
-                                <i className="input-helper"></i>Completed{" "}
-                              </label>
-                            </div>
-                            {/* <div className="form-check">
-                              <label
-                                className="form-check-label mb-4"
-                                htmlFor="Cancelled"
-                              >
-                                <input
-                                  type="radio"
-                                  className="form-check-input"
-                                  name="updateStatus"
-                                  id="Cancelled"
-                                  onChange={this.handleChange}
-                                  checked={updateStatus === "Cancelled"}
-                                  value={"Cancelled"}
-                                  // disabled={orderData.status === "Cancelled"}
-                                />
-                                <i className="input-helper"></i>Cancelled{" "}
-                              </label>
-                            </div> */}
-                            <div className="form-check">
-                              <label
-                                className="form-check-label mb-4"
-                                htmlFor="Rejected"
-                              >
-                                <input
-                                  type="radio"
-                                  className="form-check-input"
-                                  name="updateStatus"
-                                  id="Rejected"
-                                  onChange={this.handleChange}
-                                  checked={updateStatus === "Rejected"}
-                                  value={"Rejected"}
-                                  // disabled={orderData.status === "Rejected"}
-                                />
-                                <i className="input-helper"></i>Rejected{" "}
-                              </label>
-                            </div>
-                            <div className="form-check">
-                              <label
-                                className="form-check-label mb-4"
-                                htmlFor="MissingDetails"
-                              >
-                                <input
-                                  type="radio"
-                                  className="form-check-input"
-                                  name="updateStatus"
-                                  id="MissingDetails"
-                                  onChange={this.handleChange}
-                                  checked={updateStatus === "MissingDetails"}
-                                  value={"MissingDetails"}
-                                  // disabled={
-                                  //   orderData.status === "MissingDetails"
-                                  // }
-                                />
-                                <i className="input-helper"></i>MissingDetails{" "}
-                              </label>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <button
-                            className="btn btn-rounded font-weight-medium auth-form-btn"
-                            style={{ width: "100%" }}
-                            onClick={this.handleShowAlert}
-                          >
-                            Update status
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+            <MessageComponents order_id={this.state.order_id} isShowTypeMsg={false}/>
           </div>
         </div>
       </div>
@@ -541,4 +384,4 @@ export class PublisherViewOrderDetails extends Component {
   }
 }
 
-export default withRouter(PublisherViewOrderDetails);
+export default withRouter(AdminViewOrderDetails);

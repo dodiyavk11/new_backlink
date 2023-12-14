@@ -55,7 +55,8 @@ module.exports = (sequelize, DataTypes) => {
     vat_id: DataTypes.STRING,
     bulk_invoice: DataTypes.INTEGER,
     invoice_email: DataTypes.STRING,
-    isAdmin: DataTypes.INTEGER
+    isAdmin: DataTypes.INTEGER,
+    isDeleted:DataTypes.INTEGER,
   }, {
     sequelize,
     createdAt: 'created_at',

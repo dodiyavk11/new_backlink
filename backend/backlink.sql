@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2023 at 02:05 PM
+-- Generation Time: Dec 14, 2023 at 02:21 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -104,7 +104,7 @@ CREATE TABLE `domains` (
 
 INSERT INTO `domains` (`id`, `domain_name`, `tld`, `budget`, `category_id`, `status`, `isArchieved`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
 (1, 'userdomain.com', 'com', '100.00', 15, 1, 0, 15, 'nezrcrlx', '2023-11-06 07:38:26', '2023-12-13 05:50:49'),
-(2, 'besticoder.com', 'com', '130.00', 15, 1, 0, 15, 'pnhtw15k', '2023-11-06 08:03:04', '2023-12-13 12:44:01'),
+(2, 'besticoder.com', 'com', '130.00', 15, 1, 0, 15, 'pnhtw15k', '2023-11-06 08:03:04', '2023-12-13 13:28:32'),
 (7, 'youtube.com', 'com', '0.00', NULL, 1, 0, 36, 'hf7l2mbq', '2023-11-10 04:47:34', '2023-11-10 04:47:34');
 
 -- --------------------------------------------------------
@@ -259,7 +259,7 @@ CREATE TABLE `favorite_products` (
 --
 
 INSERT INTO `favorite_products` (`id`, `user_id`, `product_id`, `created_at`) VALUES
-(28, 15, 1, '2023-12-13 13:03:54');
+(2, 15, 4, '2023-12-13 13:28:28');
 
 -- --------------------------------------------------------
 
@@ -330,7 +330,8 @@ INSERT INTO `messages` (`id`, `sender_id`, `order_id`, `message`, `files`, `role
 (36, 15, 10, 'dvdwq', NULL, 0, '2023-12-11 04:19:29', '2023-12-11 04:19:29'),
 (38, 11, 10, 'fdfdff ', NULL, 0, '2023-12-11 04:25:14', '2023-12-11 04:25:14'),
 (39, 15, 13, '123', NULL, 0, '2023-12-11 04:26:41', '2023-12-11 04:26:41'),
-(40, 11, 13, '456', NULL, 0, '2023-12-11 04:27:02', '2023-12-11 04:27:02');
+(40, 11, 13, '456', NULL, 0, '2023-12-11 04:27:02', '2023-12-11 04:27:02'),
+(41, 15, 31, 'Hi', NULL, 0, '2023-12-14 06:29:36', '2023-12-14 06:29:36');
 
 -- --------------------------------------------------------
 
@@ -663,6 +664,7 @@ CREATE TABLE `users` (
   `bulk_invoice` int(1) NOT NULL DEFAULT 0,
   `invoice_email` varchar(255) NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT 0 COMMENT '0:customer,1:admin,2:publisher',
+  `isDeleted` int(1) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -671,15 +673,18 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `password`, `profile`, `phone`, `postal_code`, `address`, `city`, `country`, `company`, `vat_id`, `bulk_invoice`, `invoice_email`, `isAdmin`, `created_at`, `updated_at`) VALUES
-(2, 'jayesh.besticoder@gmail.com', 1, 'Admin', 'Side', '$2a$11$fCg11cAgOk7RvVCffz7TuulHBoIYOMATc6iq6PjtlbbB5ieju4dG2', 'profileImg_1695097731854.jpeg', '1234567890', 123, 'admin', 'admin', 'Germany', 'Admin', 'null', 0, '', 1, '2023-09-13 17:40:39', '2023-11-28 18:36:04'),
-(6, 'ko6a055dax@gixenmixen.com', 1, 'Test', 'Customer', '$2a$11$PWRnpkMPyKnyfK3TgoNDi.LNcOvfWNpn1D83/NFUsNkFhvlzzMR6K', 'profileImg_1695101939136.png', '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-19 11:08:59', '2023-11-27 15:03:59'),
-(9, '123@gmail.com', 1, 'test', 'test', '$2a$11$uADreLR8rD3x7TF0dg54n.natIDMyUCFh/l1yKutPnLpkif5D5F1e', NULL, '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-20 10:55:10', '2023-09-20 10:55:10'),
-(10, 'devuser@gmail.com', 1, 'Dev', 'User', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1695188498849.jpg', '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-09-20 11:11:39', '2023-09-20 11:11:39'),
-(11, 'itpubli@test.com', 1, 'Publisher2', 'Account2', '$2a$11$zUU62EIftcI7V8bU8XCN6O8ynRwhalVmVzlG4EYCVTadW1ZbjK9iO', 'profileImg_1695188498849.jpg', '1234567890', 12345, 'Vrl', 'Veraval', 'Germany', 'Publisher Company', 'SAD122A', 0, '', 2, '2023-09-20 13:23:06', '2023-12-05 18:07:29'),
-(15, 'dev@gmail.com', 1, 'Developer', 'Test', '$2a$11$ldVrLA2b42A5n4Q28RmjoOWytYhJmsM6vEfqaCRK3hjK1T8uRQQQa', 'profileImg_1695188498849.jpg', '9033389733', 362268, 'Bhalpara', 'Veraval', 'Germany', 'JJ Naghera', 'VAT123AT', 0, 'example@mail.com', 0, '2023-09-26 09:56:08', '2023-11-28 17:06:51'),
-(36, 'frontside@mail.com', 1, 'Front', 'Side', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1699339746336.png', '123456', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, '2023-11-07 12:19:06', '2023-11-07 12:19:06'),
-(44, 'publisher@mail.com', 1, 'Publisher', 'Account', '$2a$11$p2Az5D0NM9xRAwygZLi3qupjlLjtkN8wJTAFy5Oh.OUn03pkrlJJ.', 'profileImg_1701410251380.png', '123456', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, '2023-12-01 11:27:31', '2023-12-01 11:27:48');
+INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `password`, `profile`, `phone`, `postal_code`, `address`, `city`, `country`, `company`, `vat_id`, `bulk_invoice`, `invoice_email`, `isAdmin`, `isDeleted`, `created_at`, `updated_at`) VALUES
+(2, 'jayesh.besticoder@gmail.com', 1, 'Admin', 'Side', '$2a$11$fCg11cAgOk7RvVCffz7TuulHBoIYOMATc6iq6PjtlbbB5ieju4dG2', 'profileImg_1701080292599.png', '1234567890', 123, 'admin', 'admin', 'Germany', 'Admin', 'null', 0, '', 1, 0, '2023-09-13 17:40:39', '2023-11-28 18:36:04'),
+(6, 'ko6a055dax@gixenmixen.com', 1, 'Test', 'Customer', '$2a$11$PWRnpkMPyKnyfK3TgoNDi.LNcOvfWNpn1D83/NFUsNkFhvlzzMR6K', 'profileImg_1695101939136.png', '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 0, '2023-09-19 11:08:59', '2023-12-14 17:33:10'),
+(9, '123@gmail.com', 1, 'test', 'test', '$2a$11$uADreLR8rD3x7TF0dg54n.natIDMyUCFh/l1yKutPnLpkif5D5F1e', NULL, '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 0, '2023-09-20 10:55:10', '2023-12-14 17:33:11'),
+(10, 'devuser@gmail.com', 1, 'Dev', 'User', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1695188498849.jpg', '1234567809', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 0, '2023-09-20 11:11:39', '2023-12-14 17:33:12'),
+(11, 'itpubli@test.com', 1, 'Publisher2', 'Account2', '$2a$11$zUU62EIftcI7V8bU8XCN6O8ynRwhalVmVzlG4EYCVTadW1ZbjK9iO', 'profileImg_1695188498849.jpg', '1234567890', 12345, 'Vrl', 'Veraval', 'Germany', 'Publisher Company', 'SAD122A', 0, '', 2, 0, '2023-09-20 13:23:06', '2023-12-14 17:33:13'),
+(15, 'dev@gmail.com', 1, 'Developer', 'Test', '$2a$11$ldVrLA2b42A5n4Q28RmjoOWytYhJmsM6vEfqaCRK3hjK1T8uRQQQa', 'profileImg_1695188498849.jpg', '9033389733', 362268, 'Bhalpara', 'Veraval', 'Germany', 'JJ Naghera', 'VAT123AT', 0, 'example@mail.com', 0, 0, '2023-09-26 09:56:08', '2023-12-14 17:33:14'),
+(36, 'frontside@mail.com', 1, 'Front', 'Side', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1699339746336.png', '123456', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 0, '2023-11-07 12:19:06', '2023-12-14 17:33:14'),
+(44, 'publisher@mail.com', 1, 'Publisher', 'Account', '$2a$11$p2Az5D0NM9xRAwygZLi3qupjlLjtkN8wJTAFy5Oh.OUn03pkrlJJ.', 'profileImg_1701410251380.png', '123456', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-01 11:27:31', '2023-12-14 17:33:15'),
+(47, 'admintouser@gmail.com', 1, 'Admin side', 'testing user', '$2a$11$TDJJdoDWVzFJNNlcr2wf3e2Pu8OgkbqtsU0SvGC4Fxr1aAVV7VxGy', NULL, '12312', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-14 15:09:49', '2023-12-14 17:33:16'),
+(48, 'teststsstst@gmail.com', 1, 'teststst', 'tsdtstst', '$2a$11$QuXXMou5NlUzhFawApg2AOTFArlSzeuf2anzdKKTw5sNMQFWfAGMi', NULL, '1111111111', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 0, '2023-12-14 16:33:05', '2023-12-14 17:33:49'),
+(49, 'dsds@gmail.com', 1, 'Update', 'User', '$2a$11$6Tq6qn/WRgCydm3fxb3TxOdChbmDttjpAj/92MY4DppzuViDy6u6S', NULL, '88888888', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 1, '2023-12-14 16:51:30', '2023-12-14 18:49:27');
 
 -- --------------------------------------------------------
 
@@ -723,7 +728,8 @@ CREATE TABLE `user_cart` (
 --
 
 INSERT INTO `user_cart` (`id`, `cart_id`, `user_id`, `hash_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(223, 'lb3sv4322', 15, 'zulhjrwm', 1, '2023-12-13 12:41:03', '2023-12-13 12:41:03');
+(223, 'lb3sv4322', 15, 'zulhjrwm', 1, '2023-12-13 12:41:03', '2023-12-13 12:41:03'),
+(227, 'j0ip7a7pl', 15, 'zulhjrwm', 1, '2023-12-14 10:10:12', '2023-12-14 10:10:12');
 
 -- --------------------------------------------------------
 
@@ -957,7 +963,7 @@ ALTER TABLE `faqs`
 -- AUTO_INCREMENT for table `favorite_products`
 --
 ALTER TABLE `favorite_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `forgotpasswords`
@@ -969,7 +975,7 @@ ALTER TABLE `forgotpasswords`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `new_orders`
@@ -1023,7 +1029,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `users_wallet`
@@ -1035,7 +1041,7 @@ ALTER TABLE `users_wallet`
 -- AUTO_INCREMENT for table `user_cart`
 --
 ALTER TABLE `user_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=228;
 
 --
 -- AUTO_INCREMENT for table `user_subscriptions`

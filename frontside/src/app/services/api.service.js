@@ -262,9 +262,9 @@ class ApiServices {
         return response;
       });
   }
-  UsererOrderView(orderId) {
+  SingleOrderView(orderId, urls) {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "user/order/view/" + orderId;
+    const url = this.APP_URL + urls + orderId;
     return axios
       .get(url, {
         headers: {
@@ -300,8 +300,8 @@ class ApiServices {
         return response;
       });
   }
-
-  getUserCartData(filterdata = null) {
+  
+  getUserCartData() {
     const authToken = localStorage.getItem("token");
     return axios
       .get(this.APP_URL + "user/cart", {
@@ -411,19 +411,7 @@ class ApiServices {
         return response;
       });
   }
-  publisherOrderView(orderId) {
-    const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "publisher/order/view/" + orderId;
-    return axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
-      .then((response) => {
-        return response;
-      });
-  }
+
   publisherUpdateOrderStatus(order_id, status) {
     const authToken = localStorage.getItem("token");
     const url = this.APP_URL + "publisher/updateOrderStatus/" + order_id;
@@ -524,7 +512,7 @@ class ApiServices {
   userFavoriteUpdate(id) {
     const authToken = localStorage.getItem("token");
     return axios
-      .get(this.APP_URL + "contentlinks/"+id+"/favorite", {
+      .get(this.APP_URL + "contentlinks/" + id + "/favorite", {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {
@@ -540,6 +528,50 @@ class ApiServices {
       .then((response) => {
         return response;
       });
+  }
+
+  adminGetAllOrders(filterdata = null) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .post(this.APP_URL + "admin/orders", filterdata, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  adminUserList(filterdata = null) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .post(this.APP_URL + "account/user/list", filterdata, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+  createUpdateUser(formData, isEdit) {
+    let url;
+    if (isEdit) {
+      url = "admin/update/user";
+    } else {
+      url = "account/user/create";
+    }
+
+    const authToken = localStorage.getItem("token");
+    return axios.post(this.APP_URL + url, formData, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+  blockUser(id, isDeleted) {
+    const authToken = localStorage.getItem("token");
+    return axios.get(
+      this.APP_URL + "account/user/delete/" + id + "/" + isDeleted,
+      {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }
+    );
   }
 }
 

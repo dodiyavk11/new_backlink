@@ -122,15 +122,8 @@ exports.signIn = async (req, res) => {
 
         // email send if user is not verified
         if (!checkUser.email_verified) {
-            // const EmailToken = generateJWTToken({ userId: checkUser.id }, "30m")
-            // const VerificationLink = `<a href="https://app.7i7.de/#/verification/email/${EmailToken}">klicken Sie hier</a>`
-            // const mail = await emailTemplate(text + VerificationLink)
             const name = checkUser.dataValues.fname + " " + checkUser.dataValues.lname
             const EmailToken = generateJWTToken({ email }, "10m")
-            // const mailTexts = await Models.email_template.findOne({ where: { email_type: 'registration' } })
-            // let text = mailTexts.email_content
-            // let subject = mailTexts.header
-
             let subject = "Complete registration now";
             let text = '<p><span style="font-size: 18pt;"><strong>Hello,</strong></span></p><p><span style="font-size: 12pt;"><span style="font-size: medium;">Thank you for your registration.</span></span></p><p><span style="font-size: 12pt;">Please confirm your email address {user_email} with this link:</span></p><p><span style="background-color: rgb(192, 222, 96);"><strong><span style="font-size: 12pt; background-color: rgb(192, 222, 96); ">{verification_Link}</span></strong></span></p><p><span style="font-size: 14pt;"><strong>Many sizes</strong></span></p>';
             text = text.replace("{user_email}", email);
@@ -142,10 +135,12 @@ exports.signIn = async (req, res) => {
             sendVerifyMail(email, subject, "", mail)
             return res.status(401).send({ status: false, message: "Please check your email address first. The confirmation link will be sent to you by post", data: [] })
         }
+        if(checkUser.isDeleted)
+        {
+            return res.status(401).send({ status: false, message: "Your account in trouble Please contact admin to resolve your issue", data: [] })
+        }
         const token = generateJWTToken({ userId: checkUser.id }, "10h")
         delete checkUser.dataValues.password
-        // checkUser.dataValues.role = ['admin']
-        // checkUser.dataValues.loginRedirectUrl = '/'
         res.status(200).send({ status: true, message: "Login Successful", token, data: checkUser })
 
     } catch (err) {

@@ -74,3 +74,22 @@ exports.isPublisher = async(req, res, next) =>
     res.status(500).send({ status:false, message: "authentication error" })
   }
 }
+
+exports.isAdminAndIsCustomer = async(req, res, next) =>
+{
+  try
+  {
+    const userId = req.userId;
+    const fetchUser = await Models.Users.findOne({
+      attributes: { exclude: ['password'] },
+      where: { id: userId }
+    });
+    if (fetchUser.isAdmin === 2) return res.status(401).send({ status: false, message: "You cannot access this page beacuse your not publisher.", data: [] })
+    next();
+  }
+  catch(err)
+  {
+    console.log(err);
+    res.status(500).send({ status:false, message: "authentication error" })
+  }
+}

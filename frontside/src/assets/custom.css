@@ -186,11 +186,11 @@ spann.createProject
 {
     color: #ff9756;
 }
-.createProjectModal .modal-dialog, .orderConfigureStep1 .modal-dialog, .orderConfigureStep2 .modal-dialog, .addBalanceModal .modal-dialog, .addPublisherDomainModal .modal-dialog
+.createProjectModal .modal-dialog, .orderConfigureStep1 .modal-dialog, .orderConfigureStep2 .modal-dialog, .addBalanceModal .modal-dialog, .addPublisherDomainModal .modal-dialog, .createUserModal .modal-dialog
 {
     max-width: 670px;
 }
-.createProjectModal .modal-content, .orderConfigureStep1 .modal-content , .orderConfigureStep2 .modal-content, .addBalanceModal .modal-content, .addPublisherDomainModal .modal-content
+.createProjectModal .modal-content, .orderConfigureStep1 .modal-content , .orderConfigureStep2 .modal-content, .addBalanceModal .modal-content, .addPublisherDomainModal .modal-content, .createUserModal .modal-content
 {
     background-color: #fff;
     padding: 25px;
@@ -1069,4 +1069,12 @@ input[type="date"]
 .toggleContent
 {
     transition: max-height 0.3s ease-in-out;
+}
+.adminOrdersList .MuiTableCell-root
+{
+    text-align:left !important
+}
+.adminOrdersList .MuiTableSortLabel-icon, .adminUserList .MuiTableSortLabel-icon
+{
+    opacity: 0.6 !important;
 }

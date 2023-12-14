@@ -44,30 +44,33 @@ exports.userList = async(req, res) => {
 exports.deleteUser = async(req, res) => {
 	try
 	{
-		const userId = req.params.id;	
-		const hasRelatedDomains = await Models.Domains.findOne({ where: { user_id: userId } });
-		if (hasRelatedDomains) {
-			await Models.Domains.destroy({ where: { user_id: userId } });
-		}
-		const getUserInfo = await Models.Users.findOne({ where: { id: userId } })	  
-		if (getUserInfo && getUserInfo.dataValues.profile) {
-			unlinkProfile(getUserInfo.dataValues.profile)
-		}
-		const deleteSetting = await Models.Setting.destroy({ where: { user_id: userId } })
-		const deleteUser = await Models.Users.destroy({ where: { id: userId } });		
-		if (deleteUser) {
-			res.status(200).send({
+		const id = req.params.id;	
+		const isDeleted = req.params.isDeleted;
+		// const hasRelatedDomains = await Models.Domains.findOne({ where: { user_id: userId } });
+		// if (hasRelatedDomains) {
+		// 	await Models.Domains.destroy({ where: { user_id: userId } });
+		// 	const domainIds = await Models.Domains.findAll({
+		//       attributes: ['id'],
+		//       where: { user_id: userId },
+		//       raw: true,
+		//     }).map(domain => domain.id);
+
+		//     await Models.customerDomainData.destroy({ where: { domain_id: domainIds } });
+		//     await Models.Domains.destroy({ where: { user_id: userId } });
+		//     await Models.newOrder.destroy({ where: { customer_id: userId } });
+		// }
+		// const getUserInfo = await Models.Users.findOne({ where: { id: userId } })	  
+		// if (getUserInfo && getUserInfo.dataValues.profile) {
+		// 	unlinkProfile(getUserInfo.dataValues.profile)
+		// }
+		// const deleteSetting = await Models.Setting.destroy({ where: { user_id: userId } })
+		// const deleteUser = await Models.Users.destroy({ where: { id: userId } });		
+		const updateUser = await Models.Users.update({ isDeleted }, { where: { id } });
+		res.status(200).send({
 			  status: true,
-			  message: "User deleted successfully.",
-			  data: deleteUser,
-			});
-		} else {
-			res.status(200).send({
-			  status: false,
-			  message: "User not found or something went wrong",
-			  data: null,
-			});
-		}
+			  message: "User Blocked successfully.",
+			  data: updateUser,
+			});		
 	} catch(err)
 	{
 		console.log(err);
@@ -78,17 +81,17 @@ exports.deleteUser = async(req, res) => {
 exports.createUserAdminSide = async(req, res) => {
 	try
 	{
-		const { email,firstName,lastName,password,phone } = req.body
+		const { email,firstName,lastName,password,phone,type } = req.body
 		const profile = req.file
 		const checkUser = await Models.Users.findOne({ where:{ email } })
 		if(checkUser && checkUser.dataValues.email)
 		{
-			return res.status(500).send({ status: false, message: "User already registered", data: [] })
+			return res.status(500).send({ status: false, message: "User already registered with this email", data: [] })
 		}
 		else
 		{
 			const hashedPassword = await bcrypt.hash(password,11);
-			const userInfo = { email,firstName,lastName,password:hashedPassword,phone,isAdmin:0,email_verified:true }
+			const userInfo = { email,firstName,lastName,password:hashedPassword,phone,isAdmin:type,email_verified:true }
 			if(profile) userInfo.profile = profile.filename
 
 			const addUser = await Models.Users.create(userInfo)
@@ -103,5 +106,19 @@ exports.createUserAdminSide = async(req, res) => {
 	{
 		console.log(err);
 		res.status(500).send({ status:false, message:"User create fail,Please try again.", data:[], error:err.message })
+	}
+}
+
+exports.adminToUpdateuser = async(req, res) => {
+	try
+	{
+		const { firstName,lastName,phone,id } = req.body
+		const userInfo = { firstName, lastName, phone }		
+		const updateUser = await Models.Users.update(userInfo, { where: { id } });
+		res.status(200).send({ status: true, message: "User update successfully.",data: [] });
+	}
+	catch(err)
+	{
+		res.status(500).send({ status: false, message: "User profile can not update, an error occured." })
 	}
 }

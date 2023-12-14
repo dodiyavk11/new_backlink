@@ -90,7 +90,10 @@ export class MessageComponents extends Component {
     }
   }
   scrollToBottom = () => {
-    this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if(this.props.isShowTypeMsg)
+    { 
+      this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }    
   };
 
   render() {
@@ -179,22 +182,25 @@ export class MessageComponents extends Component {
                   </p>
                 )}
               </div>
-              <div className="form-outline d-flex flex-row justify-content-start p-3">
-                <textarea
-                  className="form-control"
-                  id="sendMessage"
-                  rows="3"
-                  name="message"
-                  value={message}
-                  placeholder="Type message here..."
-                  onChange={this.handleChange}
-                ></textarea>
-                <i
-                  className="ml-2 h1 mt-3 cursorClass mdi mdi-send" title="Send"
-                  onClick={this.sendMessage}
-                ></i>
-                <div ref={this.messagesEndRef}></div>
-              </div>
+              {this.props.isShowTypeMsg && (
+                <div className="form-outline d-flex flex-row justify-content-start p-3">
+                  <textarea
+                    className="form-control"
+                    id="sendMessage"
+                    rows="3"
+                    name="message"
+                    value={message}
+                    placeholder="Type message here..."
+                    onChange={this.handleChange}
+                  ></textarea>
+                  <i
+                    className="ml-2 h1 mt-3 cursorClass mdi mdi-send"
+                    title="Send"
+                    onClick={this.sendMessage}
+                  ></i>
+                  <div ref={this.messagesEndRef}></div>
+                </div>
+              )}
             </div>
           </div>
         </div>

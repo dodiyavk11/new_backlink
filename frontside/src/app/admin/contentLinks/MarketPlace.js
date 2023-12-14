@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import { CPopover, CButton } from "@coreui/react";
+import ApiServices from "../../services/api.service";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Typography,
   Slider,
