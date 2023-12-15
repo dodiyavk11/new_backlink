@@ -27,6 +27,9 @@ const Plan = lazy(() => import("./admin/plan/Plan"));
 const AdminContentLinks = lazy(() =>
   import("./admin/contentLinks/ContentLinks")
 );
+
+const AdminBacklinkView = lazy(() => import("./admin/contentLinks/BacklinkView"));
+
 const AdminProjects = lazy(() => import("./admin/projects/Projects"));
 const ForgotPassword = lazy(() => import("./user-pages/ForgotPassword"));
 const ChangePasswordViaLink = lazy(() =>
@@ -42,9 +45,8 @@ const PublisherMessages = lazy(() => import("./publisher/message/Messages"));
 const UserViewOrderDetails = lazy(() =>
   import("./orders/UserViewOrderDetails")
 );
-
 const AdminViewOrderDetails = lazy(() => import("./admin/orders/AdminViewOrderDetails"));
-
+const AdminProjectView = lazy(() => import("./admin/projects/ProjectView"));
 const ProjectView = lazy(() => import("./projects/ProjectView"));
 const DomainView = lazy(() => import("./publisher/domain/DomainView"));
 const CartPage = lazy(() => import("./shared/Cart"));
@@ -377,6 +379,13 @@ class AppRoutes extends Component {
                   />
                   <AdminProtected
                     exact
+                    path="/admin/contentlinks/:hash_id"
+                    component={AdminBacklinkView}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  <AdminProtected
+                    exact
                     path="/admin/projects"
                     component={AdminProjects}
                     isAuthenticated={this.state.isAuthenticated}
@@ -387,6 +396,14 @@ class AppRoutes extends Component {
                     exact
                     path="/admin/order/:order_id"
                     component={AdminViewOrderDetails}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  
+                  <AdminProtected
+                    exact
+                    path="/admin/project/:hash_id"
+                    component={AdminProjectView}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />

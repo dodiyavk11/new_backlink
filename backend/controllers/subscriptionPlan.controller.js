@@ -25,7 +25,7 @@ exports.addSubscriptionPlan = async(req, res) => {
 exports.listSubscriptionPlan = async(req, res) => {
 	try
 	{
-		const listPlan = await Models.SubscriptionPlans.findAll();
+		const listPlan = await Models.SubscriptionPlans.findAll({ order: [['price','ASC']] });
 		res.status(200).send({ status: true, message: "Subscription plan listed successfully.", data: listPlan })
 	}
 	catch(err)
@@ -127,5 +127,19 @@ exports.userSubscriptionHistory = async(req, res) => {
 	{
 		console.log(err);
 		res.status(500).send({ status: false, message: "An error occurred while fecthing Subscription History.", data: [], error: err.message });
+	}
+}
+
+exports.updatePlanStatus = async(req, res) => {
+	try
+	{
+		const { id, status } = req.params;
+		const updateStatus = await Models.SubscriptionPlans.update({ status },{ where : { id } });
+		const listPlan = await Models.SubscriptionPlans.findAll({ order: [['price','ASC']] });
+		res.status(200).send({ status: true, message: "Status update successfully", data: listPlan });
+	}
+	catch(err)
+	{
+		res.status(500).send({ status: false, message: "Status can not update, an error occurred.", error: err.message });
 	}
 }

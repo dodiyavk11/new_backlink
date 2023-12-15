@@ -5,7 +5,7 @@ class ApiServices {
   APP_URL = process.env.REACT_APP_BASE_URL;
   getDashboard() {
     const authToken = localStorage.getItem("token");
-    return axios.get(this.APP_URL + "user/dashboard", {
+    return axios.get(`${this.APP_URL}user/dashboard`, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
@@ -14,7 +14,7 @@ class ApiServices {
     const authToken = localStorage.getItem("token");
     return axios
       .post(
-        this.APP_URL + "user/static/amount",
+        `${this.APP_URL}user/static/amount`,
         { amount: amount },
         {
           headers: { Authorization: `Bearer ${authToken}` },
@@ -29,7 +29,7 @@ class ApiServices {
   addUserProject(formData) {
     const authToken = localStorage.getItem("token");
     return axios
-      .post(this.APP_URL + "user/project", formData, {
+      .post(`${this.APP_URL}user/project`, formData, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {
@@ -39,7 +39,7 @@ class ApiServices {
   getUserProjects() {
     const authToken = localStorage.getItem("token");
     return axios
-      .get(this.APP_URL + "user/projects", {
+      .get(`${this.APP_URL}user/projects`, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {
@@ -49,7 +49,7 @@ class ApiServices {
   getDomainCategoryList() {
     const authToken = localStorage.getItem("token");
     return axios
-      .get(this.APP_URL + "domainCategory/list", {
+      .get(`${this.APP_URL}domainCategory/list`, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {
@@ -59,7 +59,7 @@ class ApiServices {
   getNotificationSetting() {
     const authToken = localStorage.getItem("token");
     return axios
-      .get(this.APP_URL + "user/setting", {
+      .get(`${this.APP_URL}user/setting`, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {
@@ -70,7 +70,7 @@ class ApiServices {
   updateNotificationSetting(formData) {
     const authToken = localStorage.getItem("token");
     return axios
-      .patch(this.APP_URL + "user/setting/notification", formData, {
+      .patch(`${this.APP_URL}user/setting/notification`, formData, {
         headers: {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
@@ -83,7 +83,7 @@ class ApiServices {
   getProfileData() {
     const authToken = localStorage.getItem("token");
     return axios
-      .get(this.APP_URL + "account/user/profile", {
+      .get(`${this.APP_URL}account/user/profile`, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {
@@ -93,7 +93,7 @@ class ApiServices {
   updateProfileData(formData) {
     const authToken = localStorage.getItem("token");
     return axios
-      .patch(this.APP_URL + "account/user/profile", formData, {
+      .patch(`${this.APP_URL}account/user/profile`, formData, {
         headers: {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
@@ -107,7 +107,7 @@ class ApiServices {
   customProfileUpdateData(formData, url) {
     const authToken = localStorage.getItem("token");
     return axios
-      .patch(this.APP_URL + url, formData, {
+      .patch(`${this.APP_URL}${url}`, formData, {
         headers: {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
@@ -119,7 +119,7 @@ class ApiServices {
   }
   addToCartContentLink(hash_id) {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "user/cart/add-item/" + hash_id;
+    const url = `${this.APP_URL}user/cart/add-item/${hash_id}`;
     return axios
       .post(
         url,
@@ -137,7 +137,7 @@ class ApiServices {
   }
   orderTextFileUpload(file) {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "files";
+    const url = `${this.APP_URL}files`;
     return axios
       .post(
         url,
@@ -155,7 +155,7 @@ class ApiServices {
   }
   orderUplodedDelete(filename) {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "files/delete/" + filename;
+    const url = `${this.APP_URL}files/delete/${filename}`;
     return axios
       .get(url, {
         headers: {
@@ -232,7 +232,7 @@ class ApiServices {
 
   getUserOrderList() {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "user/orders";
+    const url = `${this.APP_URL}user/orders`;
     return axios
       .post(
         url,
@@ -300,7 +300,18 @@ class ApiServices {
         return response;
       });
   }
-  
+
+  getAdminContentLinkList(filterdata = null) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .post(this.APP_URL + "admin/contentlinks", filterdata, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
   getUserCartData() {
     const authToken = localStorage.getItem("token");
     return axios
@@ -325,27 +336,34 @@ class ApiServices {
 
   getProjectViewData(hash_id) {
     const authToken = localStorage.getItem("token");
-    return axios.get(this.APP_URL + "user/domain/" + hash_id, {
+    return axios.get(`${this.APP_URL}user/domain/${hash_id}`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  AdminProjectViewData(hash_id) {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}admin/project/${hash_id}`, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
 
   updateMonthlyBudget(formData) {
     const authToken = localStorage.getItem("token");
-    return axios.post(this.APP_URL + "user/project/budget", formData, {
+    return axios.post(`${this.APP_URL}user/project/budget`, formData, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
 
   getPublisherDomainViewData(hash_id) {
     const authToken = localStorage.getItem("token");
-    return axios.get(this.APP_URL + "publisher/domain/" + hash_id, {
+    return axios.get(`${this.APP_URL}publisher/domain/${hash_id}`, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
   getPublisherDomainList() {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "publisher/domains";
+    const url = `${this.APP_URL}publisher/domains`;
     return axios
       .get(url, {
         headers: {
@@ -360,7 +378,7 @@ class ApiServices {
   publisherAddDomain(formData) {
     const authToken = localStorage.getItem("token");
     return axios
-      .post(this.APP_URL + "publisher/addDomain", formData, {
+      .post(`${this.APP_URL}publisher/addDomain`, formData, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {
@@ -369,7 +387,7 @@ class ApiServices {
   }
   async publisherUploadExcelFile(fileData) {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "publisher/domain/excelUpload";
+    const url = `${this.APP_URL}publisher/domain/excelUpload`;
     return await axios
       .post(url, fileData, {
         headers: {
@@ -414,7 +432,7 @@ class ApiServices {
 
   publisherUpdateOrderStatus(order_id, status) {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "publisher/updateOrderStatus/" + order_id;
+    const url = `${this.APP_URL}publisher/updateOrderStatus/${order_id}`;
     return axios
       .post(
         url,
@@ -431,7 +449,7 @@ class ApiServices {
   }
   publisherDomainUpdate(domain_id, formData) {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "publisher/updateDomain/" + domain_id;
+    const url = `${this.APP_URL}publisher/updateDomain/${domain_id}`;
     return axios
       .post(url, formData, {
         headers: {
@@ -445,7 +463,7 @@ class ApiServices {
 
   getOrderMessageHistory(orderId) {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "message/get/" + orderId;
+    const url = `${this.APP_URL}message/get/${orderId}`;
     return axios
       .get(url, {
         headers: {
@@ -458,7 +476,7 @@ class ApiServices {
   }
   orderMessageSend(orderId, message) {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "message/send/" + orderId;
+    const url = `${this.APP_URL}message/send/${orderId}`;
     return axios
       .post(
         url,
@@ -476,7 +494,7 @@ class ApiServices {
 
   orderMessageDelete(orderId, msgId) {
     const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "message/delete/" + msgId;
+    const url = `${this.APP_URL}message/delete/${msgId}`;
     return axios
       .post(
         url,
@@ -496,7 +514,7 @@ class ApiServices {
     const authToken = localStorage.getItem("token");
     return axios
       .patch(
-        this.APP_URL + "domain/archive/" + hash_id + "/" + status,
+        `${this.APP_URL}domain/archive/${hash_id}/${status}`,
         {},
         {
           headers: {
@@ -512,7 +530,7 @@ class ApiServices {
   userFavoriteUpdate(id) {
     const authToken = localStorage.getItem("token");
     return axios
-      .get(this.APP_URL + "contentlinks/" + id + "/favorite", {
+      .get(`${this.APP_URL}contentlinks/${id}/favorite`, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {
@@ -560,18 +578,55 @@ class ApiServices {
     }
 
     const authToken = localStorage.getItem("token");
-    return axios.post(this.APP_URL + url, formData, {
+    return axios.post(`${this.APP_URL}${url}`, formData, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
   blockUser(id, isDeleted) {
     const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}account/user/delete/${id}/${isDeleted}`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+  adminBacklinkView(hash_id) {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}admin/contentlinks/${hash_id}`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  adminUpdateBacklinkStatus(hash_id, status, id) {
+    const authToken = localStorage.getItem("token");
     return axios.get(
-      this.APP_URL + "account/user/delete/" + id + "/" + isDeleted,
+      `${this.APP_URL}admin/contentlinks/${hash_id}/${status}/${id}`,
       {
         headers: { Authorization: `Bearer ${authToken}` },
       }
     );
+  }
+
+  adminProjectList(filter = null, tab) {
+    const authToken = localStorage.getItem("token");
+    return axios.get(
+      `${this.APP_URL}admin/domain/list?q=${filter}&tab=${tab}`,
+      {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }
+    );
+  }
+  subscriptionPlan()
+  {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}subscriptionPlan/list`,
+    {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+  updatePlanStatus(id, status) {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}admin/plan/update/${id}/${status}`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
   }
 }
 

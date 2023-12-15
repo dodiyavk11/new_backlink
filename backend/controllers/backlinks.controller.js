@@ -463,3 +463,112 @@ exports.addToFavorite = async(req, res) => {
 		res.status(500).send({ status: false, message: "Contetn link can not added in Favorite, an error occurred.",error:err.message });
 	}
 } 
+
+exports.adminViewPublisherDomain = async(req, res) => {
+	try
+	{
+		const userId = req.userId
+		const { hash_id } = req.params
+		const baseQuery = {
+			include: [
+				{
+					model: Models.domain_category,
+					as: "category",
+					attributes: ['id','name'],
+				},
+				{
+					model: Models.publisherDomainData,
+					as: "contentData",					
+				},
+				{
+					model: Models.newOrder,
+					as: "orderData",		
+					limit:3,			
+				},
+			],
+		}
+		const domainData = await Models.publisherDomain.findOne({ where:{ hash_id: hash_id },...baseQuery });
+		res.status(200).send({ status: true, message: "Backlinks fetch succesfully.", data: domainData });
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message: "Something wnet to wrong.", error: err.message });
+	}
+}
+
+exports.updateBacklinkStatus = async(req ,res) => {
+	try
+	{
+		const { hash_id,status,id } = req.params;
+		const updateStatus = await Models.publisherDomain.update({ status }, { where : { id,hash_id } })
+		res.status(200).send({ status: true, message: "Update successfully.",data: updateStatus });
+	}
+	catch(err)
+	{
+		res.status(500).send({ status: false, message: "Status cannot update, an error occurred.",error: err.message });
+	}
+}
+
+exports.ConetentLinksList = async(req, res) => {
+	try
+	{		
+		const { category_id,tld,price,language,domain_name,favoriteFilter } = req.body;
+		const userId = req.userId;
+		const filters = {
+			'category_id': category_id,
+			'tld': tld,
+			'price': price,
+			// 'contentData.language': language,
+			'language': language,
+			'domain_name': domain_name,
+		};
+		const baseQuery = {
+			include: [
+				{
+				  model: Models.domain_category,
+				  as: 'category',
+				  attributes: ['id', 'name'],
+				},
+				{
+				  model: Models.publisherDomainData,
+				  as: 'contentData',
+				},
+			],
+		  	where: {},
+		};
+
+		if (filters['category_id'] && filters['category_id'].length > 0) {
+			baseQuery.where['category_id'] = filters['category_id'];
+		}
+
+		if (filters['tld'] && filters['tld'].length > 0) {
+			baseQuery.where['tld'] = filters['tld'];
+		}
+
+		if (filters['price'] && filters['price'].min && filters['price'].max) {
+			baseQuery.where['price'] = {
+				[Op.gte]: filters['price'].min,
+				[Op.lte]: filters['price'].max,
+			};
+		}
+
+		if (filters['contentData.language'] && filters['contentData.language'].length > 0) {
+			baseQuery.where['$contentData.language$'] = filters['contentData.language'];
+		}
+		if (filters['domain_name'] !== undefined && filters['domain_name'] !== '')
+		{
+			baseQuery.where['domain_name'] = {
+			    [Op.like]: `%${filters['domain_name']}%`,
+			  };
+		}		
+
+		const contentData = await Models.publisherDomain.findAll({ ...baseQuery,order: [['id', 'DESC']] });		
+		res.status(200).send({ status: true, message: "Content links get successfully.", data:contentData });
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message: "Something went to wrong, Please try again.", data: [] })		;
+	}
+}

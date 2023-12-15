@@ -4,6 +4,7 @@ import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import { CPopover, CButton } from "@coreui/react";
 import ApiServices from "../../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
+import TimeAgo from "timeago-react";
 import "react-toastify/dist/ReactToastify.css";
 import {
   Typography,
@@ -28,8 +29,8 @@ export class ContentLinks extends Component {
       page: 0,
       searchValue: "",
       rowsPerPage: 10,
-      orderBy: "price",
-      order: "asc",
+      orderBy: "id",
+      order: "desc",
       selectedRow: null,
       orderData: [],
       showPopover: false,
@@ -79,7 +80,7 @@ export class ContentLinks extends Component {
   gotoViewContentLink = (hash_id, event, index) => {
     const nonClickableTags = ["button", "svg", "path"];
     if (!nonClickableTags.includes(event.target.tagName.toLowerCase())) {
-      this.props.history.push(`/content/${hash_id}`);
+      this.props.history.push(`/admin/contentlinks/${hash_id}`);
     }
   };
 
@@ -182,11 +183,11 @@ export class ContentLinks extends Component {
   };
 
   fetchContentLinkData(filter = null) {
-    ApiServices.getContentLinkList(filter).then(
+    ApiServices.getAdminContentLinkList(filter).then(
       (res) => {
         if (res.data.status) {
           this.setState({
-            rows: res.data.data.contentData,
+            rows: res.data.data,
             isDisable: false,
           });
         }
@@ -248,6 +249,7 @@ export class ContentLinks extends Component {
       isDisable,
       searchValue,
     } = this.state;
+
     const columns = [
       {
         id: "name",
@@ -362,26 +364,36 @@ export class ContentLinks extends Component {
         ),
       },
       {
+        id: "created_at",
+        label: "Created",
+        align: "right",
+        width: 90,
+        sortable:false,
+        renderCell: (row) => (
+          <TimeAgo datetime={row.created_at} locale="en" style={{fontSize:"10px"}}/>
+        ),
+      },
+      {
         id: "dr",
         label: "DR",
         align: "right",
         width: 90,
         renderCell: (row) => <span>{row.contentData.domain_rating}</span>,
       },
-      {
-        id: "da",
-        label: "DA",
-        align: "right",
-        width: 90,
-        renderCell: (row) => <span>{row.contentData.authority}</span>,
-      },
-      {
-        id: "svi",
-        label: "SI",
-        align: "right",
-        width: 90,
-        renderCell: (row) => <span>{row.contentData.visibility_index}</span>,
-      },
+      // {
+      //   id: "da",
+      //   label: "DA",
+      //   align: "right",
+      //   width: 90,
+      //   renderCell: (row) => <span>{row.contentData.authority}</span>,
+      // },
+      // {
+      //   id: "svi",
+      //   label: "SI",
+      //   align: "right",
+      //   width: 90,
+      //   renderCell: (row) => <span>{row.contentData.visibility_index}</span>,
+      // },      
       {
         id: "tf",
         label: "TF",
@@ -404,6 +416,21 @@ export class ContentLinks extends Component {
         renderCell: (row) => <span>{row.contentData.traffic}</span>,
       },
       {
+        id: "status",
+        label: "Status",
+        width: 90,
+        align: "right",
+        renderCell: (row) => (
+          <span
+            className={`fontSize13 badge ${
+              row.status ? "badge-success" : "badge-danger"
+            }`}
+          >
+            {row.status ? "Active" : "Inactive"}
+          </span>
+        ),
+      },
+      {
         id: "price",
         label: "PRICE",
         width: 160,
@@ -411,7 +438,7 @@ export class ContentLinks extends Component {
         renderCell: (row) => (
           <span className="fontBold700 textColorCls">${row.price}</span>
         ),
-      },      
+      },
     ];
 
     return (

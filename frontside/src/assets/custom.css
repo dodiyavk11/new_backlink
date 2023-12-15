@@ -617,6 +617,10 @@ div:has(.css-1pcexqc-container) {
 .promo-container {
     margin-top:50px;
 }
+
+.adminPlan .promo-container {
+    margin-top:0px;
+}
 .promos {
     margin: 0 auto
 }
@@ -749,6 +753,9 @@ div:has(.css-1pcexqc-container) {
         width: 33.333%;
         margin: 15px 0 0;
         transition: transform 0.25s ease-out
+    }
+    .adminPlan .promo {
+        margin: 0px 0 0;
     }
     .promo.first {
         border-right: none
@@ -1077,4 +1084,14 @@ input[type="date"]
 .adminOrdersList .MuiTableSortLabel-icon, .adminUserList .MuiTableSortLabel-icon
 {
     opacity: 0.6 !important;
+}
+.bundleLinkPage .mdi.mdi-checkbox-marked-circle
+{
+    color:#ff9756;
+    font-size:17px;
+}
+.adminPlan .badge-success
+{
+    border: 1px solid #ff9756 !important;
+    background-color: #ff9756 !important;
 }

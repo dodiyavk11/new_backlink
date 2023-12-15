@@ -84,7 +84,7 @@ exports.isAdminAndIsCustomer = async(req, res, next) =>
       attributes: { exclude: ['password'] },
       where: { id: userId }
     });
-    if (fetchUser.isAdmin === 2) return res.status(401).send({ status: false, message: "You cannot access this page beacuse your not publisher.", data: [] })
+    if (fetchUser.isAdmin === 2) return res.status(401).send({ status: false, message: "You cannot access this page.", data: [] })
     next();
   }
   catch(err)

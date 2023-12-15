@@ -7,9 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Box from "@material-ui/core/Box";
-import ActiveProjects from "./ActiveProject";
-import ArchivedProjects from "./ArchivedProject";
-import CreateProjectModal from "../shared/CreateProjectModal";
+import ProjectList from "./ProjectList";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../assets/custom.css";
 
@@ -17,44 +15,23 @@ export class Projects extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeKey: "home",
       value: "1",
-      projectsData: [],
-      showModal: false,
+      searchValue: "",
+      archivedProject: [],
+      nonArchivedProject: [],
     };
   }
+  handleOnSearch = (e) => {
+    this.handleLoadData(e.target.value, this.state.value);
+    this.setState({ searchValue: e.target.value });
+  };
+
   handleChange = (event, newValue) => {
     this.setState({ value: newValue });
-  };
-  goToProjectViewLink = (hash_id) => {
-    this.props.history.push(`/projects/${hash_id}`);
-  };
-  showProjectModal = () => this.setState({ showModal: true });
-  closeProjectModal = () => this.setState({ showModal: false });
+  }; 
 
-  handleFormSubmit = (formData) => {
-    ApiServices.addUserProject(formData).then(
-      () => {
-        this.closeProjectModal();
-        // this.handleLoadData();
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        toast.error(resMessage, {
-          position: "top-center",
-          autoClose: 2000,
-        });
-      }
-    );
-  };
-
-  handleLoadData = () => {
-    ApiServices.getUserProjects()
+  handleLoadData = (filter = null, tab = 0) => {
+    ApiServices.adminProjectList(filter, tab)
       .then((res) => {
         if (!res.status) {
           toast.error(res.data.message, {
@@ -62,7 +39,22 @@ export class Projects extends Component {
             autoClose: 2000,
           });
         } else {
-          this.setState({ projectsData: res.data.data });
+          if (filter === null && tab === 0) {
+            this.setState({
+              archivedProject: res.data.data.archivedProject,
+              nonArchivedProject: res.data.data.nonArchivedProject,
+            });
+          } else {
+            if (tab === "1") {
+              this.setState({
+                nonArchivedProject: res.data.data.nonArchivedProject,
+              });
+            } else {
+              this.setState({
+                archivedProject: res.data.data.archivedProject,
+              });
+            }
+          }
         }
       })
       .catch((err) => {
@@ -86,18 +78,13 @@ export class Projects extends Component {
     this.handleLoadData();
   }
   render() {
-    const { value } = this.state;
+    const { value, searchValue } = this.state;
     return (
       <div className="projectsPage">
         <div className="page-header">
-          <h3 className="fontBold latterSpacing">Projects</h3>
+          <h3 className="fontBold latterSpacing">Projects List</h3>
         </div>
         <ToastContainer />
-        <CreateProjectModal
-          showModal={this.state.showModal}
-          handleClose={this.closeProjectModal}
-          onSubmit={this.handleFormSubmit}
-        />
         <div className="row">
           <div className="col-lg-12 grid-margin">
             <div className="card mb-4 bRadius">
@@ -123,7 +110,7 @@ export class Projects extends Component {
                               Active Projects
                               <span className="notification-icon--fixed">
                                 <small className="notification-badge fontBold500">
-                                  {this.state.projectsData.length}
+                                  {this.state.nonArchivedProject.length}
                                 </small>
                               </span>
                             </div>
@@ -139,7 +126,7 @@ export class Projects extends Component {
                               Archived Projects
                               <span className="notification-icon--fixed">
                                 <small className="notification-badge fontBold500">
-                                  {this.state.projectsData.length}
+                                  {this.state.archivedProject.length}
                                 </small>
                               </span>
                             </div>
@@ -149,51 +136,46 @@ export class Projects extends Component {
                       </Tabs>
                     </Box>
                   </Paper>
-                  <div className="p-2 bd-highlight d-flex align-items-center justify-content-center">
-                    <h5 className="h5 mt-2">
-                      <span
-                        className="createProject"
-                        onClick={this.showProjectModal}
-                      >
-                        <i className="mdi mdi-plus mr-2"></i>Create Project
-                      </span>
-                    </h5>
-                  </div>
                 </div>
-                <hr style={{ marginTop: "0rem" }} />
                 <div className="Tabcontent">
+                  <input
+                    type="search"
+                    placeholder="Search"
+                    className="form-control border bRadius mt-3"
+                    onChange={this.handleOnSearch}
+                    value={searchValue}
+                  />
+                  <hr />
                   {value === "1" &&
-                      <ActiveProjects/>
-                    }
-                  {value === "2" &&
-                    (this.state.projectsData.length > 0 ? (
-                      <div className="row">
-                        {this.state.projectsData.map((project) => (
-                          <ArchivedProjects
-                            key={project.id}
-                            project={project}
-                            goToProjectViewLink={this.goToProjectViewLink}
-                          />
-                        ))}
-                      </div>
+                    (this.state.nonArchivedProject.length > 0 ? (
+                      <ProjectList
+                        activeProjects={this.state.nonArchivedProject}
+                      />
                     ) : (
                       <center>
                         <div className="mt-5 mx-auto">
-                          empty img2
+                          <img
+                            src={require("../../../assets/images/empty.png")}
+                            alt="No data found..."
+                          />
                         </div>
-                        <h2>No Project</h2>
-                        <p>
-                          No Project You do not have any Project yet. As soon as
-                          you add your first Project, it will show up here.
-                        </p>
-                        <button className="btn btn-rounded btn-fw">
-                          <span
-                            className="createProject"
-                            onClick={this.showProjectModal}
-                          >
-                            <i className="mdi mdi-plus mr-2"></i>Create Project
-                          </span>
-                        </button>
+                        <h2>No Active Project</h2>
+                      </center>
+                    ))}
+                  {value === "2" &&
+                    (this.state.archivedProject.length > 0 ? (
+                      <ProjectList
+                        activeProjects={this.state.archivedProject}
+                      />
+                    ) : (
+                      <center>
+                        <div className="mt-5 mx-auto">
+                          <img
+                            src={require("../../../assets/images/empty.png")}
+                            alt="No data found..."
+                          />
+                        </div>
+                        <h2>No Archived Projects</h2>
                       </center>
                     ))}
                 </div>

@@ -1,4 +1,4 @@
-const { addSubscriptionPlan,listSubscriptionPlan,getSubscriptionPlan,updateSubscriptionPlan, deleteSubscriptionPlan,userSubscriptionHistory } = require("../controllers/subscriptionPlan.controller")
+const { addSubscriptionPlan,listSubscriptionPlan,getSubscriptionPlan,updateSubscriptionPlan, deleteSubscriptionPlan,userSubscriptionHistory ,updatePlanStatus} = require("../controllers/subscriptionPlan.controller")
 const {  isLogin, isAdmin  } = require("../middleware/checkAuthenticate")
 module.exports = (app) => {
 	app.post("/subscriptionPlan/add", [isLogin,isAdmin], addSubscriptionPlan);
@@ -8,4 +8,5 @@ module.exports = (app) => {
 	app.delete("/subscriptionPlan/delete/:id", [isLogin, isAdmin], deleteSubscriptionPlan);
 
 	app.get("/users/subscription/history",[isLogin,isAdmin], userSubscriptionHistory)
+	app.get("/admin/plan/update/:id/:status", [isLogin,isAdmin], updatePlanStatus)
 }

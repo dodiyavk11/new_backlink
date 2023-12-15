@@ -4,7 +4,11 @@ const { Op } = require('sequelize');
 
 exports.getDomain = async (req, res) => {
   try {
-    const { q } = req.query;
+    const { q,tab } = req.query;
+    let whereCon;
+    if (tab !== "0" && q !== "null" && q !== "") {
+	  whereCon = { isArchieved: tab === "1" ? 0 : 1 };
+	}
     const baseQuery = {
       include: [
         {
@@ -18,13 +22,28 @@ exports.getDomain = async (req, res) => {
           attributes: ['name', 'description'],
         },
       ],
+      where : whereCon
     };
-
-    if (q) {
+    if (q !== "null" && q !== "") {
       baseQuery.where = {
         [Op.or]: [
           {
             '$category.name$': {
+              [Op.like]: `%${q}%`,
+            },
+          },
+          {
+            '$user.firstName$': {
+              [Op.like]: `%${q}%`,
+            },
+          },
+          {
+            '$user.lastName$': {
+              [Op.like]: `%${q}%`,
+            },
+          },
+          {
+            '$user.email$': {
               [Op.like]: `%${q}%`,
             },
           },
@@ -37,14 +56,11 @@ exports.getDomain = async (req, res) => {
       };
     }
 
-    const domain = await Models.Domains.findAll(baseQuery);
+    const domainList = await Models.Domains.findAll(baseQuery);    
+    const archivedProject = domainList.filter(domain => domain.isArchieved === 1);
+	const nonArchivedProject = domainList.filter(domain => domain.isArchieved === 0);
 
-    const domainsData = domain.map((val) => {
-      const domainData = val.dataValues;
-      return domainData;
-    });
-
-    res.status(200).send({ status: true, message: "Domain fetched successfully", data: domainsData });
+    res.status(200).send({ status: true, message: "Domain fetched successfully", data: { archivedProject,nonArchivedProject } });
   } catch (err) {
     console.error(err);
     res.status(500).send({ status: false, message: "Unable to fetch Domain, Please try again later.", data: [], error: err.message });
@@ -237,5 +253,43 @@ exports.editDomain = async(req, res) => {
 		    .status(500)
 		    .send({ status: false, message: "Something went wrong." ,data: [],  error: err.message});
 		}
-
+}
+exports.getUserDomainDetails = async(req, res) => {
+	try{
+		const userId = req.userId;
+		const { hash_id } = req.params;
+		const baseQuery = {
+		  include: [
+		    {
+		      model: Models.domain_category,
+		      as: 'category',
+		      attributes: ['id','name'],
+		    },
+		    {
+		      model: Models.customerDomainData,
+		      as: 'contentData',
+		    },		    
+		  ],
+		}
+		const domainData = await Models.Domains.findOne({ where:{ hash_id:hash_id }, ...baseQuery });
+		const customer_id = domainData.user_id;
+		const getOrders = await Models.newOrder.findAll({
+							  where: { project_id: hash_id,customer_id  },
+							  limit: 3,
+							  include: [
+							    {
+							      model: Models.publisherDomain,
+							      as: 'domain',
+							      attributes: ['domain_name'],
+							    },
+							  ],
+							});
+		domainData.dataValues.orderData = getOrders;
+		res.status(200).send({ status: true, message: "Domain fetch successfully.", data: domainData });
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.status(500).send({ status: false, message: "Something went to wrong.", error: err.message });
+	}
 }
