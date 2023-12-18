@@ -53,11 +53,11 @@ exports.updateSubscriptionPlan = async(req, res) => {
 	try
 	{
 		const { id } = req.params;
-		const { name, description, price, cancellation_period, max_domains_per_month, max_orders, status,validity } = req.body;
+		const { name, description, price, cancellation_period, max_domains_per_month, max_orders, status,validity,credits_price,credits_quota } = req.body;
 		let isValid = fieldValidation(req.body)
 		if(isValid.isTrue)
 		{
-			const planInfo = { name, description, price:parseFloat(price), cancellation_period, max_domains_per_month, max_orders, status, validity };
+			const planInfo = { name, description, price:parseFloat(price), cancellation_period, max_domains_per_month, max_orders, credits_price, credits_quota, status, validity };
 			const updateData = await Models.SubscriptionPlans.update(planInfo,{ where:{ id:id } })
 			res.status(200).send({ status: true, message: "Subscription plan updated successfully.", data: updateData })
 		}

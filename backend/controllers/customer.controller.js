@@ -460,3 +460,16 @@ exports.updateArchiveProject = async(req, res) => {
 		res.status(500).send({ status: false, message: "Project Archive can not update, an error occured.",error:err.message });
 	}
 }
+
+exports.getUserWalletBalance = async(req, res) => {
+	try
+	{
+		const user_id = req.userId;
+		const getWallet = await Models.UserWallet.findOne({ where:{ user_id } });
+		res.status(200).send({ status: true, message: "Wallet amount fetched successfully", data: getWallet });
+	}
+	catch(err)
+	{
+		res.status(500).send({ status: false, message: "Something went to wrong" })
+	}
+}

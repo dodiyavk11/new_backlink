@@ -3,12 +3,9 @@ const { unlinkAttachement } = require("../utils/deleteFile")
 
 exports.createEmailTemplate = async (req, res) => {
     try {         
-        const { email_title } = req.body
-        const { email_type } = req.body
-        const { email_content } = req.body
-        const { header } = req.body
+        const { email_title, email_type, email_content, header,isDefault } = req.body;
         const file = req.file ? req.file.filename : null;
-        const emailData = { email_title, email_type, email_content,header,file}
+        const emailData = { email_title, email_type, email_content,header,file,isDefault}
         const templateAdded = await Models.email_format.create(emailData)
         res.status(200).send({ status: true, message: "Email templated added successfully", data: templateAdded });
     } catch (err) {

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2023 at 02:21 PM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Generation Time: Dec 18, 2023 at 02:09 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -35,7 +35,7 @@ CREATE TABLE `blogs` (
   `status` int(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `blogs`
@@ -67,7 +67,7 @@ CREATE TABLE `customer_domain_data` (
   `authority` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `customer_domain_data`
@@ -96,7 +96,7 @@ CREATE TABLE `domains` (
   `hash_id` varchar(25) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `domains`
@@ -119,7 +119,7 @@ CREATE TABLE `domain_categories` (
   `description` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `domain_categories`
@@ -176,7 +176,7 @@ CREATE TABLE `domain_tags` (
   `status` int(11) NOT NULL DEFAULT 1,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `domain_tags`
@@ -199,23 +199,25 @@ CREATE TABLE `email_formats` (
   `email_content` text DEFAULT NULL,
   `header` text DEFAULT NULL,
   `file` varchar(255) DEFAULT NULL,
+  `isDefault` int(1) DEFAULT 0,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `email_formats`
 --
 
-INSERT INTO `email_formats` (`id`, `email_title`, `email_type`, `email_content`, `header`, `file`, `createdAt`, `updatedAt`) VALUES
-(2, 'Registration', 'registration', '<p><span style=\"font-size: 18pt;\"><strong>Hello {user_name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Thank you very much for your registration.</span></span></p>\n<p><span style=\"font-size: 12pt;\">Please confirm your email address\n {user_email} with this link:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: 12pt; background-color: rgb(192, 222, 96);\">{verification_Link}</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'Please complete registration', NULL, '2023-09-19 11:27:57', '2023-09-19 11:27:57'),
-(3, 'New Order', 'create_new_order', '<p><span style=\"font-size: 18pt;\"><strong>{name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">The Backlink team has created the order \"{order_name}\" for you.</span></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Register now on the platform:</span></span></p>\n<p><span style=\"background-color: rgb(192, 222, 96); font-size: 12pt;\"><strong><span style=\"font-size: medium;\">Backlink</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'Backlink has created an order ', NULL, '2023-09-22 12:16:36', '2023-09-22 12:16:36'),
-(4, 'Order status changes', 'order_status', '<p><span style=\"font-size: 18pt;\"><strong>Hello,</strong> {name}</span></p>\n<p><span style=\"font-size: 12pt;\">The status of your order  \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</span></p>\n<p><span style=\"font-size: 12pt;\">Take a look at your order now:</span></p>\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: medium;\">https://</span></strong></span></p>\n<p>&nbsp;</p>', 'There is news about your order', NULL, '2023-09-26 12:04:46', '2023-09-26 12:04:46'),
-(5, 'Welcome', 'welcome', '<p><span style=\"font-size: 18pt;\"><strong>Hello {user_name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Thank you very much for your registration and Verify email your account now activated .</span></span></p>\n<a style=\"font-size: 12pt; background-color: rgb(192, 222, 96);text-decoration:none;padding:10px\" href=\"https://www.google.co.in/\" title=\"Login to access account\" target=\"_blank\">Login</a>', 'Welcome to Backling family', 'attachement_1695786722177.pdf', '2023-09-27 09:22:02', '2023-09-27 09:22:02'),
-(6, 'Subscription Confirmed', 'subscription_purchase', '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td align=\"center\">\n            <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color: #ffffff; padding: 20px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding: 30px 0;\">\n                        <h1 style=\"color: #333; font-size: 28px; margin: 0;\">Subscription Confirmed</h1>\n                    </td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 20px;\">\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            Dear {username},<br><br>\n                            Thank you for subscribing to our plan. You\'re now part of our exclusive community!<br><br>\n                            Here are your subscription details:<br>\n                        </p>\n                        <ul style=\"list-style: none; padding-left: 0;\">\n                            <li><strong>Plan Name:</strong> {planname}</li>\n                            <li><strong>Price:</strong> {price}</li>\n                            <li><strong>Start Date:</strong> {startdate}</li>\n                            <li><strong>End Date:</strong> {enddate}</li>\n                        </ul>\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            If you have any questions or need assistance, feel free to contact our support team.<br><br>\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td align=\"center\" style=\"background-color: #f2f2f2; padding: 20px 0;\">\n                        <p style=\"color: #777; font-size: 14px;\">Best regards, <b>Backlink.com<b></p>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>', 'Your Subscription is Confirmed.', NULL, '2023-09-28 13:17:59', '2023-09-28 13:17:59'),
-(7, 'Subscription Expired', 'subscription_expire', '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td align=\"center\">\n            <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color: #ffffff; padding: 20px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding: 30px 0;\">\n                        <h1 style=\"color: #333; font-size: 28px; margin: 0;\">Subscription Plan Expired</h1>\n                    </td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 20px;\">\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            Dear {username},<br><br>\n                            We regret to inform you that your subscription plan has expired. Your access to our services is now limited.<br><br>\n                            Here are the details of your expired subscription plan:<br>\n                        </p>\n                        <ul style=\"list-style: none; padding-left: 0;\">\n                            <li><strong>Plan Name:</strong> {planname}</li>\n                            <li><strong>Price:</strong> {price}</li>\n                            <li><strong>Start Date:</strong> {startdate}</li>\n                            <li><strong>End Date:</strong> {enddate}</li>\n                        </ul>\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            If you wish to continue using our services, please renew your subscription plan.<br><br>\n                        </p>\n                    </td>\n                </tr>\n                <tr>\n                    <td align=\"center\" style=\"background-color: #f2f2f2; padding: 20px 0;\">\n                        <p style=\"color: #777; font-size: 14px;\">Best regards, <b>Backlinks</b></p>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>', 'Subscription Plan Expired', NULL, '2023-09-28 14:58:33', '2023-09-28 14:58:33'),
-(8, 'New domain added', 'new_domain_added', '<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td align=\"center\">\n            <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color: #ffffff; padding: 20px;\">\n                <tr>\n                    <td align=\"center\" style=\"padding: 30px 0;\">\n                        <h1 style=\"color: #333; font-size: 28px; margin: 0;\">New domain added in your Portfolio</h1>\n                    </td>\n                </tr>\n                <tr>\n                    <td style=\"padding: 20px;\">\n                        <p style=\"color: #555; font-size: 16px; line-height: 1.5;\">\n                            Dear {username},<br><br>\n                            We inform you that your Portfolio added new domain.                                </p>\n                       <p> Here are the details of your new added domain</p>\n                        <ul style=\"list-style: none; padding-left: 0;\">\n                            <li><strong>Domain name:</strong> {domain_name}</li>\n                            <li><strong>Price:</strong> {price}</li>\n                            <li><strong>Category:</strong> {category}</li>\n                        </ul>                        \n                    </td>\n                </tr>\n                <tr>\n                    <td align=\"center\" style=\"background-color: #f2f2f2; padding: 20px 0;\">\n                        <p style=\"color: #777; font-size: 14px;\">Best regards, <b>Backlinks</b></p>\n                    </td>\n                </tr>\n            </table>\n        </td>\n    </tr>\n</table>', 'New Domain added in your Portfolio', NULL, '2023-10-11 15:14:59', '2023-10-11 15:14:59'),
-(9, 'Order Cancel', 'order_cancel', '<p><span style=\"font-size: 18pt;\"><strong>Hello,</strong> {name}</span></p>\r\n<p><span style=\"font-size: 12pt;\">The status of your order  \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</span></p>\r\n<p>Your order has been Cancelled successfully,and <strong>Rs.{amount}</strong> refunded in your wallet.</p>\r\n<p><span style=\"font-size: 12pt;\">Take a look at your order now:</span></p>\r\n<p><span style=\"background-color: rgb(192, 222, 96);\"><strong><span style=\"font-size: medium;\">https://</span></strong></span></p>\r\n<p>&nbsp;</p>', 'Your order has been Cancelled successfully', NULL, '2023-10-12 14:13:23', '2023-10-12 14:13:23');
+INSERT INTO `email_formats` (`id`, `email_title`, `email_type`, `email_content`, `header`, `file`, `isDefault`, `createdAt`, `updatedAt`) VALUES
+(2, 'Registration', 'registration', '<p><strong>Hello {user_name},</strong></p><p>Thank you very much for your registration.</p><p>Please confirm your email address {user_email} with this link:</p><p><strong style=\"background-color: rgb(192, 222, 96);\">{verification_Link}</strong></p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked.com</strong></a></p>', 'Please complete registration', NULL, 1, '2023-09-19 11:27:57', '2023-12-18 15:48:43'),
+(3, 'New Order', 'create_new_order', '<p><span style=\"font-size: 18pt;\"><strong>{name},</strong></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">The Backlink team has created the order \"{order_name}\" for you.</span></span></p>\n<p><span style=\"font-size: 12pt;\"><span style=\"font-size: medium;\">Register now on the platform:</span></span></p>\n<p><span style=\"background-color: rgb(192, 222, 96); font-size: 12pt;\"><strong><span style=\"font-size: medium;\">Backlink</span></strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Best regards</strong></span></p>', 'Backlink has created an order ', NULL, 1, '2023-09-22 12:16:36', '2023-09-22 12:16:36'),
+(4, 'Order status changes', 'order_status', '<p><strong>Hello,</strong> {name}</p><p>The status of your order \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</p><p>Take a look at your order now:</p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\">Login</a>&nbsp;</p>', 'There is news about your order', NULL, 1, '2023-09-26 12:04:46', '2023-12-18 13:19:57'),
+(5, 'Welcome', 'welcome', '<p><strong>Hello {user_name},</strong></p><p>Thank you very much for your registration and Verify email your account now activated .</p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: rgb(192, 222, 96);\">Login</a></p>', 'Welcome to Backling family', 'attachement_1702894693356.pdf', 1, '2023-09-27 09:22:02', '2023-12-18 15:48:13'),
+(6, 'Subscription Confirmed', 'subscription_purchase', '<h1>Subscription Confirmed</h1><p>Dear {username},</p><p><br></p><p>Thank you for subscribing to our plan. You\'re now part of our exclusive community!</p><p><br></p><p>Here are your subscription details:</p><ul><li><strong>Plan Name:</strong> {planname}</li><li><strong>Price:</strong> {price}</li><li><strong>Start Date:</strong> {startdate}</li><li><strong>End Date:</strong> {enddate}</li></ul><p>If you have any questions or need assistance, feel free to contact our support team.</p><p><br></p><p>Best regards, <a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked.com</strong></a></p>', 'Your Subscription is Confirmed.', NULL, 1, '2023-09-28 13:17:59', '2023-12-18 13:22:15'),
+(7, 'Subscription Expired', 'subscription_expire', '<h1>Subscription Plan Expired</h1><p>Dear {username},</p><p><br></p><p>We regret to inform you that your subscription plan has expired. Your access to our services is now limited.</p><p><br></p><p>Here are the details of your expired subscription plan:</p><ul><li><strong>Plan Name:</strong> {planname}</li><li><strong>Price:</strong> {price}</li><li><strong>Start Date:</strong> {startdate}</li><li><strong>End Date:</strong> {enddate}</li></ul><p>If you wish to continue using our services, please renew your subscription plan.</p><p><br></p><p>Best regards, <a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked</strong></a></p>', 'Subscription Plan Expired', NULL, 1, '2023-09-28 14:58:33', '2023-12-18 13:21:40'),
+(8, 'New domain added', 'new_domain_added', '<h1>New domain added in your Portfolio</h1><p>Dear {username},</p><p><br></p><p>We inform you that your Portfolio added new domain.</p><p>Here are the details of your new added domain</p><ul><li><strong>Domain name:</strong> {domain_name}</li><li><strong>Price:</strong> {price}</li><li><strong>Category:</strong> {category}</li></ul><p>Best regards, <a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked</strong></a></p>', 'New Domain added in your Portfolio', NULL, 1, '2023-10-11 15:14:59', '2023-12-18 13:20:45'),
+(9, 'Order Cancel', 'order_cancel', '<p><strong>Hello,</strong> {name}</p><p>The status of your order \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</p><p>Your order has been Cancelled successfully,and <strong>Rs.{amount}</strong> refunded in your wallet.</p><p>Take a look at your order now:</p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: rgb(192, 222, 96);\"><strong>Login</strong></a></p><p>&nbsp;</p>', 'Your order has been Cancelled successfully', NULL, 1, '2023-10-12 14:13:23', '2023-12-18 13:20:23'),
+(11, 'Order Delete', 'order_delete', '<p>Hi {username},</p><p>Your Order {ordername} has been deleted successfully.</p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><em>login</em> to view</a></p>', 'Your Order has been delete ', NULL, 0, '2023-12-18 16:05:47', '2023-12-18 16:06:32');
 
 -- --------------------------------------------------------
 
@@ -230,7 +232,7 @@ CREATE TABLE `faqs` (
   `status` int(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `faqs`
@@ -252,7 +254,7 @@ CREATE TABLE `favorite_products` (
   `user_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `favorite_products`
@@ -269,8 +271,8 @@ INSERT INTO `favorite_products` (`id`, `user_id`, `product_id`, `created_at`) VA
 
 CREATE TABLE `forgotpasswords` (
   `id` int(11) NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `token` varchar(255) DEFAULT NULL,
   `createdAt` datetime DEFAULT current_timestamp(),
   `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -313,7 +315,7 @@ CREATE TABLE `messages` (
   `role` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `messages`
@@ -362,7 +364,7 @@ CREATE TABLE `new_orders` (
   `chooseByBacklink` int(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `new_orders`
@@ -406,7 +408,7 @@ CREATE TABLE `notifications` (
   `email_recommendations_available` tinyint(1) DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `notifications`
@@ -434,7 +436,7 @@ CREATE TABLE `orderfiles` (
   `link` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orderfiles`
@@ -467,7 +469,7 @@ CREATE TABLE `orders` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `soft_delete` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -495,7 +497,7 @@ CREATE TABLE `publisher_domains` (
   `hash_id` varchar(25) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `publisher_domains`
@@ -528,7 +530,7 @@ CREATE TABLE `publisher_domain_data` (
   `authority` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `publisher_domain_data`
@@ -558,14 +560,14 @@ CREATE TABLE `subscription_plans` (
   `validity` int(11) NOT NULL COMMENT 'in Days',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `subscription_plans`
 --
 
 INSERT INTO `subscription_plans` (`id`, `name`, `description`, `price`, `cancellation_period`, `max_domains_per_month`, `max_orders`, `credits_price`, `credits_quota`, `status`, `validity`, `created_at`, `updated_at`) VALUES
-(1, 'Basic', 'Basic plan for indiindividual use', 60, 30, 10, 5, NULL, NULL, 1, 30, '2023-09-27 05:20:00', '2023-09-29 07:05:15'),
+(1, 'Basic', 'Basic plan for indiindividual use', 65, 30, 10, 5, '0.00', 0, 1, 30, '2023-09-27 05:20:00', '2023-12-18 10:38:20'),
 (2, 'Medium ', 'Medium plan for indiindividual comapany use', 110, 30, 50, 25, NULL, NULL, 1, 30, '2023-09-27 05:22:07', '2023-09-28 06:42:18'),
 (3, 'Agency', 'for Agency use', 200, 30, 100, 50, NULL, NULL, 1, 30, '2023-09-27 05:23:28', '2023-09-28 06:43:03');
 
@@ -587,7 +589,7 @@ CREATE TABLE `transactions` (
   `status` varchar(25) NOT NULL,
   `paymentData` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`paymentData`)),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `transactions`
@@ -638,7 +640,11 @@ INSERT INTO `transactions` (`id`, `user_id`, `amount`, `transaction_type`, `desc
 (93, 15, '251.50', 'Place order', 'Buy backlinks backlinked.com', '2023-12-12 13:02:14', 'order_29', 0, 'paid', '{\"created_at\":\"2023-12-12 18:32:14\",\"id\":29,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"251.50\",\"price\":\"251.50\",\"anchortext\":\"sdsd\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/111\",\"publication_date\":\"\",\"note\":\"\",\"project_id\":\"\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Editorial\",\"wordCount\":500,\"approveText\":0,\"textCreationPrice\":0,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-12T13:02:14.057Z\"}', '2023-12-12 13:02:14'),
 (94, 15, '301.50', 'Place order', 'Buy backlinks backlinked.com', '2023-12-12 13:03:13', 'order_30', 0, 'paid', '{\"created_at\":\"2023-12-12 18:33:13\",\"id\":30,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":4,\"backlink_id\":3,\"status\":\"Pending\",\"total_price\":\"301.50\",\"price\":\"251.50\",\"anchortext\":\"22222222222222222\",\"linktarget\":\"https://getbootstrap.com/docs/4.0/utilities/flex/\",\"publication_date\":\"\",\"note\":\"\",\"project_id\":\"\",\"hash_id\":\"zulhjrwm\",\"textCreation\":\"Editorial\",\"wordCount\":1000,\"approveText\":0,\"textCreationPrice\":50,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-12T13:03:13.047Z\"}', '2023-12-12 13:03:13'),
 (95, 15, '3500.00', 'Manual Added', 'For Testing', '2023-12-13 04:24:23', NULL, 0, 'paid', NULL, '2023-12-13 04:24:23'),
-(96, 15, '5000.00', 'Place order', 'Buy backlinks google.com', '2023-12-13 04:24:26', 'order_31', 0, 'paid', '{\"created_at\":\"2023-12-13 09:54:26\",\"id\":31,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":1,\"backlink_id\":1,\"status\":\"Pending\",\"total_price\":\"5000.00\",\"price\":\"5000.00\",\"anchortext\":\"ChatOpen\",\"linktarget\":\"https://chat.openai.com/1312\",\"publication_date\":\"2023-12-16T00:00:00.000Z\",\"note\":\"Chat GTP\",\"project_id\":\"nezrcrlx\",\"hash_id\":\"z5cirixk\",\"textCreation\":\"Editorial\",\"wordCount\":500,\"approveText\":0,\"textCreationPrice\":0,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-13T04:24:26.566Z\"}', '2023-12-13 04:24:26');
+(96, 15, '5000.00', 'Place order', 'Buy backlinks google.com', '2023-12-13 04:24:26', 'order_31', 0, 'paid', '{\"created_at\":\"2023-12-13 09:54:26\",\"id\":31,\"publisher_id\":11,\"customer_id\":15,\"domain_id\":1,\"backlink_id\":1,\"status\":\"Pending\",\"total_price\":\"5000.00\",\"price\":\"5000.00\",\"anchortext\":\"ChatOpen\",\"linktarget\":\"https://chat.openai.com/1312\",\"publication_date\":\"2023-12-16T00:00:00.000Z\",\"note\":\"Chat GTP\",\"project_id\":\"nezrcrlx\",\"hash_id\":\"z5cirixk\",\"textCreation\":\"Editorial\",\"wordCount\":500,\"approveText\":0,\"textCreationPrice\":0,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2023-12-13T04:24:26.566Z\"}', '2023-12-13 04:24:26'),
+(97, 15, '70.00', 'Manual Added', 'For Testing', '2023-12-18 11:30:04', NULL, 0, 'paid', NULL, '2023-12-18 11:30:04'),
+(98, 15, '10.00', 'Manual Added', 'For Testing', '2023-12-18 11:30:13', NULL, 0, 'paid', NULL, '2023-12-18 11:30:13'),
+(99, 15, '50.00', 'Manual Added', 'For Testing', '2023-12-18 12:29:40', NULL, 0, 'paid', NULL, '2023-12-18 12:29:40'),
+(100, 15, '50.00', 'Manual Added', 'For Testing', '2023-12-18 12:48:37', NULL, 0, 'paid', NULL, '2023-12-18 12:48:37');
 
 -- --------------------------------------------------------
 
@@ -667,7 +673,7 @@ CREATE TABLE `users` (
   `isDeleted` int(1) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
@@ -698,14 +704,14 @@ CREATE TABLE `users_wallet` (
   `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users_wallet`
 --
 
 INSERT INTO `users_wallet` (`id`, `user_id`, `balance`, `created_at`, `updated_at`) VALUES
-(1, 15, '20.00', '2023-12-13 04:24:26', '2023-12-13 04:24:26');
+(1, 15, '200.00', '2023-12-18 12:48:37', '2023-12-18 12:48:37');
 
 -- --------------------------------------------------------
 
@@ -721,7 +727,7 @@ CREATE TABLE `user_cart` (
   `quantity` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_cart`
@@ -748,7 +754,7 @@ CREATE TABLE `user_subscriptions` (
   `credits` int(11) DEFAULT 0,
   `transaction_id` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 is Active Plan\r\n0 Expire '
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_subscriptions`
@@ -951,7 +957,7 @@ ALTER TABLE `domain_tags`
 -- AUTO_INCREMENT for table `email_formats`
 --
 ALTER TABLE `email_formats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `faqs`
@@ -1023,7 +1029,7 @@ ALTER TABLE `subscription_plans`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `users`

@@ -31,7 +31,12 @@ export class Plan extends Component {
 
   handleChange = (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    this.setState({ 
+      editingPlan: {
+        ...this.state.editingPlan,
+        [name]: value
+      }
+    });
   };
 
   getsubscriptionPlan() {
@@ -77,6 +82,33 @@ export class Plan extends Component {
             autoClose: 2000,
           });
         } else {
+          toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+          this.getsubscriptionPlan();
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      });
+  }
+
+  handleUpdatePlan(){
+    ApiServices.updateSubscriptionPlan(this.state.editingPlan,this.state.editingPlan.id)
+      .then((res) => {
+        if (!res.status) {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        } else {
+          this.setState({
+            editingPlan: null,
+          });
           toast.success(res.data.message, {
             position: "top-center",
             autoClose: 2000,
@@ -263,20 +295,7 @@ export class Plan extends Component {
                               </div>
                             </div>
                           </li>
-                          <li className="mt-5">
-                            {/* <span
-                              className="fontSize13 badge bRadius planlist badge-primary"
-                              title="Click here to edit plan"
-                              onClick={() => this.openEditModal(plans)}
-                              style={{
-                                fontWeight: "bold",
-                                cursor: "pointer",
-                                fontSize: "18px",
-                              }}
-                            >
-                              <i className="mdi mdi-pencil"></i>
-                              Edit
-                            </span> */}
+                          <li className="mt-5">                            
                             <button
                               className="btn btn-rounded font-weight-medium auth-form-btn"
                               style={{ width: "100%" }}
@@ -323,15 +342,8 @@ export class Plan extends Component {
                         name="name"
                         id="name"
                         aria-label="name"
-                        // value={editingPlan.name}
-                        // onChange={(e) => {
-                        //   this.setState({
-                        //     editingPlan: {
-                        //       ...editingPlan,
-                        //       name: e.target.value,
-                        //     },
-                        //   });
-                        // }}
+                        value={editingPlan.name}
+                        onChange={this.handleChange}
                       />
                     </Form.Group>
                     <Form.Group>
@@ -345,15 +357,8 @@ export class Plan extends Component {
                         name="description"
                         id="description"
                         aria-label="description"
-                        // value={editingPlan.description}
-                        // onChange={(e) => {
-                        //   this.setState({
-                        //     editingPlan: {
-                        //       ...editingPlan,
-                        //       name: e.target.value,
-                        //     },
-                        //   });
-                        // }}
+                        value={editingPlan.description}
+                        onChange={this.handleChange}
                       />
                     </Form.Group>
                     <Form.Group>
@@ -367,15 +372,8 @@ export class Plan extends Component {
                         name="price"
                         id="price"
                         aria-label="price"
-                        // value={editingPlan.price}
-                        // onChange={(e) => {
-                        //   this.setState({
-                        //     editingPlan: {
-                        //       ...editingPlan,
-                        //       name: e.target.value,
-                        //     },
-                        //   });
-                        // }}
+                        value={editingPlan.price}
+                        onChange={this.handleChange}
                       />
                     </Form.Group>
                     <Form.Group>
@@ -392,15 +390,8 @@ export class Plan extends Component {
                         name="cancellation_period"
                         id="cancellation_period"
                         aria-label="cancellation_period"
-                        // value={editingPlan.cancellation_period}
-                        // onChange={(e) => {
-                        //   this.setState({
-                        //     editingPlan: {
-                        //       ...editingPlan,
-                        //       name: e.target.value,
-                        //     },
-                        //   });
-                        // }}
+                        value={editingPlan.cancellation_period}
+                        onChange={this.handleChange}
                       />
                     </Form.Group>
                     <Form.Group>
@@ -417,15 +408,8 @@ export class Plan extends Component {
                         name="max_domains_per_month"
                         id="max_domains_per_month"
                         aria-label="max_domains_per_month"
-                        // value={editingPlan.max_domains_per_month}
-                        // onChange={(e) => {
-                        //   this.setState({
-                        //     editingPlan: {
-                        //       ...editingPlan,
-                        //       name: e.target.value,
-                        //     },
-                        //   });
-                        // }}
+                        value={editingPlan.max_domains_per_month}
+                        onChange={this.handleChange}
                       />
                     </Form.Group>
                     <Form.Group>
@@ -439,15 +423,8 @@ export class Plan extends Component {
                         name="max_orders"
                         id="max_orders"
                         aria-label="max_orders"
-                        // value={editingPlan.max_orders}
-                        // onChange={(e) => {
-                        //   this.setState({
-                        //     editingPlan: {
-                        //       ...editingPlan,
-                        //       name: e.target.value,
-                        //     },
-                        //   });
-                        // }}
+                        value={editingPlan.max_orders}
+                        onChange={this.handleChange}
                       />
                     </Form.Group>
                     <Form.Group>
@@ -464,15 +441,8 @@ export class Plan extends Component {
                         name="credits_price"
                         id="credits_price"
                         aria-label="credits_price"
-                        // value={editingPlan.credits_price}
-                        // onChange={(e) => {
-                        //   this.setState({
-                        //     editingPlan: {
-                        //       ...editingPlan,
-                        //       name: e.target.value,
-                        //     },
-                        //   });
-                        // }}
+                        value={editingPlan.credits_price}
+                        onChange={this.handleChange}
                       />
                     </Form.Group>
                     <Form.Group>
@@ -489,15 +459,8 @@ export class Plan extends Component {
                         name="credits_quota"
                         id="credits_quota"
                         aria-label="credits_quota"
-                        // value={editingPlan.credits_quota}
-                        // onChange={(e) => {
-                        //   this.setState({
-                        //     editingPlan: {
-                        //       ...editingPlan,
-                        //       name: e.target.value,
-                        //     },
-                        //   });
-                        // }}
+                        value={editingPlan.credits_quota}
+                        onChange={this.handleChange}
                       />
                     </Form.Group>
                     <Form.Group>
@@ -511,15 +474,8 @@ export class Plan extends Component {
                         name="validity"
                         id="validity"
                         aria-label="validity"
-                        // value={editingPlan.validity}
-                        // onChange={(e) => {
-                        //   this.setState({
-                        //     editingPlan: {
-                        //       ...editingPlan,
-                        //       name: e.target.value,
-                        //     },
-                        //   });
-                        // }}
+                        value={editingPlan.validity}
+                        onChange={this.handleChange}
                       />
                     </Form.Group>
                     <Form.Group>
@@ -527,20 +483,13 @@ export class Plan extends Component {
                         Status
                       </label>
                       <Form.Control
-                        as="select" // Use "as" prop to specify the type as a select box
+                        as="select"
                         className="form-control form-control-lg"
                         name="status"
                         id="status"
                         aria-label="status"
-                        // value={editingPlan.status}
-                        // onChange={(e) => {
-                        //   this.setState({
-                        //     editingPlan: {
-                        //       ...editingPlan,
-                        //       name: e.target.value,
-                        //     },
-                        //   });
-                        // }}
+                        value={editingPlan.status}
+                        onChange={this.handleChange}
                       >
                         <option value="">Select status</option>
                         <option value="1">Active</option>
@@ -554,7 +503,7 @@ export class Plan extends Component {
             <Modal.Footer>
               <Button
                 className="btn btn-block btn-rounded btn-lg"
-                // onClick={() => this.handleUpdatePlan()}
+                onClick={() => this.handleUpdatePlan()}
               >
                 Update plan
               </Button>

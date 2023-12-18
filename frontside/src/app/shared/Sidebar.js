@@ -308,7 +308,7 @@ class Sidebar extends Component {
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
                     height="20"
-                    style={{marginRight:"22px"}}
+                    style={{ marginRight: "22px" }}
                     stroke="currentColor"
                     className="bi bi-envelope"
                     viewBox="0 0 16 16"
@@ -496,6 +496,31 @@ class Sidebar extends Component {
                   </svg>
                   <span className="menu-title">
                     <Trans>Plan</Trans>
+                  </span>
+                </Link>
+              </li>
+              <li
+                className={
+                  this.isPathActive("/admin/emailTemplate")
+                    ? "nav-item active"
+                    : "nav-item"
+                }
+              >
+                <Link className="nav-link" to="/admin/emailTemplate">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 32 32"
+                    fill="#a2adb1"
+                    width={24}
+                    className="mr-3"
+                  >
+                    <g data-name="20-Email-Write">
+                      <path d="M29 3H3a3 3 0 0 0-3 3v18a3 3 0 0 0 3 3h13v-2H3a1 1 0 0 1-1-1V6.23l13.42 9.58a1 1 0 0 0 1.16 0L30 6.23V15h2V6a3 3 0 0 0-3-3zM16 13.77 3.72 5h24.56z" />
+                      <path d="M26 15h-4a1 1 0 0 0-1 1v10a1 1 0 0 0 .29.71l2 2a1 1 0 0 0 1.41 0l2-2A1 1 0 0 0 27 26V16a1 1 0 0 0-1-1zm-1 10.59-1 1-1-1V21h2z" />
+                    </g>
+                  </svg>
+                  <span className="menu-title">
+                    <Trans>Email template</Trans>
                   </span>
                 </Link>
               </li>

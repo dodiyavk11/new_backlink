@@ -1,19 +1,129 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+import ApiServices from "../services/api.service";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AuthService from "../services/auth.service";
+import { Modal, Button, Form } from "react-bootstrap";
 import "../../assets/custom.css";
 export class LinkBundles extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      planData: [],
+      showModal: false,
+      selectedPlan: [],
+      currentBalance: 0,
+      userProjects: [],
+      project_id: "",
     };
   }
+
+  closeModal() {
+    this.setState({
+      showModal: false,
+      selectedPlan: [],
+      project_id:""
+    });
+  }
+
+  openModal(plans) {
+    this.setState({
+      showModal: true,
+      selectedPlan: plans,
+    });
+  }
+
+  handleChangeProject = (event) => {
+    this.setState({ project_id: event.target.value });
+  };
+
+  getUserWalletBalance() {
+    ApiServices.getUserWalletBalance().then((res) => {
+      if (res.status) {
+        this.setState({
+          currentBalance: res.data.data.balance ? res.data.data.balance : 0,
+        });
+      } else {
+        toast.error(res.message, {
+          position: "top-center",
+          autoClose: 1500,
+        });
+      }
+    });
+  }
+
+  getUserProjects() {
+    ApiServices.getUserProjects().then((res) => {
+      if (res.status) {
+        this.setState({
+          userProjects: res.data.data,
+        });
+      } else {
+        toast.error(res.message, {
+          position: "top-center",
+          autoClose: 1500,
+        });
+      }
+    });
+  }
+
+  getsubscriptionPlan() {
+    ApiServices.subscriptionPlan()
+      .then((res) => {
+        if (!res.status) {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        } else {
+          this.setState({
+            planData: res.data.data,
+          });
+        }
+      })
+      .catch((err) => {
+        if (
+          err.response &&
+          err.response.status === 401 &&
+          err.response.data.message !== "You cannot access this page"
+        ) {
+          this.setState({ isAuthenticated: false });
+          AuthService.logout();
+          this.props.history.push("/login");
+        } else {
+          if (err.response) {
+            toast.error(err.response.data.message, {
+              position: "top-center",
+              autoClose: 2000,
+            });
+          }
+        }
+      });
+  }
+
+  componentDidMount() {
+    this.getsubscriptionPlan();
+    this.getUserWalletBalance();
+    this.getUserProjects();
+  }
   render() {
+    const {
+      planData,
+      showModal,
+      selectedPlan,
+      currentBalance,
+      userProjects,
+      project_id,
+    } = this.state;
+    const newRemainingBalance = currentBalance - selectedPlan.price;
     return (
       <>
         <div className="bundleLinkPage">
           <div className="page-header">
             <h3 className="fontBold latterSpacing">Link bundles</h3>
           </div>
+          <ToastContainer />
           <div className="row">
             <div className="col-lg-12 grid-margin">
               <div className="card mb-4 blRadius">
@@ -60,409 +170,25 @@ export class LinkBundles extends Component {
                       bookings from the following areas: Eroticism, Cannabis /
                       CBD, Tobacco & Co. or Mechanical Engineering.
                     </p>
-                  </div>                  
+                  </div>
                 </div>
                 <div className="pricingCard">
-                    <div>
-                      <div className="promo-container">
-                        <div className="promos bg-base-1">
-                          <div className="promo first">
-                            <h4 className="exHeading latterSpacing fontBold800">
-                              KICKSTART!
-                            </h4>
-                            <ul className="features">
-                              <li className="mt-3 h2">
-                                <h2>$357.00</h2>
-                              </li>
-                              <li>
-                                One-time link building, without monthly payment
-                              </li>
-                              <li>
-                                <button className="btn btn-rounded btn-fw btn-md">
-                                  Order now
-                                </button>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="psale">
-                                <span className="notification-icon--fixed">
-                                  <span className="notification-badge fontBold500">
-                                    2
-                                  </span>
-                                </span>
-                                <span className="psale pl-1">Selllinks</span>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText pl-1 ctColor">
-                                DETAILS
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  Incl. text creation (unique content)
-                                </span>
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  Relevant content according to your
-                                  specification
-                                </span>
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  I100% DoFollow links
-                                </span>
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  You choose the anchor text
-                                </span>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText pl-1 ctColor">
-                                REPORTING
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  You choose the anchor text
-                                </span>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText pl-1 ctColor">
-                                PLACEMENT IN
-                              </li>
-                              <li className="pl-2">
-                                <div className="d-flex">
-                                  <p className="mr-3 planRound fontBold500">
-                                    Blog
-                                  </p>
-                                  <p className="mr-3 planRound fontBold500">
-                                    Magazines
-                                  </p>
-                                  <p className="mr-3 planRound fontBold500">
-                                    Newspapers
-                                  </p>
-                                </div>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText pl-1 ctColor">
-                                METRICS
-                              </li>
-                              <li className="pl-2">
-                                <div className="d-flex">
-                                  <img
-                                    alt="Metrics"
-                                    src={require("../../assets/images/project/ahrefs.svg")}
-                                    className="rounded mr-2"
-                                    width={30}
-                                  />
-                                  <div style={{lineHeight:"normal"}}>
-                                    <span className="ctColor">Domain Rating</span>
-                                    <br />
-                                    <span>ahrefs.com</span>
-                                  </div>
-                                  <div className="ml81">
-                                    <span>Ø 20+</span>
-                                  </div>
-                                </div>
-                              </li>
-                              <li className="pl-2">
-                                <div className="d-flex">
-                                  <img
-                                    alt="Metrics"
-                                    src={require("../../assets/images/project/moz.svg")}
-                                    className="rounded mr-2"
-                                    width={30}
-                                  />
-                                  <div style={{lineHeight:"normal"}}>
-                                    <span className="ctColor">Domain Authority</span>
-                                    <br />
-                                    <span>moz.com</span>
-                                  </div>
-                                  <div className="ml72">
-                                    <span>Ø 20+</span>
-                                  </div>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="promo second">
-                            <h4 className="exHeading latterSpacing fontBold800">
-                              SKYROCKET!
-                            </h4>
-                            <ul className="features">
-                              <li className="mt-3 h2">
-                                <h2>$957.00</h2>
-                              </li>
-                              <li>
-                                One-time link building, without monthly payment
-                              </li>
-                              <li>
-                                <button className="btn btn-rounded btn-fw btn-md">
-                                  Order now
-                                </button>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="psale">
-                                <span className="notification-icon--fixed">
-                                  <span className="notification-badge fontBold500">
-                                    6
-                                  </span>
-                                </span>
-                                <span className="psale pl-1">Selllinks</span>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText ctColor">DETAILS</li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  Incl. text creation (unique content)
-                                </span>
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  Relevant content according to your
-                                  specification
-                                </span>
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  I100% DoFollow links
-                                </span>
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  You choose the anchor text
-                                </span>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText pl-1 ctColor">
-                                REPORTING
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  You choose the anchor text
-                                </span>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText pl-1 ctColor">
-                                PLACEMENT IN
-                              </li>
-                              <li className="pl-2">
-                                <div className="d-flex">
-                                  <p className="mr-3 planRound fontBold500">
-                                    Blog
-                                  </p>
-                                  <p className="mr-3 planRound fontBold500">
-                                    Magazines
-                                  </p>
-                                  <p className="mr-3 planRound fontBold500">
-                                    Newspapers
-                                  </p>
-                                </div>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText pl-1 ctColor">
-                                METRICS
-                              </li>
-                              <li className="pl-2">
-                                <div className="d-flex">
-                                  <img
-                                    alt="Metrics"
-                                    src={require("../../assets/images/project/ahrefs.svg")}
-                                    className="rounded mr-2"
-                                    width={30}
-                                  />
-                                  <div style={{lineHeight:"normal"}}>
-                                    <span className="ctColor">Domain Rating</span>
-                                    <br />
-                                    <span>ahrefs.com</span>
-                                  </div>
-                                  <div className="ml75">
-                                    <span>Ø 20+</span>
-                                  </div>
-                                </div>
-                              </li>
-                              <li className="pl-2">
-                                <div className="d-flex">
-                                  <img
-                                    alt="Metrics"
-                                    src={require("../../assets/images/project/moz.svg")}
-                                    className="rounded mr-2"
-                                    width={30}
-                                  />
-                                  <div style={{lineHeight:"normal"}}>
-                                    <span className="ctColor">Domain Authority</span>
-                                    <br />
-                                    <span>moz.com</span>
-                                  </div>
-                                  <div className="ml65">
-                                    <span>Ø 20+</span>
-                                  </div>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="promo third scale">
-                            <h4 className="exHeading latterSpacing fontBold800">
-                              SUPERBOOST!
+                  <div className="promo-container">
+                    <div className="promos bg-base-1">
+                      {planData.map((plans, index) => (
+                        <div
+                          key={index}
+                          className={`promo ${
+                            index === 0
+                              ? "first"
+                              : index === 1
+                              ? "second"
+                              : "third scale"
+                          }`}
+                        >
+                          <h4 className="exHeading latterSpacing fontBold800">
+                            {plans.name}
+                            {index === 2 && (
                               <div className="popularPlan ml-2">
                                 <svg
                                   width={17}
@@ -475,206 +201,231 @@ export class LinkBundles extends Component {
                                 </svg>
                                 POPULAR
                               </div>
-                            </h4>
-                            <ul className="features">
-                              <li className="mt-3 h2">
-                                <h2>$657.00</h2>
-                              </li>
-                              <li>
-                                One-time link building, without monthly payment
-                              </li>
-                              <li>
-                                <button className="btn btn-rounded btn-fw btn-md">
-                                  Order now
-                                </button>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="psale">
-                                <span className="notification-icon--fixed">
-                                  <span className="notification-badge fontBold500">
-                                    4
+                            )}
+                          </h4>
+                          <ul className="features">
+                            <li className="mt-3 h2">
+                              <h2>${plans.price}</h2>
+                            </li>
+                            <li>{plans.description}</li>
+                            <li>
+                              <button
+                                type="button"
+                                className="btn btn-rounded btn-fw btn-md"
+                                onClick={() => this.openModal(plans)}
+                              >
+                                Order now
+                              </button>
+                            </li>
+                            <li className="psale">
+                              <span className="notification-icon--fixed">
+                                <span className="notification-badge fontBold500">
+                                  {plans.max_domains_per_month}
+                                </span>
+                              </span>
+                              <span className="psale pl-1">Selllinks</span>
+                            </li>
+                            <li>
+                              <hr />
+                            </li>
+                            <li className="detailsText pl-1 ctColor">
+                              DETAILS
+                            </li>
+                            <li className="pl-1">
+                              <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
+                              <span className="ml-1">
+                                Cancellation period of{" "}
+                                {plans.cancellation_period} days
+                              </span>
+                            </li>
+                            <li className="pl-1">
+                              <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
+                              <span className="ml-1">
+                                Maximum Order per month {plans.max_orders}
+                              </span>
+                            </li>
+                            <li className="pl-1">
+                              <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
+                              <span className="ml-1">
+                                Validity {plans.validity} days
+                              </span>
+                            </li>
+                            <li className="pl-1">
+                              <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
+                              <span className="ml-1">
+                                Credit price {plans.credits_price}
+                              </span>
+                            </li>
+                            <li className="pl-1">
+                              <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
+                              <span className="ml-1">
+                                Credit quota {plans.credits_quota}
+                              </span>
+                            </li>
+                            <li>
+                              <hr />
+                            </li>
+                            <li className="detailsText pl-1 ctColor">
+                              REPORTING
+                            </li>
+                            <li className="pl-1">
+                              <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
+                              <span className="ml-1">
+                                You choose the anchor text
+                              </span>
+                            </li>
+                            <li>
+                              <hr />
+                            </li>
+                            <li className="detailsText pl-1 ctColor">
+                              PLACEMENT IN
+                            </li>
+                            <li className="pl-2">
+                              <div className="d-flex">
+                                <p className="mr-3 planRound fontBold500">
+                                  Blog
+                                </p>
+                                <p className="mr-3 planRound fontBold500">
+                                  Magazines
+                                </p>
+                                <p className="mr-3 planRound fontBold500">
+                                  Newspapers
+                                </p>
+                              </div>
+                            </li>
+                            <li>
+                              <hr />
+                            </li>
+                            <li className="detailsText pl-1 ctColor">
+                              METRICS
+                            </li>
+                            <li className="pl-2">
+                              <div className="d-flex">
+                                <img
+                                  alt="Metrics"
+                                  src={require("../../assets/images/project/ahrefs.svg")}
+                                  className="rounded mr-2"
+                                  width={30}
+                                />
+                                <div style={{ lineHeight: "normal" }}>
+                                  <span className="ctColor">Domain Rating</span>
+                                  <br />
+                                  <span>ahrefs.com</span>
+                                </div>
+                                <div className="ml81">
+                                  <span>Ø 20+</span>
+                                </div>
+                              </div>
+                            </li>
+                            <li className="pl-2">
+                              <div className="d-flex">
+                                <img
+                                  alt="Metrics"
+                                  src={require("../../assets/images/project/moz.svg")}
+                                  className="rounded mr-2"
+                                  width={30}
+                                />
+                                <div style={{ lineHeight: "normal" }}>
+                                  <span className="ctColor">
+                                    Domain Authority
                                   </span>
-                                </span>
-                                <span className="psale pl-1">Selllinks</span>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText ctColor">DETAILS</li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  Incl. text creation (unique content)
-                                </span>
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  Relevant content according to your
-                                  specification
-                                </span>
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  I100% DoFollow links
-                                </span>
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  You choose the anchor text
-                                </span>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText pl-1 ctColor">
-                                REPORTING
-                              </li>
-                              <li className="pl-1">
-                                <svg
-                                  width={20}
-                                  id="check-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  color="#ff9756"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                                <span className="ml-1">
-                                  You choose the anchor text
-                                </span>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText pl-1 ctColor">
-                                PLACEMENT IN
-                              </li>
-                              <li className="pl-2">
-                                <div className="d-flex">
-                                  <p className="mr-3 planRound fontBold500">
-                                    Blog
-                                  </p>
-                                  <p className="mr-3 planRound fontBold500">
-                                    Magazines
-                                  </p>
-                                  <p className="mr-3 planRound fontBold500">
-                                    Newspapers
-                                  </p>
+                                  <br />
+                                  <span>moz.com</span>
                                 </div>
-                              </li>
-                              <li>
-                                <hr />
-                              </li>
-                              <li className="detailsText pl-1 ctColor">
-                                METRICS
-                              </li>
-                              <li className="pl-2">
-                                <div className="d-flex">
-                                  <img
-                                    alt="Metrics"
-                                    src={require("../../assets/images/project/ahrefs.svg")}
-                                    className="rounded mr-2"
-                                    width={30}
-                                  />
-                                  <div style={{lineHeight:"normal"}}>
-                                    <span className="ctColor">Domain Rating</span>
-                                    <br />
-                                    <span>ahrefs.com</span>
-                                  </div>
-                                  <div className="ml105">
-                                    <span>Ø 20+</span>
-                                  </div>
+                                <div className="ml72">
+                                  <span>Ø 20+</span>
                                 </div>
-                              </li>
-                              <li className="pl-2">
-                                <div className="d-flex">
-                                  <img
-                                    alt="Metrics"
-                                    src={require("../../assets/images/project/moz.svg")}
-                                    className="rounded mr-2"
-                                    width={30}
-                                  />
-                                  <div style={{lineHeight:"normal"}}>
-                                    <span className="ctColor">Domain Authority</span>
-                                    <br />
-                                    <span>moz.com</span>
-                                  </div>
-                                  <div className="ml95">
-                                    <span>Ø 20+</span>
-                                  </div>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
+                              </div>
+                            </li>
+                          </ul>
                         </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
+                </div>
               </div>
             </div>
           </div>
+          <Modal
+            show={showModal}
+            onHide={() => this.closeModal()}
+            className="addPublisherDomainModal"
+            centered
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header
+              className="pb-1"
+              closeButton
+              style={{ borderBottom: "0px" }}
+            >
+              <div>
+                <span className="modal-title h3 font-weight-bold">
+                  Confirm order
+                </span>
+                <p>
+                  Click the button to complete your order. After that you can
+                  fill in the details.
+                </p>
+              </div>
+            </Modal.Header>
+            <Modal.Body className="pt-1">
+              <div className="modalBody">
+                <div
+                  className="balanceShow border mb-2 p-3"
+                  style={{ borderRadius: "6px" }}
+                >
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Current balance</span>
+                    <span>${currentBalance}</span>
+                  </div>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Link package {selectedPlan.name}</span>
+                    <span>${selectedPlan.price}</span>
+                  </div>
+                  <hr />
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Remaining balance</span>
+                    <span>
+                      {newRemainingBalance < 0
+                        ? `-$${Math.abs(newRemainingBalance).toFixed(2)}`
+                        : `$${newRemainingBalance.toFixed(2)}`}
+                    </span>
+                  </div>
+                </div>
+                <label htmlFor="project_id" className="mt-2 fontBold600">
+                  Project (optional)
+                </label>
+                <select
+                  className="form-control"
+                  id="project_id"
+                  value={project_id}
+                  onChange={this.handleChangeProject}
+                >
+                  <option value="">Select project</option>
+                  {userProjects.map((option) => (
+                    <option key={option.id} value={option.hash_id}>
+                      {option.domain_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </Modal.Body>
+            <Modal.Footer style={{ borderTop: "0px" }}>
+              <Button
+                className="btn btn-block btn-rounded btn-lg"
+                // onClick={() => this.addEmailTemplate()}
+              >
+                Order now for ${selectedPlan.price}
+              </Button>
+              <button
+                className="btn btn-cancel-ctm btn-rounded btn-block"
+                onClick={() => this.closeModal()}
+              >
+                Cancel
+              </button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </>
     );

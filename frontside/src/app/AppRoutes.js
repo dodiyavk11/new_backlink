@@ -47,6 +47,7 @@ const UserViewOrderDetails = lazy(() =>
 );
 const AdminViewOrderDetails = lazy(() => import("./admin/orders/AdminViewOrderDetails"));
 const AdminProjectView = lazy(() => import("./admin/projects/ProjectView"));
+const emailTemplate = lazy(() => import("./admin/email/EmailTemplate"))
 const ProjectView = lazy(() => import("./projects/ProjectView"));
 const DomainView = lazy(() => import("./publisher/domain/DomainView"));
 const CartPage = lazy(() => import("./shared/Cart"));
@@ -404,6 +405,13 @@ class AppRoutes extends Component {
                     exact
                     path="/admin/project/:hash_id"
                     component={AdminProjectView}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  <AdminProtected
+                    exact
+                    path="/admin/emailTemplate"
+                    component={emailTemplate}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />

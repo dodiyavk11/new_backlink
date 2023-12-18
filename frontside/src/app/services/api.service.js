@@ -614,11 +614,9 @@ class ApiServices {
       }
     );
   }
-  subscriptionPlan()
-  {
+  subscriptionPlan() {
     const authToken = localStorage.getItem("token");
-    return axios.get(`${this.APP_URL}subscriptionPlan/list`,
-    {
+    return axios.get(`${this.APP_URL}subscriptionPlan/list`, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
@@ -627,6 +625,58 @@ class ApiServices {
     return axios.get(`${this.APP_URL}admin/plan/update/${id}/${status}`, {
       headers: { Authorization: `Bearer ${authToken}` },
     });
+  }
+
+  updateSubscriptionPlan(formData, id) {
+    const authToken = localStorage.getItem("token");
+    return axios.patch(
+      `${this.APP_URL}subscriptionPlan/update/${id}`,
+      formData,
+      {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }
+    );
+  }
+
+  getEmailTemplate() {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}emailTemplate/list`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  updateEmailTemplate(formData, id) {
+    const authToken = localStorage.getItem("token");
+    const formDataObject = new FormData();
+
+    Object.keys(formData).forEach((key) => {
+      formDataObject.append(key, formData[key]);
+    });
+    return axios.patch(`${this.APP_URL}emailTemplate/edit/${id}`, formDataObject, {
+      headers: { Authorization: `Bearer ${authToken}` },
+      "Content-Type": "multipart/form-data",
+    });
+  }
+
+  addEmailTemplate(formData) {
+    const authToken = localStorage.getItem("token");
+    return axios.post(`${this.APP_URL}emailTemplate/add`, formData, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  emailTemplateDelete(id) {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}emailTemplate/delete/${id}`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  getUserWalletBalance(){
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}user/get/balance`,{
+      headers: { Authorization : `Bearer ${authToken}` }
+    })
   }
 }
 

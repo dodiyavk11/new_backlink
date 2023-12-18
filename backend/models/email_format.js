@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     email_title:DataTypes.TEXT,
     email_content: DataTypes.TEXT,
     header: DataTypes.TEXT,
-    file:DataTypes.STRING
+    file:DataTypes.STRING,
+    isDefault:DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'email_format',

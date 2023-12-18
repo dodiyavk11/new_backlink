@@ -755,7 +755,8 @@ div:has(.css-1pcexqc-container) {
         transition: transform 0.25s ease-out
     }
     .adminPlan .promo {
-        margin: 0px 0 0;
+        margin: 0px 7px 0;
+        width: 31.333%;
     }
     .promo.first {
         border-right: none
@@ -1094,4 +1095,13 @@ input[type="date"]
 {
     border: 1px solid #ff9756 !important;
     background-color: #ff9756 !important;
+}
+
+.btn-cancel-ctm
+{
+    background-color: silver !important;
+}
+.btn-rounded
+{
+    border-color: transparent !important;
 }
