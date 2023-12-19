@@ -48,6 +48,7 @@ const UserViewOrderDetails = lazy(() =>
 const AdminViewOrderDetails = lazy(() => import("./admin/orders/AdminViewOrderDetails"));
 const AdminProjectView = lazy(() => import("./admin/projects/ProjectView"));
 const emailTemplate = lazy(() => import("./admin/email/EmailTemplate"))
+const domainCategory = lazy(()=> import("./admin/category/DomainCategory"));
 const ProjectView = lazy(() => import("./projects/ProjectView"));
 const DomainView = lazy(() => import("./publisher/domain/DomainView"));
 const CartPage = lazy(() => import("./shared/Cart"));
@@ -353,6 +354,7 @@ class AppRoutes extends Component {
                     exact
                     path="/admin/users"
                     component={Users}
+                    handleLoginSuccess={this.handleLoginSuccess}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
@@ -412,6 +414,13 @@ class AppRoutes extends Component {
                     exact
                     path="/admin/emailTemplate"
                     component={emailTemplate}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  <AdminProtected
+                    exact
+                    path="/admin/domainCategory"
+                    component={domainCategory}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />

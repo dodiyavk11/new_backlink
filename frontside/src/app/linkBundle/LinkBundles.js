@@ -16,14 +16,31 @@ export class LinkBundles extends Component {
       currentBalance: 0,
       userProjects: [],
       project_id: "",
+      error: "",
+      orderModal: false,
+      bundleConfigure: {
+        linktarget: "",
+        anchortext: "",
+        publication_date: "",
+        project_id: "",
+      },
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   closeModal() {
     this.setState({
       showModal: false,
       selectedPlan: [],
-      project_id:""
+      project_id: "",
+      orderModal: false,
+      error: "",
+      bundleConfigure: {
+        linktarget: "",
+        anchortext: "",
+        publication_date: "",
+        project_id: "",
+      },
     });
   }
 
@@ -31,12 +48,31 @@ export class LinkBundles extends Component {
     this.setState({
       showModal: true,
       selectedPlan: plans,
+      orderModal: false,
     });
   }
 
   handleChangeProject = (event) => {
-    this.setState({ project_id: event.target.value });
+    const newProjectId = event.target.value;
+
+    this.setState((prevState) => ({
+      project_id: newProjectId,
+      bundleConfigure: {
+        ...prevState.bundleConfigure,
+        project_id: newProjectId,
+      },
+    }));
   };
+
+  handleChange(event) {
+    const { name, value } = event.target;
+    this.setState({
+      bundleConfigure: {
+        ...this.state.bundleConfigure,
+        [name]: value,
+      },
+    });
+  }
 
   getUserWalletBalance() {
     ApiServices.getUserWalletBalance().then((res) => {
@@ -45,7 +81,7 @@ export class LinkBundles extends Component {
           currentBalance: res.data.data.balance ? res.data.data.balance : 0,
         });
       } else {
-        toast.error(res.message, {
+        toast.error(res.data.message, {
           position: "top-center",
           autoClose: 1500,
         });
@@ -102,6 +138,52 @@ export class LinkBundles extends Component {
       });
   }
 
+  checkBalanceToProcess() {
+    const { selectedPlan } = this.state;
+    ApiServices.checkBalanceForBundle(selectedPlan.id)
+      .then((res) => {
+        if (res.status) {
+          this.setState({
+            showModal: false,
+            orderModal: true,
+          });
+        }
+      })
+      .catch((err) => {
+        this.setState({
+          error: err.response.data.message,
+        });
+      });
+  }
+
+  bundlePlaceOrder = () => {
+    const orderData = this.state.bundleConfigure;
+    const planId = this.state.selectedPlan.id;
+    ApiServices.linkBundlePlaceOrder(orderData,planId).then((res) => {
+      if(res.status)
+      {
+        this.closeModal();
+        toast.success(res.data.message, {
+          position: "top-center",
+          autoClose: 2000,
+        });       
+      }
+      else
+      {
+        toast.error(res.data.message,{
+          position : "top-center",
+          autoClose: 1500
+        })
+      }
+    })
+    .catch((err) => {
+      toast.error(err.response.data.message,{
+        position : "top-center",
+        autoClose: 1500
+      })
+    });
+  };
+
   componentDidMount() {
     this.getsubscriptionPlan();
     this.getUserWalletBalance();
@@ -115,7 +197,13 @@ export class LinkBundles extends Component {
       currentBalance,
       userProjects,
       project_id,
+      error,
+      orderModal,
+      bundleConfigure,
     } = this.state;
+    const { linktarget, anchortext, publication_date } =
+      this.state.bundleConfigure;
+    const isSubmitDisabled = !linktarget || !anchortext;
     const newRemainingBalance = currentBalance - selectedPlan.price;
     return (
       <>
@@ -182,13 +270,13 @@ export class LinkBundles extends Component {
                             index === 0
                               ? "first"
                               : index === 1
-                              ? "second"
-                              : "third scale"
+                              ? "third scale"
+                              : "second"
                           }`}
                         >
                           <h4 className="exHeading latterSpacing fontBold800">
                             {plans.name}
-                            {index === 2 && (
+                            {index === 1 && (
                               <div className="popularPlan ml-2">
                                 <svg
                                   width={17}
@@ -411,10 +499,20 @@ export class LinkBundles extends Component {
                 </select>
               </div>
             </Modal.Body>
-            <Modal.Footer style={{ borderTop: "0px" }}>
+            <Modal.Footer
+              style={{ borderTop: "0px", justifyContent: "flex-start" }}
+            >
+              {error !== "" && (
+                <div className="p-1 mt-2">
+                  <p className="fontBold500" style={{ color: "red" }}>
+                    <i className="mdi mdi-close-circle-outline mr-1"></i>
+                    {error}
+                  </p>
+                </div>
+              )}
               <Button
                 className="btn btn-block btn-rounded btn-lg"
-                // onClick={() => this.addEmailTemplate()}
+                onClick={() => this.checkBalanceToProcess()}
               >
                 Order now for ${selectedPlan.price}
               </Button>
@@ -425,6 +523,94 @@ export class LinkBundles extends Component {
                 Cancel
               </button>
             </Modal.Footer>
+          </Modal>
+
+          {/* bundle Order configure modal */}
+          <Modal
+            className="orderConfigureStep1 p-2"
+            centered
+            backdrop="static"
+            keyboard={false}
+            show={orderModal}
+            onHide={() => this.closeModal()}
+          >
+            <Modal.Header closeButton>
+              <span className="modal-title h3 font-weight-bold">
+                Confiure your order details
+              </span>
+            </Modal.Header>
+            <Modal.Body className="pt-1">
+              <div className="row">
+                <div className="col-sm-12">
+                  <label htmlFor="targetUrl">
+                    Target URL*
+                    <p className="customText mb-0">
+                      Who should write your content?
+                    </p>
+                  </label>
+
+                  <input
+                    type="text"
+                    name="linktarget"
+                    className="form-control"
+                    id="targetUrl"
+                    placeholder="Target Url"
+                    onChange={this.handleChange}
+                    value={bundleConfigure.linktarget}
+                  />
+                </div>
+              </div>
+              <div className="row mt-3">
+                <div className="col-sm-12">
+                  <label htmlFor="anchortext">
+                    Anchor text*
+                    <p className="customText mb-0">
+                      Specify which anchor text to use. How to choose your
+                      anchor text correctly, you will learn here Nontheless, the
+                      publisher has the final say in the anchor text selection.
+                    </p>
+                  </label>
+
+                  <input
+                    type="text"
+                    name="anchortext"
+                    className="form-control"
+                    id="anchortext"
+                    value={bundleConfigure.anchortext}
+                    placeholder="High quality backlinks"
+                    onChange={this.handleChange}
+                  />
+                </div>
+              </div>
+              <div className="row mt-3">
+                <div className="col-sm-12">
+                  <label htmlFor="publication_date">
+                    Date (optional)
+                    <p className="customText mb-0">
+                      When should your contentlink be placed?
+                    </p>
+                  </label>
+
+                  <input
+                    type="date"
+                    name="publication_date"
+                    className="form-control border"
+                    id="publication_date"
+                    placeholder="03/03/2024"
+                    onChange={this.handleChange}
+                    value={bundleConfigure.publication_date}
+                  />
+                </div>
+              </div>
+            </Modal.Body>
+            <button
+              className="btn btn-rounded btn-lg font-weight-medium mb-2"
+              disabled={isSubmitDisabled}
+              type="button"
+              onClick={this.bundlePlaceOrder}
+            >
+              Buy now for ${selectedPlan.price}
+            </button>
           </Modal>
         </div>
       </>

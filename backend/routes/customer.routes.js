@@ -1,4 +1,4 @@
-const { dashboard,setting,updateNotification,addCustomerDomain,getProjects,addMessageToOrder,transactionHistory,imageTest,getUserDomain,userAddStaticAmount,updateMonthlyBudget,updateArchiveProject, getUserWalletBalance } = require("../controllers/customer.controller")
+const { dashboard,setting,updateNotification,addCustomerDomain,getProjects,addMessageToOrder,transactionHistory,imageTest,getUserDomain,userAddStaticAmount,updateMonthlyBudget,updateArchiveProject, getUserWalletBalance, linkBundlePlaceOrderCheckBalance } = require("../controllers/customer.controller")
 const { isLogin, isCustomer } = require("../middleware/checkAuthenticate")
 const { checkDomainLimitInSubscriptionPlan } = require("../middleware/checkIsPlanOrderAndDomainLimit");
 module.exports = (app) =>{
@@ -14,4 +14,5 @@ module.exports = (app) =>{
     app.post("/user/static/amount",[isLogin,isCustomer],userAddStaticAmount)
     app.post("/user/project/budget",[isLogin,isCustomer],updateMonthlyBudget)
     app.get("/user/get/balance",[isLogin,isCustomer],getUserWalletBalance)
+    app.get("/linkBundle/:id/check",[isLogin,isCustomer], linkBundlePlaceOrderCheckBalance)
 }

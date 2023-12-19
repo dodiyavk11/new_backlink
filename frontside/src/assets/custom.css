@@ -1105,3 +1105,7 @@ input[type="date"]
 {
     border-color: transparent !important;
 }
+.MuiTableRow-root.Mui-selected, .MuiTableRow-root.Mui-selected:hover
+{
+    background-color:rgb(242 237 243) !important;
+}

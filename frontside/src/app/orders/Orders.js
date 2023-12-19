@@ -508,7 +508,7 @@ export class Orders extends Component {
                               <span className={`fontSize13 badge ${getStatusClass(order.status)}`}>{order.status}</span>
                             </td>
                             <td className={showProduct ? "show" : "hide"}>
-                              {order.domain.domain_name}
+                              {order.isBundle !== 0 ? "Link Bundle" : order.domain.domain_name}
                             </td>
                             <td className={showProject ? "show" : "hide"}>
                               {order.project && order.project.domain_name

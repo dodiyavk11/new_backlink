@@ -34,6 +34,7 @@ exports.dashboard = async(req, res) => {
 	          model: Models.newOrder,
 	          as: 'orders',
 	          limit:5,
+	          order: [['created_at', 'DESC']],
 	          include: [
 			    {
 			      model: Models.publisherDomain,
@@ -466,10 +467,41 @@ exports.getUserWalletBalance = async(req, res) => {
 	{
 		const user_id = req.userId;
 		const getWallet = await Models.UserWallet.findOne({ where:{ user_id } });
-		res.status(200).send({ status: true, message: "Wallet amount fetched successfully", data: getWallet });
+		const data = getWallet ?? {
+		  id: 0,
+		  user_id: user_id,
+		  balance: "0.00",
+		  created_at: "",
+		};
+
+		res.status(200).send({
+		  status: true,
+		  message: "Wallet amount fetched successfully",
+		  data,
+		});
+		// res.status(200).send({ status: true, message: "Wallet amount fetched successfully", data: getWallet });
 	}
 	catch(err)
 	{
-		res.status(500).send({ status: false, message: "Something went to wrong" })
+		res.status(500).send({ status: false, message: "Something went to wrong",error: err.message })
+	}
+}
+
+exports.linkBundlePlaceOrderCheckBalance = async(req, res) => {
+	try
+	{
+		const { id } = req.params;
+		const user_id = req.userId;
+		const checkPlan = await Models.SubscriptionPlans.findOne({ where: { id } ,attributes: { exclude: ['updated_at', 'created_at'] }});
+		const getWallet = await Models.UserWallet.findOne({ where:{ user_id } ,attributes: { exclude: ['updated_at', 'created_at', 'id', 'user_id'] }});
+		if(checkPlan.price > getWallet.balance)
+		{
+			return res.status(400).send({ status: false, message: "Insufficient balance"})
+		}
+		return res.status(200).send({ status: true, message: "Process...", data: { checkPlan,getWallet } });
+	}
+	catch(err)
+	{
+		res.status(500).send({ status: false, message: "Something went to wrong", error: err.message })
 	}
 }

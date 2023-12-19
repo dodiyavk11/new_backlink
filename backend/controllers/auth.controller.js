@@ -213,3 +213,20 @@ exports.ForgotPasswordLink = async (req, res) => {
         res.status(500).send({ status: false, message: "Email link cannot be sent, an error has occurred", data: [], error: err.message })
     }
 }
+
+exports.adminLoginAsSuperAdmin = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const checkUser = await Models.Users.findOne({ where: { id } });
+        if (!checkUser) return res.status(401).send({ status: false, message: "User not found, please register first", data: [] })       
+               
+        const token = generateJWTToken({ userId: checkUser.id }, "1h")
+        delete checkUser.dataValues.password
+        res.status(200).send({ status: true, message: "Login Successful", token, data: checkUser })
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({ status: false, message: "Login refused, something went wrong", data: [], error: err.message })
+    }
+}

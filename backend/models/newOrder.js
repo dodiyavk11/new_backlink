@@ -56,6 +56,7 @@ module.exports = (sequelize, DataTypes) => {
 	    textCreationPrice:DataTypes.DECIMAL(10,2),
 	    approveTextPrice:DataTypes.DECIMAL(10,2),
 	    chooseByBacklink:DataTypes.INTEGER,
+	    isBundle:DataTypes.INTEGER,
 	    created_at: {
 	        type: DataTypes.DATE,
 	        allowNull: true,

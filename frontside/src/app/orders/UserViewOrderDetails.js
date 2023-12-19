@@ -195,7 +195,7 @@ export class UserViewOrderDetails extends Component {
               <div className="card-body dashboardCard">
                 <div className="card-img-top d-flex flex-row justify-content-between">
                   <div>
-                    <h2 className="h2">{domainData.domain_name}</h2>
+                    <h2 className="h2">{orderData.isBundle !==0 ? "Link Bundle" : domainData.domain_name}</h2>
                     <h5>Placed at: {orderData.created_at}</h5>
                   </div>
                   <div>
@@ -269,7 +269,7 @@ export class UserViewOrderDetails extends Component {
                             </Tooltip>
                           </td>
                           <td className="text-end-ct">
-                            {domainData.deliveryTime} Days
+                            {orderData.isBundle !==0 ? "" : `${domainData.deliveryTime} Days`}
                           </td>
                         </tr>
                         <tr>
@@ -294,7 +294,7 @@ export class UserViewOrderDetails extends Component {
                             </Tooltip>
                           </td>
                           <td className="text-end-ct">
-                            {domainData.attribute}
+                            {orderData.isBundle !==0 ? "" : domainData.attribute}
                           </td>
                         </tr>
                         <tr>
@@ -319,9 +319,10 @@ export class UserViewOrderDetails extends Component {
                             </Tooltip>
                           </td>
                           <td className="text-end-ct">
-                            {domainData.language === "en"
+                            {/* {domainData.language === "en"
                               ? "English"
-                              : "German"}
+                              : "German"} */}
+                              {orderData.isBundle !==0 ? "" : domainData.language}
                           </td>
                         </tr>
                         <tr>
@@ -346,7 +347,8 @@ export class UserViewOrderDetails extends Component {
                             </Tooltip>
                           </td>
                           <td className="text-end-ct">
-                            {domainData.tld ? "." + domainData.tld : ""}
+                            {/* {domainData.tld ? "." + domainData.tld : ""} */}
+                            {orderData.isBundle !==0 ? "" : `.${domainData.tld}`}
                           </td>
                         </tr>
                         {orderData.textCreation === "Own" && (

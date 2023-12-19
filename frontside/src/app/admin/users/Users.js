@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import ApiServices from "../../services/api.service";
+import AuthService from "../../services/auth.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Modal, Button, Form } from "react-bootstrap";
 import "../../../assets/custom.css";
 import {
-  Typography,
-  Slider,
   Paper,
   Table,
   TableBody,
@@ -226,7 +225,26 @@ export class Users extends Component {
         }
       });
   };
-
+  handleLoginClick = (userId) => {
+    AuthService.loginAsSuperAdmin(userId).then(
+      () => {
+        this.props.handleLoginSuccess();
+        // window.location.reload();
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
   componentDidMount() {
     this.getUserList();
   }
@@ -300,6 +318,20 @@ export class Users extends Component {
               ? "Publisher"
               : "User"}
           </div>
+        ),
+      },
+      {
+        id: "login",
+        label: "Login",
+        align: "left",
+        sortable: false,
+        renderCell: (row) => (
+          <button
+            className="btn btn-info btn-sm"
+            onClick={() => this.handleLoginClick(row.id)}
+          >
+            Login
+          </button>
         ),
       },
       {

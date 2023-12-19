@@ -477,7 +477,7 @@
 						}
 					]
 				},
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:3000/domainCategory/delete/3",

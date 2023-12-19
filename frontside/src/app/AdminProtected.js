@@ -5,6 +5,7 @@ const AdminProtected = ({
   component: Component,
   isAuthenticated,
   isAdmin,
+  handleLoginSuccess,
   ...rest
 }) => {
   return (
@@ -12,7 +13,7 @@ const AdminProtected = ({
       {...rest}
       render={(props) =>
         isAuthenticated && isAdmin === "1" ? (
-          <Component {...props} />
+          <Component {...props} handleLoginSuccess={handleLoginSuccess}/>
         ) : (
           <Redirect to="/login" />
           // <div>

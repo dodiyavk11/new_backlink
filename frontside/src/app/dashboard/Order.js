@@ -23,7 +23,7 @@ const OrderComponent = ({ order, viewOrder }) => (
         <tbody>
           <tr onClick={() => viewOrder(order.id)}>
             <td>
-              <h4>{order.domain.domain_name}</h4>
+              <h4>{order.isBundle != 0 ?  "Link Bundle" : order.domain.domain_name}</h4>
               <div className="extraInfo flex-wrap d-flex justify-content-between">
                 <div>
                   {order.project && order.project.domain_name

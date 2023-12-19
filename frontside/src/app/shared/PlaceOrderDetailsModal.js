@@ -670,8 +670,8 @@ class PlaceOrderDetailsModal extends Component {
                       style={{ width: "100%" }}
                     >
                       <div className="w-full border p-4 rounded mt-2 textCenter borderDashed">
-                        <p className="mb-1 text-sm">Click file to select it</p>
-                        <p className="mb-1 text-sm">.doc / .docx / .pages</p>
+                        <p className="mb-1 text-sm">Click here to select file</p>
+                        <p className="mb-1 text-sm">.doc / .docx </p>
                       </div>
                     </label>
                   </div>
@@ -710,7 +710,7 @@ class PlaceOrderDetailsModal extends Component {
                   <input
                     type="date"
                     name="publication_date"
-                    className="form-control"
+                    className="form-control border"
                     id="publication_date"
                     placeholder="03/03/2024"
                     onChange={this.handleChange}

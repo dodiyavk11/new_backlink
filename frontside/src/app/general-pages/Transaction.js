@@ -18,7 +18,7 @@ import {
   TableSortLabel,
 } from "@material-ui/core";
 
-export class AdminOrders extends Component {
+export class Transaction extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -595,4 +595,4 @@ const PriceRangeSlider = (props) => {
     </>
   );
 };
-export default withRouter(AdminOrders);
+export default withRouter(Transaction);

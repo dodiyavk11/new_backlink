@@ -652,10 +652,14 @@ class ApiServices {
     Object.keys(formData).forEach((key) => {
       formDataObject.append(key, formData[key]);
     });
-    return axios.patch(`${this.APP_URL}emailTemplate/edit/${id}`, formDataObject, {
-      headers: { Authorization: `Bearer ${authToken}` },
-      "Content-Type": "multipart/form-data",
-    });
+    return axios.patch(
+      `${this.APP_URL}emailTemplate/edit/${id}`,
+      formDataObject,
+      {
+        headers: { Authorization: `Bearer ${authToken}` },
+        "Content-Type": "multipart/form-data",
+      }
+    );
   }
 
   addEmailTemplate(formData) {
@@ -672,11 +676,57 @@ class ApiServices {
     });
   }
 
-  getUserWalletBalance(){
+  addDomainCategory(formData) {
     const authToken = localStorage.getItem("token");
-    return axios.get(`${this.APP_URL}user/get/balance`,{
-      headers: { Authorization : `Bearer ${authToken}` }
-    })
+    return axios.post(`${this.APP_URL}domainCategory/add`, formData, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  updateDomainCategory(formData, id) {
+    const authToken = localStorage.getItem("token");
+    return axios.patch(`${this.APP_URL}domainCategory/edit/${id}`, formData, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  domainCategoryDelete(id) {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}domainCategory/delete/${id}`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  getUserWalletBalance() {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}user/get/balance`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  checkBalanceForBundle(id) {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}linkBundle/${id}/check`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  linkBundlePlaceOrder(orderData, planId) {
+    const authToken = localStorage.getItem("token");
+    return axios.post(
+      `${this.APP_URL}link-bundle/${planId}/placeOrder`,
+      orderData,
+      {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }
+    );
+  }
+
+  userPaymetnTransaction() {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}user/transactionHistory`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
   }
 }
 

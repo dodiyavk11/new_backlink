@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 18, 2023 at 02:09 PM
+-- Generation Time: Dec 19, 2023 at 02:24 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -256,13 +256,6 @@ CREATE TABLE `favorite_products` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `favorite_products`
---
-
-INSERT INTO `favorite_products` (`id`, `user_id`, `product_id`, `created_at`) VALUES
-(2, 15, 4, '2023-12-13 13:28:28');
-
 -- --------------------------------------------------------
 
 --
@@ -362,6 +355,7 @@ CREATE TABLE `new_orders` (
   `textCreationPrice` decimal(10,2) NOT NULL DEFAULT 0.00,
   `approveTextPrice` decimal(10,2) NOT NULL DEFAULT 0.00,
   `chooseByBacklink` int(1) NOT NULL DEFAULT 0,
+  `isBundle` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -370,22 +364,23 @@ CREATE TABLE `new_orders` (
 -- Dumping data for table `new_orders`
 --
 
-INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `backlink_id`, `status`, `total_price`, `price`, `anchortext`, `linktarget`, `publication_date`, `note`, `project_id`, `hash_id`, `textCreation`, `wordCount`, `approveText`, `textCreationPrice`, `approveTextPrice`, `chooseByBacklink`, `created_at`, `updated_at`) VALUES
-(1, 11, 15, 1, 1, 'Cancelled', '5000.00', '0.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'nezrcrlx', 'z5cirixk', '', 0, 0, '0.00', '0.00', 0, '2023-11-06 07:51:35', '2023-12-06 05:25:02'),
-(10, 11, 15, 1, 1, 'Pending', '5077.00', '5000.00', 'Click Here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2024-12-01', 'Noteeee', 'pnhtw15k', 'z5cirixk', 'Editorial', 1000, 1, '50.00', '27.00', 0, '2023-11-30 11:49:03', '2023-12-05 05:11:37'),
-(11, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'Click here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-08', 'ggs', 'pnhtw15k', 'z5cirixk', 'Own', 0, 0, '0.00', '0.00', 0, '2023-11-30 13:49:35', '2023-12-06 04:56:27'),
-(12, 11, 15, 4, 3, 'Pending', '282.00', '255.00', 'Test Anchor', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-13', 'Test note', '', 'zulhjrwm', 'Editorial', 500, 1, '0.00', '27.00', 0, '2023-12-05 06:25:01', '2023-12-05 12:32:14'),
-(13, 11, 15, 4, 3, 'Pending', '255.00', '255.00', 'Test here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-19', '', 'pnhtw15k', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, '2023-12-07 11:14:37', '2023-12-07 11:14:37'),
-(22, 11, 15, 4, 3, 'Pending', '328.50', '251.50', 'Backlinked', 'https://backlinked.com/', '2023-12-13', 'Backlined', 'pnhtw15k', 'zulhjrwm', 'Editorial', 1000, 1, '50.00', '27.00', 0, '2023-12-12 12:40:28', '2023-12-12 12:40:28'),
-(23, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'Best I Coder', 'https://besticoder.com/', '2023-12-14', 'Best I coder notesss', 'nezrcrlx', 'z5cirixk', 'Own', 0, 0, '0.00', '0.00', 0, '2023-12-12 12:40:28', '2023-12-12 12:40:28'),
-(24, 11, 15, 4, 3, 'Pending', '278.50', '251.50', 'dsdsdsd', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '2023-12-15', 'sdsd', '', 'zulhjrwm', 'Editorial', 500, 1, '0.00', '27.00', 0, '2023-12-12 12:42:40', '2023-12-12 12:42:40'),
-(25, 11, 15, 4, 3, 'Pending', '251.50', '251.50', 'Example', 'https://example.com', '2023-12-15', '15 12 2023', 'pnhtw15k', 'zulhjrwm', 'Own', 0, 0, '0.00', '0.00', 0, '2023-12-12 12:47:11', '2023-12-12 12:47:11'),
-(26, 11, 15, 1, 1, 'Pending', '5050.00', '5000.00', 'Testing', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'z5cirixk', 'Editorial', 1000, 0, '50.00', '0.00', 0, '2023-12-12 12:51:18', '2023-12-12 12:51:18'),
-(27, 11, 15, 4, 3, 'Pending', '251.50', '251.50', 'Backlinked', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, '2023-12-12 12:56:12', '2023-12-12 12:56:12'),
-(28, 11, 15, 4, 3, 'Pending', '251.50', '251.50', '22222222222222222', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, '2023-12-12 12:59:58', '2023-12-12 12:59:58'),
-(29, 11, 15, 4, 3, 'Pending', '251.50', '251.50', 'sdsd', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, '2023-12-12 13:02:14', '2023-12-12 13:02:14'),
-(30, 11, 15, 4, 3, 'Pending', '301.50', '251.50', '22222222222222222', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 1000, 0, '50.00', '0.00', 0, '2023-12-12 13:03:13', '2023-12-12 13:03:13'),
-(31, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'ChatOpen', 'https://chat.openai.com/1312', '2023-12-16', 'Chat GTP', 'nezrcrlx', 'z5cirixk', 'Editorial', 500, 0, '0.00', '0.00', 0, '2023-12-13 04:24:26', '2023-12-13 04:24:26');
+INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `backlink_id`, `status`, `total_price`, `price`, `anchortext`, `linktarget`, `publication_date`, `note`, `project_id`, `hash_id`, `textCreation`, `wordCount`, `approveText`, `textCreationPrice`, `approveTextPrice`, `chooseByBacklink`, `isBundle`, `created_at`, `updated_at`) VALUES
+(1, 11, 15, 1, 1, 'Cancelled', '5000.00', '0.00', 'Click Here', 'https://www.example.com/test.html', '2023-12-15', 'test', 'nezrcrlx', 'z5cirixk', '', 0, 0, '0.00', '0.00', 0, 0, '2023-11-06 07:51:35', '2023-12-06 05:25:02'),
+(10, 11, 15, 1, 1, 'Pending', '5077.00', '5000.00', 'Click Here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2024-12-01', 'Noteeee', 'pnhtw15k', 'z5cirixk', 'Editorial', 1000, 1, '50.00', '27.00', 0, 0, '2023-11-30 11:49:03', '2023-12-05 05:11:37'),
+(11, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'Click here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-08', 'ggs', 'pnhtw15k', 'z5cirixk', 'Own', 0, 0, '0.00', '0.00', 0, 0, '2023-11-30 13:49:35', '2023-12-06 04:56:27'),
+(12, 11, 15, 4, 3, 'Pending', '282.00', '255.00', 'Test Anchor', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-13', 'Test note', '', 'zulhjrwm', 'Editorial', 500, 1, '0.00', '27.00', 0, 0, '2023-12-05 06:25:01', '2023-12-05 12:32:14'),
+(13, 11, 15, 4, 3, 'Pending', '255.00', '255.00', 'Test here', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '2023-12-19', '', 'pnhtw15k', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, 0, '2023-12-07 11:14:37', '2023-12-07 11:14:37'),
+(22, 11, 15, 4, 3, 'Pending', '328.50', '251.50', 'Backlinked', 'https://backlinked.com/', '2023-12-13', 'Backlined', 'pnhtw15k', 'zulhjrwm', 'Editorial', 1000, 1, '50.00', '27.00', 0, 0, '2023-12-12 12:40:28', '2023-12-12 12:40:28'),
+(23, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'Best I Coder', 'https://besticoder.com/', '2023-12-14', 'Best I coder notesss', 'nezrcrlx', 'z5cirixk', 'Own', 0, 0, '0.00', '0.00', 0, 0, '2023-12-12 12:40:28', '2023-12-12 12:40:28'),
+(24, 11, 15, 4, 3, 'Pending', '278.50', '251.50', 'dsdsdsd', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '2023-12-15', 'sdsd', '', 'zulhjrwm', 'Editorial', 500, 1, '0.00', '27.00', 0, 0, '2023-12-12 12:42:40', '2023-12-12 12:42:40'),
+(25, 11, 15, 4, 3, 'Pending', '251.50', '251.50', 'Example', 'https://example.com', '2023-12-15', '15 12 2023', 'pnhtw15k', 'zulhjrwm', 'Own', 0, 0, '0.00', '0.00', 0, 0, '2023-12-12 12:47:11', '2023-12-12 12:47:11'),
+(26, 11, 15, 1, 1, 'Pending', '5050.00', '5000.00', 'Testing', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'z5cirixk', 'Editorial', 1000, 0, '50.00', '0.00', 0, 0, '2023-12-12 12:51:18', '2023-12-12 12:51:18'),
+(27, 11, 15, 4, 3, 'Pending', '251.50', '251.50', 'Backlinked', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, 0, '2023-12-12 12:56:12', '2023-12-12 12:56:12'),
+(28, 11, 15, 4, 3, 'Pending', '251.50', '251.50', '22222222222222222', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, 0, '2023-12-12 12:59:58', '2023-12-12 12:59:58'),
+(29, 11, 15, 4, 3, 'Pending', '251.50', '251.50', 'sdsd', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 500, 0, '0.00', '0.00', 0, 0, '2023-12-12 13:02:14', '2023-12-12 13:02:14'),
+(30, 11, 15, 4, 3, 'Pending', '301.50', '251.50', '22222222222222222', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '0000-00-00', '', '', 'zulhjrwm', 'Editorial', 1000, 0, '50.00', '0.00', 0, 0, '2023-12-12 13:03:13', '2023-12-12 13:03:13'),
+(31, 11, 15, 1, 1, 'Pending', '5000.00', '5000.00', 'ChatOpen', 'https://chat.openai.com/1312', '2023-12-16', 'Chat GTP', 'nezrcrlx', 'z5cirixk', 'Editorial', 500, 0, '0.00', '0.00', 0, 0, '2023-12-13 04:24:26', '2023-12-13 04:24:26'),
+(34, 0, 15, 0, 0, 'Pending', '600.00', '0.00', 'Test Link Bundle Order2222', 'https://backlinked.com/', '2023-12-26', NULL, 'nezrcrlx', NULL, 'Editorial', 0, 0, '0.00', '0.00', 0, 2, '2023-12-19 10:55:01', '2023-12-19 10:55:01');
 
 -- --------------------------------------------------------
 
@@ -504,8 +499,9 @@ CREATE TABLE `publisher_domains` (
 --
 
 INSERT INTO `publisher_domains` (`id`, `domain_name`, `tld`, `price`, `category_id`, `status`, `anchorText`, `deliveryTime`, `attribute`, `sensitiveTopic`, `sensitiveTopicCharge`, `minWordCount`, `textByCustomer`, `textInclude`, `language`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
-(1, 'google.com', 'com', '5000.00', 18, 1, NULL, 2, 'dofollow', 0, NULL, 0, 0, 0, 'de', 11, 'z5cirixk', '2023-11-06 07:44:47', '2023-12-11 04:02:38'),
-(4, 'backlinked.com', 'com', '251.50', 7, 1, 'No restrictions', 150, 'nofollow', 1, '150.00', 150, 1, 1, 'en', 11, 'zulhjrwm', '2023-12-04 09:32:34', '2023-12-11 10:57:49');
+(1, 'google.com', 'com', '5000.00', 30, 1, NULL, 2, 'dofollow', 0, '0.00', 0, 0, 0, 'de', 11, 'z5cirixk', '2023-11-06 07:44:47', '2023-12-19 05:26:02'),
+(4, 'backlinked.com', 'com', '251.50', 14, 1, 'No restrictions', 150, 'nofollow', 1, '150.00', 150, 1, 1, 'en', 11, 'zulhjrwm', '2023-12-04 09:32:34', '2023-12-19 05:25:59'),
+(15, 'placehold.co', 'co', '380.00', 10, 1, 'As desired', 10, 'dofollow', 0, '0.00', 500, 0, 1, 'en', 11, '9tb7gm0r', '2023-12-19 05:23:22', '2023-12-19 05:24:52');
 
 -- --------------------------------------------------------
 
@@ -538,7 +534,8 @@ CREATE TABLE `publisher_domain_data` (
 
 INSERT INTO `publisher_domain_data` (`id`, `domain_id`, `traffic`, `anchor_text`, `delivery_time`, `link`, `language`, `visibility_index`, `domain_rating`, `rating`, `referring`, `citation_flow`, `trust_flow`, `authority`, `created_at`, `updated_at`) VALUES
 (1, 1, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-11-06 07:44:54', '2023-11-07 12:46:23'),
-(3, 4, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-12-04 09:32:42', '2023-12-04 09:32:42');
+(3, 4, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-12-04 09:32:42', '2023-12-04 09:32:42'),
+(13, 15, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2023-12-19 05:23:32', '2023-12-19 05:23:32');
 
 -- --------------------------------------------------------
 
@@ -567,9 +564,9 @@ CREATE TABLE `subscription_plans` (
 --
 
 INSERT INTO `subscription_plans` (`id`, `name`, `description`, `price`, `cancellation_period`, `max_domains_per_month`, `max_orders`, `credits_price`, `credits_quota`, `status`, `validity`, `created_at`, `updated_at`) VALUES
-(1, 'Basic', 'Basic plan for indiindividual use', 65, 30, 10, 5, '0.00', 0, 1, 30, '2023-09-27 05:20:00', '2023-12-18 10:38:20'),
-(2, 'Medium ', 'Medium plan for indiindividual comapany use', 110, 30, 50, 25, NULL, NULL, 1, 30, '2023-09-27 05:22:07', '2023-09-28 06:42:18'),
-(3, 'Agency', 'for Agency use', 200, 30, 100, 50, NULL, NULL, 1, 30, '2023-09-27 05:23:28', '2023-09-28 06:43:03');
+(1, 'Basic', 'Basic plan for indiindividual use', 350, 30, 2, 2, '0.00', 0, 1, 30, '2023-09-27 05:20:00', '2023-12-19 05:36:08'),
+(2, 'Medium ', 'Medium plan for indiindividual comapany use', 600, 30, 4, 25, NULL, NULL, 1, 30, '2023-09-27 05:22:07', '2023-12-19 05:35:52'),
+(3, 'Agency', 'for Agency use', 900, 30, 6, 50, NULL, NULL, 1, 30, '2023-09-27 05:23:28', '2023-12-19 05:35:39');
 
 -- --------------------------------------------------------
 
@@ -644,7 +641,12 @@ INSERT INTO `transactions` (`id`, `user_id`, `amount`, `transaction_type`, `desc
 (97, 15, '70.00', 'Manual Added', 'For Testing', '2023-12-18 11:30:04', NULL, 0, 'paid', NULL, '2023-12-18 11:30:04'),
 (98, 15, '10.00', 'Manual Added', 'For Testing', '2023-12-18 11:30:13', NULL, 0, 'paid', NULL, '2023-12-18 11:30:13'),
 (99, 15, '50.00', 'Manual Added', 'For Testing', '2023-12-18 12:29:40', NULL, 0, 'paid', NULL, '2023-12-18 12:29:40'),
-(100, 15, '50.00', 'Manual Added', 'For Testing', '2023-12-18 12:48:37', NULL, 0, 'paid', NULL, '2023-12-18 12:48:37');
+(100, 15, '50.00', 'Manual Added', 'For Testing', '2023-12-18 12:48:37', NULL, 0, 'paid', NULL, '2023-12-18 12:48:37'),
+(101, 15, '5.00', 'Manual Added', 'For Testing', '2023-12-18 13:12:17', NULL, 0, 'paid', NULL, '2023-12-18 13:12:17'),
+(102, 15, '400.00', 'Manual Added', 'For Testing', '2023-12-19 06:42:39', NULL, 0, 'paid', NULL, '2023-12-19 06:42:39'),
+(104, 15, '95.00', 'Manual Added', 'For Testing', '2023-12-19 10:52:41', NULL, 0, 'paid', NULL, '2023-12-19 10:52:41'),
+(106, 15, '600.00', 'Place order', 'Buy FairLinked Link Bundle Plan Medium ', '2023-12-19 10:55:01', 'order_34', 0, 'paid', '{\"created_at\":\"2023-12-19 16:25:01\",\"id\":34,\"anchortext\":\"Test Link Bundle Order2222\",\"linktarget\":\"https://backlinked.com/\",\"project_id\":\"nezrcrlx\",\"publication_date\":\"2023-12-26T00:00:00.000Z\",\"textCreation\":\"Editorial\",\"wordCount\":0,\"approveText\":0,\"textCreationPrice\":0,\"approveTextPrice\":0,\"chooseByBacklink\":0,\"isBundle\":\"2\",\"publisher_id\":0,\"customer_id\":15,\"domain_id\":0,\"backlink_id\":0,\"total_price\":600,\"status\":\"Pending\",\"updated_at\":\"2023-12-19T10:55:01.597Z\"}', '2023-12-19 10:55:01'),
+(107, 15, '155.00', 'Manual Added', 'For Testing', '2023-12-19 12:34:32', NULL, 0, 'paid', NULL, '2023-12-19 12:34:32');
 
 -- --------------------------------------------------------
 
@@ -689,7 +691,7 @@ INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `
 (36, 'frontside@mail.com', 1, 'Front', 'Side', '$2a$11$q9QmEe0ZOvFcsci5Y9pjpO4iBx.z9VyAf45AElj.TF3xN4hJH6GvO', 'profileImg_1699339746336.png', '123456', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 0, '2023-11-07 12:19:06', '2023-12-14 17:33:14'),
 (44, 'publisher@mail.com', 1, 'Publisher', 'Account', '$2a$11$p2Az5D0NM9xRAwygZLi3qupjlLjtkN8wJTAFy5Oh.OUn03pkrlJJ.', 'profileImg_1701410251380.png', '123456', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-01 11:27:31', '2023-12-14 17:33:15'),
 (47, 'admintouser@gmail.com', 1, 'Admin side', 'testing user', '$2a$11$TDJJdoDWVzFJNNlcr2wf3e2Pu8OgkbqtsU0SvGC4Fxr1aAVV7VxGy', NULL, '12312', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-14 15:09:49', '2023-12-14 17:33:16'),
-(48, 'teststsstst@gmail.com', 1, 'teststst', 'tsdtstst', '$2a$11$QuXXMou5NlUzhFawApg2AOTFArlSzeuf2anzdKKTw5sNMQFWfAGMi', NULL, '1111111111', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 0, '2023-12-14 16:33:05', '2023-12-14 17:33:49'),
+(48, 'teststsstst@gmail.com', 1, 'teststst', 'tsdtstst', '$2a$11$QuXXMou5NlUzhFawApg2AOTFArlSzeuf2anzdKKTw5sNMQFWfAGMi', NULL, '1111111111', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 1, '2023-12-14 16:33:05', '2023-12-19 17:32:57'),
 (49, 'dsds@gmail.com', 1, 'Update', 'User', '$2a$11$6Tq6qn/WRgCydm3fxb3TxOdChbmDttjpAj/92MY4DppzuViDy6u6S', NULL, '88888888', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 1, '2023-12-14 16:51:30', '2023-12-14 18:49:27');
 
 -- --------------------------------------------------------
@@ -711,7 +713,7 @@ CREATE TABLE `users_wallet` (
 --
 
 INSERT INTO `users_wallet` (`id`, `user_id`, `balance`, `created_at`, `updated_at`) VALUES
-(1, 15, '200.00', '2023-12-18 12:48:37', '2023-12-18 12:48:37');
+(1, 15, '155.00', '2023-12-19 12:34:32', '2023-12-19 12:34:32');
 
 -- --------------------------------------------------------
 
@@ -734,8 +736,7 @@ CREATE TABLE `user_cart` (
 --
 
 INSERT INTO `user_cart` (`id`, `cart_id`, `user_id`, `hash_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(223, 'lb3sv4322', 15, 'zulhjrwm', 1, '2023-12-13 12:41:03', '2023-12-13 12:41:03'),
-(227, 'j0ip7a7pl', 15, 'zulhjrwm', 1, '2023-12-14 10:10:12', '2023-12-14 10:10:12');
+(228, 'w600z1lal', 15, '9tb7gm0r', 1, '2023-12-19 11:58:04', '2023-12-19 11:58:04');
 
 -- --------------------------------------------------------
 
@@ -945,7 +946,7 @@ ALTER TABLE `domains`
 -- AUTO_INCREMENT for table `domain_categories`
 --
 ALTER TABLE `domain_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `domain_tags`
@@ -969,7 +970,7 @@ ALTER TABLE `faqs`
 -- AUTO_INCREMENT for table `favorite_products`
 --
 ALTER TABLE `favorite_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `forgotpasswords`
@@ -987,7 +988,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `new_orders`
 --
 ALTER TABLE `new_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -1011,13 +1012,13 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `publisher_domains`
 --
 ALTER TABLE `publisher_domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `publisher_domain_data`
 --
 ALTER TABLE `publisher_domain_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `subscription_plans`
@@ -1029,7 +1030,7 @@ ALTER TABLE `subscription_plans`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -1047,7 +1048,7 @@ ALTER TABLE `users_wallet`
 -- AUTO_INCREMENT for table `user_cart`
 --
 ALTER TABLE `user_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=228;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
 
 --
 -- AUTO_INCREMENT for table `user_subscriptions`

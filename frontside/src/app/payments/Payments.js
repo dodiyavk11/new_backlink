@@ -1,423 +1,269 @@
 import React, { Component } from "react";
-import "../../assets/custom.css";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import TimeAgo from "timeago-react";
+import ApiServices from "../services/api.service";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+} from "@material-ui/core";
+
 export class Payments extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      rows: [],
+      page: 0,      
+      rowsPerPage: 10,
+      orderBy: "id",
+      order: "desc",
+      selectedRow: null,      
+    };
+  }
+
+  // Datatable start
+  handleRowClick = (event, index) => {
+    // if (event.target.tagName === "TD") {
+    this.setState({ selectedRow: index });
+    // }
+  };
+
+  handleChangePage = (event, newPage) => {
+    this.setState({ page: newPage });
+  };
+
+  handleChangeRowsPerPage = (event) => {
+    this.setState({ rowsPerPage: +event.target.value, page: 0 });
+  };
+
+  handleRequestSort = (property) => {
+    const isAsc = this.state.orderBy === property && this.state.order === "asc";
+    this.setState({
+      orderBy: property,
+      order: isAsc ? "desc" : "asc",
+    });
+  };
+
+  getComparator = (order, orderBy) => {
+    return order === "desc"
+      ? (a, b) => b[orderBy] - a[orderBy]
+      : (a, b) => a[orderBy] - b[orderBy];
+  };
+
+  stableSort = (array, comparator) => {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  };
+  // Datatable End
+
+  getUserTransaction() {
+    ApiServices.userPaymetnTransaction().then(
+      (res) => {
+        if (res.data.status) {
+          this.setState({
+            rows: res.data.data,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  }
+
+  componentDidMount() {
+    this.getUserTransaction();
   }
   render() {
+    const { rows, page, rowsPerPage, orderBy, order } = this.state;    
+    const columns = [
+      {
+        id: "id",
+        label: "ID",
+        height: 100,
+        width: 50,
+        sortable: true,
+        renderCell: (row) => <span>{row.id}</span>,
+      },    
+      {
+        id:"amount",
+        label: "Amount",
+        sortable: true,
+        renderCell: (row) => <span>${row.amount}</span>
+      },  
+      {
+        id: "status",
+        label: "Status",
+        width: 90,
+        sortable: false,
+        renderCell: (row) => (
+          <span>
+            {row.status}
+          </span>
+        ),
+      },
+      {
+        id: "type",
+        label: "Type",
+        width: 130,
+        align: "right",
+        sortable: false,
+        renderCell: (row) => (
+          <span>
+            {row.transaction_type}
+          </span>
+        ),
+      },
+      {
+        id: "description",
+        label: "Description",
+        align: "right",
+        width: 90,
+        sortable: false,
+        renderCell: (row) => (
+          <span>{row.description}</span>
+        ),
+      },    
+      {
+        id: "created_at",
+        label: "Created at",
+        width: 130,
+        sortable: false,
+        renderCell: (row) => (
+          <span>
+            {" "}
+            <TimeAgo datetime={row.created_at} locale="en" />
+          </span>
+        ),
+      },  
+    ];
+
     return (
       <>
-        <div className="bundleLinkPage">
-          <div className="row dailTableC">
+        <div className="ordersListPage adminOrdersList">
+          <div className="d-flex justify-content-between">
+            <div className="page-header">
+              <h3 className="fontBold latterSpacing">Trasactions</h3>
+            </div>
+          </div>
+          <div className="row">
             <div className="col-lg-12 grid-margin">
-              <div className="card mb-4 blRadius">
-                <div className="card-body">
-                  <div className="page-header">
-                    <h3 className="fontBold latterSpacing">Payment</h3>
-                  </div>
-                  <div className="table-responsive">
-                    <table className="table table-hover top5Deals">
-                      <thead>
-                        <tr className="align-middle">
-                          <th>Name</th>
-                          <th>Rating</th>
-                          <th>DR</th>
-                          <th>DA</th>
-                          <th>TF</th>
-                          <th>Price</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr className="">
-                          <td style={{ display: "flex" }}>
-                            <button
-                              className="customBtn2 mr-2"
-                              tabIndex="0"
-                              type="button"
-                              aria-label="link"
-                            >
-                              <svg
-                                width={24}
-                                id="external-link"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                />
-                              </svg>
-                            </button>
-                            <div>
-                              <p className="fontBold700">xyz.com</p>
-                              <p>
-                                Electronics &amp; Computers, Internet &amp; SEO,
-                                Telecommunications
-                              </p>
-                            </div>
-                          </td>
-                          <td>
-                            <svg
-                              className="mr-1"
-                              width={15}
-                              id="star"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="#fbc02d"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              style={{ color: "#fbc02d" }}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                              />
-                            </svg>
-                            5.00
-                          </td>
-                          <td>70</td>
-                          <td>43</td>
-                          <td>45</td>
-                          <td style={{ display: "flex" }}>
-                            <div>
-                              <p className="fontBold700">$387.60</p>
-                              <p>
-                                <del>$456.60</del>
-                              </p>
-                            </div>
-                          </td>
-                          <td className="h3">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="currentColor"
-                              className="bi bi-bag"
-                              viewBox="0 0 16 16"
-                              style={{ color: "#757575c9" }}
-                            >
-                              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                            </svg>
-                          </td>
-                        </tr>
-                        <tr className="">
-                          <td style={{ display: "flex" }}>
-                            <button
-                              className="customBtn2 mr-2"
-                              tabIndex="0"
-                              type="button"
-                              aria-label="link"
-                            >
-                              <svg
-                                width={24}
-                                id="external-link"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                />
-                              </svg>
-                            </button>
-                            <div>
-                              <p className="fontBold700">xyz.com</p>
-                              <p>
-                                Electronics &amp; Computers, Internet &amp; SEO,
-                                Telecommunications
-                              </p>
-                            </div>
-                          </td>
-                          <td>
-                            <svg
-                              className="mr-1"
-                              width={15}
-                              id="star"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="#fbc02d"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              style={{ color: "#fbc02d" }}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                              />
-                            </svg>
-                            5.00
-                          </td>
-                          <td>70</td>
-                          <td>43</td>
-                          <td>45</td>
-                          <td style={{ display: "flex" }}>
-                            <div>
-                              <p className="fontBold700">$387.60</p>
-                              <p>
-                                <del>$456.60</del>
-                              </p>
-                            </div>
-                          </td>
-                          <td className="h3">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="currentColor"
-                              className="bi bi-bag"
-                              viewBox="0 0 16 16"
-                              style={{ color: "#757575c9" }}
-                            >
-                              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                            </svg>
-                          </td>
-                        </tr>
-                        <tr className="">
-                          <td style={{ display: "flex" }}>
-                            <button
-                              className="customBtn2 mr-2"
-                              tabIndex="0"
-                              type="button"
-                              aria-label="link"
-                            >
-                              <svg
-                                width={24}
-                                id="external-link"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                />
-                              </svg>
-                            </button>
-                            <div>
-                              <p className="fontBold700">xyz.com</p>
-                              <p>
-                                Electronics &amp; Computers, Internet &amp; SEO,
-                                Telecommunications
-                              </p>
-                            </div>
-                          </td>
-                          <td>
-                            <svg
-                              className="mr-1"
-                              width={15}
-                              id="star"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="#fbc02d"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              style={{ color: "#fbc02d" }}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                              />
-                            </svg>
-                            5.00
-                          </td>
-                          <td>70</td>
-                          <td>43</td>
-                          <td>45</td>
-                          <td style={{ display: "flex" }}>
-                            <div>
-                              <p className="fontBold700">$387.60</p>
-                              <p>
-                                <del>$456.60</del>
-                              </p>
-                            </div>
-                          </td>
-                          <td className="h3">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="currentColor"
-                              className="bi bi-bag"
-                              viewBox="0 0 16 16"
-                              style={{ color: "#757575c9" }}
-                            >
-                              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                            </svg>
-                          </td>
-                        </tr>
-                        <tr className="">
-                          <td style={{ display: "flex" }}>
-                            <button
-                              className="customBtn2 mr-2"
-                              tabIndex="0"
-                              type="button"
-                              aria-label="link"
-                            >
-                              <svg
-                                width={24}
-                                id="external-link"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                />
-                              </svg>
-                            </button>
-                            <div>
-                              <p className="fontBold700">xyz.com</p>
-                              <p>
-                                Electronics &amp; Computers, Internet &amp; SEO,
-                                Telecommunications
-                              </p>
-                            </div>
-                          </td>
-                          <td>
-                            <svg
-                              className="mr-1"
-                              width={15}
-                              id="star"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="#fbc02d"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              style={{ color: "#fbc02d" }}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                              />
-                            </svg>
-                            5.00
-                          </td>
-                          <td>70</td>
-                          <td>43</td>
-                          <td>45</td>
-                          <td style={{ display: "flex" }}>
-                            <div>
-                              <p className="fontBold700">$387.60</p>
-                              <p>
-                                <del>$456.60</del>
-                              </p>
-                            </div>
-                          </td>
-                          <td className="h3">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="currentColor"
-                              className="bi bi-bag"
-                              viewBox="0 0 16 16"
-                              style={{ color: "#757575c9" }}
-                            >
-                              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                            </svg>
-                          </td>
-                        </tr>
-                        <tr className="">
-                          <td style={{ display: "flex" }}>
-                            <button
-                              className="customBtn2 mr-2"
-                              tabIndex="0"
-                              type="button"
-                              aria-label="link"
-                            >
-                              <svg
-                                width={24}
-                                id="external-link"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                />
-                              </svg>
-                            </button>
-                            <div>
-                              <p className="fontBold700">xyz.com</p>
-                              <p>
-                                Electronics &amp; Computers, Internet &amp; SEO,
-                                Telecommunications
-                              </p>
-                            </div>
-                          </td>
-                          <td>
-                            <svg
-                              className="mr-1"
-                              width={15}
-                              id="star"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="#fbc02d"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              style={{ color: "#fbc02d" }}
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                              />
-                            </svg>
-                            5.00
-                          </td>
-                          <td>70</td>
-                          <td>43</td>
-                          <td>45</td>
-                          <td style={{ display: "flex" }}>
-                            <div>
-                              <p className="fontBold700">$387.60</p>
-                              <p>
-                                <del>$456.60</del>
-                              </p>
-                            </div>
-                          </td>
-                          <td className="h3">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="currentColor"
-                              className="bi bi-bag"
-                              viewBox="0 0 16 16"
-                              style={{ color: "#757575c9" }}
-                            >
-                              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                            </svg>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+              <div className="card mb-4 bRadius">
+                <div className="card-body projectsCard">
+                  <ToastContainer />                 
+                  <div
+                    className="tableData"
+                  >
+                    <Paper style={{ width: "100%", overflow: "hidden" }}>
+                      <TableContainer style={{ maxHeight: "50%" }}>
+                        <Table stickyHeader aria-label="sticky table">
+                          <TableHead>
+                            <TableRow>
+                              {columns.map((column) => (
+                                <TableCell
+                                  className="text-uppercase"
+                                  key={column.id}
+                                  align={column.align}
+                                  style={{ minWidth: column.minWidth }}
+                                >
+                                  {column.sortable !== false ? (
+                                    <TableSortLabel
+                                      active={orderBy === column.id}
+                                      direction={
+                                        orderBy === column.id ? order : "asc"
+                                      }
+                                      onClick={() =>
+                                        this.handleRequestSort(column.id)
+                                      }
+                                    >
+                                      {column.label}
+                                    </TableSortLabel>
+                                  ) : (
+                                    <span>{column.label}</span>
+                                  )}
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {this.stableSort(
+                              rows,
+                              this.getComparator(order, orderBy)
+                            )
+                              .slice(
+                                page * rowsPerPage,
+                                page * rowsPerPage + rowsPerPage
+                              )
+                              .map((row, index) => {
+                                const isSelected =
+                                  this.state.selectedRow === index;
+                                return (
+                                  <TableRow
+                                    hover
+                                    role="checkbox"
+                                    tabIndex={-1}
+                                    key={row.id}
+                                    selected={isSelected}          
+                                    onClick={(event) =>
+                                      this.handleRowClick(event, index)
+                                    }                          
+                                    style={{
+                                      cursor: "pointer",
+                                      height: "55px",
+                                    }}
+                                  >
+                                    {columns.map((column) => (
+                                      <TableCell
+                                        className="fontBold600"
+                                        key={column.id}
+                                        align={column.align}
+                                      >
+                                        {column.renderCell
+                                          ? column.renderCell(row)
+                                          : column.format &&
+                                            typeof row[column.id] === "number"
+                                          ? column.format(row[column.id])
+                                          : row[column.id]}
+                                      </TableCell>
+                                    ))}
+                                  </TableRow>
+                                );
+                              })}
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                      <TablePagination
+                        rowsPerPageOptions={[5, 10, 15,50]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={this.handleChangePage}
+                        onRowsPerPageChange={this.handleChangeRowsPerPage}
+                      />
+                    </Paper>
                   </div>
                 </div>
               </div>
