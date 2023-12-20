@@ -54,7 +54,12 @@ export class UserViewOrderDetails extends Component {
     );
   };
 
+  handleCancelUpdate = () => {    
+    toast.dismiss();
+  };
+
   handleConfirmCancel = () => {
+    toast.dismiss();
     ApiServices.userCancelOrder(this.state.order_id).then(
       (res) => {
         if (res.status) {

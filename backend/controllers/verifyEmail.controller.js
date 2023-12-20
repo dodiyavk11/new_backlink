@@ -1,6 +1,7 @@
 require("dotenv").config()
 const Models = require("../models");
 const nodemailer = require('nodemailer');
+const path = require('path');
 // const { decodeJWTToken } = require("../utils/jwtUtils");
 const { sendVerifyMail, emailTemplate,sendWelcomEmailWithAttachement } = require("../utils/emailsUtils")
 const { generateJWTToken, decodeJWTToken } = require("../utils/jwtUtils")
@@ -28,7 +29,7 @@ exports.VerifyEmail = async (req, res) => {
     {
         sendVerifyMail(email, subject, "", mail)
     }
-
+    const attachmentFilePath = path.join(__dirname, '..', 'assets', 'attachment', mailTexts.file);
     /* dummy email start*/
         var transport = nodemailer.createTransport({
           host: "sandbox.smtp.mailtrap.io",
@@ -44,6 +45,12 @@ exports.VerifyEmail = async (req, res) => {
           to: email,
           subject: subject,
           text: mail,
+          attachments: [
+            {
+              filename: mailTexts.file,
+              content: attachmentFilePath,
+            },
+          ],
         };
                 transport.sendMail(mailOptions, (error, info) => {
           if (error) {

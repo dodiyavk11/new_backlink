@@ -36,7 +36,7 @@ export class Projects extends Component {
     ApiServices.addUserProject(formData).then(
       () => {
         this.closeProjectModal();
-        // this.handleLoadData();
+        this.handleLoadData();
       },
       (error) => {
         const resMessage =

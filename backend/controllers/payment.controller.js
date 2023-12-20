@@ -1,6 +1,6 @@
 const Models = require("../models");
 const Sequelize = require('sequelize');
-const stripe = require("stripe")("sk_test_51NsHj9SC7x5vD10Msw6jkUut1c6QEMO0sN2RpWt1mnoiK0ccWOONIhCAWHwsAjdVSPpNuMtybe2a8dSxa1Po0IhN00ootqyaJH");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils");
 
 async function createProduct() {
@@ -53,16 +53,21 @@ async function createCheckoutSession(priceId) {
 }
 
 // Your API endpoint to initiate the payment
-exports.initPaymentFrontSide = async (req, res) => {
-  const { amount, currency } = req.body;
-
+exports.initPaymentFrontSide = async (req, res) => {  
   try {
+  	const id = req.userId;
+  	const userInfo = await Models.Users.findOne({ where:{ id } })
+  	const { amount, currency } = req.body;
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount * 100,
-      currency: currency || 'usd',
+      currency: currency || 'inr',
       payment_method_types: ['card'],
+      metadata: {
+	    user_name: `${userInfo.dataValues.firstName} ${userInfo.dataValues.lastName}`,
+	    user_id: id,
+	    user_email: userInfo.dataValues.email
+	  },
     });
-
     res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
     console.error(error);

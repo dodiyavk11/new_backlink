@@ -59,6 +59,7 @@ export class PublisherViewOrderDetails extends Component {
     );
   };
   handleConfirmUpadate = () => {
+    toast.dismiss();
     const status = this.state.updateStatus;
     ApiServices.publisherUpdateOrderStatus(this.state.order_id, status).then(
       (res) => {
@@ -77,7 +78,7 @@ export class PublisherViewOrderDetails extends Component {
     );
   };
   handleCancelUpdate = () => {
-    console.log("abort action");
+    toast.dismiss();
   };
   componentDidMount() {
     ApiServices.SingleOrderView(this.state.order_id,"publisher/order/view/")

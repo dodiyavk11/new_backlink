@@ -4,6 +4,7 @@ const { Op } = require('sequelize');
 const generateUniqueId = require('generate-unique-id');
 const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils");
 const { Worker, isMainThread } = require('worker_threads');
+const nodemailer = require('nodemailer');
 const ExcelJS = require('exceljs');
 const fs = require('fs');
 
@@ -124,6 +125,30 @@ exports.addPublisherDomain = async(req, res) => {
 			const email = await emailTemplate(text);	
 			sendVerifyMail(userInfo.dataValues.email,subject,"",email);
 
+			/* dummy email start*/
+	        var transport = nodemailer.createTransport({
+	          host: "sandbox.smtp.mailtrap.io",
+	          port: 2525,
+	          auth: {
+	            user: "5486eff1d5793c",
+	            pass: "e17b0b8e8f08ac"
+	          }
+	        });
+
+	        const mailOptions = {
+	          from: 'rjnaghera@gmail.com',
+	          to: userInfo.dataValues.email,
+	          subject: subject,
+	          text: email,
+	        };
+	                transport.sendMail(mailOptions, (error, info) => {
+	          // if (error) {
+	          //   console.error(error);
+	          // } else {
+	          //   console.log('Email sent: ' + info.response);
+	          // }
+	        });
+	        /* dummy email end*/
             res.status(200).send({ status: true, message: "Domain added successfully", data: addDomain });     
 
             if (isMainThread) {

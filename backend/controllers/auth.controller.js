@@ -122,17 +122,40 @@ exports.signIn = async (req, res) => {
 
         // email send if user is not verified
         if (!checkUser.email_verified) {
-            const name = checkUser.dataValues.fname + " " + checkUser.dataValues.lname
-            const EmailToken = generateJWTToken({ email }, "10m")
-            let subject = "Complete registration now";
-            let text = '<p><span style="font-size: 18pt;"><strong>Hello,</strong></span></p><p><span style="font-size: 12pt;"><span style="font-size: medium;">Thank you for your registration.</span></span></p><p><span style="font-size: 12pt;">Please confirm your email address {user_email} with this link:</span></p><p><span style="background-color: rgb(192, 222, 96);"><strong><span style="font-size: 12pt; background-color: rgb(192, 222, 96); ">{verification_Link}</span></strong></span></p><p><span style="font-size: 14pt;"><strong>Many sizes</strong></span></p>';
-            text = text.replace("{user_email}", email);
+            const name = checkUser.dataValues.firstName + " " + checkUser.dataValues.lastName
+            const mailTexts = await Models.email_format.findOne({ where: { email_type: 'registration' } })
+            let subject = mailTexts.header
+            let text = mailTexts.email_content
             text = text.replace("{user_name}", name);
-            const VerificationLink = `<a href="${process.env.BASE_URL}/verify/email/${EmailToken}">Click here</a>`
-            console.log(VerificationLink);
+            const EmailToken = generateJWTToken({ email: email }, "10m")
+            const VerificationLink = `<a href="${process.env.BASE_URL}/verify/email/${EmailToken}" target="_blank">Click here</a>`
             text = text.replace("{verification_Link}", VerificationLink)
             const mail = await emailTemplate(text)
             sendVerifyMail(email, subject, "", mail)
+            /* dummy email start*/
+                var transport = nodemailer.createTransport({
+                  host: "sandbox.smtp.mailtrap.io",
+                  port: 2525,
+                  auth: {
+                    user: "5486eff1d5793c",
+                    pass: "e17b0b8e8f08ac"
+                  }
+                });
+
+                const mailOptions = {
+                  from: 'rjnaghera@gmail.com',
+                  to: email,
+                  subject: subject,
+                  text: mail,
+                };
+                        transport.sendMail(mailOptions, (error, info) => {
+                  // if (error) {
+                  //   console.error(error);
+                  // } else {
+                  //   console.log('Email sent: ' + info.response);
+                  // }
+                });
+                /* dummy email end*/
             return res.status(401).send({ status: false, message: "Please check your email address first. The confirmation link will be sent to you by post", data: [] })
         }
         if(checkUser.isDeleted)
@@ -177,9 +200,16 @@ exports.ForgotPasswordLink = async (req, res) => {
         const checkUser = await Models.Users.findOne({ where: { email } });
 
         const token = generateJWTToken({ email }, "10m")
-        await Models.forgotpassword.create({ email, token })
-        const VerificationLink = `<p>Hallo <strong>${checkUser.firstName} ${checkUser.lastName}</strong> please <a target="_blank" href="${process.env.BASE_URL}/forgotPassword/${token}">Click here</a> to change Password </p>`
-        console.log(VerificationLink);      
+        await Models.forgotpassword.create({ email, token })       
+
+        const mailTexts = await Models.email_format.findOne({ where: { email_type: 'forgot_password' } })
+        let subject = mailTexts.header
+        let text = mailTexts.email_content        
+        text = text.replace("{user_name}", checkUser.firstName+" "+ checkUser.lastName);
+        const VerificationLink = `<a href="${process.env.BASE_URL}/forgotPassword/${token}" target="_blank">Click here</a>`
+        text = text.replace("{verification_Link}", VerificationLink)
+        const mail = await emailTemplate(text)
+        sendVerifyMail(email, subject, "", mail)
 
         /* dummy email start*/
         var transport = nodemailer.createTransport({
@@ -194,15 +224,15 @@ exports.ForgotPasswordLink = async (req, res) => {
         const mailOptions = {
           from: 'rjnaghera@gmail.com',
           to: email,
-          subject: 'Blacklink forgot Password Link',
-          text: VerificationLink,
+          subject: subject,
+          text: text,
         };
                 transport.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.error(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
+          // if (error) {
+          //   console.error(error);
+          // } else {
+          //   console.log('Email sent: ' + info.response);
+          // }
         });
         /* dummy email end*/
         sendVerifyMail(email, 'Blacklink forgot Password Link', "", VerificationLink)

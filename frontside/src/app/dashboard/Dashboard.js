@@ -3,13 +3,13 @@ import { withRouter, Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Modal } from "react-bootstrap";
+import { Modal,Button } from "react-bootstrap";
 import CreateProjectModal from "../shared/CreateProjectModal";
 import OrderComponent from "./Order";
 import DomainComponent from "./Domain";
 import ContentLinksComponent from "./contentLinks";
 import ApiServices from "../services/api.service";
-// import StripePayment from "../stripePayment";
+import StripePayment from "../stripePayment";
 import "../../assets/custom.css";
 
 export class Dashboard extends Component {
@@ -158,16 +158,16 @@ export class Dashboard extends Component {
                 <h2>Add balance</h2>
               </Modal.Title>
             </Modal.Header>
-            <Modal.Body>{/* <StripePayment /> */}</Modal.Body>
-            {/* <Modal.Footer>
-            <Button className="btn btn-gradient-secondary btn-rounded btn-fw" variant="secondary" onClick={this.handleClose}>
+            <Modal.Body><StripePayment /></Modal.Body>
+            <Modal.Footer>
+            {/* <Button className="btn btn-gradient-secondary btn-rounded btn-fw" variant="secondary" onClick={this.handleClose}>
               Close
             </Button>
             <Button className="btn btn-gradient-primary btn-rounded btn-fw" variant="primary" onClick={this.handleClose}>
               Save Changes
-            </Button>
-          </Modal.Footer> */}
-            <div className="form-group">
+            </Button> */}
+          </Modal.Footer>
+            {/* <div className="form-group">
               <label htmlFor="exampleInputName1">Amount</label>
               <input
                 value={this.state.amount}
@@ -183,7 +183,7 @@ export class Dashboard extends Component {
               onClick={this.handleAddAmountSubmit}
             >
               Add amount
-            </button>
+            </button> */}
           </Modal>
           <ToastContainer />
           <div className="page-header">

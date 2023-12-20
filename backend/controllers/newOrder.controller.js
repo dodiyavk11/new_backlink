@@ -3,6 +3,7 @@ const Sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils");
 const generateUniqueId = require('generate-unique-id');
+const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
 const Joi = require('joi');
@@ -56,7 +57,7 @@ exports.addNewOrder = async (req, res) => {
                 }
             });
             const extraAddOnPrice = orderData.textCreationPrice + orderData.approveTextPrice
-            const userBalance = await checkUserBalance(customer_id, [hash_id],extraAddOnPrice);
+            const userBalance = await checkUserBalance(customer_id, [hash_id],[extraAddOnPrice]);
 
             if (!userBalance) {
                 return res.status(400).send({
@@ -195,7 +196,31 @@ exports.addNewOrder = async (req, res) => {
 
                 admin.map((val) => {
                     sendVerifyMail(val.dataValues.email, subject, "", mail);
-                });
+                    /* dummy email start*/
+                    var transport = nodemailer.createTransport({
+                      host: "sandbox.smtp.mailtrap.io",
+                      port: 2525,
+                      auth: {
+                        user: "5486eff1d5793c",
+                        pass: "e17b0b8e8f08ac"
+                      }
+                    });
+
+                    const mailOptions = {
+                      from: 'rjnaghera@gmail.com',
+                      to: val.dataValues.email,
+                      subject: subject,
+                      text: mail,
+                    };
+                    transport.sendMail(mailOptions, (error, info) => {
+                      // if (error) {
+                      //   console.error(error);
+                      // } else {
+                      //   console.log('Email sent: ' + info.response);
+                      // }
+                    });
+                    /* dummy email end*/
+                });                
 
                 return res.status(200).send({
                     status: true,
@@ -421,6 +446,30 @@ exports.addCartOrder = async (req, res) => {
 
                     admin.map((val) => {
                         sendVerifyMail(val.dataValues.email, subject, "", mail);
+                        /* dummy email start*/
+                        var transport = nodemailer.createTransport({
+                          host: "sandbox.smtp.mailtrap.io",
+                          port: 2525,
+                          auth: {
+                            user: "5486eff1d5793c",
+                            pass: "e17b0b8e8f08ac"
+                          }
+                        });
+
+                        const mailOptions = {
+                          from: 'rjnaghera@gmail.com',
+                          to: val.dataValues.email,
+                          subject: subject,
+                          text: mail,
+                        };
+                        transport.sendMail(mailOptions, (error, info) => {
+                          // if (error) {
+                          //   console.error(error);
+                          // } else {
+                          //   console.log('Email sent: ' + info.response);
+                          // }
+                        });
+                        /* dummy email end*/
                     });
                 }
                 await Models.userCart.destroy({
@@ -516,6 +565,30 @@ exports.cancelOrder = async(req, res) => {
 		    );
 		    const mail = await emailTemplate(text);
 		    sendVerifyMail(customer.email, subject, "", mail);
+            /* dummy email start*/
+            var transport = nodemailer.createTransport({
+              host: "sandbox.smtp.mailtrap.io",
+              port: 2525,
+              auth: {
+                user: "5486eff1d5793c",
+                pass: "e17b0b8e8f08ac"
+              }
+            });
+
+            const mailOptions = {
+              from: 'rjnaghera@gmail.com',
+              to: customer.email,
+              subject: subject,
+              text: mail,
+            };
+            transport.sendMail(mailOptions, (error, info) => {
+              // if (error) {
+              //   console.error(error);
+              // } else {
+              //   console.log('Email sent: ' + info.response);
+              // }
+            });
+            /* dummy email end*/
 			return res.status(200).send({ status: true, message: "Your order has been Cancelled successfully,and Rs."+checkStatus.total_price+" refunded in your wallet.", data: checkStatus })
 
 		}
@@ -649,6 +722,31 @@ exports.publisherUpdateOrderStatus = async(req, res) => {
 	    );
 	    const mail = await emailTemplate(text);
 	    sendVerifyMail(customer.email, subject, "", mail);
+
+        /* dummy email start*/
+        var transport = nodemailer.createTransport({
+          host: "sandbox.smtp.mailtrap.io",
+          port: 2525,
+          auth: {
+            user: "5486eff1d5793c",
+            pass: "e17b0b8e8f08ac"
+          }
+        });
+
+        const mailOptions = {
+          from: 'rjnaghera@gmail.com',
+          to: customer.email,
+          subject: subject,
+          text: mail,
+        };
+        transport.sendMail(mailOptions, (error, info) => {
+          // if (error) {
+          //   console.error(error);
+          // } else {
+          //   console.log('Email sent: ' + info.response);
+          // }
+        });
+        /* dummy email end*/
 
 		res.status(200).send({ status: true, message: "Order status update successfully.", data: orderData });
 	}
