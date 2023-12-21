@@ -11,7 +11,7 @@ const AuthProtected = ({
     {...rest}
     render={(props) =>
       isAuthenticated ? (
-        <Component {...props} />
+        <Component {...props} isAdmin={isAdmin} />
       ) : (
         <Redirect to="/login" />
         // <div>

@@ -56,7 +56,7 @@ const domainCategory = lazy(() => import("./admin/category/DomainCategory"));
 const ProjectView = lazy(() => import("./projects/ProjectView"));
 const DomainView = lazy(() => import("./publisher/domain/DomainView"));
 const CartPage = lazy(() => import("./shared/Cart"));
-const paymentSuccess = lazy(()=> import("./paymentSuccess"));
+const paymentSuccess = lazy(() => import("./paymentSuccess"));
 class AppRoutes extends Component {
   constructor(props) {
     super(props);

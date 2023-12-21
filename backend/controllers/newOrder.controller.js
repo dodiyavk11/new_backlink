@@ -520,7 +520,8 @@ exports.cancelOrder = async(req, res) => {
 
 			const domainData = await getPublisherDomainData(checkStatus.domain_id,null);			
 			const transaction_type = "Cancel order refund";
-			const description = "Cancel backlink "+domainData.domain_name;
+			// const description = "Cancel backlink "+ domainData ? domainData.domain_name : "Link bundle";
+            const description = "Cancel backlink " + (domainData ? domainData.domain_name : "Link bundle");
 			const now = new Date();
 			const year = now.getFullYear();
 			const month = String(now.getMonth() + 1).padStart(2, '0');

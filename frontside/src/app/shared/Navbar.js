@@ -71,8 +71,8 @@ class Navbar extends Component {
     document.querySelector(".sidebar-offcanvas").classList.toggle("active");
   }
 
-  gotoCartPage = () => {    
-    this.props.history.push('/cart');
+  gotoCartPage = () => {
+    this.props.history.push("/cart");
   };
 
   handleLogouts = (e) => {
@@ -87,6 +87,7 @@ class Navbar extends Component {
         return total + parseFloat(item.cartItems.price || 0);
       }, 0)
       .toFixed(2);
+    const isAdmin = localStorage.getItem("isAdmin");
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex justify-content-center">
@@ -193,9 +194,7 @@ class Navbar extends Component {
                       <div className="d-flex justify-content-center p-3">
                         <button
                           className="btn btn-rounded btn-fw btn-block"
-                          onClick={(event) =>
-                            this.gotoCartPage()
-                          }
+                          onClick={(event) => this.gotoCartPage()}
                           type="button"
                         >
                           Go to cart
@@ -206,7 +205,7 @@ class Navbar extends Component {
                 </Dropdown.Menu>
               </Dropdown>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">
                   <svg
@@ -295,7 +294,7 @@ class Navbar extends Component {
                   </h6>
                 </Dropdown.Menu>
               </Dropdown>
-            </li>
+            </li> */}
             <li className="nav-item nav-profile">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link">
@@ -356,10 +355,15 @@ class Navbar extends Component {
                   {/* </Dropdown.Item> */}
                   {/* <Dropdown.Item onClick={(evt) => evt.preventDefault()}> */}
                   {/* <i className="mdi mdi-bell-ring mr-2 text-primary"></i> */}
-                  <Link to="/settings/notifications" className="dropdown-item">
-                    <i className="mdi mdi-bell-ring mr-2 text-primary"></i>
-                    <Trans>Notification</Trans>
-                  </Link>
+                  {isAdmin === "0" && (
+                    <Link
+                      to="/settings/notifications"
+                      className="dropdown-item"
+                    >
+                      <i className="mdi mdi-bell-ring mr-2 text-primary"></i>
+                      <Trans>Notification</Trans>
+                    </Link>
+                  )}
                   {/* </Dropdown.Item> */}
                   <Dropdown.Item onClick={this.handleLogouts}>
                     <i className="mdi mdi-logout mr-2 text-primary"></i>

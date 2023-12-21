@@ -46,6 +46,11 @@ app.listen(PORT, (err) => {
 });
 
 app.use((req,res)=>{
-    res.status(404).send(JSON.stringify(config))
+    // res.status(404).send(JSON.stringify(config))
+    res.status(404).json({
+    error: "Not Found",
+    message: "The requested resource does not exist.",
+    // config: config
+  });
 })
 

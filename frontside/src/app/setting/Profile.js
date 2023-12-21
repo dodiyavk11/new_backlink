@@ -109,6 +109,7 @@ export class Profile extends Component {
                           className="mb-1"
                         />
                         <Tab
+                          disabled={this.props.isAdmin !== "0"}
                           value="3"
                           label={
                             <div

@@ -655,7 +655,7 @@ export class ProjectView extends Component {
                               <tbody>
                                 <tr onClick={() => this.viewOrder(order.id)}>
                                   <td>
-                                    <h4>{order.domain.domain_name}</h4>
+                                    <h4>{order.domain ? order.domain.domain_name : "Link Bundle"}</h4>
                                     <div className="extraInfo flex-wrap d-flex justify-content-between">
                                       <div>
                                         {contentData.domain_name
