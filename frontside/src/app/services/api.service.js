@@ -728,6 +728,14 @@ class ApiServices {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
+
+  sendPaymentResponse(paymentId,paymentData)
+  {
+    const authToken = localStorage.getItem("token");
+    return axios.post(`${this.APP_URL}paymentRespone/${paymentId}`,paymentData,{
+      headers: { Authorization: `Bearer ${authToken}` }
+    })
+  }
 }
 
 export default new ApiServices();

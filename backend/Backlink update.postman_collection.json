@@ -3850,6 +3850,67 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Link bundle order to check avialable balance",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3MDI5NjM1OTgsImV4cCI6MTcwMjk5OTU5OH0.4WKWAGuEJ5KIjcbz8w-qT9PbyZKL6-MVy4LG0QWt5zw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/linkBundle/3/check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"linkBundle",
+						"3",
+						"check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stripe payment response handle api",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE1LCJpYXQiOjE3MDI5NjM1OTgsImV4cCI6MTcwMjk5OTU5OH0.4WKWAGuEJ5KIjcbz8w-qT9PbyZKL6-MVy4LG0QWt5zw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/paymentRespone/pi_3OPfljSC7x5vD10M08tTpodI",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"paymentRespone",
+						"pi_3OPfljSC7x5vD10M08tTpodI"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

@@ -3,7 +3,7 @@ import { withRouter, Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Modal,Button } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import CreateProjectModal from "../shared/CreateProjectModal";
 import OrderComponent from "./Order";
 import DomainComponent from "./Domain";
@@ -44,9 +44,9 @@ export class Dashboard extends Component {
         if (res.data.status) {
           this.setState({
             amount: 0,
-            balance:res.data.data.balance,
-            show:false
-          });          
+            balance: res.data.data.balance,
+            show: false,
+          });
           toast.success(res.data.message, {
             position: "top-center",
             autoClose: 2000,
@@ -155,18 +155,20 @@ export class Dashboard extends Component {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                <h2>Add balance</h2>
+                <h2 className="fontBold latterSpacing">Add balance</h2>
               </Modal.Title>
             </Modal.Header>
-            <Modal.Body><StripePayment /></Modal.Body>
+            <Modal.Body>
+              <StripePayment />
+            </Modal.Body>
             <Modal.Footer>
-            {/* <Button className="btn btn-gradient-secondary btn-rounded btn-fw" variant="secondary" onClick={this.handleClose}>
+              {/* <Button className="btn btn-gradient-secondary btn-rounded btn-fw" variant="secondary" onClick={this.handleClose}>
               Close
             </Button>
             <Button className="btn btn-gradient-primary btn-rounded btn-fw" variant="primary" onClick={this.handleClose}>
               Save Changes
             </Button> */}
-          </Modal.Footer>
+            </Modal.Footer>
             {/* <div className="form-group">
               <label htmlFor="exampleInputName1">Amount</label>
               <input
@@ -184,6 +186,11 @@ export class Dashboard extends Component {
             >
               Add amount
             </button> */}
+            <img
+              src={require("../../assets/images/by-stripe.svg")}
+                    alt="Success"
+              style={{ width: "auto", height: "25px", marginRight: "5px" }}
+            />
           </Modal>
           <ToastContainer />
           <div className="page-header">
@@ -261,7 +268,11 @@ export class Dashboard extends Component {
                 <div className="card-body">
                   <h4 className="card-title">Orders</h4>
                   {this.state.orders.map((order) => (
-                    <OrderComponent key={order.id} order={order} viewOrder={this.goToOrderLink}/>
+                    <OrderComponent
+                      key={order.id}
+                      order={order}
+                      viewOrder={this.goToOrderLink}
+                    />
                   ))}
                   {!this.state.orders.length && (
                     <div className="card">

@@ -23,7 +23,7 @@ class StripePayment extends Component {
       mode: "payment",
       amount: this.state.customAmount * 100,
       currency: "inr",
-      payment_method_types: ['card'],
+      payment_method_types: ["card"],
     };
     return (
       <>
@@ -39,7 +39,7 @@ class StripePayment extends Component {
           />
         </div>
         <Elements stripe={stripePromise} options={options}>
-          <InjectedCheckoutForm  amount={this.state.customAmount}/>
+          <InjectedCheckoutForm amount={this.state.customAmount} history={this.props.history}/>
         </Elements>
       </>
     );

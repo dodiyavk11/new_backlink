@@ -68,6 +68,18 @@ exports.initPaymentFrontSide = async (req, res) => {
 	    user_email: userInfo.dataValues.email
 	  },
     });
+    const unixTimestamp = paymentIntent.created;
+	const date = new Date(unixTimestamp * 1000);
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+	const hours = String(date.getHours()).padStart(2, '0');
+	const minutes = String(date.getMinutes()).padStart(2, '0');
+	const seconds = String(date.getSeconds()).padStart(2, '0');
+	const payment_created = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+    const tranInfo = { user_id:id ,amount,transaction_type:"Update wallet",description:"",payment_created,transaction_id:paymentIntent.id,status:"incomplete",paymentData:paymentIntent }
+	const createTranscation = await Models.Transactions.create(tranInfo);
     res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
     console.error(error);
@@ -278,4 +290,53 @@ exports.refundPayment = async(req, res) => {
 	  payment_intent: paymentIntentId,
 	});
 	res.send("Success...")
+}
+
+exports.handlePaymentResponse = async(req, res) => {
+	try
+	{
+		const { paymentId } = req.params;
+		const user_id= req.userId;
+		const { amount,paymentData } = req.body;
+
+		const unixTimestamp = paymentData.created;
+		const date = new Date(unixTimestamp * 1000);
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		const hours = String(date.getHours()).padStart(2, '0');
+		const minutes = String(date.getMinutes()).padStart(2, '0');
+		const seconds = String(date.getSeconds()).padStart(2, '0');
+		const payment_created = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+		const tranInfo = {
+		  amount: amount,
+		  description: paymentData.status,
+		  payment_created,
+		  status: "paid",
+		  paymentData
+		};
+		const updateResult = await Models.Transactions.update(tranInfo, {
+		    where: { transaction_id: paymentId }
+		  });
+
+		const walletInfo = await Models.UserWallet.findOne({ where:{ user_id }});	
+		let walletInfoData;
+		if (walletInfo) {
+	    	const balance = parseFloat(amount) + parseFloat(walletInfo.balance);
+			const updateOnfo = { balance }
+	       	walletInfoData = await Models.UserWallet.update(updateOnfo, {
+				      where: { id: walletInfo.dataValues.id },
+				    });
+	    } else {
+			walletInfoData = await Models.UserWallet.create({ user_id, balance: amount });
+	    }		  
+	    const newBalance = await Models.UserWallet.findOne({ where:{ user_id }, attributes: ['balance'] });			   
+		res.status(200).send({ status: true, message: "Your transaction has been successfully completed.",data:newBalance })
+	}
+	catch(err)
+	{
+		console.log(err)
+		res.status(500).send({ status: false, message: "Payment data not save, an error occured.", data:[] })
+	}
 }

@@ -28,7 +28,9 @@ const AdminContentLinks = lazy(() =>
   import("./admin/contentLinks/ContentLinks")
 );
 
-const AdminBacklinkView = lazy(() => import("./admin/contentLinks/BacklinkView"));
+const AdminBacklinkView = lazy(() =>
+  import("./admin/contentLinks/BacklinkView")
+);
 
 const AdminProjects = lazy(() => import("./admin/projects/Projects"));
 const ForgotPassword = lazy(() => import("./user-pages/ForgotPassword"));
@@ -45,14 +47,16 @@ const PublisherMessages = lazy(() => import("./publisher/message/Messages"));
 const UserViewOrderDetails = lazy(() =>
   import("./orders/UserViewOrderDetails")
 );
-const AdminViewOrderDetails = lazy(() => import("./admin/orders/AdminViewOrderDetails"));
+const AdminViewOrderDetails = lazy(() =>
+  import("./admin/orders/AdminViewOrderDetails")
+);
 const AdminProjectView = lazy(() => import("./admin/projects/ProjectView"));
-const emailTemplate = lazy(() => import("./admin/email/EmailTemplate"))
-const domainCategory = lazy(()=> import("./admin/category/DomainCategory"));
+const emailTemplate = lazy(() => import("./admin/email/EmailTemplate"));
+const domainCategory = lazy(() => import("./admin/category/DomainCategory"));
 const ProjectView = lazy(() => import("./projects/ProjectView"));
 const DomainView = lazy(() => import("./publisher/domain/DomainView"));
 const CartPage = lazy(() => import("./shared/Cart"));
-
+const paymentSuccess = lazy(()=> import("./paymentSuccess"));
 class AppRoutes extends Component {
   constructor(props) {
     super(props);
@@ -242,6 +246,14 @@ class AppRoutes extends Component {
 
                   <ProtectedRoute
                     exact
+                    path="/payment-success"
+                    component={paymentSuccess}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+
+                  <ProtectedRoute
+                    exact
                     path="/dashboard"
                     component={Dashboard}
                     isAuthenticated={this.state.isAuthenticated}
@@ -402,7 +414,7 @@ class AppRoutes extends Component {
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
-                  
+
                   <AdminProtected
                     exact
                     path="/admin/project/:hash_id"
