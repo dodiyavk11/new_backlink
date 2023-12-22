@@ -9,6 +9,8 @@ import TableFilter from "./CustomizeTableFilter";
 import MarketPlace from "./MarketPlace";
 import { DailyDeals } from "./DailyDeals";
 import "../../assets/custom.css";
+import { Trans } from "react-i18next";
+
 export class ContentLinksHome extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +35,9 @@ export class ContentLinksHome extends Component {
     return (
       <div className="ContentLinkHomePage">
         <div className="page-header">
-          <h3 className="fontBold latterSpacing">Contentlinks</h3>
+          <h3 className="fontBold latterSpacing">
+            <Trans>Contentlinks</Trans>
+          </h3>
         </div>
         <div className="row">
           <div className="col-lg-12 grid-margin">
@@ -62,7 +66,7 @@ export class ContentLinksHome extends Component {
                                 fontSize: "13px",
                               }}
                             >
-                              Marketplace                             
+                              <Trans>Marketplace</Trans>
                             </div>
                           }
                           className="mb-1"
@@ -78,7 +82,7 @@ export class ContentLinksHome extends Component {
                                 fontSize: "13px",
                               }}
                             >
-                              Daily Deals                              
+                              <Trans>Daily Deals</Trans>
                             </div>
                           }
                           className="mb-1"
@@ -108,7 +112,7 @@ export class ContentLinksHome extends Component {
                       />
                     </svg>
                     <span className="align-items-center justify-content-center ml-1 mr-2 fontSize13">
-                      Domain reveals: 20/20
+                      <Trans>Domain reveals: 20/20</Trans>
                     </span>
                     <svg
                       width={20}
@@ -126,7 +130,7 @@ export class ContentLinksHome extends Component {
                       />
                     </svg>
                     <span className="align-items-center ml-1 justify-content-center mr-2 fontSize13">
-                      Quality filter
+                      <Trans>Quality filter</Trans>
                     </span>
                     <label className="switch mr-2">
                       <input
@@ -157,7 +161,7 @@ export class ContentLinksHome extends Component {
                             d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
                           />
                         </svg>
-                        Customize table
+                        <Trans>Customize table</Trans>
                       </CButton>
                     </CPopover>
                   </div>

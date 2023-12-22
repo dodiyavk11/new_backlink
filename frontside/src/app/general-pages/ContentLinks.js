@@ -8,6 +8,8 @@ import "../../assets/custom.css";
 import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../services/api.service";
 import PlaceOrderDetailsModal from "../shared/PlaceOrderDetailsModal";
+import { Trans } from "react-i18next";
+
 export class ContentLinks extends Component {
   constructor(props) {
     const { hash_id } = props.match.params;
@@ -187,7 +189,7 @@ export class ContentLinks extends Component {
             className="btn btn-outline-primary btn-icon-text"
             onClick={this.handleGoBack}
           >
-            Back
+            <Trans>Back</Trans>
           </button>
         </div>
       );
@@ -204,7 +206,7 @@ export class ContentLinks extends Component {
                     className="btn btn-rounded font-weight-medium auth-form-btn"
                     onClick={this.handleGoBack}
                   >
-                    <i className="mdi mdi-arrow-left"></i> Back
+                    <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                   </button>
                 </div>
                 <div>
@@ -214,7 +216,7 @@ export class ContentLinks extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <i className="mdi mdi-arrow-top-right"></i> Visit domain
+                    <i className="mdi mdi-arrow-top-right"></i> <Trans>Visit domain</Trans>
                   </a>
                   <svg
                     onClick={() => this.handleFavorite(contentData.id)}
@@ -252,7 +254,7 @@ export class ContentLinks extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Visibility index</b>
+                          <b><Trans>Visibility index</Trans></b>
                         </div>
                         <div>
                           <img
@@ -327,7 +329,7 @@ export class ContentLinks extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Domain Rating</b>
+                          <b><Trans>Domain Rating</Trans></b>
                         </div>
                         <div>
                           <img
@@ -402,7 +404,7 @@ export class ContentLinks extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Referring Domains</b>
+                          <b><Trans>Referring Domains</Trans></b>
                         </div>
                         <div>
                           <img
@@ -479,7 +481,7 @@ export class ContentLinks extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Citation Flow</b>
+                          <b><Trans>Citation Flow</Trans></b>
                         </div>
                         <div>
                           <img
@@ -554,7 +556,7 @@ export class ContentLinks extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Trust Flow</b>
+                          <b><Trans>Trust Flow</Trans></b>
                         </div>
                         <div>
                           <img
@@ -629,7 +631,7 @@ export class ContentLinks extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Domain Authority</b>
+                          <b><Trans>Domain Authority</Trans></b>
                         </div>
                         <div>
                           <img
@@ -708,11 +710,11 @@ export class ContentLinks extends Component {
                 <div className="row g-2 mt-4 pl-3">
                   <div className="col-sm-12 warrantyClass">
                     <div className="mt-2 mb-2 p-2">
-                      <span className="fontBold700">FairLinked warranty</span>
+                      <span className="fontBold700"><Trans>FairLinked warranty</Trans></span>
                       <p className="customText2 pt-1">
-                        We give you a <b>12 month warranty</b> on every link you
+                      <Trans>We give you a 12 month warranty on every link you
                         buy (from the date of publication). Usually our links
-                        stay online for much longer.
+                        stay online for much longer.</Trans>
                       </p>
                     </div>
                   </div>
@@ -723,13 +725,13 @@ export class ContentLinks extends Component {
           <div className="col-lg-4 grid-margin">
             <div className="card">
               <div className="card-body">
-                <h4 className="card-title">Orders</h4>
+                <h4 className="card-title"><Trans>Orders</Trans></h4>
                 <div className="table-responsive">
                   <table className="table">
                     <tbody>
                       <tr>
                         <td>
-                          Traffic{" "}
+                        <Trans>Traffic</Trans>{" "}
                           <Tooltip
                             title="Traffic describes the monthly users of a website. (organic only)"
                             placement="right"
@@ -756,7 +758,7 @@ export class ContentLinks extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Anchor text
+                        <Trans>Anchor text</Trans>
                           <Tooltip
                             title="Anchor text refers to the clickable text of a link."
                             placement="right"
@@ -781,7 +783,7 @@ export class ContentLinks extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Delivery time
+                        <Trans>Delivery time</Trans>
                           <Tooltip
                             title="Turnaround time is based on real data and is expressed in business days."
                             placement="right"
@@ -806,7 +808,7 @@ export class ContentLinks extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Link
+                        <Trans>Link</Trans>
                           <Tooltip
                             title="Dofollow links are particularly high on Google, while nofollow links don't have much impact on your ranking. It is estimated by an independent thrid party."
                             placement="right"
@@ -829,7 +831,7 @@ export class ContentLinks extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Language
+                        <Trans>Language</Trans>
                           <Tooltip
                             title="Language in which your article will be written by us."
                             placement="right"
@@ -854,7 +856,7 @@ export class ContentLinks extends Component {
                       </tr>
                       <tr>
                         <td>
-                          TLD
+                        <Trans>TLD</Trans>
                           <Tooltip
                             title="Domain extension of the selected website."
                             placement="right"
@@ -876,7 +878,7 @@ export class ContentLinks extends Component {
                         <td className="text-end-ct">.{contentData.tld}</td>
                       </tr>
                       <tr>
-                        <td>Price</td>
+                        <td><Trans>Price</Trans></td>
                         <td className="text-end-ct">
                           <span className="h3 fontBold600">
                             ${contentData.price}
@@ -891,7 +893,7 @@ export class ContentLinks extends Component {
                               style={{ width: "100%" }}
                               onClick={this.showProjectModal}
                             >
-                              Order now
+                              <Trans>Order now</Trans>
                             </button>
                           </div>
                           <div className="btn-group-md">
@@ -905,7 +907,7 @@ export class ContentLinks extends Component {
                               }
                               style={{ width: "100%" }}
                             >
-                              Add to cart
+                              <Trans>Add to cart</Trans>
                             </button>
                           </div>
                         </td>
@@ -917,20 +919,20 @@ export class ContentLinks extends Component {
             </div>
             <div className="card mt-4">
               <div className="card-body">
-                <h4 className="card-title">Orders process</h4>
+                <h4 className="card-title"><Trans>Orders process</Trans></h4>
                 <p>
-                  After configuring and ordering your backlink, the site owner
-                  must first accept your order.
+                <Trans>After configuring and ordering your backlink, the site owner
+                  must first accept your order.</Trans>
                 </p>
 
                 <p>
-                  We will then immediately begin with the text creation. As soon
+                <Trans>We will then immediately begin with the text creation. As soon
                   as the text is ready, we send it to the site operator for
-                  publication.
+                  publication.</Trans>
                 </p>
                 <p>
-                  As soon as the text is online, we will inform you by mail. You
-                  can find the finished backlink on the orders detail page.
+                <Trans>As soon as the text is online, we will inform you by mail. You
+                  can find the finished backlink on the orders detail page.</Trans>
                 </p>
               </div>
             </div>

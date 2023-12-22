@@ -4,6 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthService from "../services/auth.service";
 import "../../assets/custom.css";
+import { Trans,withTranslation } from "react-i18next";
+
 export class Register extends Component {
   constructor(props) {
     super(props);
@@ -89,6 +91,7 @@ export class Register extends Component {
   }
   render() {
     const { error } = this.state;
+    const { t } = this.props;
     return (
       <div className="signupPage">
         <div className="d-flex align-items-center auth px-0">
@@ -103,8 +106,8 @@ export class Register extends Component {
                   />
                 </div>
                 <div className="text-center">
-                  <h3 className="fontBold800 latterSpace-0025">Sign up {this.state.isPublisher === 2 ? "for Publisher" : ""}</h3>
-                  <span className="text-sm">Register for an account in the fairlinked Marketplace.</span>
+                  <h3 className="fontBold800 latterSpace-0025"><Trans>Sign up {this.state.isPublisher === 2 ? "for Publisher" : ""}</Trans></h3>
+                  <span className="text-sm"><Trans>Register for an account in the fairlinked Marketplace.</Trans></span>
                 </div>     
                 <form className="pt-3" onSubmit={this.handleSubmit}>
                   <div className="form-group">
@@ -114,7 +117,7 @@ export class Register extends Component {
                       className="form-control form-control-lg"
                       name="firstName"
                       id="exampleInputfname"
-                      placeholder="First Name *"
+                      placeholder={t("translations:First Name *")} 
                     />
                   </div>
                   <div className="form-group">
@@ -123,7 +126,7 @@ export class Register extends Component {
                       className="form-control form-control-lg"
                       type="text"
                       name="lastName"
-                      placeholder="Last Name *"
+                      placeholder={t("translations:Last Name *")} 
                     />
                   </div>
                   <div className="form-group">
@@ -141,7 +144,7 @@ export class Register extends Component {
                       name="email"
                       className="form-control form-control-lg"
                       id="exampleInputEmail1"
-                      placeholder="Email *"
+                      placeholder={t("translations:Email *")} 
                     />
                   </div>
                   <div className="form-group">
@@ -150,7 +153,7 @@ export class Register extends Component {
                       type="text"
                       name="phone"
                       className="form-control form-control-lg"
-                      placeholder="Phone *"
+                      placeholder={t("translations:Phone *")} 
                     />
                   </div>
                   <div className="form-group">
@@ -161,18 +164,18 @@ export class Register extends Component {
                       minLength="8"
                       className="form-control form-control-lg"
                       id="exampleInputPassword1"
-                      placeholder="Password *"
+                      placeholder={t("translations:Password *")} 
                     />
                     {this.state.password.length > 0 && this.state.password.length < 8 && (
-                      <span style={{ color: 'red' }}>Password must be at least 8 characters long</span>
+                      <span style={{ color: 'red' }}><Trans>Password must be at least 8 characters long</Trans></span>
                     )}
                   </div>
                   <div className="mb-4">
                     <div className="form-check">
                       <label className="form-check-label text-muted">
                         <input type="checkbox" defaultChecked className="form-check-input" />
-                        <i className="input-helper"></i>I agree to all Terms &
-                        Conditions
+                        <i className="input-helper"></i><Trans>I agree to all Terms &
+                        Conditions</Trans>
                       </label>
                     </div>
                   </div>
@@ -182,13 +185,13 @@ export class Register extends Component {
                       type="submit"
                       className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
                     >
-                      Create your free account
+                      <Trans>Create your free account</Trans>
                     </button>
                   </div>
                   <div className="text-center mt-4 fontBold400">
-                    Already have an {this.state.isPublisher === 2 ? "Publisher" : ""} account?{" "} 
+                    <Trans>Already have an {this.state.isPublisher === 2 ? "Publisher" : ""} account?</Trans>
                     <Link to="/login" className="text-primary">
-                      Login
+                      <Trans>Login</Trans>
                     </Link>
                   </div>
                 </form>
@@ -198,9 +201,9 @@ export class Register extends Component {
                     <span className="text-sm">© se 2023</span>
                   </div>
                   <div className="">
-                    <span className="text-sm loginLinks">Terms of Service</span>
-                    <span className="text-sm loginLinks">Privacy Policy</span>
-                    <span className="text-sm loginLinks">Imprint</span>
+                    <span className="text-sm loginLinks"><Trans>Terms of Service</Trans></span>
+                    <span className="text-sm loginLinks"><Trans>Privacy Policy</Trans></span>
+                    <span className="text-sm loginLinks"><Trans>Imprint</Trans></span>
                   </div>
                 </div>
               </div>
@@ -212,4 +215,5 @@ export class Register extends Component {
   }
 }
 
-export default Register;
+// export default Register;
+export default withTranslation()(Register);

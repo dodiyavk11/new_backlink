@@ -4,6 +4,7 @@ import { Form } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthService from "../services/auth.service";
+import { Trans } from "react-i18next";
 import "../../assets/custom.css";
 export class Login extends Component {
   constructor(props) {
@@ -16,6 +17,9 @@ export class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
+  changeLanguage = (lng) => {
+    this.props.i18n.changeLanguage(lng);
+  };
   handleSubmit = (e) => {
     e.preventDefault();
     this.postLoginDetails();
@@ -69,8 +73,10 @@ export class Login extends Component {
                   />
                 </div>
                 <div className="text-center">
-                  <h3 className="fontBold800 latterSpace-0025">Sign in</h3>
-                  <span className="text-sm">Great to have you back.</span>
+                  <h3 className="fontBold800 latterSpace-0025">
+                    <Trans>Sign in</Trans>
+                  </h3>
+                  <span className="text-sm"><Trans>Great to have you back.</Trans></span>
                 </div>
                 <Form className="pt-3" onSubmit={this.handleSubmit}>
                   <Form.Group className="d-flex search-field">
@@ -101,11 +107,11 @@ export class Login extends Component {
                       <label className="form-check-label text-muted">
                         <input type="checkbox" className="form-check-input" />
                         <i className="input-helper"></i>
-                        Keep me signed in
+                        <Trans>Keep me signed in</Trans>
                       </label>
                     </div>
                     <Link to="/forgot-password" className="text-primary">
-                      Forgot password?
+                      <Trans>Forgot password?</Trans>
                     </Link>
                   </div>
                   <div className="mt-3">
@@ -113,19 +119,22 @@ export class Login extends Component {
                       type="submit"
                       className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
                     >
-                      SIGN IN
+                      <Trans>SIGN IN</Trans>
                     </button>
                   </div>
                   <div className="text-center mt-4 fontBold400">
-                    Don't have an account?{" "}
+                  <Trans>Don't have an account?</Trans>{" "}
                     <Link to="/register" className="text-primary">
-                      Sign up
+                      <Trans>Sign up</Trans>
                     </Link>
                   </div>
                   <div className="text-center mt-4 fontBold400">
-                    <b>Become a publisher?{" "}</b>
-                    <Link to="/register/become-publisher" className="text-primary">
-                      Sign up
+                    <b><Trans>Become a publisher?</Trans> </b>
+                    <Link
+                      to="/register/become-publisher"
+                      className="text-primary"
+                    >
+                      <Trans>Sign up</Trans>
                     </Link>
                   </div>
                 </Form>
@@ -135,9 +144,9 @@ export class Login extends Component {
                     <span className="text-sm">© se 2023</span>
                   </div>
                   <div className="">
-                    <span className="text-sm loginLinks">Terms of Service</span>
-                    <span className="text-sm loginLinks">Privacy Policy</span>
-                    <span className="text-sm loginLinks">Imprint</span>
+                    <span className="text-sm loginLinks"><Trans>Terms of Service</Trans></span>
+                    <span className="text-sm loginLinks"><Trans>Privacy Policy</Trans></span>
+                    <span className="text-sm loginLinks"><Trans>Imprint</Trans></span>
                   </div>
                 </div>
               </div>

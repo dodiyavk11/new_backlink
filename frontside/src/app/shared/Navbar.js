@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link, NavLink, withRouter } from "react-router-dom";
 import { Trans } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import ApiServices from "../services/api.service";
 class Navbar extends Component {
   constructor(props) {
@@ -10,9 +11,15 @@ class Navbar extends Component {
       user: {},
       isAuthenticated: this.props.isAuthenticated,
       cartDatas: [],
+      lng:"en",
     };
     this.handleLogouts = this.handleLogouts.bind(this);
   }
+  changeLanguage = (lng) => {
+    const { i18n } = this.props;
+    this.props.i18n.changeLanguage(lng);
+    this.setState({ lng:lng })
+  };
   deleteCartItem = (cartId) => {
     ApiServices.deleteItemFromCart(cartId).then(
       (res) => {
@@ -38,24 +45,6 @@ class Navbar extends Component {
     this.setState({
       cartDatas: this.props.cartData,
     });
-    //   ApiServices.getUserCartData().then(
-    //     (res) => {
-    //       if (res.data.status) {
-    //         this.setState({
-    //           cartData: res.data.data,
-    //         });
-    //       }
-    //     },
-    //     (error) => {
-    //       const resMessage =
-    //         (error.response &&
-    //           error.response.data &&
-    //           error.response.data.message) ||
-    //         error.message ||
-    //         error.toString();
-    //       // alert(resMessage);
-    //     }
-    //   );
   };
 
   componentDidMount() {
@@ -119,6 +108,27 @@ class Navbar extends Component {
           </button>
           <ul className="navbar-nav navbar-nav-right">
             <li className="nav-item">
+              <img
+                onClick={() => this.changeLanguage("de")}
+                src={require("../../assets/images/de.svg")}
+                alt="DE"
+                title="German"
+                width={20}
+                className={`mr-3 cursorClass ${this.state.lng === 'de' ? 'optacity05' : ''}`}
+
+              />
+            </li>
+            <li className="nav-item">
+              <img
+                onClick={() => this.changeLanguage("en")}
+                src={require("../../assets/images/US.svg")}
+                alt="DE"
+                width={20}
+                title="English"
+                className={`mr-3 cursorClass ${this.state.lng === 'en' ? 'optacity05' : ''}`}
+              />
+            </li>
+            <li className="nav-item">
               <Dropdown alignRight onClick={this.getCartData}>
                 <Dropdown.Toggle className="nav-link count-indicator">
                   <i className="mdi mdi-cart-outline"></i>
@@ -131,9 +141,9 @@ class Navbar extends Component {
                   {cartDatas.length > 0 ? (
                     <div className="d-flex justify-content-between">
                       <h5 className="p-3 mb-0">
-                        <Trans>Cart</Trans>
+                        <Trans><Trans>Wagen</Trans></Trans>
                       </h5>
-                      <h6 className="p-3 mb-0">{cartDatas.length} items</h6>
+                      <h6 className="p-3 mb-0">{cartDatas.length} <Trans>items</Trans></h6>
                     </div>
                   ) : (
                     <div className="d-flex justify-content-center p-3">
@@ -144,9 +154,9 @@ class Navbar extends Component {
                             alt="No data found..."
                           />
                         </div>
-                        <h4>Your cart is empty.</h4>
+                        <h4><Trans>Your cart is empty.</Trans></h4>
                         <p style={{ maxWidth: "400px" }}>
-                          You can add contentlinks to your cart.
+                          <Trans>You can add contentlinks to your cart.</Trans>
                         </p>
                       </center>
                     </div>
@@ -183,7 +193,7 @@ class Navbar extends Component {
                       <div className="dropdown-divider"></div>
                       <div className="d-flex justify-content-between p-3">
                         <div>
-                          <h5>Total</h5>
+                          <h5><Trans>Total</Trans></h5>
                         </div>
                         <div>
                           <h3>
@@ -197,7 +207,7 @@ class Navbar extends Component {
                           onClick={(event) => this.gotoCartPage()}
                           type="button"
                         >
-                          Go to cart
+                          <Trans>Go to cart</Trans>
                         </button>
                       </div>
                     </>
@@ -386,4 +396,5 @@ class Navbar extends Component {
   }
 }
 
-export default withRouter(Navbar);
+// export default withRouter(Navbar);
+export default withTranslation()(withRouter(Navbar));

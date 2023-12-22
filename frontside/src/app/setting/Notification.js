@@ -6,6 +6,7 @@ import "../../assets/custom.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ApiServices from "../services/api.service";
+import { Trans } from "react-i18next";
 
 export class Notification extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ export class Notification extends Component {
   }
   handleDisableAll = () => {
     Object.values(this.checkboxRefs).forEach((checkboxRef) => {
-      checkboxRef.checked = false;      
+      checkboxRef.checked = false;
     });
     const updatedNotificationData = {
       ...this.state.notificationData,
@@ -33,7 +34,7 @@ export class Notification extends Component {
       email_payment_succeeded: 0,
       email_recommendations_available: 0,
     };
-  
+
     this.setState({ notificationData: updatedNotificationData });
   };
 
@@ -86,8 +87,7 @@ export class Notification extends Component {
 
     ApiServices.updateNotificationSetting(formDatas).then(
       (res) => {
-        if(res.data.status)
-        {
+        if (res.data.status) {
           toast.success(res.data.message, {
             position: "top-center",
             autoClose: 2000,
@@ -125,7 +125,9 @@ export class Notification extends Component {
                 <div className="row mb-2">
                   <div className="col-sm-8">
                     <div className="mt-2">
-                      <h5>Notifications</h5>
+                      <h5>
+                        <Trans>Notifications</Trans>
+                      </h5>
                     </div>
                   </div>
                   <div className="col-sm-4 text-right">
@@ -135,16 +137,18 @@ export class Notification extends Component {
                       id="disableAll"
                       onClick={this.handleDisableAll}
                     >
-                      Disable all
+                      <Trans>Disable all</Trans>
                     </button>
                   </div>
                 </div>
                 <Form.Group className="row">
                   <label htmlFor="oacpt" className="col-sm-8 col-form-label">
-                    Order accepted
+                    <Trans>Order accepted</Trans>
                     <Typography className="customText">
-                      You will receive this email as soon as the publisher has
-                      accepted your order.
+                      <Trans>
+                        You will receive this email as soon as the publisher has
+                        accepted your order.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-4 text-right mt-4">
@@ -169,11 +173,13 @@ export class Notification extends Component {
                 <Divider />
                 <Form.Group className="row">
                   <label htmlFor="ocomp" className="col-sm-8 col-form-label">
-                    Order completed
+                    <Trans>Order completed</Trans>
                     <Typography className="customText">
-                      You will receive this email as soon as your order has been
-                      completed. Enclosed you will find the report for your
-                      order.
+                      <Trans>
+                        You will receive this email as soon as your order has
+                        been completed. Enclosed you will find the report for
+                        your order.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-4 text-right mt-4">
@@ -200,10 +206,13 @@ export class Notification extends Component {
                 <Divider />
                 <Form.Group className="row">
                   <label htmlFor="ocrt" className="col-sm-8 col-form-label">
-                    Order created
+                    <Trans>Order created</Trans>
                     <Typography className="customText">
-                      You will receive this email when we have received your
-                      order.
+                      <Trans>
+                        {" "}
+                        You will receive this email when we have received your
+                        order.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-4 text-right mt-4">
@@ -228,10 +237,12 @@ export class Notification extends Component {
                 <Divider />
                 <Form.Group className="row">
                   <label htmlFor="odcl" className="col-sm-8 col-form-label">
-                    Order declined
+                    <Trans>Order declined</Trans>
                     <Typography className="customText">
-                      You will redeive this email if the publisher has declined
-                      you order.
+                      <Trans>
+                        You will redeive this email if the publisher has
+                        declined you order.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-4 text-right mt-4">
@@ -256,7 +267,7 @@ export class Notification extends Component {
                 <Divider />
                 <Form.Group className="row">
                   <label htmlFor="oadd" className="col-sm-8 col-form-label">
-                    Order requires additional details
+                    <Trans>Order requires additional details</Trans>
                     <Typography className="customText">
                       You will receive this email in case our team need more
                       details regarding your order.
@@ -289,9 +300,11 @@ export class Notification extends Component {
                 <Divider />
                 <Form.Group className="row">
                   <label htmlFor="payf" className="col-sm-8 col-form-label">
-                    Payment failed
+                    <Trans>Payment failed</Trans>
                     <Typography className="customText">
-                      You will recieve this email if your pament failed.
+                      <Trans>
+                        You will recieve this email if your pament failed.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-4 text-right mt-4">
@@ -316,11 +329,13 @@ export class Notification extends Component {
                 <Divider />
                 <Form.Group className="row">
                   <label htmlFor="pays" className="col-sm-8 col-form-label">
-                    Payment successful
+                    <Trans>Payment successful</Trans>
                     <Typography className="customText">
-                      You will receive this email if your payment was
-                      successful. Attached you will find the payment
-                      confirmation.
+                      <Trans>
+                        You will receive this email if your payment was
+                        successful. Attached you will find the payment
+                        confirmation.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-4 text-right mt-4">
@@ -347,10 +362,12 @@ export class Notification extends Component {
                 <Divider />
                 <Form.Group className="row">
                   <label htmlFor="payrem" className="col-sm-8 col-form-label">
-                    Payment reminder
+                    <Trans>Payment reminder</Trans>
                     <Typography className="customText">
-                      You will receive this email if your payment hasn't
-                      processed withing three days.
+                      <Trans>
+                        You will receive this email if your payment hasn't
+                        processed withing three days.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-4 text-right mt-4">
@@ -377,10 +394,12 @@ export class Notification extends Component {
                 <Divider />
                 <Form.Group className="row">
                   <label htmlFor="newrec" className="col-sm-8 col-form-label">
-                    New recommendations
+                    <Trans>New recommendations</Trans>
                     <Typography className="customText">
-                      When one of your project gets a new recommendation, you
-                      will receive this email.
+                      <Trans>
+                        When one of your project gets a new recommendation, you
+                        will receive this email.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-4 text-right mt-4">
@@ -416,7 +435,7 @@ export class Notification extends Component {
             </Card>
           </Box>
           <button type="submit" className="btn btn-rounded btn-lg mt-4">
-            Save Changes
+            <Trans>Save Changes</Trans>
           </button>
         </form>
       </div>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Trans } from "react-i18next";
 import "../../assets/custom.css";
 import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../services/api.service";
@@ -23,23 +24,25 @@ export class UserViewOrderDetails extends Component {
   handleGoBack = () => {
     this.props.history.goBack();
   };
-  
+
   handleShowAlert = () => {
     toast.error(
       <div>
-        <div className="p-2">Are you sure you want to Update status?</div>
+        <div className="p-2">
+          <Trans>Are you sure you want to Update status?</Trans>
+        </div>
         <center>
           <button
             className="btn btn-rounded customYes"
             onClick={this.handleConfirmCancel}
           >
-            Yes
+            <Trans>Yes</Trans>
           </button>
           <button
             className="btn btn-rounded customNo"
             onClick={this.handleCancelUpdate}
           >
-            No
+            <Trans>No</Trans>
           </button>
         </center>
       </div>,
@@ -54,32 +57,30 @@ export class UserViewOrderDetails extends Component {
     );
   };
 
-  handleCancelUpdate = () => {    
+  handleCancelUpdate = () => {
     toast.dismiss();
   };
 
   handleConfirmCancel = () => {
     toast.dismiss();
-    ApiServices.userCancelOrder(this.state.order_id).then(
-      (res) => {
-        if (res.status) {
-          toast.success(res.data.message, {
-            position: "top-center",
-            autoClose: 2000,
-          });
-          this.loadOrderData();
-        } else {
-          toast.error(res.data.message, {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
+    ApiServices.userCancelOrder(this.state.order_id).then((res) => {
+      if (res.status) {
+        toast.success(res.data.message, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+        this.loadOrderData();
+      } else {
+        toast.error(res.data.message, {
+          position: "top-center",
+          autoClose: 2000,
+        });
       }
-    );
+    });
   };
 
   loadOrderData = () => {
-    ApiServices.SingleOrderView(this.state.order_id,"user/order/view/")
+    ApiServices.SingleOrderView(this.state.order_id, "user/order/view/")
       .then((res) => {
         if (!res.status) {
           toast.error(res.data.message, {
@@ -119,7 +120,7 @@ export class UserViewOrderDetails extends Component {
           }
         }
       });
-  }
+  };
 
   componentDidMount() {
     this.loadOrderData();
@@ -134,7 +135,7 @@ export class UserViewOrderDetails extends Component {
             className="btn btn-rounded font-weight-medium auth-form-btn"
             onClick={this.handleGoBack}
           >
-            Back
+            <Trans>Back</Trans>
           </button>
         </div>
       );
@@ -178,14 +179,16 @@ export class UserViewOrderDetails extends Component {
                   className="btn btn-rounded font-weight-medium auth-form-btn"
                   onClick={this.handleGoBack}
                 >
-                  <i className="mdi mdi-arrow-left"></i> Back
+                  <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                 </button>
-                {orderData.status !== "Cancelled" && orderData.status === "Pending" ? (
+                {orderData.status !== "Cancelled" &&
+                orderData.status === "Pending" ? (
                   <button
                     className="btn btn-rounded font-weight-medium auth-form-btn"
                     onClick={this.handleShowAlert}
                   >
-                    <i className="mdi mdi-close-circle"></i> Cancel order
+                    <i className="mdi mdi-close-circle"></i>{" "}
+                    <Trans>Cancel order</Trans>
                   </button>
                 ) : (
                   <button
@@ -193,19 +196,26 @@ export class UserViewOrderDetails extends Component {
                     disabled
                     title="You can cancel order unitl status is Pending"
                   >
-                    <i className="mdi mdi-close-circle"></i> Cancel order
+                    <i className="mdi mdi-close-circle"></i>{" "}
+                    <Trans>Cancel order</Trans>
                   </button>
                 )}
               </div>
               <div className="card-body dashboardCard">
                 <div className="card-img-top d-flex flex-row justify-content-between">
                   <div>
-                    <h2 className="h2">{orderData.isBundle !==0 ? "Link Bundle" : domainData.domain_name}</h2>
-                    <h5>Placed at: {orderData.created_at}</h5>
+                    <h2 className="h2">
+                      {orderData.isBundle !== 0
+                        ? "Link Bundle"
+                        : domainData.domain_name}
+                    </h2>
+                    <h5>
+                      <Trans>Placed at</Trans>: {orderData.created_at}
+                    </h5>
                   </div>
                   <div>
                     <h4 className="h4">
-                      Status:{" "}
+                      <Trans>Status</Trans>:{" "}
                       <span
                         className={`fontSize13 badge ${getStatusClass(
                           orderData.status
@@ -215,7 +225,7 @@ export class UserViewOrderDetails extends Component {
                       </span>
                     </h4>
                     <h5>
-                      Amount: <b>${orderData.total_price}</b>
+                      <Trans>Amount</Trans>: <b>${orderData.total_price}</b>
                     </h5>
                   </div>
                 </div>
@@ -223,13 +233,15 @@ export class UserViewOrderDetails extends Component {
               </div>
               <div className="card">
                 <div className="card-body pt-2">
-                  <h4 className="card-title">Orders details</h4>
+                  <h4 className="card-title">
+                    <Trans>Orders details</Trans>
+                  </h4>
                   <div className="table-responsive">
                     <table className="table">
                       <tbody>
                         <tr>
                           <td>
-                            Anchor text
+                            <Trans>Anchor text</Trans>
                             <Tooltip
                               title="Anchor text refers to the clickable text of a link."
                               placement="right"
@@ -254,7 +266,7 @@ export class UserViewOrderDetails extends Component {
                         </tr>
                         <tr>
                           <td>
-                            Delivery time
+                            <Trans>Delivery time</Trans>
                             <Tooltip
                               title="Turnaround time is based on real data and is expressed in business days."
                               placement="right"
@@ -274,12 +286,14 @@ export class UserViewOrderDetails extends Component {
                             </Tooltip>
                           </td>
                           <td className="text-end-ct">
-                            {orderData.isBundle !==0 ? "" : `${domainData.deliveryTime} Days`}
+                            {orderData.isBundle !== 0
+                              ? ""
+                              : `${domainData.deliveryTime} Days`}
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            Link
+                            <Trans>Link</Trans>
                             <Tooltip
                               title="Dofollow links are particularly high on Google, while nofollow links don't have much impact on your ranking. It is estimated by an independent thrid party."
                               placement="right"
@@ -299,12 +313,14 @@ export class UserViewOrderDetails extends Component {
                             </Tooltip>
                           </td>
                           <td className="text-end-ct">
-                            {orderData.isBundle !==0 ? "" : domainData.attribute}
+                            {orderData.isBundle !== 0
+                              ? ""
+                              : domainData.attribute}
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            Language
+                            <Trans>Language</Trans>
                             <Tooltip
                               title="Language in which your article will be written by us."
                               placement="right"
@@ -327,12 +343,14 @@ export class UserViewOrderDetails extends Component {
                             {/* {domainData.language === "en"
                               ? "English"
                               : "German"} */}
-                              {orderData.isBundle !==0 ? "" : domainData.language}
+                            {orderData.isBundle !== 0
+                              ? ""
+                              : domainData.language}
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            TLD
+                            <Trans>TLD</Trans>
                             <Tooltip
                               title="Domain extension of the selected website."
                               placement="right"
@@ -353,12 +371,16 @@ export class UserViewOrderDetails extends Component {
                           </td>
                           <td className="text-end-ct">
                             {/* {domainData.tld ? "." + domainData.tld : ""} */}
-                            {orderData.isBundle !==0 ? "" : `.${domainData.tld}`}
+                            {orderData.isBundle !== 0
+                              ? ""
+                              : `.${domainData.tld}`}
                           </td>
                         </tr>
                         {orderData.textCreation === "Own" && (
                           <tr>
-                            <td>Text file</td>
+                            <td>
+                              <Trans>Text file</Trans>
+                            </td>
                             <td className="text-end-ct">
                               <span className="sampleFile ml-4">
                                 <a
@@ -373,7 +395,7 @@ export class UserViewOrderDetails extends Component {
                                   className="hrefTitle"
                                 >
                                   <b className="text-warning">
-                                    Download text file
+                                    <Trans>Download text file</Trans>
                                   </b>
                                 </a>
                               </span>
@@ -381,39 +403,51 @@ export class UserViewOrderDetails extends Component {
                           </tr>
                         )}
                         <tr>
-                          <td>Target Url</td>
+                          <td>
+                            <Trans>Target Url</Trans>
+                          </td>
                           <td className="text-end-ct">
                             <a
                               href={orderData.linktarget}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              Go to
+                              <Trans>Go to</Trans>
                             </a>
                           </td>
                         </tr>
                         <tr>
-                          <td>Note</td>
+                          <td>
+                            <Trans>Note</Trans>
+                          </td>
                           <td className="text-end-ct">{orderData.note}</td>
                         </tr>
                         <tr>
-                          <td>Word count</td>
+                          <td>
+                            <Trans>Word count</Trans>
+                          </td>
                           <td className="text-end-ct">{orderData.wordCount}</td>
                         </tr>
                         <tr>
-                          <td>Approve text before publication</td>
+                          <td>
+                            <Trans>Approve text before publication</Trans>
+                          </td>
                           <td className="text-end-ct">
                             {orderData.approveText === 1 ? "Yes" : "No"}
                           </td>
                         </tr>
                         <tr>
-                          <td>Anchor text chosen by Backlinked</td>
+                          <td>
+                            <Trans>Anchor text chosen by Backlinked</Trans>
+                          </td>
                           <td className="text-end-ct">
                             {orderData.chooseByBacklink === 1 ? "Yes" : "No"}
                           </td>
                         </tr>
                         <tr>
-                          <td>Text approval price</td>
+                          <td>
+                            <Trans>Text approval price</Trans>
+                          </td>
                           <td className="text-end-ct">
                             {orderData.approveText === 1
                               ? "$" + orderData.approveTextPrice
@@ -422,7 +456,9 @@ export class UserViewOrderDetails extends Component {
                         </tr>
                         {orderData.textCreation === "Editorial" && (
                           <tr>
-                            <td>Text creation price</td>
+                            <td>
+                              <Trans>Text creation price</Trans>
+                            </td>
                             <td className="text-end-ct">
                               {orderData.textCreationPrice > 0
                                 ? "$" + orderData.textCreationPrice
@@ -431,11 +467,15 @@ export class UserViewOrderDetails extends Component {
                           </tr>
                         )}
                         <tr>
-                          <td>Price</td>
+                          <td>
+                            <Trans>Price</Trans>
+                          </td>
                           <td className="text-end-ct">${orderData.price}</td>
                         </tr>
                         <tr>
-                          <td className="h4 fontBold600">Total Price</td>
+                          <td className="h4 fontBold600">
+                            <Trans>Total Price</Trans>
+                          </td>
                           <td className="text-end-ct">
                             <span className="h3 fontBold600">
                               ${orderData.total_price}
@@ -448,7 +488,10 @@ export class UserViewOrderDetails extends Component {
                 </div>
               </div>
             </div>
-            <MessageComponents order_id={this.state.order_id} isShowTypeMsg={true}/>
+            <MessageComponents
+              order_id={this.state.order_id}
+              isShowTypeMsg={true}
+            />
           </div>
         </div>
       </div>

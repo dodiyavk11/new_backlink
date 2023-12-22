@@ -8,6 +8,8 @@ import "../../assets/custom.css";
 import Tooltip from "@material-ui/core/Tooltip";
 import TimeAgo from "timeago-react";
 import ApiServices from "../services/api.service";
+import { Trans } from "react-i18next";
+
 export class ProjectView extends Component {
   constructor(props) {
     const { hash_id } = props.match.params;
@@ -244,7 +246,7 @@ export class ProjectView extends Component {
                   className="btn btn-rounded font-weight-medium auth-form-btn"
                   onClick={this.handleGoBack}
                 >
-                  <i className="mdi mdi-arrow-left"></i> Back
+                  <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                 </button>
                 <button
                   className="btn btn-rounded font-weight-medium auth-form-btn"
@@ -272,7 +274,9 @@ export class ProjectView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Visibility index</b>
+                          <b>
+                            <Trans>Visibility index</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -347,7 +351,9 @@ export class ProjectView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Domain Rating</b>
+                          <b>
+                            <Trans>Domain Rating</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -422,7 +428,9 @@ export class ProjectView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Referring Domains</b>
+                          <b>
+                            <Trans>Referring Domains</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -499,7 +507,9 @@ export class ProjectView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Citation Flow</b>
+                          <b>
+                            <Trans>Citation Flow</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -574,7 +584,9 @@ export class ProjectView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Trust Flow</b>
+                          <b>
+                            <Trans>Trust Flow</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -649,7 +661,9 @@ export class ProjectView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Domain Authority</b>
+                          <b>
+                            <Trans>Domain Authority</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -728,7 +742,7 @@ export class ProjectView extends Component {
                 <div className="row g-2 mt-4 pl-3">
                   <div className="col-sm-12 border bRadius">
                     <div className="mt-2 mb-2 p-2 dashboardHome">
-                      <h4 className="card-title">Order</h4>
+                      <h4 className="card-title"><Trans>Orders</Trans></h4>
                       <hr />
                       {orderData.map((order) => (
                         <div className="card" key={order.id}>
@@ -740,7 +754,11 @@ export class ProjectView extends Component {
                               <tbody>
                                 <tr onClick={() => this.viewOrder(order.id)}>
                                   <td>
-                                    <h4>{order.domain ? order.domain.domain_name : "Link Bundle"}</h4>
+                                    <h4>
+                                      {order.domain
+                                        ? order.domain.domain_name
+                                        : "Link Bundle"}
+                                    </h4>
                                     <div className="extraInfo flex-wrap d-flex justify-content-between">
                                       <div>
                                         {contentData.domain_name
@@ -777,7 +795,9 @@ export class ProjectView extends Component {
                       {!orderData.length && (
                         <div className="card">
                           <div className="card-body dashboardCard">
-                            <h4 className="text-center">No Orders.</h4>
+                            <h4 className="text-center">
+                              <Trans>No Orders.</Trans>
+                            </h4>
                           </div>
                         </div>
                       )}
@@ -786,7 +806,7 @@ export class ProjectView extends Component {
                           <div className="card-body text-center p-0">
                             <hr />
                             <Link to="/orders" className="hrefTitle">
-                              View all
+                              <Trans>View all</Trans>
                             </Link>
                           </div>
                         </div>
@@ -800,8 +820,12 @@ export class ProjectView extends Component {
           <div className="col-lg-4 grid-margin pl-1">
             <div className="card">
               <div className="card-body">
-                <h4 className="card-title">Monthly Budget</h4>
-                <p>What is the monthly budget for this project?</p>
+                <h4 className="card-title">
+                  <Trans>Monthly Budget</Trans>
+                </h4>
+                <p>
+                  <Trans>What is the monthly budget for this project?</Trans>
+                </p>
 
                 <div className="table-responsive">
                   <table className="table">
@@ -823,7 +847,7 @@ export class ProjectView extends Component {
                             style={{ width: "100%" }}
                             onClick={this.updateMonthlyBudget}
                           >
-                            Update
+                            <Trans>Update</Trans>
                           </button>
                         </td>
                       </tr>
@@ -836,17 +860,21 @@ export class ProjectView extends Component {
               <div className="card-img-top bRadius p-3 contactCardview">
                 <div className="row">
                   <div className="col-sm-8">
-                    <h4>Need help?</h4>
+                    <h4>
+                      <Trans>Need help?</Trans>
+                    </h4>
                     <p>
-                      Lets talk about your seo project - Schedule a free call
-                      with our experts!
+                      <Trans>
+                        Lets talk about your seo project - Schedule a free call
+                        with our experts!
+                      </Trans>
                     </p>
                     <button
                       className="btn btn-rounded p-2"
                       style={{ backgroundColor: "#354252 !important" }}
                       type="button"
                     >
-                      Make Appointment
+                      <Trans>Make Appointment</Trans>
                     </button>
                     <button
                       onClick={this.handleCallClick}
@@ -854,7 +882,7 @@ export class ProjectView extends Component {
                       type="button"
                       style={{ backgroundColor: "#354252 !important" }}
                     >
-                      Call
+                      <Trans>Call</Trans>
                     </button>
                   </div>
                   <div className="col-sm-4">

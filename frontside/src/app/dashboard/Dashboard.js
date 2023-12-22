@@ -10,6 +10,7 @@ import DomainComponent from "./Domain";
 import ContentLinksComponent from "./contentLinks";
 import ApiServices from "../services/api.service";
 import StripePayment from "../stripePayment";
+import { Trans } from "react-i18next";
 import "../../assets/custom.css";
 
 export class Dashboard extends Component {
@@ -188,13 +189,15 @@ export class Dashboard extends Component {
             </button> */}
             <img
               src={require("../../assets/images/by-stripe.svg")}
-                    alt="Success"
+              alt="Success"
               style={{ width: "auto", height: "25px", marginRight: "5px" }}
             />
           </Modal>
           <ToastContainer />
           <div className="page-header">
-            <h3 className="fontBold latterSpacing">Dashboard(U)</h3>
+            <h3 className="fontBold latterSpacing">
+              <Trans>Dashboard(U)</Trans>
+            </h3>
           </div>
           <div className="row">
             <div className="col-lg-6 grid-margin">
@@ -213,7 +216,8 @@ export class Dashboard extends Component {
                         type="button"
                         className="btn btn-rounded btn-fw"
                       >
-                        <i className="mdi mdi-plus mr-2"></i>Add Balance
+                        <i className="mdi mdi-plus mr-2"></i>
+                        <Trans>Add Balance</Trans>
                       </button>
                     </div>
                   </div>
@@ -223,7 +227,9 @@ export class Dashboard extends Component {
                 <div className="card-body dashProHead">
                   <div className="d-flex flex-row justify-content-between">
                     <div className="p-2 bd-highlight d-flex flex-column">
-                      <h5 className="card-title">Projects</h5>
+                      <h5 className="card-title">
+                        <Trans>Projects</Trans>
+                      </h5>
                     </div>
                     <div className="p-2 bd-highlight d-flex align-items-center justify-content-center">
                       <h5 className="card-title">
@@ -231,7 +237,8 @@ export class Dashboard extends Component {
                           className="createProject"
                           onClick={this.showProjectModal}
                         >
-                          <i className="mdi mdi-plus mr-2"></i>Create Project
+                          <i className="mdi mdi-plus mr-2"></i>
+                          <Trans>Create Project</Trans>
                         </span>
                       </h5>
                     </div>
@@ -248,7 +255,9 @@ export class Dashboard extends Component {
               {!this.state.domains.length && (
                 <div className="card bRadius cRadiusTop">
                   <div className="card-body dashboardCard mb-2">
-                    <h4 className="text-center">No projects yet</h4>
+                    <h4 className="text-center">
+                      <Trans>No projects yet</Trans>
+                    </h4>
                   </div>
                 </div>
               )}
@@ -257,7 +266,7 @@ export class Dashboard extends Component {
                   <div className="card-body text-center">
                     <hr />
                     <Link to="/projects" className="hrefTitle">
-                      View all
+                      <Trans>View all</Trans>
                     </Link>
                   </div>
                 </div>
@@ -266,7 +275,9 @@ export class Dashboard extends Component {
             <div className="col-lg-6 grid-margin stretch-card">
               <div className="card bRadius">
                 <div className="card-body">
-                  <h4 className="card-title">Orders</h4>
+                  <h4 className="card-title">
+                    <Trans>Orders</Trans>
+                  </h4>
                   {this.state.orders.map((order) => (
                     <OrderComponent
                       key={order.id}
@@ -277,7 +288,9 @@ export class Dashboard extends Component {
                   {!this.state.orders.length && (
                     <div className="card">
                       <div className="card-body dashboardCard">
-                        <h4 className="text-center">No Orders.</h4>
+                        <h4 className="text-center">
+                          <Trans>No Orders.</Trans>
+                        </h4>
                       </div>
                     </div>
                   )}
@@ -287,7 +300,7 @@ export class Dashboard extends Component {
                     <div className="card-body text-center">
                       <hr />
                       <Link to="/orders" className="hrefTitle">
-                        View all
+                        <Trans>View all</Trans>
                       </Link>
                     </div>
                   </div>
@@ -299,17 +312,17 @@ export class Dashboard extends Component {
             <div className="col-lg-8 grid-margin stretch-card">
               <div className="card bRadius">
                 <div className="card-body">
-                  <h4 className="card-title">Daily Deals 5</h4>
+                  <h4 className="card-title"><Trans>Daily Deals</Trans> 5</h4>
                   <hr />
                   <div className="table-responsive">
                     <table className="table table-hover top5Deals">
                       <thead>
                         <tr>
-                          <th>Name</th>
-                          <th>DR</th>
-                          <th>DA</th>
-                          <th>TF</th>
-                          <th>Price</th>
+                          <th><Trans>Name</Trans></th>
+                          <th><Trans>DR</Trans></th>
+                          <th><Trans>DA</Trans></th>
+                          <th><Trans>TF</Trans></th>
+                          <th><Trans>Price</Trans></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -328,7 +341,7 @@ export class Dashboard extends Component {
                   <div className="card-body text-center">
                     <hr />
                     <Link to="/marketplace/contentlinks" className="hrefTitle">
-                      View all
+                      <Trans>View all</Trans>
                     </Link>
                   </div>
                 </div>
@@ -356,11 +369,11 @@ export class Dashboard extends Component {
                     fontSize="20"
                     fill="white"
                   >
-                    For Backlinks
+                    <Trans>For Backlinks</Trans>
                   </text>
                 </svg>
                 <div className="card-body" style={{ padding: "1.5rem 1.5rem" }}>
-                  <h5 className="card-title">Resource</h5>
+                  <h5 className="card-title"><Trans>Resource</Trans></h5>
                   <div className="d-flex justify-content-between p-1">
                     <div className="mr-2">
                       <svg
@@ -448,7 +461,7 @@ export class Dashboard extends Component {
                 </div>
                 <div className="card-body text-center">
                   <Link to="/basic-ui/buttons" className="hrefTitle">
-                    Discover more
+                    <Trans>Discover more</Trans>
                   </Link>
                 </div>
               </div>

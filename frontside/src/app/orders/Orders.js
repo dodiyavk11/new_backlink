@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { Form } from "react-bootstrap";
 import ApiServices from "../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
+import { Trans, withTranslation } from "react-i18next";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
-import TimeAgo from "timeago-react";
 import { CPopover, CButton } from "@coreui/react";
 import "../../assets/custom.css";
 
@@ -28,7 +27,7 @@ export class Orders extends Component {
       showAmount: true,
       filterData: {},
       selectedDate: "",
-      searchValue:"",
+      searchValue: "",
       status: [
         {
           id: 1,
@@ -100,7 +99,7 @@ export class Orders extends Component {
 
   handleOnSearch = (e) => {
     this.setState({ searchValue: e.target.value }, this.updateFilterData);
-  }
+  };
 
   toggleColumn = (columnName) => {
     this.setState((prevState) => ({
@@ -112,14 +111,19 @@ export class Orders extends Component {
   };
 
   updateFilterData = () => {
-    const { selectedStatus, selectedProduct, selectedProject, selectedDate,searchValue } =
-      this.state;
+    const {
+      selectedStatus,
+      selectedProduct,
+      selectedProject,
+      selectedDate,
+      searchValue,
+    } = this.state;
     const filterData = {
       status: selectedStatus.length ? selectedStatus : [],
       productType: selectedProduct.length ? selectedProduct : {},
       project: selectedProject.length ? selectedProject : {},
-      date: { min:selectedDate || "", max:selectedDate || "" },
-      search:searchValue
+      date: { min: selectedDate || "", max: selectedDate || "" },
+      search: searchValue,
     };
     ApiServices.userOrderListFilter(filterData)
       .then((res) => {
@@ -208,34 +212,37 @@ export class Orders extends Component {
       showStatus,
       showTarget,
       showAmount,
-      searchValue
+      searchValue,
     } = this.state;
     const getStatusClass = (status) => {
       switch (status) {
-        case 'Pending':
-          return 'badge-primary';
-        case 'Completed':
-          return 'badge-success';
-        case 'Cancelled':
-          return 'badge-danger';
-        case 'Rejected':
-          return 'badge-warning';
-        case 'Inprogress':
-          return 'badge-secondary';
+        case "Pending":
+          return "badge-primary";
+        case "Completed":
+          return "badge-success";
+        case "Cancelled":
+          return "badge-danger";
+        case "Rejected":
+          return "badge-warning";
+        case "Inprogress":
+          return "badge-secondary";
         default:
-          return 'badge-info';
+          return "badge-info";
       }
     };
+    const { t } = this.props;
     return (
       <div className="ordersListPage">
         <div className="d-flex justify-content-between">
           <div className="page-header">
-            <h3 className="fontBold latterSpacing">Orders</h3>
+            <h3 className="fontBold latterSpacing">
+              <Trans>Orders</Trans>
+            </h3>
           </div>
           <div className="ExportBtn">
             <button className="btn btn-rounded d-inline-flex btn-sm">
               <i className="mdi mdi-exit-to-app mr-2"></i>
-              Export
+              <Trans>Export</Trans>
             </button>
           </div>
         </div>
@@ -263,7 +270,9 @@ export class Orders extends Component {
                         </div>
                         <input
                           type="search"
-                          placeholder="Backlink name like google.com"
+                          placeholder={t(
+                            "translations:Backlink name like google.com"
+                          )}
                           onChange={this.handleOnSearch}
                           value={searchValue}
                           className="form-control border-left-0 customSearch"
@@ -271,17 +280,17 @@ export class Orders extends Component {
                       </div>
                       <ReactMultiSelectCheckboxes
                         options={this.state.status}
-                        placeholderButtonLabel="Status"
+                        placeholderButtonLabel={t("translations:Status")}
                         onChange={this.handleStatusChange}
                       />
                       <ReactMultiSelectCheckboxes
                         options={this.state.projectType}
-                        placeholderButtonLabel="Product Type"
+                        placeholderButtonLabel={t("translations:Product Type")}
                         onChange={this.handleProjectTypeChange}
                       />
                       <ReactMultiSelectCheckboxes
                         options={this.state.project}
-                        placeholderButtonLabel="Project"
+                        placeholderButtonLabel={t("translations:Project")}
                         onChange={this.handleProjectChange}
                       />
                       <CPopover
@@ -342,7 +351,7 @@ export class Orders extends Component {
                           d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
                         />
                       </svg>
-                      Customize table
+                      <Trans>Customize table</Trans>
                     </button>
                     {showPopover && (
                       <div
@@ -365,7 +374,7 @@ export class Orders extends Component {
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
                             <span className="mr-4 text-nowrap">
-                              Date & Time
+                              <Trans>Date & Time</Trans>
                             </span>
                             <label className="switch">
                               <input
@@ -379,7 +388,9 @@ export class Orders extends Component {
                             </label>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                            <span className="mr-4">Product</span>
+                            <span className="mr-4">
+                              <Trans>Product</Trans>
+                            </span>
                             <label className="switch">
                               <input
                                 type="checkbox"
@@ -392,7 +403,9 @@ export class Orders extends Component {
                             </label>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                            <span className="mr-4 text-nowrap">Status</span>
+                            <span className="mr-4 text-nowrap">
+                              <Trans>Status</Trans>
+                            </span>
                             <label className="switch">
                               <input
                                 type="checkbox"
@@ -406,7 +419,7 @@ export class Orders extends Component {
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
                             <span className="mr-4 pull-left text-nowrap">
-                              Project
+                              <Trans>Project</Trans>
                             </span>
                             <label className="switch pull-right">
                               <input
@@ -421,7 +434,7 @@ export class Orders extends Component {
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
                             <span className="mr-4 text-nowrap">
-                              Anchor text
+                              <Trans>Anchor text</Trans>
                             </span>
                             <label className="switch">
                               <input
@@ -435,7 +448,9 @@ export class Orders extends Component {
                             </label>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                            <span className="mr-4 text-nowrap">Target Url</span>
+                            <span className="mr-4 text-nowrap">
+                              <Trans>Target Url</Trans>
+                            </span>
                             <label className="switch">
                               <input
                                 type="checkbox"
@@ -448,7 +463,9 @@ export class Orders extends Component {
                             </label>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                            <span className="mr-4 text-nowrap">Amount</span>
+                            <span className="mr-4 text-nowrap">
+                              <Trans>Amount</Trans>
+                            </span>
                             <label className="switch">
                               <input
                                 type="checkbox"
@@ -471,24 +488,26 @@ export class Orders extends Component {
                       <thead>
                         <tr>
                           <th className={showID ? "show" : "hide"}>ID</th>
-                          <th className={showDate ? "show" : "hide"}>Date</th>
+                          <th className={showDate ? "show" : "hide"}>
+                            <Trans>Date & Time</Trans>
+                          </th>
                           <th className={showStatus ? "show" : "hide"}>
-                            Status
+                            <Trans>Status</Trans>
                           </th>
                           <th className={showProduct ? "show" : "hide"}>
-                            Product
+                            <Trans>Product</Trans>
                           </th>
                           <th className={showProject ? "show" : "hide"}>
-                            Project
+                            <Trans>Project</Trans>
                           </th>
                           <th className={showAnchor ? "show" : "hide"}>
-                            Anchor text
+                            <Trans>Anchor text</Trans>
                           </th>
                           <th className={showTarget ? "show" : "hide"}>
-                            Target url
+                            <Trans>Target url</Trans>
                           </th>
                           <th className={showAmount ? "show" : "hide"}>
-                            Amount
+                            <Trans>Amount</Trans>
                           </th>
                         </tr>
                       </thead>
@@ -505,14 +524,22 @@ export class Orders extends Component {
                               {order.created_at}
                             </td>
                             <td className={showStatus ? "show" : "hide"}>
-                              <span className={`fontSize13 badge ${getStatusClass(order.status)}`}>{order.status}</span>
+                              <span
+                                className={`fontSize13 badge ${getStatusClass(
+                                  order.status
+                                )}`}
+                              >
+                                {order.status}
+                              </span>
                             </td>
                             <td className={showProduct ? "show" : "hide"}>
-                              {order.isBundle !== 0 ? "Link Bundle" : order.domain.domain_name}
+                              {order.isBundle !== 0
+                                ? "Link Bundle"
+                                : order.domain.domain_name}
                             </td>
                             <td className={showProject ? "show" : "hide"}>
                               {order.project && order.project.domain_name
-                                ? order.project.domain_name 
+                                ? order.project.domain_name
                                 : "N/A"}
                             </td>
                             <td className={showAnchor ? "show" : "hide"}>
@@ -538,10 +565,14 @@ export class Orders extends Component {
                           alt="No data found..."
                         />
                       </div>
-                      <h4>No Orders</h4>
+                      <h4>
+                        <Trans>No Orders.</Trans>
+                      </h4>
                       <p style={{ maxWidth: "400px" }}>
-                        No Project You do not have any Project yet. As soon as
-                        you add your first Project, it will show up here.
+                        <Trans>
+                          No Project You do not have any Project yet. As soon as
+                          you add your first Project, it will show up here.
+                        </Trans>
                       </p>
                       {/* <button className="btn btn-rounded btn-fw">
                         <span
@@ -562,4 +593,5 @@ export class Orders extends Component {
     );
   }
 }
-export default withRouter(Orders);
+// export default withRouter(Orders);
+export default withTranslation()(Orders);

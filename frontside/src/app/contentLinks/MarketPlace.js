@@ -4,6 +4,7 @@ import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import { CPopover, CButton } from "@coreui/react";
 import ApiServices from "../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
+import { Trans, withTranslation } from "react-i18next";
 import "react-toastify/dist/ReactToastify.css";
 import {
   Typography,
@@ -277,15 +278,18 @@ export class MarketPlace extends Component {
     );
   };
   handleFavoriteFilter = () => {
-    this.setState((prevState) => ({
-      isFavoriteFilter: prevState.isFavoriteFilter === 0 ? 1 : 0,
-    }), () => {
-      const filterData = {
-        favoriteFilter: this.state.isFavoriteFilter,
-      };    
-      this.fetchContentLinkData(filterData);
-    });    
-  }
+    this.setState(
+      (prevState) => ({
+        isFavoriteFilter: prevState.isFavoriteFilter === 0 ? 1 : 0,
+      }),
+      () => {
+        const filterData = {
+          favoriteFilter: this.state.isFavoriteFilter,
+        };
+        this.fetchContentLinkData(filterData);
+      }
+    );
+  };
   fetchContentLinkData(filter = null) {
     ApiServices.getContentLinkList(filter).then(
       (res) => {
@@ -367,10 +371,11 @@ export class MarketPlace extends Component {
       searchValue,
       favoriteProducts,
     } = this.state;
+    // const { t } = this.props;
     const columns = [
       {
         id: "name",
-        label: "Name",
+        label: <Trans>Name</Trans>,
         height: 70,
         width: 345,
         sortable: false,
@@ -427,7 +432,7 @@ export class MarketPlace extends Component {
       },
       {
         id: "language",
-        label: "Language",
+        label: <Trans>Language</Trans>,
         width: 130,
         sortable: false,
         renderCell: (row) => (
@@ -448,7 +453,7 @@ export class MarketPlace extends Component {
       },
       {
         id: "rating",
-        label: "Rating",
+        label: <Trans>Rating</Trans>,
         width: 130,
         align: "right",
         format: (value) => value.toLocaleString("en-US"),
@@ -482,49 +487,49 @@ export class MarketPlace extends Component {
       },
       {
         id: "dr",
-        label: "DR",
+        label: <Trans>DR</Trans>,
         align: "right",
         width: 90,
         renderCell: (row) => <span>{row.contentData.domain_rating}</span>,
       },
       {
         id: "da",
-        label: "DA",
+        label: <Trans>DA</Trans>,
         align: "right",
         width: 90,
         renderCell: (row) => <span>{row.contentData.authority}</span>,
       },
       {
         id: "svi",
-        label: "SI",
+        label: <Trans>SI</Trans>,
         align: "right",
         width: 90,
         renderCell: (row) => <span>{row.contentData.visibility_index}</span>,
       },
       {
         id: "tf",
-        label: "TF",
+        label: <Trans>TF</Trans>,
         align: "right",
         width: 90,
         renderCell: (row) => <span>{row.contentData.trust_flow}</span>,
       },
       {
         id: "rd",
-        label: "RD",
+        label: <Trans>RD</Trans>,
         align: "right",
         width: 90,
         renderCell: (row) => <span>{row.contentData.referring}</span>,
       },
       {
         id: "traffic",
-        label: "TRAFFIC",
+        label: <Trans>TRAFFIC</Trans>,
         width: 90,
         align: "right",
         renderCell: (row) => <span>{row.contentData.traffic}</span>,
       },
       {
         id: "price",
-        label: "PRICE",
+        label: <Trans>PRICE</Trans>,
         width: 160,
         align: "right",
         renderCell: (row) => (
@@ -655,10 +660,12 @@ export class MarketPlace extends Component {
                 <CButton className="css-1r4vtzz custamFilterBtn">
                   {min !== 30 || max !== 200000 ? (
                     <span className="css-1v99tuv">
-                      Prize: ${min} - ${max}
+                      <Trans>Prize</Trans>: ${min} - ${max}
                     </span>
                   ) : (
-                    <span className="css-1v99tuv">Prize</span>
+                    <span className="css-1v99tuv">
+                      <Trans>Prize</Trans>
+                    </span>
                   )}
                   <span className="css-1gpjby2">
                     <svg
@@ -699,7 +706,7 @@ export class MarketPlace extends Component {
                   d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
                 />
               </svg>
-              More Filters
+              <Trans>More Filters</Trans>
             </button>
             {/* <button
               className="customBtn ml-2"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import TimeAgo from "timeago-react";
 import "../../assets/custom.css";
 import ApiServices from "../services/api.service";
+import { Trans } from "react-i18next";
 
 const ActiveProjects = ({ project, goToProjectViewLink }) => {
   const [imageExists, setImageExists] = useState(true);
@@ -39,9 +40,9 @@ const ActiveProjects = ({ project, goToProjectViewLink }) => {
         <div className="card-body activeProject">
           <h5 className="card-title">{project.domain_name}</h5>
           <div className="extraInfo d-flex flex-wrap justify-content-between">
-            <div>0 Recommendations</div>
+            <div>0 <Trans>Recommendations</Trans></div>
             <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-            <div>{project.order_count} Orders</div>
+            <div>{project.order_count} <Trans>Orders</Trans></div>
             <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
             <div>
               <TimeAgo datetime={project.created_at} locale="en" />
@@ -52,7 +53,7 @@ const ActiveProjects = ({ project, goToProjectViewLink }) => {
             {project.budget !== "0.00" ? (
               <span>{project.budget}</span>
             ) : (
-              <span>No monthly budget provided</span>
+              <span><Trans>No monthly budget provided</Trans></span>
             )}
           </div>
         </div>

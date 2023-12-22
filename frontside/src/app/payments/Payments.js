@@ -4,6 +4,8 @@ import TimeAgo from "timeago-react";
 import ApiServices from "../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Trans } from "react-i18next";
+
 import {
   Paper,
   Table,
@@ -21,11 +23,11 @@ export class Payments extends Component {
     super(props);
     this.state = {
       rows: [],
-      page: 0,      
+      page: 0,
       rowsPerPage: 10,
       orderBy: "id",
       order: "desc",
-      selectedRow: null,      
+      selectedRow: null,
     };
   }
 
@@ -97,7 +99,7 @@ export class Payments extends Component {
     this.getUserTransaction();
   }
   render() {
-    const { rows, page, rowsPerPage, orderBy, order } = this.state;    
+    const { rows, page, rowsPerPage, orderBy, order } = this.state;
     const columns = [
       {
         id: "id",
@@ -106,49 +108,39 @@ export class Payments extends Component {
         width: 50,
         sortable: true,
         renderCell: (row) => <span>{row.id}</span>,
-      },    
+      },
       {
-        id:"amount",
-        label: "Amount",
+        id: "amount",
+        label: <Trans>Amount</Trans>,
         sortable: true,
-        renderCell: (row) => <span>${row.amount}</span>
-      },  
+        renderCell: (row) => <span>${row.amount}</span>,
+      },
       {
         id: "status",
-        label: "Status",
+        label: <Trans>Status</Trans>,
         width: 90,
         sortable: false,
-        renderCell: (row) => (
-          <span>
-            {row.status}
-          </span>
-        ),
+        renderCell: (row) => <span>{row.status}</span>,
       },
       {
         id: "type",
-        label: "Type",
+        label: <Trans>Type</Trans>,
         width: 130,
         align: "right",
         sortable: false,
-        renderCell: (row) => (
-          <span>
-            {row.transaction_type}
-          </span>
-        ),
+        renderCell: (row) => <span>{row.transaction_type}</span>,
       },
       {
         id: "description",
-        label: "Description",
+        label: <Trans>Description</Trans>,
         align: "right",
         width: 90,
         sortable: false,
-        renderCell: (row) => (
-          <span>{row.description}</span>
-        ),
-      },    
+        renderCell: (row) => <span>{row.description}</span>,
+      },
       {
         id: "created_at",
-        label: "Created at",
+        label: <Trans>Created at</Trans>,
         width: 130,
         sortable: false,
         renderCell: (row) => (
@@ -157,7 +149,7 @@ export class Payments extends Component {
             <TimeAgo datetime={row.created_at} locale="en" />
           </span>
         ),
-      },  
+      },
     ];
 
     return (
@@ -165,17 +157,15 @@ export class Payments extends Component {
         <div className="ordersListPage adminOrdersList">
           <div className="d-flex justify-content-between">
             <div className="page-header">
-              <h3 className="fontBold latterSpacing">Trasactions</h3>
+              <h3 className="fontBold latterSpacing"><Trans>Trasactions</Trans></h3>
             </div>
           </div>
           <div className="row">
             <div className="col-lg-12 grid-margin">
               <div className="card mb-4 bRadius">
                 <div className="card-body projectsCard">
-                  <ToastContainer />                 
-                  <div
-                    className="tableData"
-                  >
+                  <ToastContainer />
+                  <div className="tableData">
                     <Paper style={{ width: "100%", overflow: "hidden" }}>
                       <TableContainer style={{ maxHeight: "50%" }}>
                         <Table stickyHeader aria-label="sticky table">
@@ -225,10 +215,10 @@ export class Payments extends Component {
                                     role="checkbox"
                                     tabIndex={-1}
                                     key={row.id}
-                                    selected={isSelected}          
+                                    selected={isSelected}
                                     onClick={(event) =>
                                       this.handleRowClick(event, index)
-                                    }                          
+                                    }
                                     style={{
                                       cursor: "pointer",
                                       height: "55px",
@@ -255,7 +245,7 @@ export class Payments extends Component {
                         </Table>
                       </TableContainer>
                       <TablePagination
-                        rowsPerPageOptions={[5, 10, 15,50]}
+                        rowsPerPageOptions={[5, 10, 15, 50]}
                         component="div"
                         count={rows.length}
                         rowsPerPage={rowsPerPage}

@@ -5,6 +5,7 @@ import TimeAgo from "timeago-react";
 import "react-toastify/dist/ReactToastify.css";
 import AddPublisherProjects from "../common/AddPublisherProjects";
 import PublisherUplaodExcelDomain from "../common/PublisherUplaodExcelDomain";
+import { Trans } from "react-i18next";
 import "../../../assets/custom.css";
 export class Domain extends Component {
   constructor(props) {
@@ -85,7 +86,9 @@ export class Domain extends Component {
     return (
       <div className="dashboardPublisher">
         <div className="page-header">
-          <h3 className="fontBold latterSpacing">Domain</h3>
+          <h3 className="fontBold latterSpacing">
+            <Trans>Domain</Trans>
+          </h3>
         </div>
         <div className="row">
           <div className="col-lg-12 grid-margin">
@@ -93,7 +96,9 @@ export class Domain extends Component {
               <div className="card-body">
                 <div className="d-flex flex-row justify-content-between">
                   <div className="p-2 bd-highlight d-flex flex-column">
-                    <h5 className="card-title">Domain</h5>
+                    <h5 className="card-title">
+                      <Trans>Domain</Trans>
+                    </h5>
                   </div>
                   <div className="p-2 bd-highlight d-flex align-items-center justify-content-center">
                     <h5 className="card-title">
@@ -101,7 +106,8 @@ export class Domain extends Component {
                         className="createProject"
                         onClick={this.showAddDomainModal}
                       >
-                        <i className="mdi mdi-plus mr-2"></i>Add Domain
+                        <i className="mdi mdi-plus mr-2"></i>
+                        <Trans>Add Domain</Trans>
                       </span>
                     </h5>
                     <h5 className="card-title">
@@ -109,7 +115,8 @@ export class Domain extends Component {
                         className="createProject"
                         onClick={this.showAddExcelModal}
                       >
-                        <i className="mdi mdi-upload ml-2"></i>Upload excel
+                        <i className="mdi mdi-upload ml-2"></i>
+                        <Trans>Upload excel</Trans>
                       </span>
                     </h5>
                   </div>
@@ -148,11 +155,11 @@ export class Domain extends Component {
                               {domain.domain_name}
                               {domain.status ? (
                                 <span className="ml-2 badge badge-success">
-                                  Active
+                                  <Trans>Active</Trans>
                                 </span>
                               ) : (
                                 <span className="ml-2 badge badge-danger">
-                                  InActive
+                                  <Trans>InActive</Trans>
                                 </span>
                               )}
                             </h5>
@@ -181,17 +188,22 @@ export class Domain extends Component {
                         alt="No data found..."
                       />
                     </div>
-                    <h2>No Domain</h2>
+                    <h2>
+                      <Trans>No Domain</Trans>
+                    </h2>
                     <p>
-                      No Domain You do not have any Project yet. As soon as you
-                      add your first Project, it will show up here.
+                      <Trans>
+                        No Domain You do not have any Project yet. As soon as
+                        you add your first Project, it will show up here.
+                      </Trans>
                     </p>
                     <button className="btn btn-rounded btn-fw">
                       <span
                         className="createProject"
                         onClick={this.showAddDomainModal}
                       >
-                        <i className="mdi mdi-plus mr-2"></i>Create Project
+                        <i className="mdi mdi-plus mr-2"></i>
+                        <Trans>Create Project</Trans>
                       </span>
                     </button>
                   </center>

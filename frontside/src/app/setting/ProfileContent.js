@@ -8,6 +8,7 @@ import "../../assets/custom.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ApiServices from "../services/api.service";
+import { Trans } from "react-i18next";
 
 export class ProfileContent extends Component {
   constructor(props) {
@@ -95,28 +96,31 @@ export class ProfileContent extends Component {
           <Box>
             <Card variant="outlined">
               {" "}
-              <ToastContainer/>
+              <ToastContainer />
               <CardContent>
                 <div className="row">
                   <div className="col-sm-12">
                     <div className="mt-2">
-                      <h5>Personal information</h5>
+                      <h5>
+                        <Trans>Personal information</Trans>
+                      </h5>
                     </div>
                   </div>
                 </div>
                 <Form.Group className="row">
                   <label htmlFor="demail" className="col-sm-3 col-form-label">
                     <Typography className="customText2">
-                      Email address
+                      <Trans>Email address</Trans>
                     </Typography>
                     <Typography className="customText">
-                      You can change your email address{" "}
-                      <Link  onClick={this.handleClick}
+                      <Trans>You can change your email address</Trans>
+                      <Link
+                        onClick={this.handleClick}
                         to="/settings/account"
                         className="no-underline customText textColorCls"
                         style={{ textDecoration: "none" }}
                       >
-                        in the account section.
+                        <Trans>in the account section.</Trans>
                       </Link>
                     </Typography>
                   </label>
@@ -135,7 +139,7 @@ export class ProfileContent extends Component {
                 <Divider />
                 <Form.Group className="row mt-3">
                   <label htmlFor="fname" className="col-sm-3 col-form-label">
-                    Firstname*
+                    <Trans>Firstname</Trans>*
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -153,7 +157,7 @@ export class ProfileContent extends Component {
                 <Divider className="mt-3" />
                 <Form.Group className="row mt-3">
                   <label htmlFor="lname" className="col-sm-3 col-form-label">
-                    Lastname*
+                    <Trans>Lastname</Trans>*
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -171,7 +175,7 @@ export class ProfileContent extends Component {
                 <Divider className="mt-3" />
                 <Form.Group className="row mt-3">
                   <label htmlFor="address" className="col-sm-3 col-form-label">
-                    Address*
+                    <Trans>Address</Trans>*
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -189,7 +193,7 @@ export class ProfileContent extends Component {
                 <Divider className="mt-3" />
                 <Form.Group className="row mt-3">
                   <label htmlFor="pcode" className="col-sm-3 col-form-label">
-                    Postal code*
+                    <Trans>Postal code</Trans>*
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -209,7 +213,7 @@ export class ProfileContent extends Component {
                 <Divider className="mt-3" />
                 <Form.Group className="row mt-3">
                   <label htmlFor="city" className="col-sm-3 col-form-label">
-                    City*
+                    <Trans>City</Trans>*
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -228,10 +232,12 @@ export class ProfileContent extends Component {
                 <Form.Group className="row mt-3">
                   <label htmlFor="country" className="col-sm-3 col-form-label">
                     {" "}
-                    Country*
+                    <Trans>Country</Trans>*
                     <Typography className="customText">
-                      To change the country of the billing address, please
-                      contact us at support@backlinked.de.
+                      <Trans>
+                        To change the country of the billing address, please
+                        contact us at support@backlinked.de.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-9">
@@ -249,10 +255,12 @@ export class ProfileContent extends Component {
                 <Form.Group className="row mt-3">
                   <label htmlFor="pnumber" className="col-sm-3 col-form-label">
                     {" "}
-                    Phone Number*
+                    <Trans>Phone Number</Trans>*
                     <Typography className="customText">
-                      By providing your phone number we can reach you faster in
-                      case of issues.
+                      <Trans>
+                        By providing your phone number we can reach you faster
+                        in case of issues.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-9">
@@ -276,17 +284,21 @@ export class ProfileContent extends Component {
                 <div className="row">
                   <div className="col-sm-12">
                     <div className="mt-2">
-                      <h5>Business information</h5>
+                      <h5>
+                        <Trans>Business information</Trans>
+                      </h5>
                       <Typography className="customText">
-                        To change your company information, please contact us at
-                        support@backlinked.de.
+                        <Trans>
+                          To change your company information, please contact us
+                          at support@backlinked.de.
+                        </Trans>
                       </Typography>
                     </div>
                   </div>
                 </div>
                 <Form.Group className="row mt-3">
                   <label htmlFor="cname" className="col-sm-3 col-form-label">
-                    Company name*
+                    <Trans>Company name</Trans>*
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -304,9 +316,9 @@ export class ProfileContent extends Component {
                 <Divider className="mt-3" />
                 <Form.Group className="row mt-3">
                   <label htmlFor="vat" className="col-sm-3 col-form-label">
-                    Vat ID*
+                    <Trans>Vat ID</Trans>*
                     <Typography className="customText">
-                      Mandatory for customers outside of Germany
+                      <Trans>Mandatory for customers outside of Germany</Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-9">
@@ -325,7 +337,7 @@ export class ProfileContent extends Component {
             </Card>
           </Box>
           <button type="submit" className="btn btn-rounded mt-4">
-            Save Change
+            <Trans>Save Changes</Trans>
           </button>
         </form>
       </div>

@@ -9,6 +9,7 @@ import TimeAgo from "timeago-react";
 import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../../services/api.service";
 import UpdatePublisherProjects from "../common/UpdatePublisherProjects";
+import { Trans } from "react-i18next";
 
 export class DomainView extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ export class DomainView extends Component {
       category: [],
       hash_id: hash_id,
       showModal: false,
-      orderData:[],
+      orderData: [],
       data: {
         labels: [
           "Jan 23",
@@ -110,9 +111,9 @@ export class DomainView extends Component {
           }
         }
       });
-  }
+  };
   componentDidMount() {
-    this.loadDomainViewData()
+    this.loadDomainViewData();
   }
   render() {
     const { contentData, category, contentInsideData, orderData } = this.state;
@@ -140,7 +141,7 @@ export class DomainView extends Component {
             className="btn btn-outline-primary btn-icon-text"
             onClick={this.handleGoBack}
           >
-            Back
+            <Trans>Back</Trans>
           </button>
         </div>
       );
@@ -156,7 +157,7 @@ export class DomainView extends Component {
                   className="btn btn-rounded font-weight-medium auth-form-btn"
                   onClick={this.handleGoBack}
                 >
-                  <i className="mdi mdi-arrow-left"></i> Back
+                  <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                 </button>
                 <a
                   className="btn btn-rounded font-weight-medium auth-form-btn"
@@ -164,7 +165,8 @@ export class DomainView extends Component {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-arrow-top-right"></i> Visit domain
+                  <i className="mdi mdi-arrow-top-right"></i>{" "}
+                  <Trans>Visit domain</Trans>
                 </a>
               </div>
               <div className="card-body dashboardCard">
@@ -180,7 +182,9 @@ export class DomainView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Visibility index</b>
+                          <b>
+                            <Trans>Visibility index</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -255,7 +259,9 @@ export class DomainView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Domain Rating</b>
+                          <b>
+                            <Trans>Domain Rating</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -330,7 +336,9 @@ export class DomainView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Referring Domains</b>
+                          <b>
+                            <Trans>Referring Domains</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -407,7 +415,9 @@ export class DomainView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Citation Flow</b>
+                          <b>
+                            <Trans>Citation Flow</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -482,7 +492,9 @@ export class DomainView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Trust Flow</b>
+                          <b>
+                            <Trans>Trust Flow</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -557,7 +569,9 @@ export class DomainView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Domain Authority</b>
+                          <b>
+                            <Trans>Domain Authority</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -636,7 +650,9 @@ export class DomainView extends Component {
                 <div className="row g-2 mt-4 pl-3">
                   <div className="col-sm-12 border bRadius">
                     <div className="mt-2 mb-2 p-2 dashboardHome">
-                      <h4 className="card-title">Order</h4>
+                      <h4 className="card-title">
+                        <Trans>Orders</Trans>
+                      </h4>
                       <hr />
                       {orderData.map((order) => (
                         <div className="card" key={order.id}>
@@ -649,7 +665,7 @@ export class DomainView extends Component {
                                 <tr onClick={() => this.viewOrder(order.id)}>
                                   <td>
                                     <h4>{order.anchortext}</h4>
-                                    <div className="extraInfo flex-wrap d-flex justify-content-between">                                      
+                                    <div className="extraInfo flex-wrap d-flex justify-content-between">
                                       <span
                                         style={{ padding: "3px" }}
                                         className={`badge ${getStatusClass(
@@ -678,7 +694,9 @@ export class DomainView extends Component {
                       {!orderData.length && (
                         <div className="card">
                           <div className="card-body dashboardCard">
-                            <h4 className="text-center">No Orders.</h4>
+                            <h4 className="text-center">
+                              <Trans>No Orders.</Trans>
+                            </h4>
                           </div>
                         </div>
                       )}
@@ -687,27 +705,29 @@ export class DomainView extends Component {
                           <div className="card-body text-center p-0">
                             <hr />
                             <Link to="/publisher/orders" className="hrefTitle">
-                              View all
+                              <Trans>View all</Trans>
                             </Link>
                           </div>
                         </div>
                       )}
                     </div>
                   </div>
-                </div>               
+                </div>
               </div>
             </div>
           </div>
           <div className="col-lg-4 grid-margin">
             <div className="card">
               <div className="card-body">
-                <h4 className="card-title">Other details</h4>
+                <h4 className="card-title">
+                  <Trans>Other details</Trans>
+                </h4>
                 <div className="table-responsive">
                   <table className="table">
                     <tbody>
                       <tr>
                         <td>
-                          Traffic{" "}
+                          <Trans>Traffic</Trans>{" "}
                           <Tooltip
                             title="Traffic describes the monthly users of a website. (organic only)"
                             placement="right"
@@ -734,7 +754,7 @@ export class DomainView extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Anchor text
+                          <Trans>Anchor text</Trans>
                           <Tooltip
                             title="Anchor text refers to the clickable text of a link."
                             placement="right"
@@ -759,7 +779,7 @@ export class DomainView extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Delivery time
+                          <Trans>Delivery time</Trans>
                           <Tooltip
                             title="Turnaround time is based on real data and is expressed in business days."
                             placement="right"
@@ -784,7 +804,7 @@ export class DomainView extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Link
+                          <Trans>Link</Trans>
                           <Tooltip
                             title="Dofollow links are particularly high on Google, while nofollow links don't have much impact on your ranking. It is estimated by an independent thrid party."
                             placement="right"
@@ -807,7 +827,7 @@ export class DomainView extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Language
+                          <Trans>Language</Trans>
                           <Tooltip
                             title="Language in which your article will be written by us."
                             placement="right"
@@ -854,7 +874,9 @@ export class DomainView extends Component {
                         <td className="text-end-ct">.{contentData.tld}</td>
                       </tr>
                       <tr>
-                        <td>Price</td>
+                        <td>
+                          <Trans>Price</Trans>
+                        </td>
                         <td className="text-end-ct">
                           <span className="h3 fontBold600">
                             ${contentData.price}
@@ -866,9 +888,10 @@ export class DomainView extends Component {
                           <div className="btn-group-md mb-2">
                             <button
                               className="btn btn-rounded font-weight-medium auth-form-btn"
-                              style={{ width: "100%" }} onClick={this.showAddDomainModal}
+                              style={{ width: "100%" }}
+                              onClick={this.showAddDomainModal}
                             >
-                              Edit
+                              <Trans>Edit</Trans>
                             </button>
                           </div>
                           {/* <div className="btn-group-md">
@@ -896,7 +919,6 @@ export class DomainView extends Component {
           refreshData={this.loadDomainViewData}
         />
       </div>
-      
     );
   }
 }

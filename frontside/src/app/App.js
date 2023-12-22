@@ -23,13 +23,13 @@ class App extends Component {
   onRouteChanged() {
     const { i18n } = this.props;
     const body = document.querySelector("body");
-    if (this.props.location.pathname === "/layout/RtlLayout") {
-      body.classList.add("rtl");
-      i18n.changeLanguage("ar");
-    } else {
-      body.classList.remove("rtl");
-      i18n.changeLanguage("en");
-    }
+    // if (this.props.location.pathname === "/layout/RtlLayout") {
+    //   body.classList.add("rtl");
+    //   i18n.changeLanguage("ar");
+    // } else {
+    //   body.classList.remove("rtl");
+    //   i18n.changeLanguage("en");
+    // }
     window.scrollTo(0, 0);
     const fullPageLayoutRoutes = [
       "/login",

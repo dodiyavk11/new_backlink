@@ -1102,3 +1102,7 @@ input[type="date"]
 {
     background-color:rgb(242 237 243) !important;
 }
+.optacity05
+{
+    opacity: 0.5;
+}

@@ -5,6 +5,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import "react-toastify/dist/ReactToastify.css";
 import TimeAgo from "timeago-react";
 import { ToastContainer, toast } from "react-toastify";
+import { Trans } from "react-i18next";
 
 export class MessageComponents extends Component {
   constructor(props) {
@@ -108,7 +109,7 @@ export class MessageComponents extends Component {
                 className="card-header d-flex justify-content-between align-items-center p-3 text-white border-bottom-0"
                 style={{ backgroundColor: "#ff9756" }}
               >
-                <p className="mb-0 fw-bold">Order Message</p>
+                <p className="mb-0 fw-bold"><Trans>Order Message</Trans></p>
               </div>
               <div
                 className="card-body border"
@@ -178,7 +179,7 @@ export class MessageComponents extends Component {
                   ))
                 ) : (
                   <p>
-                    <b>No messages available.</b>
+                    <b><Trans>No messages available.</Trans></b>
                   </p>
                 )}
               </div>

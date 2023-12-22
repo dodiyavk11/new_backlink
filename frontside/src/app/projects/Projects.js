@@ -10,6 +10,7 @@ import Box from "@material-ui/core/Box";
 import ActiveProjects from "./ActiveProject";
 import ArchivedProjects from "./ArchivedProject";
 import CreateProjectModal from "../shared/CreateProjectModal";
+import { Trans } from "react-i18next";
 import "react-toastify/dist/ReactToastify.css";
 import "../../assets/custom.css";
 
@@ -90,7 +91,9 @@ export class Projects extends Component {
     return (
       <div className="projectsPage">
         <div className="page-header">
-          <h3 className="fontBold latterSpacing">Projects</h3>
+          <h3 className="fontBold latterSpacing">
+            <Trans>Projects</Trans>
+          </h3>
         </div>
         <ToastContainer />
         <CreateProjectModal
@@ -120,7 +123,7 @@ export class Projects extends Component {
                             <div
                               style={{ display: "flex", alignItems: "center" }}
                             >
-                              Active Projects
+                              <Trans>Active Projects</Trans>
                               <span className="notification-icon--fixed">
                                 <small className="notification-badge fontBold500">
                                   {
@@ -140,7 +143,7 @@ export class Projects extends Component {
                             <div
                               style={{ display: "flex", alignItems: "center" }}
                             >
-                              Archived Projects
+                              <Trans>Archived Projects</Trans>
                               <span className="notification-icon--fixed">
                                 <small className="notification-badge fontBold500">
                                   {
@@ -163,7 +166,8 @@ export class Projects extends Component {
                         className="createProject"
                         onClick={this.showProjectModal}
                       >
-                        <i className="mdi mdi-plus mr-2"></i>Create Project
+                        <i className="mdi mdi-plus mr-2"></i>
+                        <Trans>Create Project</Trans>
                       </span>
                     </h5>
                   </div>
@@ -196,18 +200,23 @@ export class Projects extends Component {
                               alt="No data found..."
                             />
                           </div>
-                          <h2>No Project</h2>
+                          <h2>
+                            <Trans>No Project</Trans>
+                          </h2>
                           <p>
-                            No Project You do not have any Project yet. As soon
-                            as you add your first Project, it will show up here.
+                            <Trans>
+                              No Project You do not have any Project yet. As
+                              soon as you add your first Project, it will show
+                              up here.
+                            </Trans>
                           </p>
                           <button className="btn btn-rounded btn-fw">
                             <span
                               className="createProject"
                               onClick={this.showProjectModal}
                             >
-                              <i className="mdi mdi-plus mr-2"></i>Create
-                              Project
+                              <i className="mdi mdi-plus mr-2"></i>
+                              <Trans>Create Project</Trans>
                             </span>
                           </button>
                         </center>
@@ -240,18 +249,23 @@ export class Projects extends Component {
                               alt="No data found..."
                             />
                           </div>
-                          <h2>No Project</h2>
+                          <h2>
+                            <Trans>No Project</Trans>
+                          </h2>
                           <p>
-                            No Project You do not have any Project yet. As soon
-                            as you add your first Project, it will show up here.
+                            <Trans>
+                              No Project You do not have any Project yet. As
+                              soon as you add your first Project, it will show
+                              up here.
+                            </Trans>
                           </p>
                           <button className="btn btn-rounded btn-fw">
                             <span
                               className="createProject"
                               onClick={this.showProjectModal}
                             >
-                              <i className="mdi mdi-plus mr-2"></i>Create
-                              Project
+                              <i className="mdi mdi-plus mr-2"></i>
+                              <Trans>Create Project</Trans>
                             </span>
                           </button>
                         </center>

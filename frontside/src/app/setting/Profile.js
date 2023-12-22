@@ -10,6 +10,7 @@ import { ProfileContent } from "./ProfileContent";
 import "../../assets/custom.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Trans } from "react-i18next";
 
 export class Profile extends Component {
   constructor(props) {
@@ -57,7 +58,9 @@ export class Profile extends Component {
     return (
       <div className="settingPage">
         <div className="page-header">
-          <h3 className="fontBold latterSpacing">Settings</h3>
+          <h3 className="fontBold latterSpacing">
+            <Trans>Settings</Trans>
+          </h3>
         </div>
         <ToastContainer />
         <div className="row">
@@ -87,7 +90,7 @@ export class Profile extends Component {
                                 fontSize: "14px",
                               }}
                             >
-                              Profile
+                              <Trans>Profile</Trans>
                             </div>
                           }
                           className="mb-1"
@@ -103,7 +106,7 @@ export class Profile extends Component {
                                 fontSize: "14px",
                               }}
                             >
-                              Account
+                              <Trans>Account</Trans>
                             </div>
                           }
                           className="mb-1"
@@ -120,7 +123,7 @@ export class Profile extends Component {
                                 fontSize: "14px",
                               }}
                             >
-                              Notification
+                              <Trans>Notifications</Trans>
                             </div>
                           }
                           className="mb-1"

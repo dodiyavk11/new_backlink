@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthService from "../services/auth.service";
 import { Modal, Button, Form } from "react-bootstrap";
+import { Trans } from "react-i18next";
 import "../../assets/custom.css";
 export class LinkBundles extends Component {
   constructor(props) {
@@ -159,29 +160,27 @@ export class LinkBundles extends Component {
   bundlePlaceOrder = () => {
     const orderData = this.state.bundleConfigure;
     const planId = this.state.selectedPlan.id;
-    ApiServices.linkBundlePlaceOrder(orderData,planId).then((res) => {
-      if(res.status)
-      {
-        this.closeModal();
-        toast.success(res.data.message, {
-          position: "top-center",
-          autoClose: 2000,
-        });       
-      }
-      else
-      {
-        toast.error(res.data.message,{
-          position : "top-center",
-          autoClose: 1500
-        })
-      }
-    })
-    .catch((err) => {
-      toast.error(err.response.data.message,{
-        position : "top-center",
-        autoClose: 1500
+    ApiServices.linkBundlePlaceOrder(orderData, planId)
+      .then((res) => {
+        if (res.status) {
+          this.closeModal();
+          toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        } else {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 1500,
+          });
+        }
       })
-    });
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-center",
+          autoClose: 1500,
+        });
+      });
   };
 
   componentDidMount() {
@@ -209,7 +208,9 @@ export class LinkBundles extends Component {
       <>
         <div className="bundleLinkPage">
           <div className="page-header">
-            <h3 className="fontBold latterSpacing">Link bundles</h3>
+            <h3 className="fontBold latterSpacing">
+              <Trans>Link bundles</Trans>
+            </h3>
           </div>
           <ToastContainer />
           <div className="row">
@@ -218,8 +219,7 @@ export class LinkBundles extends Component {
                 <div className="card-body">
                   <div className="mb-5">
                     <h2 className="fontBold latterSpacing">
-                      {" "}
-                      Ultimate link building starting at 347 Euro
+                      <Trans>Ultimate link building starting at 347 Euro</Trans>
                     </h2>
                     <img
                       src={require("../../assets/images/packages.png")}
@@ -227,36 +227,44 @@ export class LinkBundles extends Component {
                       style={{ width: "30%" }}
                     ></img>
                     <p className="customText2 mt-4">
-                      You lack the time or expertise to search backlinks from
-                      our portfolio? Our team will gladly take over this task
-                      for you!
+                      <Trans>
+                        You lack the time or expertise to search backlinks from
+                        our portfolio? Our team will gladly take over this task
+                        for you!
+                      </Trans>
                     </p>
                     <p className="customText2">
-                      Our link packages not only have impressively high
-                      visibility values, the content also achieves maximum topic
-                      relevance. We create an individual article for each
-                      backlink and publish it with selected publishers.
+                      <Trans>
+                        Our link packages not only have impressively high
+                        visibility values, the content also achieves maximum
+                        topic relevance. We create an individual article for
+                        each backlink and publish it with selected publishers.
+                      </Trans>
                     </p>
                     <p className="customText2">
-                      After your booking, you can easily personalize your link
-                      package by selecting the desired link targets, anchor
-                      texts as well as the date of publication. Then our team
-                      plans the link building measures according to your
-                      specifications. As soon as all backlinks from the booked
-                      link package have been completed, you will receive a
-                      detailed link report. If you have any questions about our
-                      link packages, our support team will be happy to help you.
-                      You can reach us by e-mail, live chat or phone at 0228 /
-                      286 795 60.
+                      <Trans>
+                        After your booking, you can easily personalize your link
+                        package by selecting the desired link targets, anchor
+                        texts as well as the date of publication. Then our team
+                        plans the link building measures according to your
+                        specifications. As soon as all backlinks from the booked
+                        link package have been completed, you will receive a
+                        detailed link report. If you have any questions about
+                        our link packages, our support team will be happy to
+                        help you. You can reach us by e-mail, live chat or phone
+                        at 0228 / 286 795 60.
+                      </Trans>
                     </p>
                     <p className="customText2">
-                      Note: We reserve the right to refuse any booking. Please
-                      note that we generally refuse bookings from the following
-                      areas: Eroticism, Cannabis / CBD, Tobacco & Co. or
-                      Mechanical Engineering.Note: We reserve the right to
-                      refuse any booking. Please note that we generally refuse
-                      bookings from the following areas: Eroticism, Cannabis /
-                      CBD, Tobacco & Co. or Mechanical Engineering.
+                      <Trans>
+                        Note: We reserve the right to refuse any booking. Please
+                        note that we generally refuse bookings from the
+                        following areas: Eroticism, Cannabis / CBD, Tobacco &
+                        Co. or Mechanical Engineering.Note: We reserve the right
+                        to refuse any booking. Please note that we generally
+                        refuse bookings from the following areas: Eroticism,
+                        Cannabis / CBD, Tobacco & Co. or Mechanical Engineering.
+                      </Trans>
                     </p>
                   </div>
                 </div>
@@ -287,7 +295,7 @@ export class LinkBundles extends Component {
                                 >
                                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
-                                POPULAR
+                                <Trans>POPULAR</Trans>
                               </div>
                             )}
                           </h4>
@@ -302,7 +310,7 @@ export class LinkBundles extends Component {
                                 className="btn btn-rounded btn-fw btn-md"
                                 onClick={() => this.openModal(plans)}
                               >
-                                Order now
+                                <Trans>Order now</Trans>
                               </button>
                             </li>
                             <li className="psale">
@@ -317,67 +325,70 @@ export class LinkBundles extends Component {
                               <hr />
                             </li>
                             <li className="detailsText pl-1 ctColor">
-                              DETAILS
+                              <Trans>DETAILS</Trans>
                             </li>
                             <li className="pl-1">
                               <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
                               <span className="ml-1">
-                                Cancellation period of{" "}
+                                <Trans>Cancellation period of</Trans>{" "}
                                 {plans.cancellation_period} days
                               </span>
                             </li>
                             <li className="pl-1">
                               <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
                               <span className="ml-1">
-                                Maximum Order per month {plans.max_orders}
+                                <Trans>Maximum Order per month</Trans>{" "}
+                                {plans.max_orders}
                               </span>
                             </li>
                             <li className="pl-1">
                               <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
                               <span className="ml-1">
-                                Validity {plans.validity} days
+                                <Trans>Validity</Trans> {plans.validity} days
                               </span>
                             </li>
                             <li className="pl-1">
                               <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
                               <span className="ml-1">
-                                Credit price {plans.credits_price}
+                                <Trans>Credit price</Trans>{" "}
+                                {plans.credits_price}
                               </span>
                             </li>
                             <li className="pl-1">
                               <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
                               <span className="ml-1">
-                                Credit quota {plans.credits_quota}
+                                <Trans>Credit quota</Trans>{" "}
+                                {plans.credits_quota}
                               </span>
                             </li>
                             <li>
                               <hr />
                             </li>
                             <li className="detailsText pl-1 ctColor">
-                              REPORTING
+                              <Trans>REPORTING</Trans>
                             </li>
                             <li className="pl-1">
                               <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
                               <span className="ml-1">
-                                You choose the anchor text
+                                <Trans>You choose the anchor text</Trans>
                               </span>
                             </li>
                             <li>
                               <hr />
                             </li>
                             <li className="detailsText pl-1 ctColor">
-                              PLACEMENT IN
+                              <Trans>PLACEMENT IN</Trans>
                             </li>
                             <li className="pl-2">
                               <div className="d-flex">
                                 <p className="mr-3 planRound fontBold500">
-                                  Blog
+                                  <Trans>Blog</Trans>
                                 </p>
                                 <p className="mr-3 planRound fontBold500">
-                                  Magazines
+                                  <Trans>Magazines</Trans>
                                 </p>
                                 <p className="mr-3 planRound fontBold500">
-                                  Newspapers
+                                  <Trans>Newspapers</Trans>
                                 </p>
                               </div>
                             </li>
@@ -385,7 +396,7 @@ export class LinkBundles extends Component {
                               <hr />
                             </li>
                             <li className="detailsText pl-1 ctColor">
-                              METRICS
+                              <Trans>METRICS</Trans>
                             </li>
                             <li className="pl-2">
                               <div className="d-flex">
@@ -449,11 +460,13 @@ export class LinkBundles extends Component {
             >
               <div>
                 <span className="modal-title h3 font-weight-bold">
-                  Confirm order
+                  <Trans>Confirm order</Trans>
                 </span>
                 <p>
-                  Click the button to complete your order. After that you can
-                  fill in the details.
+                  <Trans>
+                    Click the button to complete your order. After that you can
+                    fill in the details.
+                  </Trans>
                 </p>
               </div>
             </Modal.Header>
@@ -464,16 +477,23 @@ export class LinkBundles extends Component {
                   style={{ borderRadius: "6px" }}
                 >
                   <div className="d-flex justify-content-between mb-2">
-                    <span>Current balance</span>
+                    <span>
+                      <Trans>Current balance</Trans>
+                    </span>
                     <span>${currentBalance}</span>
                   </div>
                   <div className="d-flex justify-content-between mb-2">
-                    <span>Link package {selectedPlan.name}</span>
+                    <span>
+                      <Trans>Link package</Trans>
+                      {selectedPlan.name}
+                    </span>
                     <span>${selectedPlan.price}</span>
                   </div>
                   <hr />
                   <div className="d-flex justify-content-between mb-2">
-                    <span>Remaining balance</span>
+                    <span>
+                      <Trans>Remaining balance</Trans>
+                    </span>
                     <span>
                       {newRemainingBalance < 0
                         ? `-$${Math.abs(newRemainingBalance).toFixed(2)}`
@@ -482,7 +502,7 @@ export class LinkBundles extends Component {
                   </div>
                 </div>
                 <label htmlFor="project_id" className="mt-2 fontBold600">
-                  Project (optional)
+                  <Trans>Project (optional)</Trans>
                 </label>
                 <select
                   className="form-control"
@@ -514,13 +534,13 @@ export class LinkBundles extends Component {
                 className="btn btn-block btn-rounded btn-lg"
                 onClick={() => this.checkBalanceToProcess()}
               >
-                Order now for ${selectedPlan.price}
+                <Trans>Order now for</Trans> ${selectedPlan.price}
               </Button>
               <button
                 className="btn btn-cancel-ctm btn-rounded btn-block"
                 onClick={() => this.closeModal()}
               >
-                Cancel
+                <Trans>Cancel</Trans>
               </button>
             </Modal.Footer>
           </Modal>
@@ -536,16 +556,16 @@ export class LinkBundles extends Component {
           >
             <Modal.Header closeButton>
               <span className="modal-title h3 font-weight-bold">
-                Confiure your order details
+                <Trans>Confiure your order details</Trans>
               </span>
             </Modal.Header>
             <Modal.Body className="pt-1">
               <div className="row">
                 <div className="col-sm-12">
                   <label htmlFor="targetUrl">
-                    Target URL*
+                    <Trans>Target URL*</Trans>
                     <p className="customText mb-0">
-                      Who should write your content?
+                      <Trans>Who should write your content?</Trans>
                     </p>
                   </label>
 
@@ -563,11 +583,14 @@ export class LinkBundles extends Component {
               <div className="row mt-3">
                 <div className="col-sm-12">
                   <label htmlFor="anchortext">
-                    Anchor text*
+                    <Trans>Anchor text*</Trans>
                     <p className="customText mb-0">
-                      Specify which anchor text to use. How to choose your
-                      anchor text correctly, you will learn here Nontheless, the
-                      publisher has the final say in the anchor text selection.
+                      <Trans>
+                        Specify which anchor text to use. How to choose your
+                        anchor text correctly, you will learn here Nontheless,
+                        the publisher has the final say in the anchor text
+                        selection.
+                      </Trans>
                     </p>
                   </label>
 
@@ -585,9 +608,9 @@ export class LinkBundles extends Component {
               <div className="row mt-3">
                 <div className="col-sm-12">
                   <label htmlFor="publication_date">
-                    Date (optional)
+                    <Trans>Date (optional)</Trans>
                     <p className="customText mb-0">
-                      When should your contentlink be placed?
+                      <Trans>When should your contentlink be placed?</Trans>
                     </p>
                   </label>
 
@@ -609,7 +632,7 @@ export class LinkBundles extends Component {
               type="button"
               onClick={this.bundlePlaceOrder}
             >
-              Buy now for ${selectedPlan.price}
+              <Trans>Buy now for</Trans> ${selectedPlan.price}
             </button>
           </Modal>
         </div>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Box from "@material-ui/core/Box";
 import { Form } from "react-bootstrap";
 import { Typography, Card, CardContent, Divider } from "@material-ui/core";
+import { Trans } from "react-i18next";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ApiServices from "../services/api.service";
@@ -16,10 +17,10 @@ export class Account extends Component {
       reEmail: "",
       password: "",
       invoice_email: "",
-      bulk_invoice:false,
-      currentPassword:"",
-      newPassword:"",
-      confirmPassword:"",
+      bulk_invoice: false,
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     };
   }
   componentDidMount() {
@@ -37,8 +38,8 @@ export class Account extends Component {
         if (res.data.status) {
           this.setState({
             profileData: res.data.data,
-            bulk_invoice:res.data.data.bulk_invoice,
-            invoice_email:res.data.data.invoice_email,
+            bulk_invoice: res.data.data.bulk_invoice,
+            invoice_email: res.data.data.invoice_email,
           });
         }
       },
@@ -81,17 +82,17 @@ export class Account extends Component {
   };
   handleSubmitInvoiceSetting = (e) => {
     e.preventDefault();
-    const { bulk_invoice, invoice_email} = this.state;    
+    const { bulk_invoice, invoice_email } = this.state;
     const updateData = JSON.stringify({
       bulk_invoice,
       invoice_email,
     });
-    this.updateRequest(updateData, "account/user/billingSetting");    
+    this.updateRequest(updateData, "account/user/billingSetting");
   };
-  
+
   handleSubmitUpdatePassword = (e) => {
     e.preventDefault();
-    const { currentPassword, newPassword,confirmPassword } = this.state;    
+    const { currentPassword, newPassword, confirmPassword } = this.state;
     if (confirmPassword !== newPassword) {
       toast.error("The New password confirmation does not match.", {
         position: "top-center",
@@ -109,9 +110,9 @@ export class Account extends Component {
     const updateData = JSON.stringify({
       currentPassword,
       newPassword,
-      confirmPassword
+      confirmPassword,
     });
-    this.updateRequest(updateData, "account/user/change-password");    
+    this.updateRequest(updateData, "account/user/change-password");
   };
 
   updateRequest = (formDatas, url) => {
@@ -155,7 +156,9 @@ export class Account extends Component {
               <div className="row">
                 <div className="col-sm-12">
                   <div className="mt-2">
-                    <h5>Update e-mail address</h5>
+                    <h5>
+                      <Trans>Update e-mail address</Trans>
+                    </h5>
                   </div>
                 </div>
               </div>
@@ -166,7 +169,7 @@ export class Account extends Component {
               >
                 <Form.Group className="row">
                   <label htmlFor="nmail" className="col-sm-3 col-form-label">
-                    New e-mail address*
+                    <Trans>New e-mail address</Trans>*
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -184,7 +187,7 @@ export class Account extends Component {
                 <Divider />
                 <Form.Group className="row mt-3">
                   <label htmlFor="remail" className="col-sm-3 col-form-label">
-                    Repeat E-Mail address*
+                    <Trans>Repeat E-Mail address</Trans>*
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -202,7 +205,7 @@ export class Account extends Component {
                 <Divider />
                 <Form.Group className="row mt-3">
                   <label htmlFor="remail" className="col-sm-3 col-form-label">
-                    Password*
+                    <Trans>Password *</Trans>
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -218,7 +221,7 @@ export class Account extends Component {
                   </div>
                 </Form.Group>
                 <button type="submit" className="btn btn-rounded btn-lg">
-                  Save Changes
+                  <Trans>Save Changes</Trans>
                 </button>
               </form>
             </CardContent>
@@ -231,17 +234,25 @@ export class Account extends Component {
               <div className="row">
                 <div className="col-sm-12">
                   <div className="mt-2">
-                    <h5>Invoice settings</h5>
+                    <h5>
+                      <Trans>Invoice settings</Trans>
+                    </h5>
                   </div>
                 </div>
               </div>
-              <form className="invoiceSettingForm" id="invoiceSettingForm" onSubmit={this.handleSubmitInvoiceSetting}>
+              <form
+                className="invoiceSettingForm"
+                id="invoiceSettingForm"
+                onSubmit={this.handleSubmitInvoiceSetting}
+              >
                 <Form.Group className="row">
                   <label htmlFor="binvoice" className="col-sm-3 col-form-label">
-                    Bulk invoice
+                    <Trans>Bulk invoice</Trans>
                     <Typography className="customText">
-                      Receive a bulk invoice at the end of the month for all
-                      bookings completed in that month.
+                      <Trans>
+                        Receive a bulk invoice at the end of the month for all
+                        bookings completed in that month.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-9 text-right">
@@ -251,8 +262,10 @@ export class Account extends Component {
                         id="binvoice"
                         name="bulk_invoice"
                         checked={this.state.bulk_invoice === 1}
-                        onChange={() => this.handleCheckboxChange("bulk_invoice")}
-                        value={this.state.bulk_invoice}                  
+                        onChange={() =>
+                          this.handleCheckboxChange("bulk_invoice")
+                        }
+                        value={this.state.bulk_invoice}
                       />
                       <span className="slider round"></span>
                     </label>
@@ -261,10 +274,12 @@ export class Account extends Component {
                 <Divider className="mt-3" />
                 <Form.Group className="row mt-3">
                   <label htmlFor="iemail" className="col-sm-3 col-form-label">
-                    Invoice e-mail address
+                    <Trans>Invoice e-mail address</Trans>
                     <Typography className="customText">
-                      Enter the email address that should receive additionally
-                      invoices and funding confirmations / payment invoices.
+                      <Trans>
+                        Enter the email address that should receive additionally
+                        invoices and funding confirmations / payment invoices.
+                      </Trans>
                     </Typography>
                   </label>
                   <div className="col-sm-9">
@@ -283,7 +298,9 @@ export class Account extends Component {
                     />
                   </div>
                 </Form.Group>
-                <button className="btn btn-rounded btn-lg">Save Changes</button>
+                <button className="btn btn-rounded btn-lg">
+                  <Trans>Save Changes</Trans>
+                </button>
               </form>
             </CardContent>
           </Card>
@@ -295,14 +312,20 @@ export class Account extends Component {
               <div className="row">
                 <div className="col-sm-12">
                   <div className="mt-2">
-                    <h5>Change password</h5>
+                    <h5>
+                      <Trans>Change password</Trans>
+                    </h5>
                   </div>
                 </div>
               </div>
-              <form className="chnagepasswordForm" id="chnagepasswordForm" onSubmit={this.handleSubmitUpdatePassword}>
+              <form
+                className="chnagepasswordForm"
+                id="chnagepasswordForm"
+                onSubmit={this.handleSubmitUpdatePassword}
+              >
                 <Form.Group className="row">
                   <label htmlFor="cpass" className="col-sm-3 col-form-label">
-                    Current password*
+                    <Trans>Current password</Trans>*
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -314,13 +337,13 @@ export class Account extends Component {
                       onChange={this.handleFormChange}
                       value={this.state.currentPassword}
                       required
-                    />                    
+                    />
                   </div>
                 </Form.Group>
                 <Divider className="mt-3" />
                 <Form.Group className="row mt-3">
                   <label htmlFor="npass" className="col-sm-3 col-form-label">
-                    New password*
+                    <Trans>New password</Trans>*
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -333,15 +356,18 @@ export class Account extends Component {
                       value={this.state.newPassword}
                       required
                     />
-                    {this.state.newPassword.length > 0 && this.state.newPassword.length < 8 && (
-                      <span style={{ color: 'red' }}>Password must be at least 8 characters long</span>
-                    )}
+                    {this.state.newPassword.length > 0 &&
+                      this.state.newPassword.length < 8 && (
+                        <span style={{ color: "red" }}>
+                          Password must be at least 8 characters long
+                        </span>
+                      )}
                   </div>
                 </Form.Group>
                 <Divider className="mt-3" />
                 <Form.Group className="row mt-3">
                   <label htmlFor="cfpass" className="col-sm-3 col-form-label">
-                    Confirm new password*
+                    <Trans>Confirm new password</Trans>*
                   </label>
                   <div className="col-sm-9">
                     <Form.Control
@@ -352,14 +378,21 @@ export class Account extends Component {
                       placeholder="Confirm Password"
                       onChange={this.handleFormChange}
                       value={this.state.confirmPassword}
-                      required                      
+                      required
                     />
-                    {this.state.confirmPassword.length > 0 && this.state.confirmPassword.length < 8 && (
-                      <span style={{ color: 'red' }}>Password must be at least 8 characters long</span>
-                    )}
+                    {this.state.confirmPassword.length > 0 &&
+                      this.state.confirmPassword.length < 8 && (
+                        <span style={{ color: "red" }}>
+                          <Trans>
+                            Password must be at least 8 characters long
+                          </Trans>
+                        </span>
+                      )}
                   </div>
                 </Form.Group>
-                <button type="submit" className="btn btn-rounded btn-lg">Save Changes</button>
+                <button type="submit" className="btn btn-rounded btn-lg">
+                  <Trans>Save Changes</Trans>
+                </button>
               </form>
             </CardContent>
           </Card>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ApiServices from "../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Trans } from "react-i18next";
 import "../../assets/custom.css";
 
 export class DailyDeals extends Component {
@@ -52,12 +53,12 @@ export class DailyDeals extends Component {
               <table className="table table-hover top5Deals">
                 <thead>
                   <tr className="align-middle">
-                    <th>Name</th>
-                    <th>Rating</th>
-                    <th>DR</th>
-                    <th>DA</th>
-                    <th>TF</th>
-                    <th>Price</th>
+                    <th><Trans>Name</Trans></th>
+                    <th><Trans>Rating</Trans></th>
+                    <th><Trans>DR</Trans></th>
+                    <th><Trans>DA</Trans></th>
+                    <th><Trans>TF</Trans></th>
+                    <th><Trans>Price</Trans></th>
                     <th></th>
                   </tr>
                 </thead>

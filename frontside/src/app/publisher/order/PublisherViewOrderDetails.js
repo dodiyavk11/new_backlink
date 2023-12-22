@@ -6,6 +6,7 @@ import "../../../assets/custom.css";
 import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../../services/api.service";
 import MessageComponents from "../../shared/MessageComponents";
+import { Trans } from "react-i18next";
 
 export class PublisherViewOrderDetails extends Component {
   constructor(props) {
@@ -32,19 +33,21 @@ export class PublisherViewOrderDetails extends Component {
   handleShowAlert = () => {
     toast.error(
       <div>
-        <div className="p-2">Are you sure you want to Update status?</div>
+        <div className="p-2">
+          <Trans>Are you sure you want to Update status?</Trans>
+        </div>
         <center>
           <button
             className="btn btn-rounded customYes"
             onClick={this.handleConfirmUpadate}
           >
-            Yes
+            <Trans>Yes</Trans>
           </button>
           <button
             className="btn btn-rounded customNo"
             onClick={this.handleCancelUpdate}
           >
-            No
+            <Trans>No</Trans>
           </button>
         </center>
       </div>,
@@ -81,7 +84,7 @@ export class PublisherViewOrderDetails extends Component {
     toast.dismiss();
   };
   componentDidMount() {
-    ApiServices.SingleOrderView(this.state.order_id,"publisher/order/view/")
+    ApiServices.SingleOrderView(this.state.order_id, "publisher/order/view/")
       .then((res) => {
         if (!res.status) {
           toast.error(res.data.message, {
@@ -133,7 +136,7 @@ export class PublisherViewOrderDetails extends Component {
             className="btn btn-rounded font-weight-medium auth-form-btn"
             onClick={this.handleGoBack}
           >
-            Back
+            <Trans>Back</Trans>
           </button>
         </div>
       );
@@ -161,23 +164,29 @@ export class PublisherViewOrderDetails extends Component {
                   className="btn btn-rounded font-weight-medium auth-form-btn"
                   onClick={this.handleGoBack}
                 >
-                  <i className="mdi mdi-arrow-left"></i> Back
+                  <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                 </button>
               </div>
               <div className="card-body dashboardCard">
-                <h2 className="h2">Order for {domainData.domain_name}</h2>
-                <h5>Placed at: {orderData.created_at}</h5>
+                <h2 className="h2">
+                  <Trans>Order for</Trans> {domainData.domain_name}
+                </h2>
+                <h5>
+                  <Trans>Placed at</Trans>: {orderData.created_at}
+                </h5>
                 <hr />
               </div>
               <div className="card">
                 <div className="card-body pt-2">
-                  <h4 className="card-title">Orders details</h4>
+                  <h4 className="card-title">
+                    <Trans>Orders details</Trans>
+                  </h4>
                   <div className="table-responsive">
                     <table className="table">
                       <tbody>
                         <tr>
                           <td>
-                            Anchor text
+                            <Trans>Anchor text</Trans>
                             <Tooltip
                               title="Anchor text refers to the clickable text of a link."
                               placement="right"
@@ -202,7 +211,7 @@ export class PublisherViewOrderDetails extends Component {
                         </tr>
                         <tr>
                           <td>
-                            Delivery time
+                            <Trans>Delivery time</Trans>
                             <Tooltip
                               title="Turnaround time is based on real data and is expressed in business days."
                               placement="right"
@@ -227,7 +236,7 @@ export class PublisherViewOrderDetails extends Component {
                         </tr>
                         <tr>
                           <td>
-                            Link
+                            <Trans>Link</Trans>
                             <Tooltip
                               title="Dofollow links are particularly high on Google, while nofollow links don't have much impact on your ranking. It is estimated by an independent thrid party."
                               placement="right"
@@ -252,7 +261,7 @@ export class PublisherViewOrderDetails extends Component {
                         </tr>
                         <tr>
                           <td>
-                            Language
+                            <Trans>Language</Trans>
                             <Tooltip
                               title="Language in which your article will be written by us."
                               placement="right"
@@ -304,7 +313,9 @@ export class PublisherViewOrderDetails extends Component {
                         </tr>
                         {orderData.textCreation === "Own" && (
                           <tr>
-                            <td>Text file</td>
+                            <td>
+                              <Trans>Text file</Trans>
+                            </td>
                             <td className="text-end-ct">
                               <span className="sampleFile ml-4">
                                 <a
@@ -319,7 +330,7 @@ export class PublisherViewOrderDetails extends Component {
                                   className="hrefTitle"
                                 >
                                   <b className="text-warning">
-                                    Download text file
+                                    <Trans>Download text file</Trans>
                                   </b>
                                 </a>
                               </span>
@@ -327,39 +338,51 @@ export class PublisherViewOrderDetails extends Component {
                           </tr>
                         )}
                         <tr>
-                          <td>Target Url</td>
+                          <td>
+                            <Trans>Target Url</Trans>
+                          </td>
                           <td className="text-end-ct">
                             <a
                               href={orderData.linktarget}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              Go to
+                              <Trans>Go to</Trans>
                             </a>
                           </td>
                         </tr>
                         <tr>
-                          <td>Note</td>
+                          <td>
+                            <Trans>Note</Trans>
+                          </td>
                           <td className="text-end-ct">{orderData.note}</td>
                         </tr>
                         <tr>
-                          <td>Word count</td>
+                          <td>
+                            <Trans>Word count</Trans>
+                          </td>
                           <td className="text-end-ct">{orderData.wordCount}</td>
                         </tr>
                         <tr>
-                          <td>Approve text before publication</td>
+                          <td>
+                            <Trans>Approve text before publication</Trans>
+                          </td>
                           <td className="text-end-ct">
                             {orderData.approveText === 1 ? "Yes" : "No"}
                           </td>
                         </tr>
                         <tr>
-                          <td>Anchor text chosen by Backlinked</td>
+                          <td>
+                            <Trans>Anchor text chosen by Backlinked</Trans>
+                          </td>
                           <td className="text-end-ct">
                             {orderData.chooseByBacklink === 1 ? "Yes" : "No"}
                           </td>
                         </tr>
                         <tr>
-                          <td>Text approval price</td>
+                          <td>
+                            <Trans>Text approval price</Trans>
+                          </td>
                           <td className="text-end-ct">
                             {orderData.approveText === 1
                               ? "$" + orderData.approveTextPrice
@@ -368,7 +391,9 @@ export class PublisherViewOrderDetails extends Component {
                         </tr>
                         {orderData.textCreation === "Editorial" && (
                           <tr>
-                            <td>Text creation price</td>
+                            <td>
+                              <Trans>Text creation price</Trans>
+                            </td>
                             <td className="text-end-ct">
                               {orderData.textCreationPrice > 0
                                 ? "$" + orderData.textCreationPrice
@@ -377,11 +402,15 @@ export class PublisherViewOrderDetails extends Component {
                           </tr>
                         )}
                         <tr>
-                          <td>Price</td>
+                          <td>
+                            <Trans>Price</Trans>
+                          </td>
                           <td className="text-end-ct">${orderData.price}</td>
                         </tr>
                         <tr>
-                          <td className="h4 fontBold600">Total Price</td>
+                          <td className="h4 fontBold600">
+                            <Trans>Total Price</Trans>
+                          </td>
                           <td className="text-end-ct">
                             <span className="h3 fontBold600">
                               ${orderData.total_price}
@@ -394,12 +423,17 @@ export class PublisherViewOrderDetails extends Component {
                 </div>
               </div>
             </div>
-            <MessageComponents order_id={this.state.order_id} isShowTypeMsg={true}/>
+            <MessageComponents
+              order_id={this.state.order_id}
+              isShowTypeMsg={true}
+            />
           </div>
           <div className="col-lg-4 grid-margin stretch-card">
             <div className="card">
               <div className="card-body">
-                <h4 className="card-title">Update order status</h4>
+                <h4 className="card-title">
+                  <Trans>Update order status</Trans>
+                </h4>
                 <div className="table-responsive">
                   <table className="table">
                     <tbody>
@@ -439,7 +473,8 @@ export class PublisherViewOrderDetails extends Component {
                                   value={"Inprogress"}
                                   // disabled={orderData.status === "Inprogress"}
                                 />
-                                <i className="input-helper"></i>Inprogress{" "}
+                                <i className="input-helper"></i>
+                                <Trans>Inprogress</Trans>{" "}
                               </label>
                             </div>
                             <div className="form-check">
@@ -457,7 +492,8 @@ export class PublisherViewOrderDetails extends Component {
                                   value={"Completed"}
                                   // disabled={orderData.status === "Completed"}
                                 />
-                                <i className="input-helper"></i>Completed{" "}
+                                <i className="input-helper"></i>
+                                <Trans>Completed</Trans>{" "}
                               </label>
                             </div>
                             {/* <div className="form-check">
@@ -493,7 +529,8 @@ export class PublisherViewOrderDetails extends Component {
                                   value={"Rejected"}
                                   // disabled={orderData.status === "Rejected"}
                                 />
-                                <i className="input-helper"></i>Rejected{" "}
+                                <i className="input-helper"></i>
+                                <Trans>Rejected</Trans>{" "}
                               </label>
                             </div>
                             <div className="form-check">
@@ -513,7 +550,8 @@ export class PublisherViewOrderDetails extends Component {
                                   //   orderData.status === "MissingDetails"
                                   // }
                                 />
-                                <i className="input-helper"></i>MissingDetails{" "}
+                                <i className="input-helper"></i>
+                                <Trans>MissingDetails</Trans>{" "}
                               </label>
                             </div>
                           </div>
@@ -526,7 +564,7 @@ export class PublisherViewOrderDetails extends Component {
                             style={{ width: "100%" }}
                             onClick={this.handleShowAlert}
                           >
-                            Update status
+                            <Trans>Update status</Trans>
                           </button>
                         </td>
                       </tr>
