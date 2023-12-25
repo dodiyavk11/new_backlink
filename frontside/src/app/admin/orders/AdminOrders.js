@@ -5,6 +5,7 @@ import { CPopover, CButton } from "@coreui/react";
 import ApiServices from "../../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Trans, withTranslation } from "react-i18next";
 import {
   Slider,
   Paper,
@@ -40,32 +41,32 @@ export class AdminOrders extends Component {
         {
           id: 1,
           value: "Pending",
-          label: "Pending",
+          label: <Trans>Pending</Trans>,
         },
         {
           id: 2,
           value: "Inprogress",
-          label: "In Progress",
+          label: <Trans>In Progress</Trans>,
         },
         {
           id: 3,
           value: "Completed",
-          label: "Completed",
+          label: <Trans>Completed</Trans>,
         },
         {
           id: 4,
           value: "Cancelled",
-          label: "Cancelled",
+          label: <Trans>Cancelled</Trans>,
         },
         {
           id: 5,
-          value: "Rajected",
-          label: "Rajected",
+          value: "Rejected",
+          label: <Trans>Rejected</Trans>,
         },
         {
           id: 6,
           value: "MissingDetails",
-          label: "Missing Details",
+          label: <Trans>Missing Details</Trans>,
         },
       ],
       projectType: [
@@ -249,6 +250,7 @@ export class AdminOrders extends Component {
       searchValue,
       favoriteProducts,
     } = this.state;
+    const { t } = this.props;
     const getStatusClass = (status) => {
       switch (status) {
         case "Pending":
@@ -268,7 +270,7 @@ export class AdminOrders extends Component {
     const columns = [
       {
         id: "id",
-        label: "ID",
+        label: <Trans>ID</Trans>,
         height: 100,
         width: 50,
         sortable: true,
@@ -276,14 +278,14 @@ export class AdminOrders extends Component {
       },
       {
         id: "datetime",
-        label: "Order Date",
+        label: <Trans>Order Date</Trans>,
         width: 130,
         sortable: false,
         renderCell: (row) => <span>{row.created_at}</span>,
       },
       {
         id: "status",
-        label: "Status",
+        label: <Trans>Status</Trans>,
         width: 90,
         sortable: false,
         renderCell: (row) => (
@@ -294,15 +296,19 @@ export class AdminOrders extends Component {
       },
       {
         id: "backlink",
-        label: "Backlink",
+        label: <Trans>Backlink</Trans>,
         width: 130,
         align: "right",
         sortable: false,
-        renderCell: (row) => <span>{row.isBundle !== 0 ? "Link Bundle" : row.domain.domain_name}</span>,
+        renderCell: (row) => (
+          <span>
+            {row.isBundle !== 0 ? "Link Bundle" : row.domain.domain_name}
+          </span>
+        ),
       },
       {
         id: "project",
-        label: "Project",
+        label: <Trans>Project</Trans>,
         align: "right",
         width: 90,
         sortable: false,
@@ -312,7 +318,7 @@ export class AdminOrders extends Component {
       },
       {
         id: "anchortext",
-        label: "Anchor Text",
+        label: <Trans>Anchor text</Trans>,
         align: "right",
         width: 90,
         sortable: false,
@@ -320,7 +326,7 @@ export class AdminOrders extends Component {
       },
       {
         id: "targeturl",
-        label: "Target Url",
+        label: <Trans>Target Url</Trans>,
         align: "right",
         width: 90,
         sortable: false,
@@ -334,7 +340,7 @@ export class AdminOrders extends Component {
       },
       {
         id: "total_price",
-        label: "Amount",
+        label: <Trans>Amount</Trans>,
         sortable: true,
         width: 90,
         renderCell: (row) => <span>${row.total_price}</span>,
@@ -370,7 +376,9 @@ export class AdminOrders extends Component {
         <div className="ordersListPage adminOrdersList">
           <div className="d-flex justify-content-between">
             <div className="page-header">
-              <h3 className="fontBold latterSpacing">Orders</h3>
+              <h3 className="fontBold latterSpacing">
+                <Trans>Orders</Trans>
+              </h3>
             </div>
           </div>
           <div className="row">
@@ -398,7 +406,8 @@ export class AdminOrders extends Component {
                           </div>
                           <input
                             type="search"
-                            placeholder="Search backlink"
+                            // placeholder="Search backlink"
+                            placeholder={t("Search backlink")}
                             className="form-control border-left-0 customSearch"
                             onChange={this.handleOnSearch}
                             value={searchValue}
@@ -406,14 +415,14 @@ export class AdminOrders extends Component {
                         </div>
                         <ReactMultiSelectCheckboxes
                           options={this.state.status}
-                          placeholderButtonLabel="Status"
+                          placeholderButtonLabel={t("Status")}
                           onChange={this.handleStatusChange}
                         />
-                        <ReactMultiSelectCheckboxes
+                        {/* <ReactMultiSelectCheckboxes
                           options={this.state.projectType}
-                          placeholderButtonLabel="Product Type"
+                          placeholderButtonLabel={t("Product Type")}
                           onChange={this.handleProjectTypeChange}
-                        />
+                        /> */}
                         {/* <ReactMultiSelectCheckboxes
                 options={this.state.project}
                 placeholderButtonLabel="Project"
@@ -509,13 +518,12 @@ export class AdminOrders extends Component {
                                     key={row.id}
                                     selected={isSelected}
                                     onClick={(event) =>
-                                      this.gotoViewOrder(
-                                        row.id,
-                                        event,
-                                        index
-                                      )
+                                      this.gotoViewOrder(row.id, event, index)
                                     }
-                                    style={{ cursor: "pointer",height:"55px" }}
+                                    style={{
+                                      cursor: "pointer",
+                                      height: "55px",
+                                    }}
                                   >
                                     {columns.map((column) => (
                                       <TableCell
@@ -595,4 +603,5 @@ const PriceRangeSlider = (props) => {
     </>
   );
 };
-export default withRouter(AdminOrders);
+// export default withRouter(AdminOrders);
+export default withTranslation()(AdminOrders);

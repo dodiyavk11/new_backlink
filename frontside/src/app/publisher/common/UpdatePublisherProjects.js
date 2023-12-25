@@ -4,11 +4,13 @@ import ApiServices from "../../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../assets/custom.css";
+import { Trans } from "react-i18next";
+
 class UpdatePublisherProjects extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      domain_id:0,
+      domain_id: 0,
       domain_name: "",
       category_id: "",
       price: 0,
@@ -26,7 +28,7 @@ class UpdatePublisherProjects extends Component {
   }
 
   componentDidMount() {
-    this.getDomainCategoryList();    
+    this.getDomainCategoryList();
   }
 
   getDomainCategoryList = () => {
@@ -55,7 +57,7 @@ class UpdatePublisherProjects extends Component {
           });
         }
       });
-  }
+  };
 
   handleChange = (event) => {
     const { name, value } = event.target;
@@ -66,64 +68,66 @@ class UpdatePublisherProjects extends Component {
       const { domainData } = this.props;
 
       this.setState({
-        domain_id:domainData.id,
+        domain_id: domainData.id,
         domain_name: domainData.domain_name,
         category_id: domainData.category_id,
         price: domainData.price,
         anchorText: domainData.anchorText,
-        deliveryTime:domainData.deliveryTime,
-        attribute:domainData.attribute,
-        sensitiveTopic:domainData.sensitiveTopic,
-        sensitiveTopicCharge:domainData.sensitiveTopicCharge ? domainData.sensitiveTopicCharge :  "0",
-        minWordCount:domainData.minWordCount,
+        deliveryTime: domainData.deliveryTime,
+        attribute: domainData.attribute,
+        sensitiveTopic: domainData.sensitiveTopic,
+        sensitiveTopicCharge: domainData.sensitiveTopicCharge
+          ? domainData.sensitiveTopicCharge
+          : "0",
+        minWordCount: domainData.minWordCount,
         textByCustomer: domainData.textByCustomer,
         textInclude: domainData.textInclude,
-        language: domainData.language,        
+        language: domainData.language,
       });
     }
   }
 
   handleDomainAddSubmit = () => {
     const {
-        domain_name,
-        price,
-        category_id,
-        anchorText,
-        deliveryTime,
-        attribute,
-        sensitiveTopic,
-        sensitiveTopicCharge,
-        minWordCount,
-        textByCustomer,
-        textInclude,
-        language,
-        domain_id,
-      } = this.state;
-      
-      const updateDomainData = {
-        domain_name,
-        price,
-        category_id,
-        anchorText,
-        deliveryTime,
-        attribute,
-        sensitiveTopic,
-        sensitiveTopicCharge,
-        minWordCount,
-        textByCustomer,
-        textInclude,
-        language,
-      };      
+      domain_name,
+      price,
+      category_id,
+      anchorText,
+      deliveryTime,
+      attribute,
+      sensitiveTopic,
+      sensitiveTopicCharge,
+      minWordCount,
+      textByCustomer,
+      textInclude,
+      language,
+      domain_id,
+    } = this.state;
+
+    const updateDomainData = {
+      domain_name,
+      price,
+      category_id,
+      anchorText,
+      deliveryTime,
+      attribute,
+      sensitiveTopic,
+      sensitiveTopicCharge,
+      minWordCount,
+      textByCustomer,
+      textInclude,
+      language,
+    };
     ApiServices.publisherDomainUpdate(domain_id, updateDomainData).then(
-      (res) => {        
+      (res) => {
         if (res.status) {
           this.props.handleClose();
-          this.props.refreshData()
+          this.props.refreshData();
           toast.success(res.data.message, {
             position: "top-center",
             autoClose: 2000,
           });
-        }        
+        }
       },
       (error) => {
         const resMessage =
@@ -169,7 +173,7 @@ class UpdatePublisherProjects extends Component {
           <Modal.Header closeButton>
             <div>
               <span className="modal-title h3 font-weight-bold">
-                Update Domain
+                <Trans>Update Domain</Trans>
               </span>
             </div>
           </Modal.Header>
@@ -177,7 +181,7 @@ class UpdatePublisherProjects extends Component {
             <Form>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="domain_name">
-                  Domain
+                <Trans>Domain</Trans>
                 </label>
                 <Form.Control
                   type="text"
@@ -193,7 +197,7 @@ class UpdatePublisherProjects extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="price">
-                  Price
+                <Trans>Price</Trans>
                 </label>
                 <Form.Control
                   type="text"
@@ -207,7 +211,7 @@ class UpdatePublisherProjects extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="category_id">
-                  Category
+                <Trans>Category</Trans>
                 </label>
                 <select
                   className="form-control"
@@ -225,7 +229,7 @@ class UpdatePublisherProjects extends Component {
                 </select>
               </Form.Group>
               <Form.Group>
-                <label className="font-weight-bold">Anchor text</label>
+                <label className="font-weight-bold"><Trans>Anchor text</Trans></label>
                 <div className="form-check">
                   <label className="form-check-label" htmlFor="anchorText1">
                     <input
@@ -238,7 +242,7 @@ class UpdatePublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    As desired
+                    <Trans>As desired</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -253,13 +257,13 @@ class UpdatePublisherProjects extends Component {
                       value={"No restrictions"}
                     />
                     <i className="input-helper"></i>
-                    No restrictions
+                    <Trans>No restrictions</Trans>
                   </label>
                 </div>
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="deliveryTime">
-                  Delivery time (in days)
+                <Trans>Delivery time (in days)</Trans>
                 </label>
                 <Form.Control
                   type="number"
@@ -274,7 +278,7 @@ class UpdatePublisherProjects extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold">
-                  Relationship attribute
+                <Trans>Relationship attribute</Trans>
                 </label>
                 <div className="form-check">
                   <label className="form-check-label" htmlFor="attribute">
@@ -288,7 +292,7 @@ class UpdatePublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    dofollow
+                    <Trans>dofollow</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -303,13 +307,13 @@ class UpdatePublisherProjects extends Component {
                       value={"nofollow"}
                     />
                     <i className="input-helper"></i>
-                    nofollow
+                    <Trans>nofollow</Trans>
                   </label>
                 </div>
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold">
-                  Sensitive topics allowed?
+                <Trans>Sensitive topics allowed?</Trans>
                 </label>
                 <div className="form-check">
                   <label className="form-check-label" htmlFor="sensitiveTopic">
@@ -323,7 +327,7 @@ class UpdatePublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    Yes
+                    <Trans>Yes</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -338,7 +342,7 @@ class UpdatePublisherProjects extends Component {
                       value={"0"}
                     />
                     <i className="input-helper"></i>
-                    No
+                    <Trans>No</Trans>
                   </label>
                 </div>
               </Form.Group>
@@ -347,7 +351,7 @@ class UpdatePublisherProjects extends Component {
                   className="font-weight-bold"
                   htmlFor="sensitiveTopicCharge"
                 >
-                  Additional charge for sensitive topics
+                  <Trans>Additional charge for sensitive topics</Trans>
                 </label>
                 <Form.Control
                   type="text"
@@ -362,7 +366,7 @@ class UpdatePublisherProjects extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="minWordCount">
-                  Minimum word count
+                <Trans>Minimum word count</Trans>
                 </label>
                 <Form.Control
                   type="text"
@@ -377,7 +381,7 @@ class UpdatePublisherProjects extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold">
-                  Text creation allowed by customers?
+                <Trans>Text creation allowed by customers?</Trans>
                 </label>
                 <div className="form-check">
                   <label className="form-check-label" htmlFor="textByCustomer">
@@ -391,7 +395,7 @@ class UpdatePublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    Yes
+                    <Trans>Yes</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -406,12 +410,12 @@ class UpdatePublisherProjects extends Component {
                       value={0}
                     />
                     <i className="input-helper"></i>
-                    No
+                    <Trans>No</Trans>
                   </label>
                 </div>
               </Form.Group>
               <Form.Group>
-                <label className="font-weight-bold">Text included</label>
+                <label className="font-weight-bold"><Trans>Text included</Trans></label>
                 <div className="form-check">
                   <label className="form-check-label" htmlFor="textInclude">
                     <input
@@ -424,7 +428,7 @@ class UpdatePublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    Yes
+                    <Trans>Yes</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -439,12 +443,12 @@ class UpdatePublisherProjects extends Component {
                       value={0}
                     />
                     <i className="input-helper"></i>
-                    No
+                    <Trans>No</Trans>
                   </label>
                 </div>
               </Form.Group>
               <Form.Group>
-                <label className="font-weight-bold">Language</label>
+                <label className="font-weight-bold"><Trans>Language</Trans></label>
                 <div className="form-check">
                   <label className="form-check-label" htmlFor="language">
                     <input
@@ -457,7 +461,7 @@ class UpdatePublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    English
+                    <Trans>English</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -472,7 +476,7 @@ class UpdatePublisherProjects extends Component {
                       value={"de"}
                     />
                     <i className="input-helper"></i>
-                    German
+                    <Trans>German</Trans>
                   </label>
                 </div>
               </Form.Group>
@@ -480,7 +484,7 @@ class UpdatePublisherProjects extends Component {
                 className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
                 onClick={() => this.handleDomainAddSubmit()}
               >
-                Add Domain
+                <Trans>Update Domain</Trans>
               </Button>
             </Form>
           </Modal.Body>

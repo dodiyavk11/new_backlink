@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import { Trans } from "react-i18next";
 import InjectedCheckoutForm from "./CheckoutForm";
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISH_KEY,{
+  locale: 'auto',
+  hideCountry: true,
+});
+
 
 class StripePayment extends Component {
   constructor(props) {
@@ -28,7 +33,7 @@ class StripePayment extends Component {
     return (
       <>
         <div className="form-group">
-          <label htmlFor="customAmount">Enter Amount</label>
+          <label htmlFor="customAmount"><Trans>Enter Amount</Trans></label>
           <input
             id="customAmount"
             type="number"

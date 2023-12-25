@@ -157,7 +157,7 @@ export class Payments extends Component {
         <div className="ordersListPage adminOrdersList">
           <div className="d-flex justify-content-between">
             <div className="page-header">
-              <h3 className="fontBold latterSpacing"><Trans>Trasactions</Trans></h3>
+              <h3 className="fontBold latterSpacing"><Trans>Transactions</Trans></h3>
             </div>
           </div>
           <div className="row">

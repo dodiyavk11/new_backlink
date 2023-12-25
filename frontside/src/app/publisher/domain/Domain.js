@@ -203,7 +203,7 @@ export class Domain extends Component {
                         onClick={this.showAddDomainModal}
                       >
                         <i className="mdi mdi-plus mr-2"></i>
-                        <Trans>Create Project</Trans>
+                        <Trans>Add Domain</Trans>
                       </span>
                     </button>
                   </center>

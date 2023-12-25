@@ -5,6 +5,8 @@ import ApiServices from "../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CartItem from "../shared/CartItem";
+import { Trans } from "react-i18next";
+
 export class Cart extends Component {
   constructor(props) {
     super(props);
@@ -49,7 +51,7 @@ export class Cart extends Component {
       });
   };
   componentDidMount() {
-    this.getUserCartData();   
+    this.getUserCartData();
   }
   calculateTotal = () => {
     const { cartItems } = this.state;
@@ -72,11 +74,11 @@ export class Cart extends Component {
     ApiServices.cartPlaceOrder(cartItems).then(
       (res) => {
         if (res.data.status) {
-          this.getUserCartData();           
+          this.getUserCartData();
           this.props.getCartData();
           toast.success(res.data.message, {
             position: "top-center",
-            autoClose: 2000,            
+            autoClose: 2000,
           });
         }
       },
@@ -146,8 +148,10 @@ export class Cart extends Component {
     const total = this.calculateTotal();
     return (
       <div className="CartPage">
-        <div className="page-header">        
-          <h3 className="fontBold latterSpacing">Cart</h3>
+        <div className="page-header">
+          <h3 className="fontBold latterSpacing">
+            <Trans>Cart</Trans>
+          </h3>
         </div>
         <ToastContainer />
         {cartItems.length > 0 ? (
@@ -170,7 +174,9 @@ export class Cart extends Component {
             <div className="col-lg-4 grid-margin pl-1">
               <div className="card">
                 <div className="card-body p-4">
-                  <h4 className="card-title">Summary</h4>
+                  <h4 className="card-title">
+                    <Trans>Summary</Trans>
+                  </h4>
                   <div className="table-responsive">
                     <table className="table">
                       <tbody>
@@ -183,7 +189,8 @@ export class Cart extends Component {
                                 <div className="mt-1">
                                   <br />
                                   <span className="mt-1">
-                                    Text - {item.wordCount} Words
+                                    <Trans>Text</Trans> - {item.wordCount}{" "}
+                                    <Trans>Words</Trans>
                                   </span>
                                 </div>
                               ) : null}
@@ -191,7 +198,9 @@ export class Cart extends Component {
                                 <div className="mt-1">
                                   <br />
                                   <span className="mt-1">
-                                    Approve text before publication
+                                    <Trans>
+                                      Approve text before publication
+                                    </Trans>
                                   </span>
                                 </div>
                               ) : null}
@@ -202,9 +211,11 @@ export class Cart extends Component {
                                 <div className="mt-1">
                                   <br />
                                   <span className="mt-1">
-                                    {item.textCreationPrice
-                                      ? `$${item.textCreationPrice}`
-                                      : "Free"}
+                                    {item.textCreationPrice ? (
+                                      `$${item.textCreationPrice}`
+                                    ) : (
+                                      <Trans>Free</Trans>
+                                    )}
                                   </span>
                                 </div>
                               ) : null}
@@ -220,7 +231,9 @@ export class Cart extends Component {
                           </tr>
                         ))}
                         <tr>
-                          <td>Total:</td>
+                          <td>
+                            <Trans>Total</Trans>:
+                          </td>
                           <td className="text-end-ct">
                             <span className="h5 fontBold600">${total}</span>
                           </td>
@@ -233,7 +246,7 @@ export class Cart extends Component {
                                 style={{ width: "100%" }}
                                 onClick={this.handleSubmit}
                               >
-                                Order now
+                                <Trans>Order now</Trans>
                               </button>
                             </div>
                           </td>
@@ -254,9 +267,11 @@ export class Cart extends Component {
                   alt="No data found..."
                 />
               </div>
-              <h4>Your cart is empty.</h4>
+              <h4>
+                <Trans>Your cart is empty</Trans>.
+              </h4>
               <p style={{ maxWidth: "400px" }}>
-                You can add contentlinks to your cart.
+                <Trans>You can add contentlinks to your cart</Trans>.
               </p>
             </center>
           </div>

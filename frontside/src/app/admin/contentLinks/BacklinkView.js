@@ -8,6 +8,7 @@ import "../../../assets/custom.css";
 import TimeAgo from "timeago-react";
 import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../../services/api.service";
+import { Trans } from "react-i18next";
 
 export class BacklinkView extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ export class BacklinkView extends Component {
       contentInsideData: [],
       category: [],
       hash_id: hash_id,
-      domain_id:0,
+      domain_id: 0,
       orderData: [],
       data: {
         labels: [
@@ -66,7 +67,7 @@ export class BacklinkView extends Component {
   };
 
   changeStatus = (status) => {
-    const { hash_id,domain_id } = this.state;
+    const { hash_id, domain_id } = this.state;
     ApiServices.adminUpdateBacklinkStatus(hash_id, status, domain_id)
       .then((res) => {
         if (!res.status) {
@@ -115,7 +116,10 @@ export class BacklinkView extends Component {
             autoClose: 2000,
           });
         } else {
-          this.setState({ contentData: res.data.data,domain_id:res.data.data.id });
+          this.setState({
+            contentData: res.data.data,
+            domain_id: res.data.data.id,
+          });
           if (res.data.data.category) {
             this.setState({ category: res.data.data.category });
           }
@@ -175,7 +179,7 @@ export class BacklinkView extends Component {
             className="btn btn-outline-primary btn-icon-text"
             onClick={this.handleGoBack}
           >
-            Back
+            <Trans>Back</Trans>
           </button>
         </div>
       );
@@ -191,7 +195,7 @@ export class BacklinkView extends Component {
                   className="btn btn-rounded font-weight-medium auth-form-btn"
                   onClick={this.handleGoBack}
                 >
-                  <i className="mdi mdi-arrow-left"></i> Back
+                  <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                 </button>
                 <a
                   className="btn btn-rounded font-weight-medium auth-form-btn"
@@ -199,11 +203,14 @@ export class BacklinkView extends Component {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-arrow-top-right"></i> Visit domain
+                  <i className="mdi mdi-arrow-top-right"></i>{" "}
+                  <Trans>Visit domain</Trans>
                 </a>
               </div>
               <div className="card-body dashboardCard">
-                <h2 className="h2">Domain: {contentData.domain_name}</h2>
+                <h2 className="h2">
+                  <Trans>Domain</Trans>: {contentData.domain_name}
+                </h2>
                 <div className="flex flex-wrap mt-4 gap-2">
                   <div className="px-3 py-2 catContent items-center justify-center">
                     {category.name}
@@ -215,7 +222,9 @@ export class BacklinkView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Visibility index</b>
+                          <b>
+                            <Trans>Visibility index</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -290,7 +299,9 @@ export class BacklinkView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Domain Rating</b>
+                          <b>
+                            <Trans>Domain Rating</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -365,7 +376,9 @@ export class BacklinkView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Referring Domains</b>
+                          <b>
+                            <Trans>Referring Domains</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -442,7 +455,9 @@ export class BacklinkView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Citation Flow</b>
+                          <b>
+                            <Trans>Citation Flow</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -517,7 +532,9 @@ export class BacklinkView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Trust Flow</b>
+                          <b>
+                            <Trans>Trust Flow</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -592,7 +609,9 @@ export class BacklinkView extends Component {
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b>Domain Authority</b>
+                          <b>
+                            <Trans>Domain Authority</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -671,7 +690,9 @@ export class BacklinkView extends Component {
                 <div className="row g-2 mt-4 pl-3">
                   <div className="col-sm-12 border bRadius">
                     <div className="mt-2 mb-2 p-2 dashboardHome">
-                      <h4 className="card-title">Order</h4>
+                      <h4 className="card-title">
+                        <Trans>Orders</Trans>
+                      </h4>
                       <hr />
                       {orderData.map((order) => (
                         <div className="card" key={order.id}>
@@ -713,7 +734,9 @@ export class BacklinkView extends Component {
                       {!orderData.length && (
                         <div className="card">
                           <div className="card-body dashboardCard">
-                            <h4 className="text-center">No Orders.</h4>
+                            <h4 className="text-center">
+                              <Trans>No Orders.</Trans>
+                            </h4>
                           </div>
                         </div>
                       )}
@@ -722,7 +745,7 @@ export class BacklinkView extends Component {
                           <div className="card-body text-center p-0">
                             <hr />
                             <Link to="/admin/orders" className="hrefTitle">
-                              View all
+                              <Trans>View all</Trans>
                             </Link>
                           </div>
                         </div>
@@ -736,13 +759,15 @@ export class BacklinkView extends Component {
           <div className="col-lg-4 grid-margin">
             <div className="card">
               <div className="card-body">
-                <h4 className="card-title">Other details</h4>
+                <h4 className="card-title">
+                  <Trans>Other details</Trans>
+                </h4>
                 <div className="table-responsive">
                   <table className="table">
                     <tbody>
                       <tr>
                         <td>
-                          Traffic{" "}
+                          <Trans>Traffic</Trans>
                           <Tooltip
                             title="Traffic describes the monthly users of a website. (organic only)"
                             placement="right"
@@ -769,7 +794,7 @@ export class BacklinkView extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Anchor text
+                          <Trans>Anchor text</Trans>
                           <Tooltip
                             title="Anchor text refers to the clickable text of a link."
                             placement="right"
@@ -794,7 +819,7 @@ export class BacklinkView extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Delivery time
+                          <Trans>Delivery time</Trans>
                           <Tooltip
                             title="Turnaround time is based on real data and is expressed in business days."
                             placement="right"
@@ -819,7 +844,7 @@ export class BacklinkView extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Link
+                          <Trans>Link</Trans>
                           <Tooltip
                             title="Dofollow links are particularly high on Google, while nofollow links don't have much impact on your ranking. It is estimated by an independent thrid party."
                             placement="right"
@@ -842,7 +867,7 @@ export class BacklinkView extends Component {
                       </tr>
                       <tr>
                         <td>
-                          Language
+                          <Trans>Language</Trans>
                           <Tooltip
                             title="Language in which your article will be written by us."
                             placement="right"
@@ -889,7 +914,9 @@ export class BacklinkView extends Component {
                         <td className="text-end-ct">.{contentData.tld}</td>
                       </tr>
                       <tr>
-                        <td>Price</td>
+                        <td>
+                          <Trans>Price</Trans>
+                        </td>
                         <td className="text-end-ct">
                           <span className="h3 fontBold600">
                             ${contentData.price}

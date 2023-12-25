@@ -3,6 +3,7 @@ import { PaymentElement, ElementsConsumer } from "@stripe/react-stripe-js";
 import apiService from "./services/api.service";
 import { withRouter } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { Trans } from "react-i18next";
 import "react-toastify/dist/ReactToastify.css";
 
 class CheckoutForm extends Component {
@@ -115,7 +116,7 @@ class CheckoutForm extends Component {
             className="btn btn-rounded btn-fw btn-block mt-3"
             disabled={!stripe}
           >
-            {loading && stripe ? "Processing, please wait" : "Pay"}
+            {loading && stripe ? <Trans>Processing, please wait</Trans> : <Trans>Pay</Trans>}
           </button>
         </form>
       </>

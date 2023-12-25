@@ -189,9 +189,9 @@ export class Register extends Component {
                     </button>
                   </div>
                   <div className="text-center mt-4 fontBold400">
-                    <Trans>Already have an {this.state.isPublisher === 2 ? "Publisher" : ""} account?</Trans>
+                    <Trans>Already have an{this.state.isPublisher === 2 ? " Publisher" : ""} account?</Trans>
                     <Link to="/login" className="text-primary">
-                      <Trans>Login</Trans>
+                      &nbsp;<Trans>Login</Trans>
                     </Link>
                   </div>
                 </form>

@@ -4,6 +4,7 @@ import "../../assets/custom.css";
 import ApiServices from "../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Trans } from "react-i18next";
 
 class CartItem extends Component {
   constructor(props) {
@@ -64,7 +65,7 @@ class CartItem extends Component {
       this.props.updateCartItem(this.props.item.id, {
         project_id: this.state.project_id,
       });
-    });    
+    });
   };
 
   handleInputChange = (e) => {
@@ -283,7 +284,7 @@ class CartItem extends Component {
       }
     );
   };
-  
+
   handleCartItemClick = (cartItemId) => {
     this.setState((prevState) => ({
       selectedCartItems: prevState.selectedCartItems.includes(cartItemId)
@@ -314,7 +315,7 @@ class CartItem extends Component {
     ).toFixed(2);
     return (
       <Form>
-        <ToastContainer/>
+        <ToastContainer />
         <div className="modal1">
           <div className="d-flex justify-content-between">
             <div>
@@ -338,9 +339,11 @@ class CartItem extends Component {
             <div className="col-sm-12">
               <div className="d-flex justify-content-between">
                 <div>
-                  <label className="mb-0">Text creation</label>
+                  <label className="mb-0">
+                    <Trans>Text creation</Trans>
+                  </label>
                   <p className="customText mb-0">
-                    Who should write your content?
+                    <Trans>Who should write your content?</Trans>
                   </p>
                 </div>
                 <div>
@@ -351,17 +354,21 @@ class CartItem extends Component {
                     className={
                       this.state.selectedCartItems.includes(
                         this.props.item.cart_id
+                      ) ? (
+                        <Trans>expanded</Trans>
+                      ) : (
+                        ""
                       )
-                        ? "expanded"
-                        : ""
                     }
                   >
                     <span className="toggle-arrow">
                       {this.state.selectedCartItems.includes(
                         this.props.item.cart_id
-                      )
-                        ? "▶ Hide"
-                        : "▼ Expand (more options)"}
+                      ) ? (
+                        <Trans>Hide</Trans>
+                      ) : (
+                        <Trans>Expand (more options)</Trans>
+                      )}
                     </span>
                   </span>
                 </div>
@@ -391,7 +398,7 @@ class CartItem extends Component {
                       : "mdi mdi-checkbox-blank-circle-outline"
                   }
                 ></i>{" "}
-                Editorial text
+                <Trans>Editorial text</Trans>
               </label>
             </div>
             <div>
@@ -416,7 +423,7 @@ class CartItem extends Component {
                       : "mdi mdi-checkbox-blank-circle-outline"
                   }
                 ></i>{" "}
-                Write your own
+                <Trans>Write your own</Trans>
               </label>
             </div>
           </div>
@@ -426,15 +433,19 @@ class CartItem extends Component {
                 <div className="w-full border mb-4 p-3 rounded mt-2">
                   <div>
                     <span>
-                      This publisher accepts websites from any subject area
+                      <Trans>
+                        This publisher accepts websites from any subject area
+                      </Trans>
                     </span>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-sm-12">
-                    <label className="mb-0">Word count</label>
+                    <label className="mb-0">
+                      <Trans>Word count</Trans>
+                    </label>
                     <p className="customText mb-0">
-                      How long should the article be?
+                      <Trans>How long should the article be?</Trans>
                     </p>
                   </div>
                 </div>
@@ -466,8 +477,10 @@ class CartItem extends Component {
                             : "mdi mdi-checkbox-blank-circle-outline"
                         }
                       ></i>{" "}
-                      500 Words{" "}
-                      <span className="float-right fontBold500">Free</span>
+                      500 <Trans>Words</Trans>
+                      <span className="float-right fontBold500">
+                        <Trans>Free</Trans>
+                      </span>
                     </label>
                   </div>
                   <div>
@@ -493,7 +506,7 @@ class CartItem extends Component {
                             : "mdi mdi-checkbox-blank-circle-outline"
                         }
                       ></i>{" "}
-                      1000 Words{" "}
+                      1000 <Trans>Words</Trans>
                       <span className="float-right fontBold600">+$50</span>
                     </label>
                   </div>
@@ -518,7 +531,9 @@ class CartItem extends Component {
                               : "mdi mdi-checkbox-blank-circle-outline"
                           }
                         ></i>{" "}
-                        <span>Approve text before publication</span>
+                        <span>
+                          <Trans>Approve text before publication</Trans>
+                        </span>
                       </label>
                     </div>
                     <div>
@@ -526,7 +541,7 @@ class CartItem extends Component {
                         style={{ color: "#ff9756" }}
                         className="fontBold700 mr-2"
                       >
-                        NEW
+                        <Trans>NEW</Trans>
                       </span>
                       <span className="float-right fontBold600">+$27.00</span>
                     </div>
@@ -534,7 +549,9 @@ class CartItem extends Component {
                 </div>
                 <div className="row mt-3">
                   <div className="col-sm-6">
-                    <p className="textLeft">Base price</p>
+                    <p className="textLeft">
+                      <Trans>Base price</Trans>
+                    </p>
                   </div>
                   <div className="col-sm-6">
                     <p className="textRight">${this.props.item.price}</p>
@@ -543,21 +560,25 @@ class CartItem extends Component {
                 <div className="row">
                   <div className="col-sm-8">
                     <p className="textLeft">
-                      Text creation: Text from Backlinked editors
+                      <Trans>Text creation Text from FairLinked editors</Trans>
                     </p>
                   </div>
                   <div className="col-sm-4">
                     <p className="textRight">
-                      {textCreationPrice === 0
-                        ? "Free"
-                        : `$${textCreationPrice}`}
+                      {textCreationPrice === 0 ? (
+                        <Trans>Free</Trans>
+                      ) : (
+                        `$${textCreationPrice}`
+                      )}
                     </p>
                   </div>
                 </div>
                 {approveText !== 0 && (
                   <div className="row">
                     <div className="col-sm-6">
-                      <p className="textLeft">Text approval</p>
+                      <p className="textLeft">
+                        <Trans>Text approval</Trans>
+                      </p>
                     </div>
                     <div className="col-sm-6">
                       <p className="textRight">{approveTextPrice}</p>
@@ -567,7 +588,9 @@ class CartItem extends Component {
                 <hr />
                 <div className="row">
                   <div className="col-sm-6">
-                    <p className="textLeft">Total</p>
+                    <p className="textLeft">
+                      <Trans>Total</Trans>
+                    </p>
                   </div>
                   <div className="col-sm-6">
                     <p className="textRight h4 fontBold700">${totalAmount}</p>
@@ -577,9 +600,9 @@ class CartItem extends Component {
                   <div className="row">
                     <div className="col-sm-12">
                       <label htmlFor="targetUrl">
-                        Target URL*
+                        <Trans>Target URL</Trans>*
                         <p className="customText mb-0">
-                          Who should write your content?
+                          <Trans>Who should write your content?</Trans>
                         </p>
                       </label>
 
@@ -597,12 +620,15 @@ class CartItem extends Component {
                   <div className="row mt-3">
                     <div className="col-sm-12">
                       <label htmlFor="anchortext">
-                        Anchor text*
+                        <Trans>Anchor text</Trans>*
                         <p className="customText mb-0">
-                          Specify which anchor text to use. How to choose your
-                          anchor text correctly, you will learn here Nontheless,
-                          the publisher has the final say in the anchor text
-                          selection.
+                          <Trans>
+                            Specify which anchor text to use. How to choose your
+                            anchor text correctly, you will learn here
+                            Nontheless, the publisher has the final say in the
+                            anchor text selection
+                          </Trans>
+                          .
                         </p>
                       </label>
 
@@ -628,7 +654,7 @@ class CartItem extends Component {
                         onChange={this.handlechooseByBackChange}
                       />
                       <label htmlFor="chooseByBack">
-                        Have anchor text chosen by Backlinked
+                        <Trans>Have anchor text chosen by FairLinked</Trans>
                       </label>
                     </div>
                   </div>
@@ -649,7 +675,7 @@ class CartItem extends Component {
                         >
                           <div className="w-full border p-4 rounded mt-2 textCenter borderDashed">
                             <p className="mb-1 text-sm">
-                              Click file to select it
+                              <Trans>Click file to select it</Trans>
                             </p>
                             <p className="mb-1 text-sm">
                               .doc / .docx / .pages
@@ -685,9 +711,9 @@ class CartItem extends Component {
                   <div className="row mt-3">
                     <div className="col-sm-12">
                       <label htmlFor="publication_date">
-                        Date (optional)
+                        <Trans>Date (optional)</Trans>
                         <p className="customText mb-0">
-                          When should your contentlink be placed?
+                          <Trans>When should your contentlink be placed?</Trans>
                         </p>
                       </label>
 
@@ -705,11 +731,13 @@ class CartItem extends Component {
                   <div className="row mt-3">
                     <div className="col-sm-12">
                       <label htmlFor="note">
-                        note (optional)
+                        <Trans>Note (optional)</Trans>
                         <p className="customText mb-0">
-                          Enter a topic request here, for example. The
-                          respective publisher has the final say in the choice
-                          of topic.
+                          <Trans>
+                            Enter a topic request here, for example. The
+                            respective publisher has the final say in the choice
+                            of topic.
+                          </Trans>
                         </p>
                       </label>
                       <textarea
@@ -725,8 +753,10 @@ class CartItem extends Component {
                   <div className="row mt-3">
                     <div className="col-sm-12">
                       <label htmlFor="project_id">
-                        Project
-                        <p className="customText mb-0">Select a project.</p>
+                        <Trans>Project</Trans>
+                        <p className="customText mb-0">
+                          <Trans>Select a project</Trans>.
+                        </p>
                       </label>
                       <select
                         className="form-control"
@@ -742,7 +772,7 @@ class CartItem extends Component {
                         ))}
                       </select>
                     </div>
-                  </div>                  
+                  </div>
                 </div>
               </div>
             </>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+import { Trans } from "react-i18next";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../assets/custom.css";
@@ -124,7 +125,7 @@ export class AdminViewOrderDetails extends Component {
                   className="btn btn-rounded font-weight-medium auth-form-btn"
                   onClick={this.handleGoBack}
                 >
-                  <i className="mdi mdi-arrow-left"></i> Back
+                  <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                 </button>                
               </div>
               <div className="card-body dashboardCard">
@@ -141,11 +142,11 @@ export class AdminViewOrderDetails extends Component {
                           orderData.status
                         )}`}
                       >
-                        {orderData.status}
+                        <Trans>{orderData.status}</Trans>
                       </span>
                     </h4>
                     <h5>
-                      Amount: <b>${orderData.total_price}</b>
+                    <Trans>Amount</Trans>: <b>${orderData.total_price}</b>
                     </h5>
                   </div>
                 </div>
@@ -153,13 +154,13 @@ export class AdminViewOrderDetails extends Component {
               </div>
               <div className="card">
                 <div className="card-body pt-2">
-                  <h4 className="card-title">Orders details</h4>
+                  <h4 className="card-title"><Trans>Orders details</Trans></h4>
                   <div className="table-responsive">
                     <table className="table">
                       <tbody>
                         <tr>
                           <td>
-                            Anchor text
+                          <Trans>Anchor text</Trans>
                             <Tooltip
                               title="Anchor text refers to the clickable text of a link."
                               placement="right"
@@ -184,7 +185,7 @@ export class AdminViewOrderDetails extends Component {
                         </tr>
                         <tr>
                           <td>
-                            Delivery time
+                          <Trans>Delivery time</Trans>
                             <Tooltip
                               title="Turnaround time is based on real data and is expressed in business days."
                               placement="right"
@@ -209,7 +210,7 @@ export class AdminViewOrderDetails extends Component {
                         </tr>
                         <tr>
                           <td>
-                            Link
+                          <Trans>Link</Trans>
                             <Tooltip
                               title="Dofollow links are particularly high on Google, while nofollow links don't have much impact on your ranking. It is estimated by an independent thrid party."
                               placement="right"
@@ -234,7 +235,7 @@ export class AdminViewOrderDetails extends Component {
                         </tr>
                         <tr>
                           <td>
-                            Language
+                          <Trans>Language</Trans>
                             <Tooltip
                               title="Language in which your article will be written by us."
                               placement="right"
@@ -288,7 +289,7 @@ export class AdminViewOrderDetails extends Component {
                         </tr>
                         {orderData.textCreation === "Own" && (
                           <tr>
-                            <td>Text file</td>
+                            <td><Trans>Text file</Trans></td>
                             <td className="text-end-ct">
                               <span className="sampleFile ml-4">
                                 <a
@@ -303,7 +304,7 @@ export class AdminViewOrderDetails extends Component {
                                   className="hrefTitle"
                                 >
                                   <b className="text-warning">
-                                    Download text file
+                                  <Trans>Download text file</Trans>
                                   </b>
                                 </a>
                               </span>
@@ -311,39 +312,39 @@ export class AdminViewOrderDetails extends Component {
                           </tr>
                         )}
                         <tr>
-                          <td>Target Url</td>
+                          <td><Trans>Target Url</Trans></td>
                           <td className="text-end-ct">
                             <a
                               href={orderData.linktarget}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              Go to
+                              <Trans>Go to</Trans>
                             </a>
                           </td>
                         </tr>
                         <tr>
-                          <td>Note</td>
+                          <td><Trans>Note</Trans></td>
                           <td className="text-end-ct">{orderData.note}</td>
                         </tr>
                         <tr>
-                          <td>Word count</td>
+                          <td><Trans>Word count</Trans></td>
                           <td className="text-end-ct">{orderData.wordCount}</td>
                         </tr>
                         <tr>
-                          <td>Approve text before publication</td>
+                          <td><Trans>Approve text before publication</Trans></td>
                           <td className="text-end-ct">
                             {orderData.approveText === 1 ? "Yes" : "No"}
                           </td>
                         </tr>
                         <tr>
-                          <td>Anchor text chosen by Backlinked</td>
+                          <td><Trans>Anchor text chosen by Backlinked</Trans></td>
                           <td className="text-end-ct">
                             {orderData.chooseByBacklink === 1 ? "Yes" : "No"}
                           </td>
                         </tr>
                         <tr>
-                          <td>Text approval price</td>
+                          <td><Trans>Text approval price</Trans></td>
                           <td className="text-end-ct">
                             {orderData.approveText === 1
                               ? "$" + orderData.approveTextPrice
@@ -352,7 +353,7 @@ export class AdminViewOrderDetails extends Component {
                         </tr>
                         {orderData.textCreation === "Editorial" && (
                           <tr>
-                            <td>Text creation price</td>
+                            <td><Trans>Text creation price</Trans></td>
                             <td className="text-end-ct">
                               {orderData.textCreationPrice > 0
                                 ? "$" + orderData.textCreationPrice
@@ -361,11 +362,11 @@ export class AdminViewOrderDetails extends Component {
                           </tr>
                         )}
                         <tr>
-                          <td>Price</td>
+                          <td><Trans>Price</Trans></td>
                           <td className="text-end-ct">${orderData.price}</td>
                         </tr>
                         <tr>
-                          <td className="h4 fontBold600">Total Price</td>
+                          <td className="h4 fontBold600"><Trans>Total Price</Trans></td>
                           <td className="text-end-ct">
                             <span className="h3 fontBold600">
                               ${orderData.total_price}

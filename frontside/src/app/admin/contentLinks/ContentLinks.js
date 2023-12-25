@@ -5,6 +5,7 @@ import { CPopover, CButton } from "@coreui/react";
 import ApiServices from "../../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import TimeAgo from "timeago-react";
+import { Trans,withTranslation } from "react-i18next";
 import "react-toastify/dist/ReactToastify.css";
 import {
   Typography,
@@ -238,6 +239,7 @@ export class ContentLinks extends Component {
     );
   }
   render() {
+    const { t } =  this.props;
     const {
       min,
       rows,
@@ -253,7 +255,7 @@ export class ContentLinks extends Component {
     const columns = [
       {
         id: "name",
-        label: "Name",
+        label: <Trans>Name</Trans>,
         height: 70,
         width: 345,
         sortable: false,
@@ -310,7 +312,7 @@ export class ContentLinks extends Component {
       },
       {
         id: "language",
-        label: "Language",
+        label: <Trans>Language</Trans>,
         width: 130,
         sortable: false,
         renderCell: (row) => (
@@ -331,7 +333,7 @@ export class ContentLinks extends Component {
       },
       {
         id: "rating",
-        label: "Rating",
+        label: <Trans>Rating</Trans>,
         width: 130,
         align: "right",
         format: (value) => value.toLocaleString("en-US"),
@@ -365,12 +367,16 @@ export class ContentLinks extends Component {
       },
       {
         id: "created_at",
-        label: "Created",
+        label: <Trans>Created</Trans>,
         align: "right",
         width: 90,
-        sortable:false,
+        sortable: false,
         renderCell: (row) => (
-          <TimeAgo datetime={row.created_at} locale="en" style={{fontSize:"10px"}}/>
+          <TimeAgo
+            datetime={row.created_at}
+            locale="en"
+            style={{ fontSize: "10px" }}
+          />
         ),
       },
       {
@@ -393,7 +399,7 @@ export class ContentLinks extends Component {
       //   align: "right",
       //   width: 90,
       //   renderCell: (row) => <span>{row.contentData.visibility_index}</span>,
-      // },      
+      // },
       {
         id: "tf",
         label: "TF",
@@ -410,14 +416,14 @@ export class ContentLinks extends Component {
       },
       {
         id: "traffic",
-        label: "TRAFFIC",
+        label: <Trans>TRAFFIC</Trans>,
         width: 90,
         align: "right",
         renderCell: (row) => <span>{row.contentData.traffic}</span>,
       },
       {
         id: "status",
-        label: "Status",
+        label: <Trans>Status</Trans>,
         width: 90,
         align: "right",
         renderCell: (row) => (
@@ -432,7 +438,7 @@ export class ContentLinks extends Component {
       },
       {
         id: "price",
-        label: "PRICE",
+        label: <Trans>PRICE</Trans>,
         width: 160,
         align: "right",
         renderCell: (row) => (
@@ -445,7 +451,7 @@ export class ContentLinks extends Component {
       <>
         <div className="ContentLinkHomePage">
           <div className="page-header">
-            <h3 className="fontBold latterSpacing">Backlinks List</h3>
+            <h3 className="fontBold latterSpacing"><Trans>Backlinks List</Trans></h3>
           </div>
           <ToastContainer />
           <div className="row">
@@ -472,7 +478,7 @@ export class ContentLinks extends Component {
                           </div>
                           <input
                             type="search"
-                            placeholder="Search backlink"
+                            placeholder={t('Search backlink')}
                             className="form-control border-left-0 customSearch"
                             onChange={this.handleOnSearch}
                             value={searchValue}
@@ -487,11 +493,12 @@ export class ContentLinks extends Component {
                               selectedOptions
                             )
                           }
-                          placeholderButtonLabel="Categories"
+                          // placeholderButtonLabel="Categories"
+                          placeholderButtonLabel={t('Categories')}
                         />
                         <ReactMultiSelectCheckboxes
                           options={this.state.projectType}
-                          placeholderButtonLabel="Product Type"
+                          placeholderButtonLabel={t('Product Type')}
                           onChange={(selectedOptions) =>
                             this.handleMultiSelectChange(
                               "selectedProjectType",
@@ -525,10 +532,10 @@ export class ContentLinks extends Component {
                           <CButton className="css-1r4vtzz custamFilterBtn">
                             {min !== 30 || max !== 200000 ? (
                               <span className="css-1v99tuv">
-                                Prize: ${min} - ${max}
+                                <Trans>Prize</Trans>: ${min} - ${max}
                               </span>
                             ) : (
-                              <span className="css-1v99tuv">Prize</span>
+                              <span className="css-1v99tuv"><Trans>Prize</Trans></span>
                             )}
                             <span className="css-1gpjby2">
                               <svg
@@ -716,4 +723,5 @@ const PriceRangeSlider = (props) => {
     </>
   );
 };
-export default withRouter(ContentLinks);
+// export default withRouter(ContentLinks);
+export default withTranslation()(ContentLinks);

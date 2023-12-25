@@ -4,7 +4,8 @@ import ApiServices from "../../services/api.service";
 import AuthService from "../../services/auth.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
+import { Trans, withTranslation } from "react-i18next";
 import "../../../assets/custom.css";
 import {
   Paper,
@@ -131,7 +132,7 @@ export class Users extends Component {
     let formData = new FormData();
     if (isEdit) {
       if (!firstName || !lastName || !phone) {
-        this.setState({ error: "Please fill required fields." });
+        this.setState({ error: <Trans>Please fill required fields.</Trans> });
         return;
       }
       formData.append("firstName", firstName);
@@ -140,7 +141,7 @@ export class Users extends Component {
       formData.append("id", selectedUser.id);
     } else {
       if (!password || !email || !firstName || !lastName || !phone || !type) {
-        this.setState({ error: "Please fill required fields." });
+        this.setState({ error: <Trans>Please fill required fields.</Trans> });
         return;
       }
       formData.append("firstName", firstName);
@@ -250,12 +251,13 @@ export class Users extends Component {
   }
   // Datatable End
   render() {
+    const { t } = this.props;
     const { page, rowsPerPage, orderBy, order, rows, error, selectedUser } =
       this.state;
     const columns = [
       {
         id: "id",
-        label: "ID",
+        label: <Trans>ID</Trans>,
         height: 70,
         width: 300,
         align: "left",
@@ -263,7 +265,7 @@ export class Users extends Component {
       },
       {
         id: "name",
-        label: "Name",
+        label: <Trans>Name</Trans>,
         height: 70,
         width: 300,
         align: "left",
@@ -272,33 +274,33 @@ export class Users extends Component {
       },
       {
         id: "email",
-        label: "Email",
+        label: <Trans>Email</Trans>,
         width: 200,
         sortable: false,
         align: "left",
       },
       {
         id: "phone",
-        label: "Phone",
+        label: <Trans>Phone</Trans>,
         width: 200,
         align: "left",
       },
       {
         id: "city",
-        label: "City",
+        label: <Trans>City</Trans>,
         align: "left",
         width: 200,
         sortable: false,
       },
       {
         id: "postal_code",
-        label: "Postal Code",
+        label: <Trans>Postal code</Trans>,
         align: "left",
         width: 200,
       },
       {
         id: "isAdmin",
-        label: "Type",
+        label: <Trans>Type</Trans>,
         align: "left",
         sortable: true,
         width: 200,
@@ -322,7 +324,7 @@ export class Users extends Component {
       },
       {
         id: "login",
-        label: "Login",
+        label: <Trans>Login</Trans>,
         align: "left",
         sortable: false,
         renderCell: (row) => (
@@ -330,13 +332,13 @@ export class Users extends Component {
             className="btn btn-info btn-sm"
             onClick={() => this.handleLoginClick(row.id)}
           >
-            Login
+            <Trans>Login</Trans>
           </button>
         ),
       },
       {
         id: "aciton",
-        label: "Action",
+        label: <Trans>Action</Trans>,
         align: "left",
         sortable: false,
         renderCell: (row) => (
@@ -371,7 +373,9 @@ export class Users extends Component {
         <div className="adminUserList">
           <div className="d-flex justify-content-between">
             <div className="page-header">
-              <h3 className="fontBold latterSpacing">All Users</h3>
+              <h3 className="fontBold latterSpacing">
+                <Trans>All users</Trans>
+              </h3>
             </div>
             <div className="ExportBtn">
               <button
@@ -379,7 +383,7 @@ export class Users extends Component {
                 onClick={this.showUserCreateModal}
               >
                 <i className="mdi mdi-account-plus mr-2"></i>
-                Create new user
+                <Trans>Create new user</Trans>
               </button>
             </div>
           </div>
@@ -498,7 +502,11 @@ export class Users extends Component {
             <Modal.Header closeButton>
               <div>
                 <span className="modal-title h3 font-weight-bold">
-                  {this.state.selectedUser ? "Edit user" : "Create new user"}
+                  {this.state.selectedUser ? (
+                    <Trans>Edit user</Trans>
+                  ) : (
+                    <Trans>Create new user</Trans>
+                  )}
                 </span>
               </div>
             </Modal.Header>
@@ -511,7 +519,7 @@ export class Users extends Component {
                     className="form-control form-control-lg"
                     name="firstName"
                     id="exampleInputfname"
-                    placeholder="First Name *"
+                    placeholder={t("First Name *")}
                     value={this.state.firstName}
                   />
                 </div>
@@ -521,7 +529,7 @@ export class Users extends Component {
                     className="form-control form-control-lg"
                     type="text"
                     name="lastName"
-                    placeholder="Last Name *"
+                    placeholder={t("Last Name *")}
                     value={this.state.lastName}
                   />
                 </div>
@@ -532,7 +540,7 @@ export class Users extends Component {
                     name="email"
                     className="form-control form-control-lg"
                     id="exampleInputEmail1"
-                    placeholder="Email *"
+                    placeholder={t("Email *")}
                     disabled={selectedUser}
                     value={this.state.email}
                   />
@@ -543,7 +551,7 @@ export class Users extends Component {
                     type="text"
                     name="phone"
                     className="form-control form-control-lg"
-                    placeholder="Phone *"
+                    placeholder={t("Phone *")}
                     value={this.state.phone}
                   />
                 </div>
@@ -555,13 +563,15 @@ export class Users extends Component {
                     minLength="8"
                     className="form-control form-control-lg"
                     id="exampleInputPassword1"
-                    placeholder="Password *"
+                    placeholder={t("Password *")}
                     disabled={selectedUser}
                   />
                   {this.state.password.length > 0 &&
                     this.state.password.length < 8 && (
                       <span style={{ color: "red" }}>
-                        Password must be at least 8 characters long
+                        <Trans>
+                          Password must be at least 8 characters long
+                        </Trans>
                       </span>
                     )}
                 </div>
@@ -574,7 +584,7 @@ export class Users extends Component {
                     disabled={selectedUser}
                     onChange={this.handleInputChange}
                   >
-                    <option value="">select User Type</option>
+                    <option value="">{t("select User Type")}</option>
                     <option value="1">Admin</option>
                     <option value="2">Publisher</option>
                     <option value="0">User</option>
@@ -586,7 +596,7 @@ export class Users extends Component {
                     type="submit"
                     className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
                   >
-                    Create
+                    <Trans>Create</Trans>
                   </button>
                 </div>
               </form>
@@ -597,4 +607,5 @@ export class Users extends Component {
     );
   }
 }
-export default withRouter(Users);
+// export default withRouter(Users);
+export default withTranslation()(withRouter(Users));

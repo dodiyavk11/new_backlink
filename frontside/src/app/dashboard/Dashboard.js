@@ -156,7 +156,7 @@ export class Dashboard extends Component {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                <h2 className="fontBold latterSpacing">Add balance</h2>
+                <h2 className="fontBold latterSpacing"><Trans>Add balance</Trans></h2>
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -205,7 +205,7 @@ export class Dashboard extends Component {
                 <div className="card-body dashboardCard">
                   <div className="d-flex flex-row justify-content-between">
                     <div className="p-2 bd-highlight d-flex flex-column">
-                      <h4>Available</h4>
+                      <h4><Trans>Available</Trans></h4>
                       <h2>
                         <b>${parseFloat(this.state.balance).toFixed(2)}</b>
                       </h2>

@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ApiServices from "../../services/api.service";
 import { Modal, Button, Form } from "react-bootstrap";
+import { Trans, withTranslation } from "react-i18next";
 
 export class DomainCategory extends Component {
   constructor(props) {
@@ -149,11 +150,14 @@ export class DomainCategory extends Component {
   render() {
     const { categoryList, viewCategory, editCategory, addCategory } =
       this.state;
+    const { t } = this.props;
     return (
       <div className="bundleLinkPage adminPlan">
         <div className="d-flex justify-content-between">
           <div className="page-header">
-            <h3 className="fontBold latterSpacing">Domain category</h3>
+            <h3 className="fontBold latterSpacing">
+              <Trans>Domain category</Trans>
+            </h3>
           </div>
           <div className="ExportBtn">
             <button
@@ -161,7 +165,7 @@ export class DomainCategory extends Component {
               onClick={this.addCategoryeModal}
             >
               <i className="mdi mdi-plus-circle mr-2"></i>
-              Add new
+              <Trans>Add new</Trans>
             </button>
           </div>
         </div>
@@ -175,9 +179,15 @@ export class DomainCategory extends Component {
                     <table className="table table-hover orderListTable">
                       <thead>
                         <tr>
-                          <th>ID</th>
-                          <th>Name</th>
-                          <th>Description</th>
+                          <th>
+                            <Trans>ID</Trans>
+                          </th>
+                          <th>
+                            <Trans>Name</Trans>
+                          </th>
+                          <th>
+                            <Trans>Description</Trans>
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -234,7 +244,9 @@ export class DomainCategory extends Component {
                           alt="No data found..."
                         />
                       </div>
-                      <h4>No Domain category found...</h4>
+                      <h4>
+                        <Trans>No Domain category found...</Trans>
+                      </h4>
                     </center>
                   </div>
                 )}
@@ -254,7 +266,7 @@ export class DomainCategory extends Component {
           <Modal.Header closeButton>
             <div>
               <span className="modal-title h3 font-weight-bold">
-                View Category
+                <Trans>View category</Trans>
               </span>
             </div>
           </Modal.Header>
@@ -262,12 +274,16 @@ export class DomainCategory extends Component {
             {viewCategory && (
               <div>
                 <Form.Group>
-                  <label className="font-weight-bold">Name</label>
+                  <label className="font-weight-bold">
+                    <Trans>Name</Trans>
+                  </label>
                   <h5>{viewCategory.name}</h5>
                 </Form.Group>
                 <hr />
                 <Form.Group>
-                  <label className="font-weight-bold">Description</label>
+                  <label className="font-weight-bold">
+                    <Trans>Description</Trans>
+                  </label>
                   <h5>{viewCategory.description}</h5>
                 </Form.Group>
               </div>
@@ -278,7 +294,7 @@ export class DomainCategory extends Component {
               className="btn btn-block btn-rounded btn-lg"
               onClick={() => this.closeModal()}
             >
-              Close
+              <Trans>Close</Trans>
             </Button>
           </Modal.Footer>
         </Modal>
@@ -294,7 +310,7 @@ export class DomainCategory extends Component {
           <Modal.Header closeButton>
             <div>
               <span className="modal-title h3 font-weight-bold">
-                Edit Category
+                <Trans>Edit category</Trans>
               </span>
             </div>
           </Modal.Header>
@@ -303,12 +319,12 @@ export class DomainCategory extends Component {
               <div>
                 <Form.Group>
                   <label className="font-weight-bold" htmlFor="name">
-                    Name
+                    <Trans>Name</Trans>
                   </label>
                   <Form.Control
                     type="text"
                     className="form-control form-control-lg"
-                    placeholder="Name"
+                    placeholder={t("Category name")}
                     name="name"
                     id="title"
                     aria-label="name"
@@ -318,12 +334,12 @@ export class DomainCategory extends Component {
                 </Form.Group>
                 <Form.Group>
                   <label className="font-weight-bold" htmlFor="desc">
-                    Description
+                    <Trans>Description</Trans>
                   </label>
                   <Form.Control
                     type="text"
                     className="form-control form-control-lg"
-                    placeholder="Description"
+                    placeholder={t("Description")}
                     name="description"
                     id="desc"
                     aria-label="title"
@@ -339,7 +355,7 @@ export class DomainCategory extends Component {
               className="btn btn-block btn-rounded btn-lg"
               onClick={() => this.handleUpdateCategory()}
             >
-              Update
+              <Trans>Update</Trans>
             </Button>
           </Modal.Footer>
         </Modal>
@@ -356,7 +372,7 @@ export class DomainCategory extends Component {
           <Modal.Header closeButton>
             <div>
               <span className="modal-title h3 font-weight-bold">
-                Add Category
+                <Trans>Add Category</Trans>
               </span>
             </div>
           </Modal.Header>
@@ -364,12 +380,12 @@ export class DomainCategory extends Component {
             <div>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="name">
-                  Name
+                  <Trans>Name</Trans>
                 </label>
                 <Form.Control
                   type="text"
                   className="form-control form-control-lg"
-                  placeholder="Category name"
+                  placeholder={t("Category name")}
                   name="name"
                   id="name"
                   aria-label="name"
@@ -379,12 +395,12 @@ export class DomainCategory extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="desc">
-                  Description
+                  <Trans>Description</Trans>
                 </label>
                 <Form.Control
                   type="text"
                   className="form-control form-control-lg"
-                  placeholder="Description"
+                  placeholder={t("Description")}
                   name="description"
                   id="desc"
                   aria-label="desc"
@@ -399,7 +415,7 @@ export class DomainCategory extends Component {
               className="btn btn-block btn-rounded btn-lg"
               onClick={() => this.addCategory()}
             >
-              Add
+              <Trans>Add</Trans>
             </Button>
           </Modal.Footer>
         </Modal>
@@ -408,4 +424,5 @@ export class DomainCategory extends Component {
   }
 }
 
-export default DomainCategory;
+// export default DomainCategory;
+export default withTranslation()(DomainCategory);

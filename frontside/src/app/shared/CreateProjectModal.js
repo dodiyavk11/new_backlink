@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { Trans } from "react-i18next";
 import "../../assets/custom.css";
+
 class CreateProjectModal extends Component {
   constructor(props) {
     super(props);
@@ -29,15 +31,15 @@ class CreateProjectModal extends Component {
       >
         <Modal.Header closeButton>
             <div>
-                <span className="modal-title h3 font-weight-bold">Create Project</span>
-                <p className="mb-8">Create a new project, organize your bookings and always keep an eye on your budget.</p>
+                <span className="modal-title h3 font-weight-bold"><Trans>Create Project</Trans></span>
+                <p className="mb-8"><Trans>Create a new project, organize your bookings and always keep an eye on your budget.</Trans></p>
             </div>          
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group>
-              <label>Domain</label>
-              <p className="customText">For which domain is the project?</p>
+              <label><Trans>Domain</Trans></label>
+              <p className="customText"><Trans>For which domain is the project?</Trans></p>
               <Form.Control
                 type="text"
                 className="form-control-sm"
@@ -49,8 +51,8 @@ class CreateProjectModal extends Component {
               />
             </Form.Group>
             <Form.Group>
-              <label>Budget</label>
-              <p className="customText">What is the budget for this project?</p>
+              <label><Trans>Budget</Trans></label>
+              <p className="customText"><Trans>What is the budget for this project?</Trans></p>
               <Form.Control
                 type="number"
                 className="form-control-sm"
@@ -62,7 +64,7 @@ class CreateProjectModal extends Component {
               />
             </Form.Group>
             <Button className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn" onClick={() => this.props.onSubmit(this.state)}>
-              Create project
+            <Trans>Create project</Trans>
             </Button>
           </Form>
         </Modal.Body>

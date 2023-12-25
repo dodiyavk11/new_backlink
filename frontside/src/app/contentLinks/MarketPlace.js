@@ -800,7 +800,7 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography>Domain Rating</Typography>
+                  <Typography><Trans>Domain Rating</Trans></Typography>
                 </div>
                 <div>
                   <Slider
@@ -843,7 +843,7 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography>Domain Authority</Typography>
+                  <Typography><Trans>Domain Authority</Trans></Typography>
                 </div>
                 <div>
                   <Slider
@@ -886,7 +886,7 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography>Visibility Index</Typography>
+                  <Typography><Trans>Visibility Index</Trans></Typography>
                 </div>
                 <div>
                   <Slider
@@ -931,7 +931,7 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography>Trust Flow</Typography>
+                  <Typography><Trans>Trust Flow</Trans></Typography>
                 </div>
                 <div>
                   <Slider
@@ -974,7 +974,7 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography>Traffic</Typography>
+                  <Typography><Trans>Traffic</Trans></Typography>
                 </div>
                 <div>
                   <Slider
@@ -1017,7 +1017,7 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography>Referring Domains</Typography>
+                  <Typography><Trans>Referring Domains</Trans></Typography>
                 </div>
                 <div>
                   <Slider

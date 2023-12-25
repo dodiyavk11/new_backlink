@@ -7,6 +7,7 @@ import ApiServices from "../../services/api.service";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Modal, Button, Form } from "react-bootstrap";
+import { Trans, withTranslation } from "react-i18next";
 
 export class EmailTemplate extends Component {
   constructor(props) {
@@ -199,11 +200,14 @@ export class EmailTemplate extends Component {
   render() {
     const { emailTemplate, viewTemplate, editTemplate, addTemplate } =
       this.state;
+    const { t } = this.props;
     return (
       <div className="bundleLinkPage adminPlan">
         <div className="d-flex justify-content-between">
           <div className="page-header">
-            <h3 className="fontBold latterSpacing">Email template</h3>
+            <h3 className="fontBold latterSpacing">
+              <Trans>Email template</Trans>
+            </h3>
           </div>
           <div className="ExportBtn">
             <button
@@ -211,7 +215,7 @@ export class EmailTemplate extends Component {
               onClick={this.addTemplateModal}
             >
               <i className="mdi mdi-plus-circle mr-2"></i>
-              Add new
+              <Trans>Add new</Trans>
             </button>
           </div>
         </div>
@@ -225,10 +229,18 @@ export class EmailTemplate extends Component {
                     <table className="table table-hover orderListTable">
                       <thead>
                         <tr>
-                          <th>ID</th>
-                          <th>Title</th>
-                          <th>Type</th>
-                          <th>Header</th>
+                          <th>
+                            <Trans>ID</Trans>
+                          </th>
+                          <th>
+                            <Trans>Title</Trans>
+                          </th>
+                          <th>
+                            <Trans>Type</Trans>
+                          </th>
+                          <th>
+                            <Trans>Header</Trans>
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -291,7 +303,9 @@ export class EmailTemplate extends Component {
                           alt="No data found..."
                         />
                       </div>
-                      <h4>No Email template found...</h4>
+                      <h4>
+                        <Trans>No Email template found...</Trans>
+                      </h4>
                     </center>
                   </div>
                 )}
@@ -311,7 +325,7 @@ export class EmailTemplate extends Component {
           <Modal.Header closeButton>
             <div>
               <span className="modal-title h3 font-weight-bold">
-                View Template
+                <Trans>View Template</Trans>
               </span>
             </div>
           </Modal.Header>
@@ -319,22 +333,30 @@ export class EmailTemplate extends Component {
             {viewTemplate && (
               <div>
                 <Form.Group>
-                  <label className="font-weight-bold">Title</label>
+                  <label className="font-weight-bold">
+                    <Trans>Title</Trans>
+                  </label>
                   <h5>{viewTemplate.email_title}</h5>
                 </Form.Group>
                 <hr />
                 <Form.Group>
-                  <label className="font-weight-bold">Type</label>
+                  <label className="font-weight-bold">
+                    <Trans>Type</Trans>
+                  </label>
                   <h5>{viewTemplate.email_type}</h5>
                 </Form.Group>
                 <hr />
                 <Form.Group>
-                  <label className="font-weight-bold">Header (subject)</label>
+                  <label className="font-weight-bold">
+                    <Trans>Header (Subject)</Trans>
+                  </label>
                   <h5>{viewTemplate.header}</h5>
                 </Form.Group>
                 <hr />
                 <Form.Group>
-                  <label className="font-weight-bold">Body(content)</label>
+                  <label className="font-weight-bold">
+                    <Trans>Body (Content)</Trans>
+                  </label>
                   <span>
                     <span
                       dangerouslySetInnerHTML={{
@@ -351,7 +373,7 @@ export class EmailTemplate extends Component {
               className="btn btn-block btn-rounded btn-lg"
               onClick={() => this.closeModal()}
             >
-              Close
+              <Trans>Close</Trans>
             </Button>
           </Modal.Footer>
         </Modal>
@@ -367,7 +389,7 @@ export class EmailTemplate extends Component {
           <Modal.Header closeButton>
             <div>
               <span className="modal-title h3 font-weight-bold">
-                Edit Email template
+                <Trans>Edit Email template</Trans>
               </span>
             </div>
           </Modal.Header>
@@ -376,12 +398,12 @@ export class EmailTemplate extends Component {
               <div>
                 <Form.Group>
                   <label className="font-weight-bold" htmlFor="title">
-                    Title
+                    <Trans>Title</Trans>
                   </label>
                   <Form.Control
                     type="text"
                     className="form-control form-control-lg"
-                    placeholder="Title"
+                    placeholder={t("Title")}
                     name="email_title"
                     id="title"
                     aria-label="title"
@@ -391,12 +413,12 @@ export class EmailTemplate extends Component {
                 </Form.Group>
                 <Form.Group>
                   <label className="font-weight-bold" htmlFor="type">
-                    Type
+                    <Trans>Type</Trans>
                   </label>
                   <Form.Control
                     type="text"
                     className="form-control form-control-lg"
-                    placeholder="Email Type"
+                    placeholder={t("Email Type")}
                     name="type"
                     id="title"
                     disabled
@@ -406,12 +428,12 @@ export class EmailTemplate extends Component {
                 </Form.Group>
                 <Form.Group>
                   <label className="font-weight-bold" htmlFor="header">
-                    Header (Subject)
+                    <Trans>Header (Subject)</Trans>
                   </label>
                   <Form.Control
                     type="text"
                     className="form-control form-control-lg"
-                    placeholder="Email Type"
+                    placeholder={t("Header (Subject)")}
                     name="header"
                     id="header"
                     aria-label="header"
@@ -419,26 +441,28 @@ export class EmailTemplate extends Component {
                     onChange={this.handleChange}
                   />
                 </Form.Group>
-                {editTemplate.email_type === "welcome" && ( <>
-                  <Form.Group>
-                    <label className="font-weight-bold" htmlFor="file">
-                      File (for Welcome term and condition pdf)
-                    </label>
-                    <input
-                      type="file"
-                      className="form-control-file"
-                      id="file"
-                      name="file"
-                      accept=".pdf"
-                      onChange={this.handleFileChange}
-                    />
-                  </Form.Group>
-                  <hr/>
+                {editTemplate.email_type === "welcome" && (
+                  <>
+                    <Form.Group>
+                      <label className="font-weight-bold" htmlFor="file">
+                        <Trans>File </Trans>(
+                        <Trans>for Welcome term and condition pdf</Trans>)
+                      </label>
+                      <input
+                        type="file"
+                        className="form-control-file"
+                        id="file"
+                        name="file"
+                        accept=".pdf"
+                        onChange={this.handleFileChange}
+                      />
+                    </Form.Group>
+                    <hr />
                   </>
                 )}
                 <Form.Group>
                   <label className="font-weight-bold" htmlFor="email_content">
-                    Email Body (Content)
+                    <Trans>Body (Content)</Trans>
                   </label>
                   <ReactQuill
                     value={editTemplate.email_content}
@@ -457,7 +481,7 @@ export class EmailTemplate extends Component {
               className="btn btn-block btn-rounded btn-lg"
               onClick={() => this.handleUpdateTemplate()}
             >
-              Update
+              <Trans>Update</Trans>
             </Button>
           </Modal.Footer>
         </Modal>
@@ -474,7 +498,7 @@ export class EmailTemplate extends Component {
           <Modal.Header closeButton>
             <div>
               <span className="modal-title h3 font-weight-bold">
-                Add Email template
+                <Trans>Add Email template</Trans>
               </span>
             </div>
           </Modal.Header>
@@ -482,12 +506,12 @@ export class EmailTemplate extends Component {
             <div>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="title">
-                  Title
+                  <Trans>Title</Trans>
                 </label>
                 <Form.Control
                   type="text"
                   className="form-control form-control-lg"
-                  placeholder="Title e.g New order"
+                  placeholder={t("Title e.g New order")}
                   name="email_title"
                   id="title"
                   aria-label="title"
@@ -497,12 +521,12 @@ export class EmailTemplate extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="type">
-                  Type
+                  <Trans>Type</Trans>
                 </label>
                 <Form.Control
                   type="text"
                   className="form-control form-control-lg"
-                  placeholder="Email Type e.g Welcome"
+                  placeholder={t("Email Type e.g Welcome")}
                   name="email_type"
                   id="title"
                   aria-label="title"
@@ -512,12 +536,12 @@ export class EmailTemplate extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="header">
-                  Header (Subject)
+                  <Trans>Header (Subject)</Trans>
                 </label>
                 <Form.Control
                   type="text"
                   className="form-control form-control-lg"
-                  placeholder="e.g Welcome to Fairlinked family"
+                  placeholder={t("e.g Welcome to Fairlinked family")}
                   name="header"
                   id="header"
                   aria-label="header"
@@ -527,7 +551,7 @@ export class EmailTemplate extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="email_content">
-                  Email Body (Content)
+                  <Trans>Body (Content)</Trans>
                 </label>
                 <ReactQuill
                   value={addTemplate.email_content}
@@ -543,7 +567,7 @@ export class EmailTemplate extends Component {
               className="btn btn-block btn-rounded btn-lg"
               onClick={() => this.addEmailTemplate()}
             >
-              Add
+              <Trans>Add</Trans>
             </Button>
           </Modal.Footer>
         </Modal>
@@ -552,4 +576,5 @@ export class EmailTemplate extends Component {
   }
 }
 
-export default EmailTemplate;
+// export default EmailTemplate;
+export default withTranslation()(EmailTemplate);

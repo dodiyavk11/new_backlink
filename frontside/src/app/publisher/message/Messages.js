@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import ApiServices from "../../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
+import { Trans } from "react-i18next";
 import TimeAgo from "timeago-react";
 import "../../../assets/custom.css";
 
@@ -54,7 +55,9 @@ export class Messages extends Component {
       <div className="ordersListPage">
         <div className="d-flex justify-content-between">
           <div className="page-header">
-            <h3 className="fontBold latterSpacing">Order messages</h3>
+            <h3 className="fontBold latterSpacing">
+              <Trans>Order messages</Trans>
+            </h3>
           </div>
           <ToastContainer />
         </div>
@@ -67,10 +70,18 @@ export class Messages extends Component {
                     <table className="table table-hover orderListTable">
                       <thead>
                         <tr>
-                          <th>Sr</th>
-                          <th>Domain</th>
-                          <th>Last message</th>
-                          <th>Time</th>
+                          <th>
+                            <Trans>Sr</Trans>
+                          </th>
+                          <th>
+                            <Trans>Domain</Trans>
+                          </th>
+                          <th>
+                            <Trans>Last message</Trans>
+                          </th>
+                          <th>
+                            <Trans>Time</Trans>
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -107,10 +118,14 @@ export class Messages extends Component {
                           alt="No data found..."
                         />
                       </div>
-                      <h4>No orders with have any message</h4>
+                      <h4>
+                        <Trans>No orders with have any message</Trans>
+                      </h4>
                       <p style={{ maxWidth: "400px" }}>
-                        No Project You do not have any Project yet. As soon as
-                        you add your first Project, it will show up here.
+                        <Trans>
+                          No Project You do not have any Project yet. As soon as
+                          you add your first Project, it will show up here.
+                        </Trans>
                       </p>
                     </center>
                   </div>

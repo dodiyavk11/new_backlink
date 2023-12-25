@@ -5,7 +5,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthService from "../../services/auth.service";
 import { Modal, Button, Form } from "react-bootstrap";
+import { Trans, withTranslation } from "react-i18next";
 import "../../../assets/custom.css";
+
 export class Plan extends Component {
   constructor(props) {
     super(props);
@@ -31,11 +33,11 @@ export class Plan extends Component {
 
   handleChange = (event) => {
     const { name, value } = event.target;
-    this.setState({ 
+    this.setState({
       editingPlan: {
         ...this.state.editingPlan,
-        [name]: value
-      }
+        [name]: value,
+      },
     });
   };
 
@@ -97,8 +99,11 @@ export class Plan extends Component {
       });
   }
 
-  handleUpdatePlan(){
-    ApiServices.updateSubscriptionPlan(this.state.editingPlan,this.state.editingPlan.id)
+  handleUpdatePlan() {
+    ApiServices.updateSubscriptionPlan(
+      this.state.editingPlan,
+      this.state.editingPlan.id
+    )
       .then((res) => {
         if (!res.status) {
           toast.error(res.data.message, {
@@ -129,11 +134,14 @@ export class Plan extends Component {
   }
   render() {
     const { plan, editingPlan } = this.state;
+    const { t } = this.props;
     return (
       <>
         <div className="bundleLinkPage adminPlan">
           <div className="page-header">
-            <h3 className="fontBold latterSpacing">Plan</h3>
+            <h3 className="fontBold latterSpacing">
+              <Trans>Plans</Trans>
+            </h3>
           </div>
           <ToastContainer />
           <div className="row">
@@ -167,7 +175,11 @@ export class Plan extends Component {
                                       : "mdi mdi-close-circle"
                                   }`}
                             ></i>
-                            {plans.status ? "Active" : "Inactive"}
+                            {plans.status ? (
+                              <Trans>Active</Trans>
+                            ) : (
+                              <Trans>Inactive</Trans>
+                            )}
                           </span>
                         </div>
                         <h4 className="exHeading latterSpacing fontBold800">
@@ -192,7 +204,9 @@ export class Plan extends Component {
                           <li>
                             <hr />
                           </li>
-                          <li className="detailsText pl-1 ctColor">DETAILS</li>
+                          <li className="detailsText pl-1 ctColor">
+                            <Trans>DETAILS</Trans>
+                          </li>
                           <li className="pl-1">
                             <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
                             <span className="ml-1">
@@ -228,7 +242,7 @@ export class Plan extends Component {
                             <hr />
                           </li>
                           <li className="detailsText pl-1 ctColor">
-                            REPORTING
+                            <Trans>REPORTING</Trans>
                           </li>
                           <li className="pl-1">
                             <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
@@ -240,23 +254,27 @@ export class Plan extends Component {
                             <hr />
                           </li>
                           <li className="detailsText pl-1 ctColor">
-                            PLACEMENT IN
+                            <Trans>PLACEMENT IN</Trans>
                           </li>
                           <li className="pl-2">
                             <div className="d-flex">
-                              <p className="mr-3 planRound fontBold500">Blog</p>
                               <p className="mr-3 planRound fontBold500">
-                                Magazines
+                                <Trans>Blog</Trans>
                               </p>
                               <p className="mr-3 planRound fontBold500">
-                                Newspapers
+                                <Trans>Magazines</Trans>
+                              </p>
+                              <p className="mr-3 planRound fontBold500">
+                                <Trans>Newspapers</Trans>
                               </p>
                             </div>
                           </li>
                           <li>
                             <hr />
                           </li>
-                          <li className="detailsText pl-1 ctColor">METRICS</li>
+                          <li className="detailsText pl-1 ctColor">
+                            <Trans>METRICS</Trans>
+                          </li>
                           <li className="pl-2">
                             <div className="d-flex">
                               <img
@@ -285,7 +303,7 @@ export class Plan extends Component {
                               />
                               <div style={{ lineHeight: "normal" }}>
                                 <span className="ctColor">
-                                  Domain Authority
+                                  <Trans>Domain Authority</Trans>
                                 </span>
                                 <br />
                                 <span>moz.com</span>
@@ -295,13 +313,13 @@ export class Plan extends Component {
                               </div>
                             </div>
                           </li>
-                          <li className="mt-5">                            
+                          <li className="mt-5">
                             <button
                               className="btn btn-rounded font-weight-medium auth-form-btn"
                               style={{ width: "100%" }}
                               onClick={() => this.openEditModal(plans)}
                             >
-                              Edit
+                              <Trans>Edit</Trans>
                             </button>
                           </li>
                         </ul>
@@ -323,7 +341,7 @@ export class Plan extends Component {
             <Modal.Header closeButton>
               <div>
                 <span className="modal-title h3 font-weight-bold">
-                  Edit Plan
+                  <Trans>Edit Plan</Trans>
                 </span>
               </div>
             </Modal.Header>
@@ -333,12 +351,12 @@ export class Plan extends Component {
                   <Form>
                     <Form.Group>
                       <label className="font-weight-bold" htmlFor="name">
-                        Name
+                        <Trans>Name</Trans>
                       </label>
                       <Form.Control
                         type="text"
                         className="form-control form-control-lg"
-                        placeholder="Plan name e.g Agency"
+                        placeholder={t("Plan name e.g Agency")}
                         name="name"
                         id="name"
                         aria-label="name"
@@ -348,12 +366,12 @@ export class Plan extends Component {
                     </Form.Group>
                     <Form.Group>
                       <label className="font-weight-bold" htmlFor="description">
-                        Description
+                        <Trans>Description</Trans>
                       </label>
                       <Form.Control
                         type="text"
                         className="form-control form-control-lg"
-                        placeholder="Description"
+                        placeholder={t("Description")}
                         name="description"
                         id="description"
                         aria-label="description"
@@ -363,12 +381,12 @@ export class Plan extends Component {
                     </Form.Group>
                     <Form.Group>
                       <label className="font-weight-bold" htmlFor="price">
-                        Price
+                        <Trans>Price</Trans>
                       </label>
                       <Form.Control
                         type="number"
                         className="form-control form-control-lg"
-                        placeholder="Price"
+                        placeholder={t("Price")}
                         name="price"
                         id="price"
                         aria-label="price"
@@ -381,13 +399,13 @@ export class Plan extends Component {
                         className="font-weight-bold"
                         htmlFor="cancellation_period"
                       >
-                        Cancellation period (in days)
+                        <Trans>Cancellation period (in days)</Trans>
                       </label>
                       <Form.Control
                         type="number"
                         className="form-control form-control-lg"
-                        placeholder="Price"
                         name="cancellation_period"
+                        placeholder={t("Cancellation period (in days)")}
                         id="cancellation_period"
                         aria-label="cancellation_period"
                         value={editingPlan.cancellation_period}
@@ -399,12 +417,12 @@ export class Plan extends Component {
                         className="font-weight-bold"
                         htmlFor="max_domains_per_month"
                       >
-                        Max domains per_month (in number)
+                        <Trans>Max domains per month (in number)</Trans>
                       </label>
                       <Form.Control
                         type="number"
                         className="form-control form-control-lg"
-                        placeholder="E,g 15"
+                        placeholder="e.g 15"
                         name="max_domains_per_month"
                         id="max_domains_per_month"
                         aria-label="max_domains_per_month"
@@ -414,12 +432,12 @@ export class Plan extends Component {
                     </Form.Group>
                     <Form.Group>
                       <label className="font-weight-bold" htmlFor="max_orders">
-                        Max orders
+                        <Trans>Max orders</Trans>
                       </label>
                       <Form.Control
                         type="number"
                         className="form-control form-control-lg"
-                        placeholder="E,g 15"
+                        placeholder="E.g 15"
                         name="max_orders"
                         id="max_orders"
                         aria-label="max_orders"
@@ -432,12 +450,12 @@ export class Plan extends Component {
                         className="font-weight-bold"
                         htmlFor="credits_price"
                       >
-                        Credit price
+                        <Trans>Credit price</Trans>
                       </label>
                       <Form.Control
                         type="number"
                         className="form-control form-control-lg"
-                        placeholder="E,g 15"
+                        placeholder="E.g 15"
                         name="credits_price"
                         id="credits_price"
                         aria-label="credits_price"
@@ -450,12 +468,12 @@ export class Plan extends Component {
                         className="font-weight-bold"
                         htmlFor="credits_quota"
                       >
-                        Credit quota
+                        <Trans>Credit quota</Trans>
                       </label>
                       <Form.Control
                         type="number"
                         className="form-control form-control-lg"
-                        placeholder="E,g 15"
+                        placeholder="E.g 15"
                         name="credits_quota"
                         id="credits_quota"
                         aria-label="credits_quota"
@@ -465,12 +483,12 @@ export class Plan extends Component {
                     </Form.Group>
                     <Form.Group>
                       <label className="font-weight-bold" htmlFor="validity">
-                        Validity (in days)
+                        <Trans>Validity (in days)</Trans>
                       </label>
                       <Form.Control
                         type="number"
                         className="form-control form-control-lg"
-                        placeholder="E,g 30"
+                        placeholder="E.g 30"
                         name="validity"
                         id="validity"
                         aria-label="validity"
@@ -480,7 +498,7 @@ export class Plan extends Component {
                     </Form.Group>
                     <Form.Group>
                       <label className="font-weight-bold" htmlFor="status">
-                        Status
+                        <Trans>Status</Trans>
                       </label>
                       <Form.Control
                         as="select"
@@ -491,7 +509,7 @@ export class Plan extends Component {
                         value={editingPlan.status}
                         onChange={this.handleChange}
                       >
-                        <option value="">Select status</option>
+                        <option value="">{t("Select status")}</option>
                         <option value="1">Active</option>
                         <option value="0">InActive</option>
                       </Form.Control>
@@ -505,7 +523,7 @@ export class Plan extends Component {
                 className="btn btn-block btn-rounded btn-lg"
                 onClick={() => this.handleUpdatePlan()}
               >
-                Update plan
+                <Trans>Update plan</Trans>
               </Button>
             </Modal.Footer>
           </Modal>
@@ -515,4 +533,5 @@ export class Plan extends Component {
   }
 }
 
-export default withRouter(Plan);
+// export default withRouter(Plan);
+export default withTranslation()(Plan);

@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthService from "../services/auth.service";
-import { Trans } from "react-i18next";
+import { Trans,withTranslation } from "react-i18next";
 import "../../assets/custom.css";
 export class Login extends Component {
   constructor(props) {
@@ -59,6 +59,7 @@ export class Login extends Component {
   };
   render() {
     const { password, email, error } = this.state;
+    const { t } = this.props;
     return (
       <div className="loginPage">
         <div className="d-flex align-items-center auth px-0 bgColor">
@@ -82,7 +83,7 @@ export class Login extends Component {
                   <Form.Group className="d-flex search-field">
                     <Form.Control
                       type="email"
-                      placeholder="Email"
+                      placeholder={t('Email *')}
                       size="lg"
                       name="email"
                       className="h-auto"
@@ -93,7 +94,7 @@ export class Login extends Component {
                   <Form.Group className="d-flex search-field">
                     <Form.Control
                       type="password"
-                      placeholder="Password"
+                      placeholder={t('Password *')}
                       size="lg"
                       name="password"
                       className="h-auto"
@@ -158,4 +159,5 @@ export class Login extends Component {
   }
 }
 
-export default withRouter(Login);
+// export default withRouter(Login);
+export default withTranslation()(withRouter(Login));

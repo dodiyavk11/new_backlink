@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import ApiServices from "../../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
+import { Trans,withTranslation } from "react-i18next";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../assets/custom.css";
+
 class AddPublisherProjects extends Component {
   constructor(props) {
     super(props);
@@ -131,6 +133,7 @@ class AddPublisherProjects extends Component {
       textInclude,
       language,
     } = this.state;
+    const { t } =  this.props;
     return (
       <div className="modalDivClass">
         <ToastContainer />
@@ -145,7 +148,7 @@ class AddPublisherProjects extends Component {
           <Modal.Header closeButton>
             <div>
               <span className="modal-title h3 font-weight-bold">
-                Add Domain
+                <Trans>Add Domain</Trans>
               </span>
             </div>
           </Modal.Header>
@@ -153,7 +156,7 @@ class AddPublisherProjects extends Component {
             <Form>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="domain_name">
-                  Domain
+                <Trans>Domain</Trans>
                 </label>
                 <Form.Control
                   type="text"
@@ -168,7 +171,7 @@ class AddPublisherProjects extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="price">
-                  Price
+                <Trans>Price</Trans>
                 </label>
                 <Form.Control
                   type="text"
@@ -182,7 +185,7 @@ class AddPublisherProjects extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="category_id">
-                  Category
+                <Trans>Category</Trans>
                 </label>
                 <select
                   className="form-control"
@@ -191,7 +194,7 @@ class AddPublisherProjects extends Component {
                   value={category_id}
                   onChange={this.handleChange}
                 >
-                  <option value="">Select category</option>
+                  <option value="">{t('Select category')}</option>
                   {this.state.domainCategoryList.map((option) => (
                     <option key={option.id} value={option.id}>
                       {option.name}
@@ -213,7 +216,7 @@ class AddPublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    As desired
+                    <Trans>As desired</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -228,13 +231,13 @@ class AddPublisherProjects extends Component {
                       value={"No restrictions"}
                     />
                     <i className="input-helper"></i>
-                    No restrictions
+                    <Trans>No restrictions</Trans>
                   </label>
                 </div>
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="deliveryTime">
-                  Delivery time (in days)
+                <Trans>Delivery time (in days)</Trans>
                 </label>
                 <Form.Control
                   type="number"
@@ -249,7 +252,7 @@ class AddPublisherProjects extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold">
-                  Relationship attribute
+                <Trans>Relationship attribute</Trans>
                 </label>
                 <div className="form-check">
                   <label className="form-check-label" htmlFor="attribute">
@@ -263,7 +266,7 @@ class AddPublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    dofollow
+                    <Trans>dofollow</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -278,13 +281,13 @@ class AddPublisherProjects extends Component {
                       value={"nofollow"}
                     />
                     <i className="input-helper"></i>
-                    nofollow
+                    <Trans>nofollow</Trans>
                   </label>
                 </div>
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold">
-                  Sensitive topics allowed?
+                <Trans>Sensitive topics allowed?</Trans>
                 </label>
                 <div className="form-check">
                   <label className="form-check-label" htmlFor="sensitiveTopic">
@@ -298,7 +301,7 @@ class AddPublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    Yes
+                    <Trans>Yes</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -313,7 +316,7 @@ class AddPublisherProjects extends Component {
                       value={0}
                     />
                     <i className="input-helper"></i>
-                    No
+                    <Trans>No</Trans>
                   </label>
                 </div>
               </Form.Group>
@@ -322,7 +325,7 @@ class AddPublisherProjects extends Component {
                   className="font-weight-bold"
                   htmlFor="sensitiveTopicCharge"
                 >
-                  Additional charge for sensitive topics
+                  <Trans>Additional charge for sensitive topics</Trans>
                 </label>
                 <Form.Control
                   type="text"
@@ -337,7 +340,7 @@ class AddPublisherProjects extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold" htmlFor="minWordCount">
-                  Minimum word count
+                <Trans>Minimum word count</Trans>
                 </label>
                 <Form.Control
                   type="text"
@@ -352,7 +355,7 @@ class AddPublisherProjects extends Component {
               </Form.Group>
               <Form.Group>
                 <label className="font-weight-bold">
-                  Text creation allowed by customers?
+                <Trans>Text creation allowed by customers?</Trans>
                 </label>
                 <div className="form-check">
                   <label className="form-check-label" htmlFor="textByCustomer">
@@ -366,7 +369,7 @@ class AddPublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    Yes
+                    <Trans>Yes</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -381,7 +384,7 @@ class AddPublisherProjects extends Component {
                       value={0}
                     />
                     <i className="input-helper"></i>
-                    No
+                    <Trans>No</Trans>
                   </label>
                 </div>
               </Form.Group>
@@ -399,7 +402,7 @@ class AddPublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    Yes
+                    <Trans>Yes</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -414,12 +417,12 @@ class AddPublisherProjects extends Component {
                       value={0}
                     />
                     <i className="input-helper"></i>
-                    No
+                    <Trans>No</Trans>
                   </label>
                 </div>
               </Form.Group>
               <Form.Group>
-                <label className="font-weight-bold">Language</label>
+                <label className="font-weight-bold"><Trans>Language</Trans></label>
                 <div className="form-check">
                   <label className="form-check-label" htmlFor="language">
                     <input
@@ -432,7 +435,7 @@ class AddPublisherProjects extends Component {
                       onChange={this.handleChange}
                     />
                     <i className="input-helper"></i>
-                    English
+                    <Trans>English</Trans>
                   </label>
                 </div>
                 <div className="form-check">
@@ -447,7 +450,7 @@ class AddPublisherProjects extends Component {
                       value={"de"}
                     />
                     <i className="input-helper"></i>
-                    German
+                    <Trans>German</Trans>
                   </label>
                 </div>
               </Form.Group>
@@ -455,7 +458,7 @@ class AddPublisherProjects extends Component {
                 className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
                 onClick={() => this.handleDomainAddSubmit()}
               >
-                Add Domain
+                <Trans>Add Domain</Trans>
               </Button>
             </Form>
           </Modal.Body>
@@ -465,4 +468,5 @@ class AddPublisherProjects extends Component {
   }
 }
 
-export default AddPublisherProjects;
+// export default AddPublisherProjects;
+export default withTranslation()(AddPublisherProjects);

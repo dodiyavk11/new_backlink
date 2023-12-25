@@ -8,6 +8,7 @@ import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Box from "@material-ui/core/Box";
 import ProjectList from "./ProjectList";
+import { Trans } from "react-i18next";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../assets/custom.css";
 
@@ -28,7 +29,7 @@ export class Projects extends Component {
 
   handleChange = (event, newValue) => {
     this.setState({ value: newValue });
-  }; 
+  };
 
   handleLoadData = (filter = null, tab = 0) => {
     ApiServices.adminProjectList(filter, tab)
@@ -82,7 +83,9 @@ export class Projects extends Component {
     return (
       <div className="projectsPage">
         <div className="page-header">
-          <h3 className="fontBold latterSpacing">Projects List</h3>
+          <h3 className="fontBold latterSpacing">
+            <Trans>Projects List</Trans>
+          </h3>
         </div>
         <ToastContainer />
         <div className="row">
@@ -107,7 +110,7 @@ export class Projects extends Component {
                             <div
                               style={{ display: "flex", alignItems: "center" }}
                             >
-                              Active Projects
+                              <Trans>Active Projects</Trans>
                               <span className="notification-icon--fixed">
                                 <small className="notification-badge fontBold500">
                                   {this.state.nonArchivedProject.length}
@@ -123,7 +126,7 @@ export class Projects extends Component {
                             <div
                               style={{ display: "flex", alignItems: "center" }}
                             >
-                              Archived Projects
+                              <Trans>Archived Projects</Trans>
                               <span className="notification-icon--fixed">
                                 <small className="notification-badge fontBold500">
                                   {this.state.archivedProject.length}
@@ -159,7 +162,9 @@ export class Projects extends Component {
                             alt="No data found..."
                           />
                         </div>
-                        <h2>No Active Project</h2>
+                        <h2>
+                          <Trans>No Active Project</Trans>
+                        </h2>
                       </center>
                     ))}
                   {value === "2" &&
@@ -175,7 +180,9 @@ export class Projects extends Component {
                             alt="No data found..."
                           />
                         </div>
-                        <h2>No Archived Projects</h2>
+                        <h2>
+                          <Trans>No Archived Projects</Trans>
+                        </h2>
                       </center>
                     ))}
                 </div>

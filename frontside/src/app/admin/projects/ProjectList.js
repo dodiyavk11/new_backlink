@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import TimeAgo from "timeago-react";
 import "react-toastify/dist/ReactToastify.css";
+import { Trans } from "react-i18next";
 import {
   Typography,
   Slider,
@@ -76,41 +77,45 @@ export class ProjectList extends Component {
     const columns = [
       {
         id: "id",
-        label: "id",
+        label: <Trans>ID</Trans>,
         height: 70,
         width: 345,
         sortable: true,
       },
       {
         id: "domain_name",
-        label: "Project",
+        label: <Trans>Project</Trans>,
         height: 70,
         width: 345,
         sortable: false,
       },
       {
         id: "created_at",
-        label: "Created",
+        label: <Trans>Created</Trans>,
         align: "right",
         width: 90,
-        sortable:false,
+        sortable: false,
         renderCell: (row) => (
-          <TimeAgo datetime={row.created_at} locale="en" style={{fontSize:"10px"}}/>
+          <TimeAgo
+            datetime={row.created_at}
+            locale="en"
+            style={{ fontSize: "10px" }}
+          />
         ),
       },
       {
         id: "budget",
-        label: "Budget",
+        label: <Trans>Budget</Trans>,
         width: 130,
         sortable: true,
         renderCell: (row) => <span>{row.budget}</span>,
       },
       {
         id: "user",
-        label: "User",
+        label: <Trans>User</Trans>,
         width: 130,
         align: "right",
-        sortable:false,
+        sortable: false,
         format: (value) => value.toLocaleString("en-US"),
         renderCell: (row) => (
           <span>
@@ -120,10 +125,10 @@ export class ProjectList extends Component {
       },
       {
         id: "email",
-        label: "Email",
+        label: <Trans>Email</Trans>,
         width: 130,
         sortable: false,
-        sortable:false,
+        sortable: false,
         renderCell: (row) => <span>{row.user.email}</span>,
       },
       // {

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import ApiServices from "../../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
+import { Trans } from "react-i18next";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../assets/custom.css";
 class PublisherUplaodExcelDomain extends Component {
@@ -9,7 +10,7 @@ class PublisherUplaodExcelDomain extends Component {
     super(props);
     this.state = {
       file: null,
-      error:'',
+      error: "",
     };
   }
   handleFileChange = (event) => {
@@ -20,16 +21,15 @@ class PublisherUplaodExcelDomain extends Component {
   handleDomainAddSubmit = () => {
     const formData = new FormData();
     formData.append("file", this.state.file);
-    if (!this.state.file) 
-    {
+    if (!this.state.file) {
       this.setState({ error: "File are required fields." });
     } else {
       ApiServices.publisherUploadExcelFile(formData).then(
         (res) => {
           this.props.handleClose();
           this.setState({
-              file:null
-          })
+            file: null,
+          });
           if (res.status) {
             toast.success(res.data.message, {
               position: "top-center",
@@ -54,7 +54,7 @@ class PublisherUplaodExcelDomain extends Component {
     }
   };
   render() {
-    const { file,error } = this.state;
+    const { file, error } = this.state;
     return (
       <div className="modalDivClass">
         <ToastContainer />
@@ -69,7 +69,7 @@ class PublisherUplaodExcelDomain extends Component {
           <Modal.Header closeButton>
             <div>
               <span className="modal-title h3 font-weight-bold">
-                Upload Excel file
+                <Trans>Upload Excel file</Trans>
               </span>
             </div>
           </Modal.Header>
@@ -77,7 +77,7 @@ class PublisherUplaodExcelDomain extends Component {
             <Form>
               <Form.Group>
                 <label className="font-weight-bold mb-4" htmlFor="file">
-                  Upload Excel File{" "}
+                  <Trans>Upload Excel file</Trans>
                   <span className="sampleFile ml-4">
                     <a
                       href={`${ApiServices.APP_URL.replace(
@@ -88,7 +88,9 @@ class PublisherUplaodExcelDomain extends Component {
                       rel="noopener noreferrer"
                       className="hrefTitle"
                     >
-                      <b className="text-warning">Download sample excel file</b>
+                      <b className="text-warning">
+                        <Trans>Download sample excel file</Trans>
+                      </b>
                     </a>
                   </span>
                 </label>
@@ -106,7 +108,7 @@ class PublisherUplaodExcelDomain extends Component {
                 className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
                 onClick={() => this.handleDomainAddSubmit()}
               >
-                Upload
+                <Trans>Upload</Trans>
               </Button>
             </Form>
           </Modal.Body>
