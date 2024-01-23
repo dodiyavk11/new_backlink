@@ -1106,3 +1106,24 @@ input[type="date"]
 {
     opacity: 0.5;
 }
+
+.floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+  }
+  
+  .floating-button button {
+    background-color: #ea6918;
+    color: #fff;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }  
+
+  .floating-button button i {
+    font-size: 25px;
+}

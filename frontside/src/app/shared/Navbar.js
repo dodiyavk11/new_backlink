@@ -11,14 +11,14 @@ class Navbar extends Component {
       user: {},
       isAuthenticated: this.props.isAuthenticated,
       cartDatas: [],
-      lng:"en",
+      lng: "en",
     };
     this.handleLogouts = this.handleLogouts.bind(this);
   }
   changeLanguage = (lng) => {
     const { i18n } = this.props;
     this.props.i18n.changeLanguage(lng);
-    this.setState({ lng:lng })
+    this.setState({ lng: lng });
   };
   deleteCartItem = (cartId) => {
     ApiServices.deleteItemFromCart(cartId).then(
@@ -77,12 +77,18 @@ class Navbar extends Component {
       }, 0)
       .toFixed(2);
     const isAdmin = localStorage.getItem("isAdmin");
+    const linkHome =
+      this.state.user.isAdmin === 1
+        ? "/admin/orders"
+        : this.state.user.isAdmin === 2
+        ? "/publisher/domain"
+        : "/dashboard";
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex justify-content-center">
           <Link
             className="navbar-brand brand-logo d-flex justify-content-center"
-            to="/"
+            to={linkHome}
           >
             <div>
               <img
@@ -114,8 +120,9 @@ class Navbar extends Component {
                 alt="DE"
                 title="German"
                 width={20}
-                className={`mr-3 cursorClass ${this.state.lng === 'de' ? 'optacity05' : ''}`}
-
+                className={`mr-3 cursorClass ${
+                  this.state.lng === "de" ? "optacity05" : ""
+                }`}
               />
             </li>
             <li className="nav-item">
@@ -125,7 +132,9 @@ class Navbar extends Component {
                 alt="DE"
                 width={20}
                 title="English"
-                className={`mr-3 cursorClass ${this.state.lng === 'en' ? 'optacity05' : ''}`}
+                className={`mr-3 cursorClass ${
+                  this.state.lng === "en" ? "optacity05" : ""
+                }`}
               />
             </li>
             <li className="nav-item">
@@ -141,9 +150,13 @@ class Navbar extends Component {
                   {cartDatas.length > 0 ? (
                     <div className="d-flex justify-content-between">
                       <h5 className="p-3 mb-0">
-                        <Trans><Trans>Wagen</Trans></Trans>
+                        <Trans>
+                          <Trans>Wagen</Trans>
+                        </Trans>
                       </h5>
-                      <h6 className="p-3 mb-0">{cartDatas.length} <Trans>items</Trans></h6>
+                      <h6 className="p-3 mb-0">
+                        {cartDatas.length} <Trans>items</Trans>
+                      </h6>
                     </div>
                   ) : (
                     <div className="d-flex justify-content-center p-3">
@@ -154,7 +167,9 @@ class Navbar extends Component {
                             alt="No data found..."
                           />
                         </div>
-                        <h4><Trans>Your cart is empty.</Trans></h4>
+                        <h4>
+                          <Trans>Your cart is empty.</Trans>
+                        </h4>
                         <p style={{ maxWidth: "400px" }}>
                           <Trans>You can add contentlinks to your cart.</Trans>
                         </p>
@@ -193,7 +208,9 @@ class Navbar extends Component {
                       <div className="dropdown-divider"></div>
                       <div className="d-flex justify-content-between p-3">
                         <div>
-                          <h5><Trans>Total</Trans></h5>
+                          <h5>
+                            <Trans>Total</Trans>
+                          </h5>
                         </div>
                         <div>
                           <h3>

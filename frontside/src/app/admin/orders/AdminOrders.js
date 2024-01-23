@@ -35,6 +35,18 @@ export class AdminOrders extends Component {
       orderBy: "id",
       order: "desc",
       selectedRow: null,
+      columnVisibility: {
+        id: true,
+        datetime: true,
+        status: true,
+        backlink: false,
+        publisher:true,
+        customer:true,
+        project: false,
+        anchortext: false,
+        targeturl: false,
+        total_price: false,
+      },
       orderData: [],
       showPopover: false,
       status: [
@@ -158,6 +170,20 @@ export class AdminOrders extends Component {
     this.setState({ searchValue: e.target.value }, this.updateFilterData);
   };
 
+  togglePopover = () => {
+    this.setState((prevState) => ({ showPopover: !prevState.showPopover }));
+  };
+
+  handleToggleColumnVisibility = (columnId) => {
+    this.setState((prevState) => {
+      const updatedVisibility = {
+        ...prevState.columnVisibility,
+        [columnId]: !prevState.columnVisibility[columnId],
+      };
+      return { columnVisibility: updatedVisibility };
+    });
+  };
+
   handleOpenContentDomain = (url) => {
     window.open("https://" + url, "_blank");
   };
@@ -208,34 +234,7 @@ export class AdminOrders extends Component {
   }
 
   componentDidMount() {
-    this.fetchAdminOrder();
-
-    ApiServices.getDomainCategoryList().then(
-      (res) => {
-        if (res.data.status) {
-          const transformedData = res.data.data.map((category) => ({
-            id: category.id,
-            value: category.id,
-            label: category.name,
-          }));
-          this.setState({
-            category: transformedData,
-          });
-        }
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        toast.error(resMessage, {
-          position: "top-center",
-          autoClose: 2000,
-        });
-      }
-    );
+    this.fetchAdminOrder();    
   }
   render() {
     const {
@@ -248,6 +247,8 @@ export class AdminOrders extends Component {
       order,
       isDisable,
       searchValue,
+      columnVisibility,
+      showPopover,
       favoriteProducts,
     } = this.state;
     const { t } = this.props;
@@ -317,6 +318,22 @@ export class AdminOrders extends Component {
         ),
       },
       {
+        id: "customer",
+        label: <Trans>Customer</Trans>,
+        align: "right",
+        width: 90,
+        sortable: false,
+        renderCell: (row) => <span>{`${row.customer.firstName} ${row.customer.lastName}`}</span>,
+      },
+      {
+        id: "publisher",
+        label: <Trans>Advertiser</Trans>,
+        align: "right",
+        width: 90,
+        sortable: false,
+        renderCell: (row) => <span>{`${row.publisher.firstName} ${row.publisher.lastName}`}</span>,
+      },
+      {
         id: "anchortext",
         label: <Trans>Anchor text</Trans>,
         align: "right",
@@ -345,30 +362,6 @@ export class AdminOrders extends Component {
         width: 90,
         renderCell: (row) => <span>${row.total_price}</span>,
       },
-      // {
-      //   id: "aciton",
-      //   label: "",
-      //   width: 160,
-      //   align: "right",
-      //   sortable: false,
-      //   renderCell: (row) => {
-      //     return (
-      //       <div>
-      //         <svg
-      //           onClick={() => this.props.handleAddtoCart(row.hash_id)}
-      //           xmlns="http://www.w3.org/2000/svg"
-      //           width={20}
-      //           fill="currentColor"
-      //           className="bi bi-bag"
-      //           viewBox="0 0 16 16"
-      //           style={{ color: "#757575c9", fontWeight: "bold" }}
-      //         >
-      //           <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-      //         </svg>
-      //       </div>
-      //     );
-      //   },
-      // },
     ];
 
     return (
@@ -387,81 +380,262 @@ export class AdminOrders extends Component {
                 <div className="card-body projectsCard">
                   <ToastContainer />
                   <div className="d-flex justify-content-between MarketPlaceTab">
-                    <div className="float-left flex">
-                      <form className="form-inline">
-                        <div className="input-group input-focus mr-2">
-                          <div className="input-group-prepend">
-                            <span className="input-group-text bg-white customSearchIcon">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="13"
-                                height="13"
-                                fill="currentColor"
-                                className="bi bi-search"
-                                viewBox="0 0 16 16"
-                              >
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                              </svg>
-                            </span>
+                      <div className="float-left flex">
+                        <form className="form-inline">
+                          <div className="input-group input-focus mr-2">
+                            <div className="input-group-prepend">
+                              <span className="input-group-text bg-white customSearchIcon">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="13"
+                                  height="13"
+                                  fill="currentColor"
+                                  className="bi bi-search"
+                                  viewBox="0 0 16 16"
+                                >
+                                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                </svg>
+                              </span>
+                            </div>
+                            <input
+                              type="search"
+                              // placeholder="Search backlink"
+                              placeholder={t("Search backlink")}
+                              className="form-control border-left-0 customSearch"
+                              onChange={this.handleOnSearch}
+                              value={searchValue}
+                            />
                           </div>
-                          <input
-                            type="search"
-                            // placeholder="Search backlink"
-                            placeholder={t("Search backlink")}
-                            className="form-control border-left-0 customSearch"
-                            onChange={this.handleOnSearch}
-                            value={searchValue}
+                          <ReactMultiSelectCheckboxes
+                            options={this.state.status}
+                            placeholderButtonLabel={t("Status")}
+                            onChange={this.handleStatusChange}
                           />
-                        </div>
-                        <ReactMultiSelectCheckboxes
-                          options={this.state.status}
-                          placeholderButtonLabel={t("Status")}
-                          onChange={this.handleStatusChange}
-                        />
-                        {/* <ReactMultiSelectCheckboxes
-                          options={this.state.projectType}
-                          placeholderButtonLabel={t("Product Type")}
-                          onChange={this.handleProjectTypeChange}
-                        /> */}
-                        {/* <ReactMultiSelectCheckboxes
-                options={this.state.project}
-                placeholderButtonLabel="Project"
-                onChange={this.handleProjectChange}
-              /> */}
-                        <CPopover
-                          // trigger="focus"
-                          className="datepickerPopoverclass"
+                          <CPopover
+                            // trigger="focus"
+                            className="datepickerPopoverclass"
+                          >
+                            <button
+                              type="button"
+                              className="css-1r4vtzz custamFilterBtn"
+                            >
+                              <span className="css-1v99tuv">
+                                <input
+                                  type="date"
+                                  placeholder="Date"
+                                  onChange={this.handleDateChange}
+                                />
+                              </span>
+                              <span className="css-1gpjby2">
+                                <svg
+                                  width="24"
+                                  height="24"
+                                  viewBox="0 0 24 24"
+                                  focusable="false"
+                                  role="presentation"
+                                >
+                                  <path
+                                    d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z"
+                                    fill="currentColor"
+                                    fillRule="evenodd"
+                                  ></path>
+                                </svg>
+                              </span>
+                            </button>
+                          </CPopover>
+                        </form>
+                      </div>
+                      <div>
+                        <div
+                          className="float-right flex"
+                          style={{ position: "relative" }}
                         >
                           <button
-                            type="button"
-                            className="css-1r4vtzz custamFilterBtn"
+                            className="btn btn-rounded custamFilterBtn"
+                            onClick={this.togglePopover}
                           >
-                            <span className="css-1v99tuv">
-                              <input
-                                type="date"
-                                placeholder="Date"
-                                onChange={this.handleDateChange}
+                            {" "}
+                            <svg
+                              width={20}
+                              id="adjustments"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
                               />
-                            </span>
-                            <span className="css-1gpjby2">
-                              <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                focusable="false"
-                                role="presentation"
-                              >
-                                <path
-                                  d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z"
-                                  fill="currentColor"
-                                  fillRule="evenodd"
-                                ></path>
-                              </svg>
-                            </span>
+                            </svg>
+                            <Trans>Customize table</Trans>
                           </button>
-                        </CPopover>
-                      </form>
-                    </div>
+                          {showPopover && (
+                            <div
+                              className="popover bRadius"
+                              style={{ top: "100%", left: 0 }}
+                            >
+                              <div className="popover-content">
+                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                  <span className="mr-4 text-nowrap">
+                                    Datetime
+                                  </span>
+                                  <label className="switch">
+                                    <input
+                                      type="checkbox"
+                                      checked={columnVisibility.datetime}
+                                      onClick={() =>
+                                        this.handleToggleColumnVisibility(
+                                          "datetime"
+                                        )
+                                      }
+                                    />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                  <span className="mr-4 text-nowrap">
+                                    <Trans>Status</Trans>
+                                  </span>
+                                  <label className="switch">
+                                    <input
+                                      type="checkbox"
+                                      checked={columnVisibility.status}
+                                      onClick={() =>
+                                        this.handleToggleColumnVisibility(
+                                          "status"
+                                        )
+                                      }
+                                    />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                  <span className="mr-4">
+                                    <Trans>Backlink</Trans>
+                                  </span>
+                                  <label className="switch">
+                                    <input
+                                      type="checkbox"
+                                      checked={columnVisibility.backlink}
+                                      onClick={() =>
+                                        this.handleToggleColumnVisibility(
+                                          "backlink"
+                                        )
+                                      }
+                                    />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                  <span className="mr-4 text-nowrap">
+                                    <Trans>Project</Trans>
+                                  </span>
+                                  <label className="switch">
+                                    <input
+                                      type="checkbox"
+                                      checked={columnVisibility.project}
+                                      onClick={() =>
+                                        this.handleToggleColumnVisibility(
+                                          "project"
+                                        )
+                                      }
+                                    />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                  <span className="mr-4 text-nowrap">
+                                    <Trans>Customer</Trans>
+                                  </span>
+                                  <label className="switch">
+                                    <input
+                                      type="checkbox"
+                                      checked={columnVisibility.customer}
+                                      onClick={() =>
+                                        this.handleToggleColumnVisibility(
+                                          "customer"
+                                        )
+                                      }
+                                    />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                  <span className="mr-4 text-nowrap">
+                                    <Trans>Advertiser</Trans>
+                                  </span>
+                                  <label className="switch">
+                                    <input
+                                      type="checkbox"
+                                      checked={columnVisibility.publisher}
+                                      onClick={() =>
+                                        this.handleToggleColumnVisibility(
+                                          "publisher"
+                                        )
+                                      }
+                                    />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                  <span className="mr-4 pull-left text-nowrap">
+                                    <Trans>Anchor text</Trans>
+                                  </span>
+                                  <label className="switch pull-right">
+                                    <input
+                                      type="checkbox"
+                                      checked={columnVisibility.anchortext}
+                                      onClick={() =>
+                                        this.handleToggleColumnVisibility(
+                                          "anchortext"
+                                        )
+                                      }
+                                    />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                  <span className="mr-4 text-nowrap">
+                                    <Trans>Target url</Trans>
+                                  </span>
+                                  <label className="switch">
+                                    <input
+                                      type="checkbox"
+                                      checked={columnVisibility.targeturl}
+                                      onClick={() =>
+                                        this.handleToggleColumnVisibility(
+                                          "targeturl"
+                                        )
+                                      }
+                                    />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                  <span className="mr-4 text-nowrap">
+                                    <Trans>Amount</Trans>
+                                  </span>
+                                  <label className="switch">
+                                    <input
+                                      type="checkbox"
+                                      checked={columnVisibility.total_price}
+                                      onClick={() =>
+                                        this.handleToggleColumnVisibility(
+                                          "total_price"
+                                        )
+                                      }
+                                    />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                   </div>
                   <hr style={{ marginBottom: "0px" }} />
                   <div
@@ -472,30 +646,32 @@ export class AdminOrders extends Component {
                         <Table stickyHeader aria-label="sticky table">
                           <TableHead>
                             <TableRow>
-                              {columns.map((column) => (
-                                <TableCell
-                                  className="text-uppercase"
-                                  key={column.id}
-                                  align={column.align}
-                                  style={{ minWidth: column.minWidth }}
-                                >
-                                  {column.sortable !== false ? (
-                                    <TableSortLabel
-                                      active={orderBy === column.id}
-                                      direction={
-                                        orderBy === column.id ? order : "asc"
-                                      }
-                                      onClick={() =>
-                                        this.handleRequestSort(column.id)
-                                      }
-                                    >
-                                      {column.label}
-                                    </TableSortLabel>
-                                  ) : (
-                                    <span>{column.label}</span>
-                                  )}
-                                </TableCell>
-                              ))}
+                              {columns.map((column) =>
+                                this.state.columnVisibility[column.id] ? (
+                                  <TableCell
+                                    className="text-uppercase"
+                                    key={column.id}
+                                    align={column.align}
+                                    style={{ minWidth: column.minWidth }}
+                                  >
+                                    {column.sortable !== false ? (
+                                      <TableSortLabel
+                                        active={orderBy === column.id}
+                                        direction={
+                                          orderBy === column.id ? order : "asc"
+                                        }
+                                        onClick={() =>
+                                          this.handleRequestSort(column.id)
+                                        }
+                                      >
+                                        {column.label}
+                                      </TableSortLabel>
+                                    ) : (
+                                      <span>{column.label}</span>
+                                    )}
+                                  </TableCell>
+                                ) : null
+                              )}
                             </TableRow>
                           </TableHead>
                           <TableBody>
@@ -525,20 +701,26 @@ export class AdminOrders extends Component {
                                       height: "55px",
                                     }}
                                   >
-                                    {columns.map((column) => (
-                                      <TableCell
-                                        className="fontBold600"
-                                        key={column.id}
-                                        align={column.align}
-                                      >
-                                        {column.renderCell
-                                          ? column.renderCell(row)
-                                          : column.format &&
-                                            typeof row[column.id] === "number"
-                                          ? column.format(row[column.id])
-                                          : row[column.id]}
-                                      </TableCell>
-                                    ))}
+                                    {columns.map(
+                                      (column) =>
+                                        this.state.columnVisibility[
+                                          column.id
+                                        ] && (
+                                          <TableCell
+                                            className="fontBold600"
+                                            key={column.id}
+                                            align={column.align}
+                                          >
+                                            {column.renderCell
+                                              ? column.renderCell(row)
+                                              : column.format &&
+                                                typeof row[column.id] ===
+                                                  "number"
+                                              ? column.format(row[column.id])
+                                              : row[column.id]}
+                                          </TableCell>
+                                        )
+                                    )}
                                   </TableRow>
                                 );
                               })}
