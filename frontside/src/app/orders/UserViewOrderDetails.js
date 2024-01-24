@@ -407,13 +407,7 @@ export class UserViewOrderDetails extends Component {
                             <Trans>Target Url</Trans>
                           </td>
                           <td className="text-end-ct">
-                            <a
-                              href={orderData.linktarget}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <Trans>Go to</Trans>
-                            </a>
+                            <span>{orderData.linktarget}</span>
                           </td>
                         </tr>
                         <tr>

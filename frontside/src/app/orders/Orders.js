@@ -275,7 +275,7 @@ export class Orders extends Component {
                           )}
                           onChange={this.handleOnSearch}
                           value={searchValue}
-                          className="form-control border-left-0 customSearch"
+                          className="form-control border-left-0 customSearch p-0"
                         />
                       </div>
                       <ReactMultiSelectCheckboxes

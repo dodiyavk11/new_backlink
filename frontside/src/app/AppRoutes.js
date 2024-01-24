@@ -57,6 +57,8 @@ const ProjectView = lazy(() => import("./projects/ProjectView"));
 const DomainView = lazy(() => import("./publisher/domain/DomainView"));
 const CartPage = lazy(() => import("./shared/Cart"));
 const paymentSuccess = lazy(() => import("./paymentSuccess"));
+const ContactUs = lazy(() => import("./admin/contactUs/ContactUs"));
+
 class AppRoutes extends Component {
   constructor(props) {
     super(props);
@@ -433,6 +435,14 @@ class AppRoutes extends Component {
                     exact
                     path="/admin/domainCategory"
                     component={domainCategory}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  
+                  <AdminProtected
+                    exact
+                    path="/admin/contact-us"
+                    component={ContactUs}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />

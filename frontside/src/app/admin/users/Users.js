@@ -39,6 +39,7 @@ export class Users extends Component {
       selectedUser: null,
       userId: null,
       showModal: false,
+      searchValue: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -139,6 +140,8 @@ export class Users extends Component {
       formData.append("lastName", lastName);
       formData.append("phone", phone);
       formData.append("id", selectedUser.id);
+      formData.append("isAdmin", type);
+      formData.append("email", email);
     } else {
       if (!password || !email || !firstName || !lastName || !phone || !type) {
         this.setState({ error: <Trans>Please fill required fields.</Trans> });
@@ -197,8 +200,8 @@ export class Users extends Component {
         });
       });
   };
-  getUserList = () => {
-    ApiServices.adminUserList()
+  getUserList = (filter=null) => {
+    ApiServices.adminUserList(filter)
       .then((res) => {
         if (!res.data.status) {
           toast.error(res.data.message, {
@@ -249,11 +252,29 @@ export class Users extends Component {
   componentDidMount() {
     this.getUserList();
   }
+
+  handleOnSearch = (e) => {
+    this.setState({ searchValue: e.target.value }, this.updateFilterData);
+  };
+
+  updateFilterData = () => {
+    const filter = { q: this.state.searchValue }
+    this.getUserList(filter);
+  };
+
   // Datatable End
   render() {
     const { t } = this.props;
-    const { page, rowsPerPage, orderBy, order, rows, error, selectedUser } =
-      this.state;
+    const {
+      page,
+      rowsPerPage,
+      orderBy,
+      order,
+      rows,
+      error,
+      selectedUser,
+      searchValue,
+    } = this.state;
     const columns = [
       {
         id: "id",
@@ -305,15 +326,7 @@ export class Users extends Component {
         sortable: true,
         width: 200,
         renderCell: (row) => (
-          <div
-            className={
-              row.isAdmin === 1
-                ? "text-danger"
-                : row.isAdmin === 2
-                ? "text-primary"
-                : "text-info"
-            }
-          >
+          <div className={`text-dark`}>
             {row.isAdmin === 1
               ? "Admin"
               : row.isAdmin === 2
@@ -392,6 +405,37 @@ export class Users extends Component {
             <div className="col-lg-12 grid-margin">
               <div className="card mb-4 bRadius">
                 <div className="card-body projectsCard">
+                  <div className="d-flex justify-content-between MarketPlaceTab">
+                    <div className="float-left flex">
+                      <form className="form-inline">
+                        <div className="input-group input-focus mr-2">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text bg-white customSearchIcon">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="13"
+                                height="13"
+                                fill="currentColor"
+                                className="bi bi-search"
+                                viewBox="0 0 16 16"
+                              >
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                              </svg>
+                            </span>
+                          </div>
+                          <input
+                            type="search"
+                            // placeholder="Search backlink"
+                            placeholder={t("Search")}
+                            className="form-control border-left-0 customSearch"
+                            onChange={this.handleOnSearch}
+                            value={searchValue}
+                          />
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <hr style={{ marginBottom: "0px" }} />
                   <div className="tableDataUsers">
                     <Paper>
                       <TableContainer>
@@ -516,6 +560,7 @@ export class Users extends Component {
                   <input
                     onChange={this.handleInputChange}
                     type="text"
+                    required
                     className="form-control form-control-lg"
                     name="firstName"
                     id="exampleInputfname"
@@ -528,6 +573,7 @@ export class Users extends Component {
                     onChange={this.handleInputChange}
                     className="form-control form-control-lg"
                     type="text"
+                    required
                     name="lastName"
                     placeholder={t("Last Name *")}
                     value={this.state.lastName}
@@ -537,11 +583,12 @@ export class Users extends Component {
                   <input
                     onChange={this.handleInputChange}
                     type="email"
+                    required
                     name="email"
                     className="form-control form-control-lg"
                     id="exampleInputEmail1"
                     placeholder={t("Email *")}
-                    disabled={selectedUser}
+                    // disabled={selectedUser}
                     value={this.state.email}
                   />
                 </div>
@@ -549,6 +596,7 @@ export class Users extends Component {
                   <input
                     onChange={this.handleInputChange}
                     type="text"
+                    required
                     name="phone"
                     className="form-control form-control-lg"
                     placeholder={t("Phone *")}
@@ -578,10 +626,11 @@ export class Users extends Component {
                 <div className="form-group">
                   <select
                     name="type"
+                    required
                     className="form-control form-control-lg"
                     style={{ color: "#222" }}
                     value={this.state.type}
-                    disabled={selectedUser}
+                    // disabled={selectedUser}
                     onChange={this.handleInputChange}
                   >
                     <option value="">{t("select User Type")}</option>
@@ -596,7 +645,11 @@ export class Users extends Component {
                     type="submit"
                     className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
                   >
-                    <Trans>Create</Trans>
+                    {this.state.selectedUser ? (
+                      <Trans>Update</Trans>
+                    ) : (
+                      <Trans>Create</Trans>
+                    )}
                   </button>
                 </div>
               </form>

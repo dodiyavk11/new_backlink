@@ -9,6 +9,8 @@ import TimeAgo from "timeago-react";
 import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../../services/api.service";
 import { Trans } from "react-i18next";
+// import * as timeago from 'timeago.js';
+// import de from 'timeago.js/lib/lang/de';
 
 export class BacklinkView extends Component {
   constructor(props) {
@@ -723,6 +725,10 @@ export class BacklinkView extends Component {
                                           locale="en"
                                         />
                                       </div>
+                                      <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
+                                      <span>{order.customer ? `${order.customer.firstName} ${order.customer.lastName}` : "-"}</span>
+                                      <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
+                                      <span>{order.customer ? `${order.customer.email}` : "-"}</span>
                                     </div>
                                   </td>
                                 </tr>

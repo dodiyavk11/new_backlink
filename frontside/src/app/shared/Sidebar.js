@@ -41,7 +41,7 @@ class Sidebar extends Component {
       { path: "/basic-ui", state: "basicUiMenuOpen" },
       { path: "/advanced-ui", state: "advancedUiMenuOpen" },
       { path: "/form-elements", state: "formElementsMenuOpen" },
-      { path: "/marketplace", state: "tablesMenuOpen" },
+      { path: "/", state: "tablesMenuOpen" },
       { path: "/maps", state: "mapsMenuOpen" },
       { path: "/icons", state: "iconsMenuOpen" },
       { path: "/charts", state: "chartsMenuOpen" },
@@ -532,7 +532,7 @@ class Sidebar extends Component {
                     : "nav-item"
                 }
               >
-                <Link className="nav-link" to="/admin/domainCategory">                  
+                <Link className="nav-link" to="/admin/domainCategory">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="bi bi-list mr-3"
@@ -547,6 +547,30 @@ class Sidebar extends Component {
                   </svg>
                   <span className="menu-title">
                     <Trans>Domain Category</Trans>
+                  </span>
+                </Link>
+              </li>
+
+              <li
+                className={
+                  this.isPathActive("/admin/contact-us")
+                    ? "nav-item active"
+                    : "nav-item"
+                }
+              >
+                <Link className="nav-link" to="/admin/contact-us">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="bi bi-envelope mr-3"
+                    fill="#a2adb1"
+                    width={22}
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm14 0L8 8 2 3h12zM1 4.314L8 9l7-5.686H1z" />
+                  </svg>
+
+                  <span className="menu-title">
+                    <Trans>Contact us</Trans>
                   </span>
                 </Link>
               </li>

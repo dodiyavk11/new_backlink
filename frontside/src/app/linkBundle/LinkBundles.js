@@ -270,7 +270,7 @@ export class LinkBundles extends Component {
                 </div>
                 <div className="pricingCard">
                   <div className="promo-container">
-                    <div className="promos bg-base-1">
+                    <div className="promos bg-base-1 pl-3 pr-3">
                       {planData.map((plans, index) => (
                         <div
                           key={index}

@@ -323,7 +323,7 @@ export class AdminOrders extends Component {
         align: "right",
         width: 90,
         sortable: false,
-        renderCell: (row) => <span>{`${row.customer.firstName} ${row.customer.lastName}`}</span>,
+        renderCell: (row) => <span>{row.customer ? `${row.customer.firstName} ${row.customer.lastName}` : "N/A"}</span>,
       },
       {
         id: "publisher",
@@ -331,7 +331,7 @@ export class AdminOrders extends Component {
         align: "right",
         width: 90,
         sortable: false,
-        renderCell: (row) => <span>{`${row.publisher.firstName} ${row.publisher.lastName}`}</span>,
+        renderCell: (row) => <span>{row.publisher ? `${row.publisher.firstName} ${row.publisher.lastName}` : "N/A"}</span>,
       },
       {
         id: "anchortext",
@@ -401,7 +401,7 @@ export class AdminOrders extends Component {
                               type="search"
                               // placeholder="Search backlink"
                               placeholder={t("Search backlink")}
-                              className="form-control border-left-0 customSearch"
+                              className="form-control border-left-0 customSearch p-0"
                               onChange={this.handleOnSearch}
                               value={searchValue}
                             />

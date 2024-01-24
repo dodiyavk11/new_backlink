@@ -51,32 +51,7 @@ exports.signUp = async (req, res) => {
             console.log(VerificationLink);
             text = text.replace("{verification_Link}", VerificationLink)
             const mail = await emailTemplate(text)
-            sendVerifyMail(email, subject, "", mail)
-
-            /* dummy email start*/
-                var transport = nodemailer.createTransport({
-                  host: "sandbox.smtp.mailtrap.io",
-                  port: 2525,
-                  auth: {
-                    user: "5486eff1d5793c",
-                    pass: "e17b0b8e8f08ac"
-                  }
-                });
-
-                const mailOptions = {
-                  from: 'rjnaghera@gmail.com',
-                  to: email,
-                  subject: subject,
-                  text: mail,
-                };
-                        transport.sendMail(mailOptions, (error, info) => {
-                  if (error) {
-                    console.error(error);
-                  } else {
-                    console.log('Email sent: ' + info.response);
-                  }
-                });
-                /* dummy email end*/
+            sendVerifyMail(email, subject, "", mail)            
             res.status(200).send({ status: true, message: "Register successfully. Please confirm your email address via email", data: addUser });
 
     }
@@ -84,30 +59,6 @@ exports.signUp = async (req, res) => {
         console.log(err)
         res.status(500).send({ status: false, message: "Registration refused, something went wrong", data: [], error: err.message })
     }
-}
-
-// verify page resend mail in verify page
-
-exports.ResendMail = async (req, res) => {
-    // try {
-        // email send process
-    //     const { email } = req.body
-    //     const { name } = req.body
-    //     const mailTexts = await Models.email_template.findOne({ where: { email_type: 'registration' } })
-    //     let text = mailTexts.email_content
-    //     let subject = mailTexts.header
-    //     text = text.replace("{user_name}", name);
-    //     text = text.replace("{user_email}", email);
-    //     const EmailToken = generateJWTToken({ email }, "10m")
-    //     const VerificationLink = `<a href="${process.env.BASE_URL}/verification/email/${EmailToken}">klicken Sie hier</a>`
-    //     text = text.replace("{verification_Link}", VerificationLink)
-    //     const mail = await emailTemplate(text)
-    //     sendVerifyMail(email, subject, "", mail)
-    //     res.status(200).send({ status: true, message: "E-Mail erfolgreich gesendet, bitte uberprufen Sie Ihre E-Mail-Adresse", data: [] });
-    // } catch (err) {
-    //     console.log(err)
-    //     res.status(500).send({ status: false, message: "Ich kann keine E-Mail senden, da ist ein Fehler aufgetreten", data: [], error: err.message })
-    // }
 }
 
 exports.signIn = async (req, res) => {
@@ -131,31 +82,7 @@ exports.signIn = async (req, res) => {
             const VerificationLink = `<a href="${process.env.BASE_URL}/verify/email/${EmailToken}" target="_blank">Click here</a>`
             text = text.replace("{verification_Link}", VerificationLink)
             const mail = await emailTemplate(text)
-            sendVerifyMail(email, subject, "", mail)
-            /* dummy email start*/
-                var transport = nodemailer.createTransport({
-                  host: "sandbox.smtp.mailtrap.io",
-                  port: 2525,
-                  auth: {
-                    user: "5486eff1d5793c",
-                    pass: "e17b0b8e8f08ac"
-                  }
-                });
-
-                const mailOptions = {
-                  from: 'rjnaghera@gmail.com',
-                  to: email,
-                  subject: subject,
-                  text: mail,
-                };
-                        transport.sendMail(mailOptions, (error, info) => {
-                  // if (error) {
-                  //   console.error(error);
-                  // } else {
-                  //   console.log('Email sent: ' + info.response);
-                  // }
-                });
-                /* dummy email end*/
+            sendVerifyMail(email, subject, "", mail)            
             return res.status(401).send({ status: false, message: "Please check your email address first. The confirmation link will be sent to you by post", data: [] })
         }
         if(checkUser.isDeleted)
@@ -210,31 +137,7 @@ exports.ForgotPasswordLink = async (req, res) => {
         text = text.replace("{verification_Link}", VerificationLink)
         const mail = await emailTemplate(text)
         sendVerifyMail(email, subject, "", mail)
-
-        /* dummy email start*/
-        var transport = nodemailer.createTransport({
-          host: "sandbox.smtp.mailtrap.io",
-          port: 2525,
-          auth: {
-            user: "5486eff1d5793c",
-            pass: "e17b0b8e8f08ac"
-          }
-        });
-
-        const mailOptions = {
-          from: 'rjnaghera@gmail.com',
-          to: email,
-          subject: subject,
-          text: text,
-        };
-                transport.sendMail(mailOptions, (error, info) => {
-          // if (error) {
-          //   console.error(error);
-          // } else {
-          //   console.log('Email sent: ' + info.response);
-          // }
-        });
-        /* dummy email end*/
+        
         sendVerifyMail(email, 'Blacklink forgot Password Link', "", VerificationLink)
         res.status(200).send({ status: true, message: "The link has been successfully sent to your email address.", data: [] })
 

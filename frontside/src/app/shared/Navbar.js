@@ -137,6 +137,7 @@ class Navbar extends Component {
                 }`}
               />
             </li>
+            {isAdmin === "0" && (
             <li className="nav-item">
               <Dropdown alignRight onClick={this.getCartData}>
                 <Dropdown.Toggle className="nav-link count-indicator">
@@ -232,6 +233,7 @@ class Navbar extends Component {
                 </Dropdown.Menu>
               </Dropdown>
             </li>
+            )}
             {/* <li className="nav-item">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">
@@ -359,29 +361,21 @@ class Navbar extends Component {
                   </div>
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu className="navbar-dropdown">
-                  {/* <Dropdown.Item> */}
-
-                  <Link to="/account/payments" className="dropdown-item">
-                    <i className="mdi mdi-wallet mr-2 text-primary"></i>
-                    <Trans>Payments</Trans>
-                  </Link>
-                  {/* </Dropdown.Item> */}
-                  {/* <Dropdown.Item onClick={(evt) => evt.preventDefault()}> */}
+                <Dropdown.Menu className="navbar-dropdown">                  
+                  {isAdmin === "0" && (
+                    <Link to="/account/payments" className="dropdown-item">
+                      <i className="mdi mdi-wallet mr-2 text-primary"></i>
+                      <Trans>Payments</Trans>
+                    </Link>
+                  )}                  
                   <Link to="/settings/profile" className="dropdown-item">
                     <i className="mdi mdi-account-circle mr-2 text-primary"></i>
                     <Trans>Profile</Trans>
                   </Link>
-                  {/* </Dropdown.Item> */}
-                  {/* <Dropdown.Item onClick={(evt) => evt.preventDefault()}> */}
-                  {/* <i className="mdi mdi-account-check mr-2 text-primary"></i> */}
                   <Link to="/settings/account" className="dropdown-item">
                     <i className="mdi mdi-account-check mr-2 text-primary"></i>
                     <Trans>Account</Trans>
-                  </Link>
-                  {/* </Dropdown.Item> */}
-                  {/* <Dropdown.Item onClick={(evt) => evt.preventDefault()}> */}
-                  {/* <i className="mdi mdi-bell-ring mr-2 text-primary"></i> */}
+                  </Link>                  
                   {isAdmin === "0" && (
                     <Link
                       to="/settings/notifications"
@@ -391,7 +385,6 @@ class Navbar extends Component {
                       <Trans>Notification</Trans>
                     </Link>
                   )}
-                  {/* </Dropdown.Item> */}
                   <Dropdown.Item onClick={this.handleLogouts}>
                     <i className="mdi mdi-logout mr-2 text-primary"></i>
                     <Trans>Log out</Trans>

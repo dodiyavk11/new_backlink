@@ -311,6 +311,14 @@ export class ContentLinks extends Component {
         ),
       },
       {
+        id: "publisher",
+        label: <Trans>Publisher</Trans>,
+        align: "right",
+        width: 90,
+        sortable: false,
+        renderCell: (row) => <span>{row.publisher ? `${row.publisher.firstName} ${row.publisher.lastName}` : "N/A"}</span>,        
+      },
+      {
         id: "language",
         label: <Trans>Language</Trans>,
         width: 130,

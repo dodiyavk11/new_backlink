@@ -301,6 +301,17 @@ class ApiServices {
       });
   }
 
+  getDailyDealsContentLink(filterdata = null) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(`${this.APP_URL}daily-deal-contentlinks`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
   getAdminContentLinkList(filterdata = null) {
     const authToken = localStorage.getItem("token");
     return axios
@@ -729,12 +740,41 @@ class ApiServices {
     });
   }
 
-  sendPaymentResponse(paymentId,paymentData)
-  {
+  sendPaymentResponse(paymentId, paymentData) {
     const authToken = localStorage.getItem("token");
-    return axios.post(`${this.APP_URL}paymentRespone/${paymentId}`,paymentData,{
-      headers: { Authorization: `Bearer ${authToken}` }
-    })
+    return axios.post(
+      `${this.APP_URL}paymentRespone/${paymentId}`,
+      paymentData,
+      {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }
+    );
+  }
+
+  userContactUs(formData) {
+    return axios.post(`${this.APP_URL}user/contact-us`, formData);
+  }
+
+  adminContactUsData() {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(this.APP_URL + "admin/contact-us-data", {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  markAsSolved(id) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(`${this.APP_URL}admin/mark-resolved/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
   }
 }
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2023 at 08:13 AM
+-- Generation Time: Jan 24, 2024 at 02:12 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -43,6 +43,35 @@ CREATE TABLE `blogs` (
 
 INSERT INTO `blogs` (`id`, `title`, `content`, `author`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Updated', '<h1>This is a Updated</h1><p>This is a Updated blog.</p>', 2, 1, '2023-09-19 09:54:49', '2023-09-19 11:28:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact_us`
+--
+
+CREATE TABLE `contact_us` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `mobile` varchar(30) NOT NULL,
+  `comment` varchar(255) NOT NULL,
+  `status` int(1) DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `contact_us`
+--
+
+INSERT INTO `contact_us` (`id`, `name`, `email`, `mobile`, `comment`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Jayesh Naghera', 'rjnaghera@gmail.com', '09033389733', 'Testing for publisher side', 1, '2024-01-24 09:55:21', '2024-01-24 10:53:33'),
+(2, 'Jayesh Naghera', 'rjnaghera@gmail.com', '09033389733', 'Testing for user side', 0, '2024-01-24 09:58:51', '2024-01-24 09:58:51'),
+(3, 'Jayesh Naghera', 'rjnaghera@gmail.com', '09033389733', '22222', 1, '2024-01-24 10:01:07', '2024-01-24 11:57:47'),
+(4, 'Jayesh Naghera', 'rjnaghera@gmail.com', '09033389733', '3333333333', 0, '2024-01-24 10:01:38', '2024-01-24 11:58:00'),
+(5, 'Jayesh Naghera', 'rjnaghera@gmail.com', '09033389733', '444444', 0, '2024-01-24 10:02:29', '2024-01-24 11:58:03'),
+(6, 'Jayesh Naghera', 'rjnaghera@gmail.com', '09033389733', 'dasds', 1, '2024-01-24 10:13:30', '2024-01-24 11:56:29');
 
 -- --------------------------------------------------------
 
@@ -218,7 +247,8 @@ INSERT INTO `email_formats` (`id`, `email_title`, `email_type`, `email_content`,
 (8, 'New domain added', 'new_domain_added', '<h1>New domain added in your Portfolio</h1><p>Dear {username},</p><p><br></p><p>We inform you that your Portfolio added new domain.</p><p>Here are the details of your new added domain</p><ul><li><strong>Domain name:</strong> {domain_name}</li><li><strong>Price:</strong> {price}</li><li><strong>Category:</strong> {category}</li></ul><p>Best regards, <a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked</strong></a></p>', 'New Domain added in your Portfolio', NULL, 1, '2023-10-11 15:14:59', '2023-12-18 13:20:45'),
 (9, 'Order Cancel', 'order_cancel', '<p><strong>Hello,</strong> {name}</p><p>The status of your order \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</p><p>Your order has been Cancelled successfully,and <strong>Rs.{amount}</strong> refunded in your wallet.</p><p>Take a look at your order now:</p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: rgb(192, 222, 96);\"><strong>Login</strong></a></p><p>&nbsp;</p>', 'Your order has been Cancelled successfully', NULL, 1, '2023-10-12 14:13:23', '2023-12-18 13:20:23'),
 (11, 'Order Delete', 'order_delete', '<p>Hi {username},</p><p>Your Order {ordername} has been deleted successfully.</p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><em>login</em> to view</a></p>', 'Your Order has been delete ', NULL, 0, '2023-12-18 16:05:47', '2023-12-18 16:06:32'),
-(12, 'Forgot Password Link', 'forgot_password', '<p>Hello <strong>{user_name},</strong></p><p>Please click here below link to reset your account password :</p><p><strong style=\"background-color: rgb(192, 222, 96);\">{verification_Link}</strong></p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked.com</strong></a></p>', 'Click link to reset password', NULL, 1, '2023-12-20 10:51:19', '2023-12-20 10:58:22');
+(12, 'Forgot Password Link', 'forgot_password', '<p>Hello <strong>{user_name},</strong></p><p>Please click here below link to reset your account password :</p><p><strong style=\"background-color: rgb(192, 222, 96);\">{verification_Link}</strong></p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked.com</strong></a></p>', 'Click link to reset password', NULL, 1, '2023-12-20 10:51:19', '2023-12-20 10:58:22'),
+(13, 'User contact us', 'user_contact_us', '<p>Hi Admin,</p><p>Our FairLinked user has contacted us with an issue.</p><p><br></p><p><strong>Name : </strong>{name}</p><p><strong>Email : </strong>{email}</p><p><strong>Phone : </strong>{phone}</p><p><strong>Problem : </strong>{problem}</p>', 'User Contact us', NULL, 1, '2024-01-24 09:31:10', '2024-01-24 09:31:10');
 
 -- --------------------------------------------------------
 
@@ -309,7 +339,8 @@ INSERT INTO `messages` (`id`, `sender_id`, `order_id`, `message`, `files`, `role
 (1, 51, 2, 'Hi', NULL, 0, '2023-12-20 04:45:06', '2023-12-20 04:45:06'),
 (2, 53, 2, 'Hi', NULL, 0, '2023-12-20 04:45:12', '2023-12-20 04:45:12'),
 (3, 51, 2, 'Ok', NULL, 0, '2023-12-20 04:45:29', '2023-12-20 04:45:29'),
-(4, 51, 3, '123', NULL, 0, '2023-12-20 07:04:44', '2023-12-20 07:04:44');
+(4, 51, 3, '123', NULL, 0, '2023-12-20 07:04:44', '2023-12-20 07:04:44'),
+(5, 51, 4, 'test', NULL, 0, '2024-01-24 11:18:00', '2024-01-24 11:18:00');
 
 -- --------------------------------------------------------
 
@@ -627,8 +658,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `password`, `profile`, `phone`, `postal_code`, `address`, `city`, `country`, `company`, `vat_id`, `bulk_invoice`, `invoice_email`, `isAdmin`, `isDeleted`, `created_at`, `updated_at`) VALUES
 (2, 'jayesh.besticoder@gmail.com', 1, 'Admin', 'Side', '$2a$11$fCg11cAgOk7RvVCffz7TuulHBoIYOMATc6iq6PjtlbbB5ieju4dG2', 'profileImg_1701080292599.png', '1234567890', 123, 'admin', 'admin', 'Germany', 'Admin', 'null', 0, '', 1, 0, '2023-09-13 17:40:39', '2023-11-28 18:36:04'),
 (51, 'userside@gmail.com', 1, 'Users', 'Sides', '$2a$11$JRvGg878F9NbRiomWLj2OOcogSgLyrKR3Q1yAfGxQ0JJViiC7NLjy', 'profileImg_1703046435122.png', '123456789', 1233, 'vrl', 'new', 'Germany', 'Bus', 'VAT123AT', 1, 'example@mail.com', 0, 0, '2023-12-20 09:57:15', '2023-12-20 11:41:07'),
-(52, 'publisher@mail.com', 1, 'publisher', 'Side', '$2a$11$AyGO9mjpnaNiOKXhEztUo.VDBAfuXZUw6Wcx6lO3AdHiMio.jLmoi', 'profileImg_1703046553894.png', '123456789', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-20 09:59:14', '2023-12-20 09:59:58'),
-(53, 'publisher2@gmail.com', 1, 'Publisher22', 'Side 22', '$2a$11$JDIXcKDP1maRbhZvWwl.B.EMBD.ZA/RbhSPS/U1/lkcKulA0AoJou', NULL, '123456789', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-20 10:03:08', '2023-12-20 11:03:10');
+(52, 'publisher@mail.com', 1, 'publisher', 'Side', '$2a$11$AyGO9mjpnaNiOKXhEztUo.VDBAfuXZUw6Wcx6lO3AdHiMio.jLmoi', 'profileImg_1703046553894.png', '123456789', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-20 09:59:14', '2024-01-24 12:53:35'),
+(53, 'publisher2@gmail.com', 1, 'Publisher22', 'Side 22', '$2a$11$JDIXcKDP1maRbhZvWwl.B.EMBD.ZA/RbhSPS/U1/lkcKulA0AoJou', NULL, '123456789', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-20 10:03:08', '2024-01-24 12:56:29');
 
 -- --------------------------------------------------------
 
@@ -667,13 +698,6 @@ CREATE TABLE `user_cart` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `user_cart`
---
-
-INSERT INTO `user_cart` (`id`, `cart_id`, `user_id`, `hash_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(2, '6rw4nzwcg', 51, 'g6cr1wux', 1, '2023-12-20 09:47:50', '2023-12-20 09:47:50');
-
 -- --------------------------------------------------------
 
 --
@@ -703,6 +727,12 @@ CREATE TABLE `user_subscriptions` (
 ALTER TABLE `blogs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `author` (`author`);
+
+--
+-- Indexes for table `contact_us`
+--
+ALTER TABLE `contact_us`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `customer_domain_data`
@@ -859,6 +889,12 @@ ALTER TABLE `blogs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT for table `contact_us`
+--
+ALTER TABLE `contact_us`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `customer_domain_data`
 --
 ALTER TABLE `customer_domain_data`
@@ -886,7 +922,7 @@ ALTER TABLE `domain_tags`
 -- AUTO_INCREMENT for table `email_formats`
 --
 ALTER TABLE `email_formats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `faqs`
@@ -910,7 +946,7 @@ ALTER TABLE `forgotpasswords`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `new_orders`

@@ -731,7 +731,7 @@ exports.getAdminAllOrders = async (req, res) => {
       where: {},
     };
 
-    const getFilterQuery = await createFilterQuery(req.body, "user", baseQuery);
+    const getFilterQuery = await createFilterQuery(req.body, "admin", baseQuery);
     const getOrderData = await Models.newOrder.findAll(getFilterQuery);
     res.status(200).send({
       status: true,
@@ -1101,6 +1101,11 @@ async function getViewOrderData(userId, orderId, type) {
         model: Models.orderFiles,
         as: "orderFile",
       },
+      {
+        model: Models.Users,
+        as: "customer",		
+        attributes: ['firstName', 'lastName', 'email'],
+      }
     ],
     where: wheres,
   };
@@ -1179,7 +1184,7 @@ async function createFilterQuery(body, type, baseQuery) {
       const searchConditions = {
         [Op.or]: [],
       };
-      if (type === "user") {
+      if (type === "user" || type === "admin") {
         const allColumns = ["anchortext", "linktarget", "note"];
 
         const orConditions = allColumns.map((column) => ({
@@ -1198,7 +1203,7 @@ async function createFilterQuery(body, type, baseQuery) {
         });
       }
 
-      if (Models.Users && type === "user") {
+      if (Models.Users && type === "admin") {
         searchConditions[Op.or].push({
           [Op.or]: [
             {

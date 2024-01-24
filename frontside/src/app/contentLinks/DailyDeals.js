@@ -16,7 +16,7 @@ export class DailyDeals extends Component {
     window.open("https://" + url, "_blank");
   };
   fetchContentLinkData(filter = null) {
-    ApiServices.getContentLinkList(filter).then(
+    ApiServices.getDailyDealsContentLink(filter).then(
       (res) => {
         if (res.data.status) {
           this.setState({

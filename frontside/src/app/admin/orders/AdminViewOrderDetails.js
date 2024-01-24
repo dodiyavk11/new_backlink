@@ -7,13 +7,14 @@ import "../../../assets/custom.css";
 import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../../services/api.service";
 import MessageComponents from "../../shared/MessageComponents";
+import Spinner from "../../shared/Spinner";
 
 export class AdminViewOrderDetails extends Component {
   constructor(props) {
     const { order_id } = props.match.params;
     super(props);
     this.state = {
-      orderData: [],
+      orderData: {},
       domainData: [],
       orderFile: [],
       projectData: [],
@@ -23,10 +24,10 @@ export class AdminViewOrderDetails extends Component {
 
   handleGoBack = () => {
     this.props.history.goBack();
-  };  
+  };
 
   loadOrderData = () => {
-    ApiServices.SingleOrderView(this.state.order_id,"admin/order/view/")
+    ApiServices.SingleOrderView(this.state.order_id, "admin/order/view/")
       .then((res) => {
         if (!res.status) {
           toast.error(res.data.message, {
@@ -66,24 +67,16 @@ export class AdminViewOrderDetails extends Component {
           }
         }
       });
-  }
+  };
 
   componentDidMount() {
     this.loadOrderData();
   }
   render() {
     const { orderData, category, domainData, orderFile } = this.state;
-    if (orderData.length === 0) {
+    if (Object.keys(orderData).length === 0) {
       return (
-        <div className="text-danger">
-          <p>Data Not Found.</p>
-          <button
-            className="btn btn-rounded font-weight-medium auth-form-btn"
-            onClick={this.handleGoBack}
-          >
-            Back
-          </button>
-        </div>
+        <Spinner/>
       );
     }
     const getStatusClass = (status) => {
@@ -126,12 +119,16 @@ export class AdminViewOrderDetails extends Component {
                   onClick={this.handleGoBack}
                 >
                   <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
-                </button>                
+                </button>
               </div>
               <div className="card-body dashboardCard">
                 <div className="card-img-top d-flex flex-row justify-content-between">
                   <div>
-                    <h2 className="h2">{orderData.isBundle !==0 ? "Link Bundle" : domainData.domain_name}</h2>
+                    <h2 className="h2">
+                      {orderData.isBundle !== 0
+                        ? "Link Bundle"
+                        : domainData.domain_name}
+                    </h2>
                     <h5>Placed at: {orderData.created_at}</h5>
                   </div>
                   <div>
@@ -146,7 +143,7 @@ export class AdminViewOrderDetails extends Component {
                       </span>
                     </h4>
                     <h5>
-                    <Trans>Amount</Trans>: <b>${orderData.total_price}</b>
+                      <Trans>Amount</Trans>: <b>${orderData.total_price}</b>
                     </h5>
                   </div>
                 </div>
@@ -154,13 +151,31 @@ export class AdminViewOrderDetails extends Component {
               </div>
               <div className="card">
                 <div className="card-body pt-2">
-                  <h4 className="card-title"><Trans>Orders details</Trans></h4>
+                  <h4 className="card-title">
+                    <Trans>Orders details</Trans>
+                  </h4>
                   <div className="table-responsive">
                     <table className="table">
                       <tbody>
                         <tr>
+                          <th>
+                            <Trans>Customer</Trans>
+                          </th>
+                          <td className="text-end-ct">
+                          {orderData.customer ? `${orderData.customer.firstName} ${orderData.customer.lastName}` : ""}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>
+                            <Trans>Email</Trans>
+                          </th>
+                          <td className="text-end-ct">
+                          {orderData.customer ? `${orderData.customer.email}` : ""}
+                          </td>
+                        </tr>
+                        <tr>
                           <td>
-                          <Trans>Anchor text</Trans>
+                            <Trans>Anchor text</Trans>
                             <Tooltip
                               title="Anchor text refers to the clickable text of a link."
                               placement="right"
@@ -185,7 +200,7 @@ export class AdminViewOrderDetails extends Component {
                         </tr>
                         <tr>
                           <td>
-                          <Trans>Delivery time</Trans>
+                            <Trans>Delivery time</Trans>
                             <Tooltip
                               title="Turnaround time is based on real data and is expressed in business days."
                               placement="right"
@@ -205,12 +220,14 @@ export class AdminViewOrderDetails extends Component {
                             </Tooltip>
                           </td>
                           <td className="text-end-ct">
-                          {orderData.isBundle !==0 ? "" : `${domainData.deliveryTime} Days`}
+                            {orderData.isBundle !== 0
+                              ? ""
+                              : `${domainData.deliveryTime} Days`}
                           </td>
                         </tr>
                         <tr>
                           <td>
-                          <Trans>Link</Trans>
+                            <Trans>Link</Trans>
                             <Tooltip
                               title="Dofollow links are particularly high on Google, while nofollow links don't have much impact on your ranking. It is estimated by an independent thrid party."
                               placement="right"
@@ -230,12 +247,14 @@ export class AdminViewOrderDetails extends Component {
                             </Tooltip>
                           </td>
                           <td className="text-end-ct">
-                          {orderData.isBundle !==0 ? "" : domainData.attribute}
+                            {orderData.isBundle !== 0
+                              ? ""
+                              : domainData.attribute}
                           </td>
                         </tr>
                         <tr>
                           <td>
-                          <Trans>Language</Trans>
+                            <Trans>Language</Trans>
                             <Tooltip
                               title="Language in which your article will be written by us."
                               placement="right"
@@ -258,7 +277,9 @@ export class AdminViewOrderDetails extends Component {
                             {/* {domainData.language === "en"
                               ? "English"
                               : "German"} */}
-                              {orderData.isBundle !==0 ? "" : domainData.language}
+                            {orderData.isBundle !== 0
+                              ? ""
+                              : domainData.language}
                           </td>
                         </tr>
                         <tr>
@@ -284,12 +305,16 @@ export class AdminViewOrderDetails extends Component {
                           </td>
                           <td className="text-end-ct">
                             {/* {domainData.tld ? "." + domainData.tld : ""} */}
-                            {orderData.isBundle !==0 ? "" : `.${domainData.tld}`}
+                            {orderData.isBundle !== 0
+                              ? ""
+                              : `.${domainData.tld}`}
                           </td>
                         </tr>
                         {orderData.textCreation === "Own" && (
                           <tr>
-                            <td><Trans>Text file</Trans></td>
+                            <td>
+                              <Trans>Text file</Trans>
+                            </td>
                             <td className="text-end-ct">
                               <span className="sampleFile ml-4">
                                 <a
@@ -304,7 +329,7 @@ export class AdminViewOrderDetails extends Component {
                                   className="hrefTitle"
                                 >
                                   <b className="text-warning">
-                                  <Trans>Download text file</Trans>
+                                    <Trans>Download text file</Trans>
                                   </b>
                                 </a>
                               </span>
@@ -312,39 +337,45 @@ export class AdminViewOrderDetails extends Component {
                           </tr>
                         )}
                         <tr>
-                          <td><Trans>Target Url</Trans></td>
+                          <td>
+                            <Trans>Target Url</Trans>
+                          </td>
                           <td className="text-end-ct">
-                            <a
-                              href={orderData.linktarget}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <Trans>Go to</Trans>
-                            </a>
+                            <span>{orderData.linktarget}</span>
                           </td>
                         </tr>
                         <tr>
-                          <td><Trans>Note</Trans></td>
+                          <td>
+                            <Trans>Note</Trans>
+                          </td>
                           <td className="text-end-ct">{orderData.note}</td>
                         </tr>
                         <tr>
-                          <td><Trans>Word count</Trans></td>
+                          <td>
+                            <Trans>Word count</Trans>
+                          </td>
                           <td className="text-end-ct">{orderData.wordCount}</td>
                         </tr>
                         <tr>
-                          <td><Trans>Approve text before publication</Trans></td>
+                          <td>
+                            <Trans>Approve text before publication</Trans>
+                          </td>
                           <td className="text-end-ct">
                             {orderData.approveText === 1 ? "Yes" : "No"}
                           </td>
                         </tr>
                         <tr>
-                          <td><Trans>Anchor text chosen by Backlinked</Trans></td>
+                          <td>
+                            <Trans>Anchor text chosen by Backlinked</Trans>
+                          </td>
                           <td className="text-end-ct">
                             {orderData.chooseByBacklink === 1 ? "Yes" : "No"}
                           </td>
                         </tr>
                         <tr>
-                          <td><Trans>Text approval price</Trans></td>
+                          <td>
+                            <Trans>Text approval price</Trans>
+                          </td>
                           <td className="text-end-ct">
                             {orderData.approveText === 1
                               ? "$" + orderData.approveTextPrice
@@ -353,7 +384,9 @@ export class AdminViewOrderDetails extends Component {
                         </tr>
                         {orderData.textCreation === "Editorial" && (
                           <tr>
-                            <td><Trans>Text creation price</Trans></td>
+                            <td>
+                              <Trans>Text creation price</Trans>
+                            </td>
                             <td className="text-end-ct">
                               {orderData.textCreationPrice > 0
                                 ? "$" + orderData.textCreationPrice
@@ -362,11 +395,15 @@ export class AdminViewOrderDetails extends Component {
                           </tr>
                         )}
                         <tr>
-                          <td><Trans>Price</Trans></td>
+                          <td>
+                            <Trans>Price</Trans>
+                          </td>
                           <td className="text-end-ct">${orderData.price}</td>
                         </tr>
                         <tr>
-                          <td className="h4 fontBold600"><Trans>Total Price</Trans></td>
+                          <td className="h4 fontBold600">
+                            <Trans>Total Price</Trans>
+                          </td>
                           <td className="text-end-ct">
                             <span className="h3 fontBold600">
                               ${orderData.total_price}
@@ -379,7 +416,10 @@ export class AdminViewOrderDetails extends Component {
                 </div>
               </div>
             </div>
-            <MessageComponents order_id={this.state.order_id} isShowTypeMsg={false}/>
+            <MessageComponents
+              order_id={this.state.order_id}
+              isShowTypeMsg={false}
+            />
           </div>
         </div>
       </div>

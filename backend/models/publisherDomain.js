@@ -10,6 +10,11 @@ module.exports = (sequelize,DataTypes) => {
 		        foreignKey: 'category_id',
 		        as: 'category',
 		    });
+			
+			this.belongsTo(models.Users, {
+		        foreignKey: 'user_id',
+		        as: 'publisher',
+		    });
 		    
 		    this.hasOne(models.publisherDomainData, {
 				foreignKey: 'domain_id',
@@ -41,6 +46,14 @@ module.exports = (sequelize,DataTypes) => {
 		language:DataTypes.STRING,
 		user_id:DataTypes.INTEGER,
 		price:DataTypes.DECIMAL(8, 2),
+		// price: {
+		// 	type: DataTypes.DECIMAL(8, 2),
+		// 	allowNull: false,
+		// 	get() {
+		// 	  const price = this.getDataValue("price");
+		// 	  return price ? price.replace(".", ",") : null;
+		// 	},
+		//   },
 		hash_id:DataTypes.STRING
 	},
 	{

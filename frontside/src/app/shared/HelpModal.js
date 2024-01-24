@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
 import { Modal, Button, Form } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+import ApiServices from "../services/api.service";
 
 class HelpModal extends Component {
   constructor(props) {
@@ -8,7 +10,8 @@ class HelpModal extends Component {
     this.state = {
       name: "",
       email: "",
-      message: "",
+      mobile: "",
+      comment: "",
       showModal: false,
     };
   }
@@ -18,17 +21,81 @@ class HelpModal extends Component {
       [e.target.name]: e.target.value,
     });
   };
-  showProjectModal = () => this.setState({ showModal: true });
-  closeProjectModal = () => this.setState({ showModal: false });
-  handleFormSubmit = () => {
-    console.log(this.state);
+  showContactModal = () => this.setState({ showModal: true });
+  closeContactModal = () => this.setState({ showModal: false });
+  handleFormSubmit = (e) => {
+    e.preventDefault();
+    ApiServices.userContactUs(this.state).then(
+      (res) => {
+        if (res.data.status) {
+          this.setState({
+            name: "",
+            email: "",
+            mobile: "",
+            comment: "",
+            showModal: false,
+          });
+          this.closeContactModal();
+          toast.success(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      },
+      (error) => {
+        if (error.response && error.response.data) {
+          const responseData = error.response.data;
+
+          if (responseData.status === false && responseData.error) {
+            const validationError = responseData.error;
+            if (Array.isArray(validationError)) {
+              const firstError = validationError[0];
+              const errorMessage = firstError.message;
+              toast.error(errorMessage, {
+                position: "top-center",
+                autoClose: 2000,
+              });
+            } else if (typeof validationError === "string") {
+              toast.error(validationError, {
+                position: "top-center",
+                autoClose: 2000,
+              });
+            }
+          } else {
+            const resMessage =
+              responseData.message ||
+              responseData.error ||
+              error.message ||
+              error.toString();
+
+            toast.error(resMessage, {
+              position: "top-center",
+              autoClose: 2000,
+            });
+          }
+        } else {
+          const resMessage = error.message || error.toString();
+          toast.error(resMessage, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      }
+    );
   };
   render() {
-    const { name, email, message, showModal } = this.state;
+    const { name, email, mobile, comment, showModal } = this.state;
+    const isAdmin = localStorage.getItem("isAdmin");
+    const displayStyle = isAdmin && isAdmin === "1" ? { display: "none" } : {};
     return (
-      <div className="helpForm">
+      <div className="helpForm" style={displayStyle}>
+        <ToastContainer />
         <div className="floating-button">
-          <button className="btn" onClick={() => this.showProjectModal()} title="Any problem?">
+          <button
+            className="btn"
+            onClick={() => this.showContactModal()}
+            title="Any problem?"
+          >
             <i className="mdi mdi-comment-question-outline p-0"></i>
           </button>
         </div>
@@ -38,7 +105,7 @@ class HelpModal extends Component {
           backdrop="static"
           keyboard={false}
           show={showModal}
-          onHide={this.closeProjectModal}
+          onHide={this.closeContactModal}
         >
           <Modal.Header closeButton>
             <div>
@@ -48,16 +115,16 @@ class HelpModal extends Component {
             </div>
           </Modal.Header>
           <Modal.Body>
-            <Form>
+            <Form onSubmit={this.handleFormSubmit}>
               <Form.Group>
                 <label>
                   <Trans>Name</Trans>
                 </label>
                 <p className="customText"></p>
                 <Form.Control
+                  required
                   type="text"
                   className="form-control-sm"
-                  placeholder="Name"
                   name="name"
                   value={name}
                   onChange={this.handleInputChange}
@@ -65,12 +132,12 @@ class HelpModal extends Component {
               </Form.Group>
               <Form.Group>
                 <label>
-                  <Trans>Email</Trans>
+                  <Trans>Email address</Trans>
                 </label>
                 <Form.Control
+                  required
                   type="email"
                   className="form-control-sm"
-                  placeholder="Email"
                   name="email"
                   value={email}
                   onChange={this.handleInputChange}
@@ -78,22 +145,35 @@ class HelpModal extends Component {
               </Form.Group>
               <Form.Group>
                 <label>
-                  <Trans>Message</Trans>
+                  <Trans>Phone Number</Trans>
+                </label>
+                <Form.Control
+                  required
+                  type="text"
+                  className="form-control-sm"
+                  name="mobile"
+                  value={mobile}
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <label>
+                  <Trans>Messages</Trans>
                 </label>
                 <Form.Control
                   as="textarea"
+                  required
                   rows={3}
                   className="form-control-sm"
-                  placeholder="Message"
-                  name="message"
-                  value={message}
+                  name="comment"
+                  value={comment}
                   onChange={this.handleInputChange}
                 />
               </Form.Group>
 
               <Button
                 className="btn btn-block btn-rounded btn-lg font-weight-medium auth-form-btn"
-                onClick={() => this.handleFormSubmit()}
+                type="submit"
               >
                 <Trans>Send</Trans>
               </Button>
