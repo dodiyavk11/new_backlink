@@ -373,5 +373,10 @@
     "Any problem? Contact us": "Ein Problem? Kontaktiere uns",
     "Contact us":"Kontaktiere uns",
     "This issue has been resolved.":"Dieses Problem wurde behoben.",
-    "Customer":"Kundin"
+    "Customer":"Kundin",
+    "Link Bundles Heading":"Überschrift für Link-Bündel",
+    "Link bundle data update successfully.":"Link-Bündel-Daten erfolgreich aktualisiert.",
+    "Something went to wrong.":"Es ist etwas schiefgegangen.",
+    "Invoice download":"Download der Rechnung.",
+    "Inovice":"Rechnung"
 }

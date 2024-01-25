@@ -37,34 +37,34 @@ exports.userList = async (req, res) => {
     //     },
     //   },
     // });
-	const { q } = req.body;
-	const userData = await Models.Users.findAll({
-		attributes: { exclude: ["password"] },
-		where: {
-		  id: {
-			[Op.ne]: req.userId,
-		  },
-		  ...(q && {
-			[Op.or]: [
-			  {
-				firstname: {
-				  [Op.like]: `%${q}%`,
-				},
-			  },
-			  {
-				lastname: {
-				  [Op.like]: `%${q}%`,
-				},
-			  },
-			  {
-				email: {
-				  [Op.like]: `%${q}%`,
-				},
-			  },
-			],
-		  }),
-		},
-	  });
+    const { q } = req.body;
+    const userData = await Models.Users.findAll({
+      attributes: { exclude: ["password"] },
+      where: {
+        id: {
+          [Op.ne]: req.userId,
+        },
+        ...(q && {
+          [Op.or]: [
+            {
+              firstname: {
+                [Op.like]: `%${q}%`,
+              },
+            },
+            {
+              lastname: {
+                [Op.like]: `%${q}%`,
+              },
+            },
+            {
+              email: {
+                [Op.like]: `%${q}%`,
+              },
+            },
+          ],
+        }),
+      },
+    });
 
     res.status(200).send({
       status: true,
@@ -196,6 +196,43 @@ exports.adminToUpdateuser = async (req, res) => {
     res.status(500).send({
       status: false,
       message: "User profile can not update, an error occured.",
+    });
+  }
+};
+
+exports.linkBundleBlogUpdate = async (req, res) => {
+  try {
+    const { id, heading, description } = req.body;
+    const dataUpdate = { heading, description };
+    let store;
+    if (id && id !== "") {
+      store = await Models.linkBundleBlog.update(dataUpdate, { where: { id } });
+    } else {
+      store = await Models.linkBundleBlog.create(dataUpdate);
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Data update successfully.",
+      data: store,
+    });
+  } catch (err) {
+    res.status(500).send({
+      status: false,
+      message: "Update cannot saved, error occured, please try again",
+      error: err.message,
+    });
+  }
+};
+
+exports.linkBundleBlogGet = async (req, res) => {
+  try {
+    const getData = await Models.linkBundleBlog.findOne();
+    return res.status(200).send({ status: true, data: getData });
+  } catch (err) {
+    res.status(500).send({
+      status: false,
+      message: "Bundle data cannot get, error occured, please try again",
+      error: err.message,
     });
   }
 };

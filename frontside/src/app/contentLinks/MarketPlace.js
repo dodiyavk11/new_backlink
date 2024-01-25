@@ -347,6 +347,7 @@ export class MarketPlace extends Component {
     );
   }
   render() {
+    const { columnVisibility } = this.props;
     const {
       min,
       rows,
@@ -800,7 +801,9 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography><Trans>Domain Rating</Trans></Typography>
+                  <Typography>
+                    <Trans>Domain Rating</Trans>
+                  </Typography>
                 </div>
                 <div>
                   <Slider
@@ -843,7 +846,9 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography><Trans>Domain Authority</Trans></Typography>
+                  <Typography>
+                    <Trans>Domain Authority</Trans>
+                  </Typography>
                 </div>
                 <div>
                   <Slider
@@ -886,7 +891,9 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography><Trans>Visibility Index</Trans></Typography>
+                  <Typography>
+                    <Trans>Visibility Index</Trans>
+                  </Typography>
                 </div>
                 <div>
                   <Slider
@@ -931,7 +938,9 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography><Trans>Trust Flow</Trans></Typography>
+                  <Typography>
+                    <Trans>Trust Flow</Trans>
+                  </Typography>
                 </div>
                 <div>
                   <Slider
@@ -974,7 +983,9 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography><Trans>Traffic</Trans></Typography>
+                  <Typography>
+                    <Trans>Traffic</Trans>
+                  </Typography>
                 </div>
                 <div>
                   <Slider
@@ -1017,7 +1028,9 @@ export class MarketPlace extends Component {
                     className="rounded mr-4"
                     style={{ width: "1.5rem" }}
                   />
-                  <Typography><Trans>Referring Domains</Trans></Typography>
+                  <Typography>
+                    <Trans>Referring Domains</Trans>
+                  </Typography>
                 </div>
                 <div>
                   <Slider
@@ -1062,26 +1075,35 @@ export class MarketPlace extends Component {
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>
-                    {columns.map((column) => (
-                      <TableCell
-                        className="text-uppercase"
-                        key={column.id}
-                        align={column.align}
-                        style={{ minWidth: column.minWidth }}
-                      >
-                        {column.sortable !== false ? (
-                          <TableSortLabel
-                            active={orderBy === column.id}
-                            direction={orderBy === column.id ? order : "asc"}
-                            onClick={() => this.handleRequestSort(column.id)}
+                    {columns.map(
+                      (column) =>
+                        // Check if columnVisibility for the current column is true or the column ID is not in columnVisibility
+                        (columnVisibility[column.id] !== false ||
+                          !columnVisibility.hasOwnProperty(column.id)) && (
+                          <TableCell
+                            className="text-uppercase"
+                            key={column.id}
+                            align={column.align}
+                            style={{ minWidth: column.minWidth }}
                           >
-                            {column.label}
-                          </TableSortLabel>
-                        ) : (
-                          <span>{column.label}</span>
-                        )}
-                      </TableCell>
-                    ))}
+                            {column.sortable !== false ? (
+                              <TableSortLabel
+                                active={orderBy === column.id}
+                                direction={
+                                  orderBy === column.id ? order : "asc"
+                                }
+                                onClick={() =>
+                                  this.handleRequestSort(column.id)
+                                }
+                              >
+                                {column.label}
+                              </TableSortLabel>
+                            ) : (
+                              <span>{column.label}</span>
+                            )}
+                          </TableCell>
+                        )
+                    )}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -1101,20 +1123,26 @@ export class MarketPlace extends Component {
                           }
                           style={{ cursor: "pointer" }}
                         >
-                          {columns.map((column) => (
-                            <TableCell
-                              className="fontBold600"
-                              key={column.id}
-                              align={column.align}
-                            >
-                              {column.renderCell
-                                ? column.renderCell(row)
-                                : column.format &&
-                                  typeof row[column.id] === "number"
-                                ? column.format(row[column.id])
-                                : row[column.id]}
-                            </TableCell>
-                          ))}
+                          {columns.map(
+                            (column) =>
+                              (columnVisibility[column.id] !== false ||
+                                !columnVisibility.hasOwnProperty(
+                                  column.id
+                                )) && (
+                                <TableCell
+                                  className="fontBold600"
+                                  key={column.id}
+                                  align={column.align}
+                                >
+                                  {column.renderCell
+                                    ? column.renderCell(row)
+                                    : column.format &&
+                                      typeof row[column.id] === "number"
+                                    ? column.format(row[column.id])
+                                    : row[column.id]}
+                                </TableCell>
+                              )
+                          )}
                         </TableRow>
                       );
                     })}

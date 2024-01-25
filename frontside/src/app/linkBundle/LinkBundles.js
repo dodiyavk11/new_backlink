@@ -35,6 +35,7 @@ export class LinkBundles extends Component {
       selectedPlan: [],
       project_id: "",
       orderModal: false,
+      linkBundleData: [],
       error: "",
       bundleConfigure: {
         linktarget: "",
@@ -103,6 +104,26 @@ export class LinkBundles extends Component {
         });
       }
     });
+  }
+
+  getLinkBundleBlogData() {
+    ApiServices.getLinkBundleBlogData()
+      .then((res) => {
+        if (res.status) {
+          this.setState({ linkBundleData: res.data.data });
+        } else {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      });
   }
 
   getsubscriptionPlan() {
@@ -184,6 +205,7 @@ export class LinkBundles extends Component {
   };
 
   componentDidMount() {
+    this.getLinkBundleBlogData();
     this.getsubscriptionPlan();
     this.getUserWalletBalance();
     this.getUserProjects();
@@ -199,6 +221,7 @@ export class LinkBundles extends Component {
       error,
       orderModal,
       bundleConfigure,
+      linkBundleData,
     } = this.state;
     const { linktarget, anchortext, publication_date } =
       this.state.bundleConfigure;
@@ -219,53 +242,66 @@ export class LinkBundles extends Component {
                 <div className="card-body">
                   <div className="mb-5">
                     <h2 className="fontBold latterSpacing">
-                      <Trans>Ultimate link building starting at 347 Euro</Trans>
+                      <Trans>
+                        {linkBundleData && linkBundleData.heading
+                          ? linkBundleData.heading
+                          : "Ultimate link building starting at 347 Euro"}
+                      </Trans>
                     </h2>
                     <img
                       src={require("../../assets/images/packages.png")}
                       className="float-right"
                       style={{ width: "30%" }}
                     ></img>
-                    <p className="customText2 mt-4">
-                      <Trans>
-                        You lack the time or expertise to search backlinks from
-                        our portfolio? Our team will gladly take over this task
-                        for you!
-                      </Trans>
-                    </p>
-                    <p className="customText2">
-                      <Trans>
-                        Our link packages not only have impressively high
-                        visibility values, the content also achieves maximum
-                        topic relevance. We create an individual article for
-                        each backlink and publish it with selected publishers.
-                      </Trans>
-                    </p>
-                    <p className="customText2">
-                      <Trans>
-                        After your booking, you can easily personalize your link
-                        package by selecting the desired link targets, anchor
-                        texts as well as the date of publication. Then our team
-                        plans the link building measures according to your
-                        specifications. As soon as all backlinks from the booked
-                        link package have been completed, you will receive a
-                        detailed link report. If you have any questions about
-                        our link packages, our support team will be happy to
-                        help you. You can reach us by e-mail, live chat or phone
-                        at 0228 / 286 795 60.
-                      </Trans>
-                    </p>
-                    <p className="customText2">
-                      <Trans>
-                        Note: We reserve the right to refuse any booking. Please
-                        note that we generally refuse bookings from the
-                        following areas: Eroticism, Cannabis / CBD, Tobacco &
-                        Co. or Mechanical Engineering.Note: We reserve the right
-                        to refuse any booking. Please note that we generally
-                        refuse bookings from the following areas: Eroticism,
-                        Cannabis / CBD, Tobacco & Co. or Mechanical Engineering.
-                      </Trans>
-                    </p>
+                    {linkBundleData && linkBundleData.description ? (
+                      <span dangerouslySetInnerHTML={{ __html: linkBundleData.description }} />
+                    ) : (
+                      <>
+                        <p className="customText2 mt-4">
+                          <Trans>
+                            You lack the time or expertise to search backlinks
+                            from our portfolio? Our team will gladly take over
+                            this task for you!
+                          </Trans>
+                        </p>
+                        <p className="customText2">
+                          <Trans>
+                            Our link packages not only have impressively high
+                            visibility values, the content also achieves maximum
+                            topic relevance. We create an individual article for
+                            each backlink and publish it with selected
+                            publishers.
+                          </Trans>
+                        </p>
+                        <p className="customText2">
+                          <Trans>
+                            After your booking, you can easily personalize your
+                            link package by selecting the desired link targets,
+                            anchor texts as well as the date of publication.
+                            Then our team plans the link building measures
+                            according to your specifications. As soon as all
+                            backlinks from the booked link package have been
+                            completed, you will receive a detailed link report.
+                            If you have any questions about our link packages,
+                            our support team will be happy to help you. You can
+                            reach us by e-mail, live chat or phone at 0228 / 286
+                            795 60.
+                          </Trans>
+                        </p>
+                        <p className="customText2">
+                          <Trans>
+                            Note: We reserve the right to refuse any booking.
+                            Please note that we generally refuse bookings from
+                            the following areas: Eroticism, Cannabis / CBD,
+                            Tobacco & Co. or Mechanical Engineering.Note: We
+                            reserve the right to refuse any booking. Please note
+                            that we generally refuse bookings from the following
+                            areas: Eroticism, Cannabis / CBD, Tobacco & Co. or
+                            Mechanical Engineering.
+                          </Trans>
+                        </p>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="pricingCard">

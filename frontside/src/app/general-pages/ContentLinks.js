@@ -724,9 +724,9 @@ export class ContentLinks extends Component {
           </div>
           <div className="col-lg-4 grid-margin">
             <div className="card">
-              <div className="card-body">
+              <div className="card-body p-3">
                 <h4 className="card-title"><Trans>Orders</Trans></h4>
-                <div className="table-responsive">
+                <div className="">
                   <table className="table">
                     <tbody>
                       <tr>

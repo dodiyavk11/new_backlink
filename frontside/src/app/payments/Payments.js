@@ -5,6 +5,7 @@ import ApiServices from "../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Trans } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 import {
   Paper,
@@ -28,6 +29,7 @@ export class Payments extends Component {
       orderBy: "id",
       order: "desc",
       selectedRow: null,
+      isLoading: false,
     };
   }
 
@@ -95,10 +97,52 @@ export class Payments extends Component {
     );
   }
 
+  handleDownloadInvoice = (id, order_id) => {
+    this.setState({ isLoading: true });
+    const data = {
+      id,
+      order_id,
+    };
+    ApiServices.generateInvoicePdf(data).then(
+      (res) => {
+        if (res.status) {
+          setTimeout(() => {
+            const link = document.createElement("a");
+            link.href = `${process.env.REACT_APP_BASE_URL}${res.data.filepath}`;
+            link.download = `invoice_${id}.pdf`;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }, 500);
+        } else {
+          toast.error(<Trans>Something went to wrong.</Trans>, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
+
   componentDidMount() {
     this.getUserTransaction();
   }
   render() {
+    const { t } = this.props;
     const { rows, page, rowsPerPage, orderBy, order } = this.state;
     const columns = [
       {
@@ -116,13 +160,6 @@ export class Payments extends Component {
         renderCell: (row) => <span>${row.amount}</span>,
       },
       {
-        id: "status",
-        label: <Trans>Status</Trans>,
-        width: 90,
-        sortable: false,
-        renderCell: (row) => <span>{row.status}</span>,
-      },
-      {
         id: "type",
         label: <Trans>Type</Trans>,
         width: 130,
@@ -137,6 +174,37 @@ export class Payments extends Component {
         width: 90,
         sortable: false,
         renderCell: (row) => <span>{row.description}</span>,
+      },
+      {
+        id: "status",
+        label: <Trans>Status</Trans>,
+        width: 90,
+        sortable: false,
+        renderCell: (row) => <span>{row.status}</span>,
+      },
+      {
+        id: "invoice",
+        label: <Trans>Inovice</Trans>,
+        align: "right",
+        width: 90,
+        sortable: false,
+        renderCell: (row) =>
+          row.status !== "incomplete" ? (
+            <span
+              style={{ cursor: "pointer", fontSize: "23px" }}
+              onClick={() => this.handleDownloadInvoice(row.id, row.order_id)}
+            >
+              <i
+                className="mdi mdi-receipt"
+                style={{ color: "#ea6918" }}
+                title={t("Invoice download")}
+              ></i>
+            </span>
+          ) : (
+            <span>
+              <i className="mdi mdi-alert-circle"></i>
+            </span>
+          ),
       },
       {
         id: "created_at",
@@ -157,11 +225,13 @@ export class Payments extends Component {
         <div className="ordersListPage adminOrdersList">
           <div className="d-flex justify-content-between">
             <div className="page-header">
-              <h3 className="fontBold latterSpacing"><Trans>Transactions</Trans></h3>
+              <h3 className="fontBold latterSpacing">
+                <Trans>Transactions</Trans>
+              </h3>
             </div>
           </div>
           <div className="row">
-            <div className="col-lg-12 grid-margin">
+            <div className="col-lg-12 grid-margin">              
               <div className="card mb-4 bRadius">
                 <div className="card-body projectsCard">
                   <ToastContainer />
@@ -264,4 +334,5 @@ export class Payments extends Component {
     );
   }
 }
-export default withRouter(Payments);
+// export default withRouter(Payments);
+export default withTranslation()(Payments);

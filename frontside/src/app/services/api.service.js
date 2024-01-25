@@ -631,6 +631,21 @@ class ApiServices {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
+
+  getLinkBundleBlogData() {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}admin/link-bundle-content`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  getLinkBundleBlogDataUpdate(formData) {
+    const authToken = localStorage.getItem("token");
+    return axios.patch(`${this.APP_URL}admin/link-bundle-content`, formData, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
   updatePlanStatus(id, status) {
     const authToken = localStorage.getItem("token");
     return axios.get(`${this.APP_URL}admin/plan/update/${id}/${status}`, {
@@ -752,7 +767,10 @@ class ApiServices {
   }
 
   userContactUs(formData) {
-    return axios.post(`${this.APP_URL}user/contact-us`, formData);
+    // return axios.post(`${this.APP_URL}user/contact-us`, formData);
+    return axios.post(`${this.APP_URL}user/contact-us`, formData, {
+      headers: { Authorization: `Bearer tesjdsdddsdskksks` },
+    });
   }
 
   adminContactUsData() {
@@ -770,6 +788,17 @@ class ApiServices {
     const authToken = localStorage.getItem("token");
     return axios
       .get(`${this.APP_URL}admin/mark-resolved/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  generateInvoicePdf(data) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .post(`${this.APP_URL}user/generate-invoice`, data, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {

@@ -7,6 +7,8 @@ import AuthService from "../../services/auth.service";
 import { Modal, Button, Form } from "react-bootstrap";
 import { Trans, withTranslation } from "react-i18next";
 import "../../../assets/custom.css";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 export class Plan extends Component {
   constructor(props) {
@@ -15,6 +17,7 @@ export class Plan extends Component {
       plan: [],
       editingPlan: null,
       showModal: false,
+      linkBundleData: [],
     };
   }
 
@@ -39,6 +42,25 @@ export class Plan extends Component {
         [name]: value,
       },
     });
+  };
+
+  handleChangeBundle = (event) => {
+    const { name, value } = event.target;
+    this.setState({
+      linkBundleData: {
+        ...this.state.linkBundleData,
+        [name]: value,
+      },
+    });
+  };
+
+  handleEditorBundle = (value, name) => {
+    this.setState((prevState) => ({
+      linkBundleData: {
+        ...prevState.linkBundleData,
+        description: value,
+      },
+    }));
   };
 
   getsubscriptionPlan() {
@@ -72,6 +94,26 @@ export class Plan extends Component {
             });
           }
         }
+      });
+  }
+
+  getLinkBundleBlogData() {
+    ApiServices.getLinkBundleBlogData()
+      .then((res) => {
+        if (res.status) {
+          this.setState({ linkBundleData: res.data.data });
+        } else {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-center",
+          autoClose: 2000,
+        });
       });
   }
 
@@ -129,11 +171,48 @@ export class Plan extends Component {
       });
   }
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const { linkBundleData } = this.state;
+    if (linkBundleData.description && linkBundleData.description !== "") {
+      ApiServices.getLinkBundleBlogDataUpdate(linkBundleData)
+        .then((res) => {
+          if (res.status) {
+            this.getLinkBundleBlogData();
+            toast.success(
+              <Trans>Link bundle data update successfully.</Trans>,
+              {
+                position: "top-right",
+                autoClose: 2000,
+              }
+            );
+          } else {
+            toast.success(<Trans>Something went to wrong.</Trans>, {
+              position: "top-right",
+              autoClose: 2000,
+            });
+          }
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        });
+    } else {
+      toast.error(<Trans>Please fill required fields.</Trans>, {
+        position: "top-center",
+        autoClose: 2000,
+      });
+    }
+  };
+
   componentDidMount() {
+    this.getLinkBundleBlogData();
     this.getsubscriptionPlan();
   }
   render() {
-    const { plan, editingPlan } = this.state;
+    const { plan, editingPlan, linkBundleData } = this.state;
     const { t } = this.props;
     return (
       <>
@@ -144,6 +223,47 @@ export class Plan extends Component {
             </h3>
           </div>
           <ToastContainer />
+          <div className="row pr-4">
+            <div className="col-lg-12 grid-margin">
+              <Form onSubmit={this.handleSubmit}>
+                <Form.Group>
+                  <label className="font-weight-bold" htmlFor="heading">
+                    <Trans>Link Bundles Heading</Trans>
+                  </label>
+                  <Form.Control
+                    required
+                    type="text"
+                    className="form-control form-control-lg"
+                    placeholder={t(
+                      "Ultimate link building starting at 347 Euro"
+                    )}
+                    name="heading"
+                    id="heading"
+                    aria-label="heading"
+                    value={(linkBundleData && linkBundleData.heading) || ""}
+                    onChange={this.handleChangeBundle}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <label className="font-weight-bold" htmlFor="description">
+                    <Trans>Description</Trans>
+                  </label>
+                  <ReactQuill
+                    className="bg-light"
+                    value={(linkBundleData && linkBundleData.description) || ""}
+                    name="description"
+                    id="description"
+                    onChange={(value) =>
+                      this.handleEditorBundle(value, "description")
+                    }
+                  />
+                </Form.Group>
+                <Button type="submit" className="btn btn-rounded btn-lg">
+                  <Trans>Update</Trans>
+                </Button>
+              </Form>
+            </div>
+          </div>
           <div className="row">
             <div className="col-lg-12 grid-margin">
               <div className="pricingCard">

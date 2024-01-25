@@ -175,6 +175,7 @@ exports.addNewOrder = async (req, res) => {
           transaction_id,
           status: statusN,
           paymentData: placeOrder,
+          order_id: placeOrder.dataValues.id,
         };
 
         await Models.Transactions.create(tranInfo);
@@ -438,6 +439,7 @@ exports.addCartOrder = async (req, res) => {
             transaction_id,
             status: statusN,
             paymentData: placeOrder,
+            order_id: placeOrder.dataValues.id,
           };
 
           await Models.Transactions.create(tranInfo);
@@ -731,7 +733,11 @@ exports.getAdminAllOrders = async (req, res) => {
       where: {},
     };
 
-    const getFilterQuery = await createFilterQuery(req.body, "admin", baseQuery);
+    const getFilterQuery = await createFilterQuery(
+      req.body,
+      "admin",
+      baseQuery
+    );
     const getOrderData = await Models.newOrder.findAll(getFilterQuery);
     res.status(200).send({
       status: true,
@@ -1103,9 +1109,9 @@ async function getViewOrderData(userId, orderId, type) {
       },
       {
         model: Models.Users,
-        as: "customer",		
-        attributes: ['firstName', 'lastName', 'email'],
-      }
+        as: "customer",
+        attributes: ["firstName", "lastName", "email"],
+      },
     ],
     where: wheres,
   };
@@ -1474,6 +1480,7 @@ exports.linkBundlePlaceOrder = async (req, res) => {
         transaction_id,
         status: statusN,
         paymentData: placeOrder,
+        order_id: placeOrder.dataValues.id,
       };
       await Models.Transactions.create(tranInfo);
 

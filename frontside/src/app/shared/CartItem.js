@@ -725,6 +725,7 @@ class CartItem extends Component {
                         placeholder="03/03/2024"
                         onChange={this.handleChange}
                         value={publication_date}
+                        min={new Date().toISOString().split('T')[0]}
                       />
                     </div>
                   </div>

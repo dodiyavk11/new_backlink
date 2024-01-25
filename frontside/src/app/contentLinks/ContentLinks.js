@@ -17,6 +17,17 @@ export class ContentLinksHome extends Component {
     this.state = {
       value: "1",
       qualityfilter: true,
+      columnVisibility: {
+        language: true,
+        rating: true,
+        dr: true,
+        da: true,
+        svi: true,
+        tf: false,
+        rd: false,
+        traffic: false,
+        price: true,
+      },
     };
   }
   handleChange = (event, newValue) => {
@@ -30,8 +41,18 @@ export class ContentLinksHome extends Component {
       qualityfilter: !prevState.qualityfilter,
     }));
   };
+
+  handleColumnVisibilityChange = (columnName, isVisible) => {
+    this.setState((prevState) => ({
+      columnVisibility: {
+        ...prevState.columnVisibility,
+        [columnName]: isVisible,
+      },
+    }));
+  };
+
   render() {
-    const { value } = this.state;
+    const { value, columnVisibility } = this.state;
     return (
       <div className="ContentLinkHomePage">
         <div className="page-header">
@@ -95,7 +116,7 @@ export class ContentLinksHome extends Component {
                       value === "2" ? "disabled-div" : ""
                     }`}
                   >
-                    <svg
+                    {/* <svg
                       width={20}
                       id="lock-closed"
                       xmlns="http://www.w3.org/2000/svg"
@@ -139,10 +160,17 @@ export class ContentLinksHome extends Component {
                         onChange={this.handleCheckboxChange}
                       />
                       <span className="slider round"></span>
-                    </label>
+                    </label> */}
                     <CPopover
                       // trigger="focus"
-                      content={<TableFilter />}
+                      content={
+                        <TableFilter
+                          columnVisibility={columnVisibility}
+                          onColumnVisibilityChange={
+                            this.handleColumnVisibilityChange
+                          }
+                        />
+                      }
                       placement="bottom"
                     >
                       <CButton className="btn btn-rounded custamFilterBtn">
@@ -172,6 +200,7 @@ export class ContentLinksHome extends Component {
                     <MarketPlace
                       updateCartLength={this.props.updateCartLength}
                       handleAddtoCart={this.props.handleAddtoCart}
+                      columnVisibility={columnVisibility}
                     />
                   )}
                   {value === "2" && (
