@@ -1,4 +1,4 @@
-const { addNewOrder,getPublisherOrder,publisherUpdateOrderStatus,cancelOrder, getUserOrders, getAdminAllOrders,textFileUpload, textFileDelete,addToCart, deleteItem, getCart, addCartOrder,viewSingleOrderPublisher,viewSingleOrderUser,viewSingleOrderAdmin, linkBundlePlaceOrder } = require("../controllers/newOrder.controller");
+const { addNewOrder,getPublisherOrder,publisherUpdateOrderStatus,cancelOrder, getUserOrders, getAdminAllOrders,textFileUpload, textFileDelete,addToCart, deleteItem, getCart, addCartOrder,viewSingleOrderPublisher,viewSingleOrderUser,viewSingleOrderAdmin, linkBundlePlaceOrder, exportDataCsvPublisher } = require("../controllers/newOrder.controller");
 const { isLogin, isCustomer,isAdmin,isPublisher } = require("../middleware/checkAuthenticate");
 const { uploadOrderFile, uploadOrderFinalFile,textFileUploadTemp } = require("../middleware/orderFileHandler")
 const { checkOrderLimitInSubscriptionPlan } = require("../middleware/checkIsPlanOrderAndDomainLimit");
@@ -20,6 +20,7 @@ module.exports = (app) => {
 
 	/* publisher route */
 	app.post('/publisher/orders',[isLogin,isPublisher],getPublisherOrder)
+	app.get('/publisher/orders/export',[isLogin,isPublisher],exportDataCsvPublisher)
 	app.post('/publisher/updateOrderStatus/:orderId',[isLogin,isPublisher],publisherUpdateOrderStatus)
 
 	/* for publisher and user both view single order */

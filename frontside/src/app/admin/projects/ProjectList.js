@@ -16,6 +16,7 @@ import {
   TableRow,
   TableSortLabel,
 } from "@material-ui/core";
+import CurrencyFormatter from "../../shared/CurrencyFormatter";
 
 export class ProjectList extends Component {
   constructor(props) {
@@ -108,7 +109,7 @@ export class ProjectList extends Component {
         label: <Trans>Budget</Trans>,
         width: 130,
         sortable: true,
-        renderCell: (row) => <span>{row.budget}</span>,
+        renderCell: (row) => <span>{CurrencyFormatter.formatCurrency(row.budget)}</span>,
       },
       {
         id: "user",

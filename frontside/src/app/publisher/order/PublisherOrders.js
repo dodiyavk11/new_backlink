@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import ApiServices from "../../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import { Trans } from "react-i18next";
 import { CPopover, CButton } from "@coreui/react";
 import "../../../assets/custom.css";
+import CurrencyFormatter from "../../shared/CurrencyFormatter";
 
 export class PublisherOrders extends Component {
   constructor(props) {
@@ -192,6 +194,43 @@ export class PublisherOrders extends Component {
     });
   }
 
+  handleExport = async () => {
+    ApiServices.exportOrderCsv()
+      .then((res) => {
+        if (res.status) {
+          setTimeout(() => {
+            const link = document.createElement("a");
+            link.href = `${process.env.REACT_APP_BASE_URL}${res.data.filepath}`;
+            link.download = res.data.fileName;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }, 500);
+        } else {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 401 &&
+          err.response.data.message !== "You cannot access this page"
+        ) {
+          this.setState({ isAuthenticated: false });
+          this.props.history.push("/login");
+        } else {
+          toast.error(err.response.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      });
+  };
+
   goToOrderViewLink = (order_id) => {
     this.props.history.push(`/publisher/order/${order_id}`);
   };
@@ -232,10 +271,16 @@ export class PublisherOrders extends Component {
       <div className="ordersListPage">
         <div className="d-flex justify-content-between">
           <div className="page-header">
-            <h3 className="fontBold latterSpacing"><Trans>Orders</Trans></h3>
+            <h3 className="fontBold latterSpacing">
+              <Trans>Orders</Trans>
+            </h3>
           </div>
+          <ToastContainer />
           <div className="ExportBtn">
-            <button className="btn btn-rounded d-inline-flex btn-sm">
+            <button
+              className="btn btn-rounded d-inline-flex btn-sm"
+              onClick={this.handleExport}
+            >
               <i className="mdi mdi-exit-to-app mr-2"></i>
               <Trans>Export</Trans>
             </button>
@@ -367,7 +412,7 @@ export class PublisherOrders extends Component {
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
                             <span className="mr-4 text-nowrap">
-                            <Trans>Date & Time</Trans>
+                              <Trans>Date & Time</Trans>
                             </span>
                             <label className="switch">
                               <input
@@ -381,7 +426,9 @@ export class PublisherOrders extends Component {
                             </label>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                            <span className="mr-4"><Trans>Domain</Trans></span>
+                            <span className="mr-4">
+                              <Trans>Domain</Trans>
+                            </span>
                             <label className="switch">
                               <input
                                 type="checkbox"
@@ -394,7 +441,9 @@ export class PublisherOrders extends Component {
                             </label>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                            <span className="mr-4 text-nowrap"><Trans>Status</Trans></span>
+                            <span className="mr-4 text-nowrap">
+                              <Trans>Status</Trans>
+                            </span>
                             <label className="switch">
                               <input
                                 type="checkbox"
@@ -423,7 +472,7 @@ export class PublisherOrders extends Component {
                           </div> */}
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
                             <span className="mr-4 text-nowrap">
-                            <Trans>Anchor text</Trans>
+                              <Trans>Anchor text</Trans>
                             </span>
                             <label className="switch">
                               <input
@@ -437,7 +486,9 @@ export class PublisherOrders extends Component {
                             </label>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                            <span className="mr-4 text-nowrap"><Trans>Target Url</Trans></span>
+                            <span className="mr-4 text-nowrap">
+                              <Trans>Target Url</Trans>
+                            </span>
                             <label className="switch">
                               <input
                                 type="checkbox"
@@ -450,7 +501,9 @@ export class PublisherOrders extends Component {
                             </label>
                           </div>
                           <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                            <span className="mr-4 text-nowrap"><Trans>Amount</Trans></span>
+                            <span className="mr-4 text-nowrap">
+                              <Trans>Amount</Trans>
+                            </span>
                             <label className="switch">
                               <input
                                 type="checkbox"
@@ -472,25 +525,29 @@ export class PublisherOrders extends Component {
                     <table className="table table-hover orderListTable">
                       <thead>
                         <tr>
-                          <th className={showID ? "show" : "hide"}><Trans>ID</Trans></th>
-                          <th className={showDate ? "show" : "hide"}><Trans>Date & Time</Trans></th>
+                          <th className={showID ? "show" : "hide"}>
+                            <Trans>ID</Trans>
+                          </th>
+                          <th className={showDate ? "show" : "hide"}>
+                            <Trans>Date & Time</Trans>
+                          </th>
                           <th className={showStatus ? "show" : "hide"}>
-                          <Trans>Status</Trans>
+                            <Trans>Status</Trans>
                           </th>
                           <th className={showProduct ? "show" : "hide"}>
-                          <Trans>Domain</Trans>
+                            <Trans>Domain</Trans>
                           </th>
                           {/* <th className={showProject ? "show" : "hide"}>
                             Project
                           </th> */}
                           <th className={showAnchor ? "show" : "hide"}>
-                          <Trans>Anchor text</Trans>
+                            <Trans>Anchor text</Trans>
                           </th>
                           <th className={showTarget ? "show" : "hide"}>
-                          <Trans>Target url</Trans>
+                            <Trans>Target url</Trans>
                           </th>
                           <th className={showAmount ? "show" : "hide"}>
-                          <Trans>Amount</Trans>
+                            <Trans>Amount</Trans>
                           </th>
                         </tr>
                       </thead>
@@ -528,7 +585,9 @@ export class PublisherOrders extends Component {
                               {order.linktarget}
                             </td>
                             <td className={showAmount ? "show" : "hide"}>
-                              ${order.total_price}
+                              {CurrencyFormatter.formatCurrency(
+                                order.total_price
+                              )}
                             </td>
                           </tr>
                         ))}
@@ -544,10 +603,14 @@ export class PublisherOrders extends Component {
                           alt="No data found..."
                         />
                       </div>
-                      <h4><Trans>No Orders.</Trans></h4>
+                      <h4>
+                        <Trans>No Orders.</Trans>
+                      </h4>
                       <p style={{ maxWidth: "400px" }}>
-                      <Trans>No Project You do not have any Project yet. As soon as
-                        you add your first Project, it will show up here.</Trans>
+                        <Trans>
+                          No Project You do not have any Project yet. As soon as
+                          you add your first Project, it will show up here.
+                        </Trans>
                       </p>
                       {/* <button className="btn btn-rounded btn-fw">
                         <span

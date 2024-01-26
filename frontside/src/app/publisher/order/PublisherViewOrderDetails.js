@@ -7,6 +7,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../../services/api.service";
 import MessageComponents from "../../shared/MessageComponents";
 import { Trans } from "react-i18next";
+import CurrencyFormatter from "../../shared/CurrencyFormatter";
 
 export class PublisherViewOrderDetails extends Component {
   constructor(props) {
@@ -385,7 +386,7 @@ export class PublisherViewOrderDetails extends Component {
                           </td>
                           <td className="text-end-ct">
                             {orderData.approveText === 1
-                              ? "$" + orderData.approveTextPrice
+                              ? <span>{CurrencyFormatter.formatCurrency(orderData.approveTextPrice)}</span>
                               : "N/A"}
                           </td>
                         </tr>
@@ -396,7 +397,7 @@ export class PublisherViewOrderDetails extends Component {
                             </td>
                             <td className="text-end-ct">
                               {orderData.textCreationPrice > 0
-                                ? "$" + orderData.textCreationPrice
+                                ? <span>{CurrencyFormatter.formatCurrency(orderData.textCreationPrice)}</span>
                                 : "Free"}
                             </td>
                           </tr>
@@ -405,7 +406,7 @@ export class PublisherViewOrderDetails extends Component {
                           <td>
                             <Trans>Price</Trans>
                           </td>
-                          <td className="text-end-ct">${orderData.price}</td>
+                          <td className="text-end-ct">{CurrencyFormatter.formatCurrency(orderData.price)}</td>
                         </tr>
                         <tr>
                           <td className="h4 fontBold600">
@@ -413,7 +414,7 @@ export class PublisherViewOrderDetails extends Component {
                           </td>
                           <td className="text-end-ct">
                             <span className="h3 fontBold600">
-                              ${orderData.total_price}
+                              {CurrencyFormatter.formatCurrency(orderData.total_price)}
                             </span>
                           </td>
                         </tr>

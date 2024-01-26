@@ -9,6 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../services/api.service";
 import PlaceOrderDetailsModal from "../shared/PlaceOrderDetailsModal";
 import { Trans } from "react-i18next";
+import CurrencyFormatter from "../shared/CurrencyFormatter";
 
 export class ContentLinks extends Component {
   constructor(props) {
@@ -881,7 +882,7 @@ export class ContentLinks extends Component {
                         <td><Trans>Price</Trans></td>
                         <td className="text-end-ct">
                           <span className="h3 fontBold600">
-                            ${contentData.price}
+                            {CurrencyFormatter.formatCurrency(contentData.price)}
                           </span>
                         </td>
                       </tr>

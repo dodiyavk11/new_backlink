@@ -179,8 +179,7 @@ export class Projects extends Component {
                       {this.state.projectsData.filter(
                         (project) => project.isArchieved === 0
                       ).length > 0 ? (
-                        <div className="row">
-                          {/* Render projects where isArchived is 1 */}
+                        <div className="row"  style={{ display: "flex", flexWrap: "wrap" }}>
                           {this.state.projectsData
                             .filter((project) => project.isArchieved === 0)
                             .map((project) => (
@@ -192,7 +191,6 @@ export class Projects extends Component {
                             ))}
                         </div>
                       ) : (
-                        // Render content when length is 0
                         <center>
                           <div className="mt-5 mx-auto">
                             <img
@@ -229,7 +227,7 @@ export class Projects extends Component {
                       {this.state.projectsData.filter(
                         (project) => project.isArchieved === 1
                       ).length > 0 ? (
-                        <div className="row">
+                        <div className="row"  style={{ display: "flex", flexWrap: "wrap" }}>
                           {this.state.projectsData
                             .filter((project) => project.isArchieved === 1)
                             .map((project) => (
@@ -241,7 +239,6 @@ export class Projects extends Component {
                             ))}
                         </div>
                       ) : (
-                        // Render content when length is 0
                         <center>
                           <div className="mt-5 mx-auto">
                             <img

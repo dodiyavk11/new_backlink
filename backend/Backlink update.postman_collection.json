@@ -3911,6 +3911,37 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Publisher export order data as CSV file",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUzLCJpYXQiOjE3MDYyNjczNDEsImV4cCI6MTcwNjMwMzM0MX0.D_7VYciS8I1qdKpkU8OvOt8Q9bSMbfioEzl6yU1K1AA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/publisher/orders/export",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"orders",
+						"export"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

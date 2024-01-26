@@ -7,6 +7,7 @@ import AddPublisherProjects from "../common/AddPublisherProjects";
 import PublisherUplaodExcelDomain from "../common/PublisherUplaodExcelDomain";
 import { Trans } from "react-i18next";
 import "../../../assets/custom.css";
+import CurrencyFormatter from "../../shared/CurrencyFormatter"
 export class Domain extends Component {
   constructor(props) {
     super(props);
@@ -123,7 +124,10 @@ export class Domain extends Component {
                 </div>
                 <hr />
                 {this.state.publisherDomainList.length > 0 ? (
-                  <div className="row">
+                  <div
+                    className="row"
+                    style={{ display: "flex", flexWrap: "wrap" }}
+                  >
                     {this.state.publisherDomainList.map((domain) => (
                       <div className="col-md-4 mb-2" key={domain.id}>
                         <div
@@ -131,6 +135,11 @@ export class Domain extends Component {
                           onClick={() =>
                             this.goToDomainViewLink(domain.hash_id)
                           }
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            height: "85%",
+                          }}
                         >
                           {domain.imageExists ? (
                             <img
@@ -142,29 +151,39 @@ export class Domain extends Component {
                               }
                               className="card-img-top"
                               alt=""
+                              style={{
+                                flex: "1",
+                                objectFit: "cover",
+                                height: "200px",
+                              }}
                             />
                           ) : (
                             <img
                               src={require("../../../assets/images/blank_image.jpg")}
                               className="card-img-top"
                               alt=""
+                              height={200}
+                              style={{ flex: "1", objectFit: "cover" }}
                             />
                           )}
-                          <div className="card-body activeProject">
+                          <div
+                            className="card-body activeProject"
+                            style={{ flex: "1" }}
+                          >
                             <h5 className="card-title">
                               {domain.domain_name}
                               {domain.status ? (
                                 <span className="ml-2 badge badge-success">
-                                  <Trans>Active</Trans>
+                                  Active
                                 </span>
                               ) : (
                                 <span className="ml-2 badge badge-danger">
-                                  <Trans>InActive</Trans>
+                                  Inactive
                                 </span>
                               )}
                             </h5>
                             <div className="extraInfo d-flex flex-wrap justify-content-between">
-                              <div>${domain.price}</div>
+                              <div>{CurrencyFormatter.formatCurrency(domain.price)}</div>
                               <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
                               <div>{domain.category.name}</div>
                               <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>

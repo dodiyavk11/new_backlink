@@ -6,6 +6,7 @@ import { Trans, withTranslation } from "react-i18next";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import { CPopover, CButton } from "@coreui/react";
 import "../../assets/custom.css";
+import CurrencyFormatter from "../shared/CurrencyFormatter"
 
 export class Orders extends Component {
   constructor(props) {
@@ -549,7 +550,7 @@ export class Orders extends Component {
                               {order.linktarget}
                             </td>
                             <td className={showAmount ? "show" : "hide"}>
-                              ${order.total_price}
+                              {CurrencyFormatter.formatCurrency(order.total_price)}
                             </td>
                           </tr>
                         ))}

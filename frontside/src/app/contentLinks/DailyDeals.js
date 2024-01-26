@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Trans } from "react-i18next";
 import "../../assets/custom.css";
+import CurrencyFormatter from "../shared/CurrencyFormatter";
 
 export class DailyDeals extends Component {
   constructor(props) {
@@ -121,9 +122,9 @@ export class DailyDeals extends Component {
                       <td>{item.contentData.trust_flow}</td>
                       <td style={{ display: "flex" }}>
                         <div>
-                          <p className="fontBold700">${item.price}</p>
+                          <p className="fontBold700">{CurrencyFormatter.formatCurrency(item.price)}</p>
                           <p>
-                            <del>$0.00</del>
+                            <del>{CurrencyFormatter.formatCurrency(0.00)}</del>
                           </p>
                         </div>
                       </td>

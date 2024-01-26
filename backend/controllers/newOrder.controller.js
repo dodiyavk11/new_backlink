@@ -2,11 +2,13 @@ const Models = require("../models");
 const Sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const { sendVerifyMail, emailTemplate } = require("../utils/emailsUtils");
+const { formatCurrency } = require("../utils/otherUtility.js");
 const generateUniqueId = require("generate-unique-id");
 const nodemailer = require("nodemailer");
 const fs = require("fs");
 const path = require("path");
 const Joi = require("joi");
+const Papa = require("papaparse");
 
 exports.addNewOrder = async (req, res) => {
   try {
@@ -16,7 +18,12 @@ exports.addNewOrder = async (req, res) => {
 
     const schema = Joi.object({
       textCreation: Joi.string().required(),
-      anchortext: Joi.string().required(),
+      // anchortext: Joi.string().required(),
+      anchortext: Joi.when("chooseByBacklink", {
+        is: true,
+        then: Joi.allow(null),
+        otherwise: Joi.string().required().label("Anchor Text"),
+      }),
       hash_id: Joi.string().required(),
       linktarget: Joi.string().uri().required(),
       publication_date: Joi.date().iso().allow(""),
@@ -203,30 +210,6 @@ exports.addNewOrder = async (req, res) => {
 
         admin.map((val) => {
           sendVerifyMail(val.dataValues.email, subject, "", mail);
-          /* dummy email start*/
-          var transport = nodemailer.createTransport({
-            host: "sandbox.smtp.mailtrap.io",
-            port: 2525,
-            auth: {
-              user: "5486eff1d5793c",
-              pass: "e17b0b8e8f08ac",
-            },
-          });
-
-          const mailOptions = {
-            from: "rjnaghera@gmail.com",
-            to: val.dataValues.email,
-            subject: subject,
-            text: mail,
-          };
-          transport.sendMail(mailOptions, (error, info) => {
-            // if (error) {
-            //   console.error(error);
-            // } else {
-            //   console.log('Email sent: ' + info.response);
-            // }
-          });
-          /* dummy email end*/
         });
 
         return res.status(200).send({
@@ -261,7 +244,12 @@ exports.addCartOrder = async (req, res) => {
     const schema = Joi.array().items(
       Joi.object({
         textCreation: Joi.string().required(),
-        anchortext: Joi.string().required().label("Anchortext"),
+        // anchortext: Joi.string().required().label("Anchortext"),
+        anchortext: Joi.when("chooseByBacklink", {
+          is: true,
+          then: Joi.allow(null),
+          otherwise: Joi.string().required().label("Anchor Text"),
+        }),
         hash_id: Joi.string().required(),
         linktarget: Joi.string().uri().required().label("Link Target"),
         publication_date: Joi.date().iso().allow(""),
@@ -409,6 +397,7 @@ exports.addCartOrder = async (req, res) => {
             }
           }
           const placeOrder = await Models.newOrder.create(orderData);
+          placeOrder.dataValues.backlink = getPublisherDomain.domain_name;
           placeOrderData.push(placeOrder);
           if (filename !== "") {
             await Models.orderFiles.create({
@@ -467,30 +456,6 @@ exports.addCartOrder = async (req, res) => {
 
           admin.map((val) => {
             sendVerifyMail(val.dataValues.email, subject, "", mail);
-            /* dummy email start*/
-            var transport = nodemailer.createTransport({
-              host: "sandbox.smtp.mailtrap.io",
-              port: 2525,
-              auth: {
-                user: "5486eff1d5793c",
-                pass: "e17b0b8e8f08ac",
-              },
-            });
-
-            const mailOptions = {
-              from: "rjnaghera@gmail.com",
-              to: val.dataValues.email,
-              subject: subject,
-              text: mail,
-            };
-            transport.sendMail(mailOptions, (error, info) => {
-              // if (error) {
-              //   console.error(error);
-              // } else {
-              //   console.log('Email sent: ' + info.response);
-              // }
-            });
-            /* dummy email end*/
           });
         }
         await Models.userCart.destroy({
@@ -799,6 +764,86 @@ exports.getPublisherOrder = async (req, res) => {
     });
   }
 };
+
+exports.exportDataCsvPublisher = async (req, res) => {
+  const publisher_id = req.userId;
+  const baseQuery = {
+    include: [
+      {
+        model: Models.publisherDomain,
+        as: "domain",
+        attributes: ["id", "domain_name"],
+      },
+    ],
+    attributes: [
+      "id",
+      "total_price",
+      "status",
+      "price",
+      "anchortext",
+      "linktarget",
+      "publication_date",
+      "note",
+    ],
+    where: { publisher_id: publisher_id },
+  };
+
+  const orderDataInstances = await Models.newOrder.findAll(baseQuery);
+  console.log(orderDataInstances)
+  const customHeaders = [
+    "Id",
+    "Domain Name",
+    "Price",
+    "Total Price",
+    "Status",
+    "Anchortext",
+    "Linktarget",
+    "Publication Date",
+    "Note",
+  ];
+
+  const orderData = orderDataInstances.map((instance) => {
+    const plainInstance = instance.get({ plain: true });
+    const domainData = plainInstance.domain || {};
+    return {
+      Id: plainInstance.id,
+      "Domain Name": domainData.domain_name || "",
+      Price: formatCurrency(plainInstance.price),
+      "Total Price": formatCurrency(plainInstance.total_price),
+      "Status": plainInstance.status,
+      Anchortext: plainInstance.anchortext,
+      Linktarget: plainInstance.linktarget,
+      "Publication Date": plainInstance.publication_date,
+      Note: plainInstance.note,
+    };
+  });
+
+  const customCsv = Papa.unparse({
+    fields: customHeaders,
+    data: orderData,
+  });
+
+  const fileName = `order_${publisher_id}.csv`;
+  const tempFileDirectory = path.resolve("./assets/csv", fileName);
+
+  fs.writeFileSync(tempFileDirectory, customCsv, { encoding: "utf-8" });
+  // res.sendFile(tempFileDirectory);
+  if (fs.existsSync(tempFileDirectory)) {
+    res.status(200).send({
+      status: true,
+      message: "CSV generating successfully.",
+      filepath: `assets/csv/${fileName}`,
+      fileName: fileName,
+    });
+  } else {
+    res.status(500).send({
+      status: false,
+      message: "Error generating the CSV file.",
+      data: null,
+    });
+  }
+};
+
 /* publisher update order status for their backlink(domain) order placed by customer */
 exports.publisherUpdateOrderStatus = async (req, res) => {
   try {
@@ -829,31 +874,6 @@ exports.publisherUpdateOrderStatus = async (req, res) => {
     text = text.replace("{name}", customer.firstName + " " + customer.lastName);
     const mail = await emailTemplate(text);
     sendVerifyMail(customer.email, subject, "", mail);
-
-    /* dummy email start*/
-    var transport = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
-      auth: {
-        user: "5486eff1d5793c",
-        pass: "e17b0b8e8f08ac",
-      },
-    });
-
-    const mailOptions = {
-      from: "rjnaghera@gmail.com",
-      to: customer.email,
-      subject: subject,
-      text: mail,
-    };
-    transport.sendMail(mailOptions, (error, info) => {
-      // if (error) {
-      //   console.error(error);
-      // } else {
-      //   console.log('Email sent: ' + info.response);
-      // }
-    });
-    /* dummy email end*/
 
     res.status(200).send({
       status: true,

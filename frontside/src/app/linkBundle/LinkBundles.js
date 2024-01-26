@@ -7,6 +7,8 @@ import AuthService from "../services/auth.service";
 import { Modal, Button, Form } from "react-bootstrap";
 import { Trans } from "react-i18next";
 import "../../assets/custom.css";
+import CurrencyFormatter from "../shared/CurrencyFormatter";
+
 export class LinkBundles extends Component {
   constructor(props) {
     super(props);
@@ -337,7 +339,7 @@ export class LinkBundles extends Component {
                           </h4>
                           <ul className="features">
                             <li className="mt-3 h2">
-                              <h2>${plans.price}</h2>
+                              <h2>{CurrencyFormatter.formatCurrency(plans.price)}</h2>
                             </li>
                             <li>{plans.description}</li>
                             <li>
@@ -516,14 +518,14 @@ export class LinkBundles extends Component {
                     <span>
                       <Trans>Current balance</Trans>
                     </span>
-                    <span>${currentBalance}</span>
+                    <span>{CurrencyFormatter.formatCurrency(currentBalance)}</span>
                   </div>
                   <div className="d-flex justify-content-between mb-2">
                     <span>
-                      <Trans>Link package</Trans>
+                      <Trans>Link package</Trans>&nbsp;
                       {selectedPlan.name}
                     </span>
-                    <span>${selectedPlan.price}</span>
+                    <span>{CurrencyFormatter.formatCurrency(selectedPlan.price)}</span>
                   </div>
                   <hr />
                   <div className="d-flex justify-content-between mb-2">
@@ -531,9 +533,12 @@ export class LinkBundles extends Component {
                       <Trans>Remaining balance</Trans>
                     </span>
                     <span>
-                      {newRemainingBalance < 0
+                      {/* {newRemainingBalance < 0
                         ? `-$${Math.abs(newRemainingBalance).toFixed(2)}`
-                        : `$${newRemainingBalance.toFixed(2)}`}
+                        : `$${newRemainingBalance.toFixed(2)}`} */}
+                        {newRemainingBalance < 0
+                        ? <span>{CurrencyFormatter.formatCurrency(newRemainingBalance)}</span>
+                        : <span>{CurrencyFormatter.formatCurrency(newRemainingBalance)}</span>}
                     </span>
                   </div>
                 </div>
@@ -570,7 +575,7 @@ export class LinkBundles extends Component {
                 className="btn btn-block btn-rounded btn-lg"
                 onClick={() => this.checkBalanceToProcess()}
               >
-                <Trans>Order now for</Trans> ${selectedPlan.price}
+                <Trans>Order now for</Trans> {CurrencyFormatter.formatCurrency(selectedPlan.price)}
               </Button>
               <button
                 className="btn btn-cancel-ctm btn-rounded btn-block"
@@ -668,7 +673,7 @@ export class LinkBundles extends Component {
               type="button"
               onClick={this.bundlePlaceOrder}
             >
-              <Trans>Buy now for</Trans> ${selectedPlan.price}
+              <Trans>Buy now for</Trans> {CurrencyFormatter.formatCurrency(selectedPlan.price)}
             </button>
           </Modal>
         </div>

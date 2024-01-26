@@ -10,6 +10,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../../services/api.service";
 import UpdatePublisherProjects from "../common/UpdatePublisherProjects";
 import { Trans } from "react-i18next";
+import CurrencyFormatter from "../../shared/CurrencyFormatter";
 
 export class DomainView extends Component {
   constructor(props) {
@@ -675,7 +676,7 @@ export class DomainView extends Component {
                                         {order.status}
                                       </span>
                                       <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <div>${order.total_price}</div>
+                                      <div>{CurrencyFormatter.formatCurrency(order.total_price)}</div>
                                       <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
                                       <div>
                                         <TimeAgo
@@ -879,7 +880,7 @@ export class DomainView extends Component {
                         </td>
                         <td className="text-end-ct">
                           <span className="h3 fontBold600">
-                            ${contentData.price}
+                            {CurrencyFormatter.formatCurrency(contentData.price)}
                           </span>
                         </td>
                       </tr>

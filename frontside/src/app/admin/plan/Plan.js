@@ -9,6 +9,7 @@ import { Trans, withTranslation } from "react-i18next";
 import "../../../assets/custom.css";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import CurrencyFormatter from "../../shared/CurrencyFormatter";
 
 export class Plan extends Component {
   constructor(props) {
@@ -307,7 +308,7 @@ export class Plan extends Component {
                         </h4>
                         <ul className="features">
                           <li className="mt-3 h2">
-                            <h2>${plans.price}</h2>
+                            <h2>{CurrencyFormatter.formatCurrency(plans.price)}</h2>
                           </li>
                           <li>{plans.description}</li>
                           <li>

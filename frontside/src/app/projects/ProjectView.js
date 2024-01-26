@@ -9,6 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import TimeAgo from "timeago-react";
 import ApiServices from "../services/api.service";
 import { Trans } from "react-i18next";
+import CurrencyFormatter from "../shared/CurrencyFormatter";
 
 export class ProjectView extends Component {
   constructor(props) {
@@ -776,7 +777,7 @@ export class ProjectView extends Component {
                                         {order.status}
                                       </span>
                                       <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <div>${order.total_price}</div>
+                                      <div>{CurrencyFormatter.formatCurrency(order.total_price)}</div>
                                       <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
                                       <div>
                                         <TimeAgo

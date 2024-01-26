@@ -1,5 +1,7 @@
 import React from "react";
 import TimeAgo from "timeago-react";
+import CurrencyFormatter from "../shared/CurrencyFormatter";
+
 const getStatusClass = (status) => {
   switch (status) {
     case "Pending":
@@ -36,7 +38,7 @@ const OrderComponent = ({ order, viewOrder }) => (
                   {order.status}
                 </span>
                 <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                <div>${order.total_price}</div>
+                <div>{CurrencyFormatter.formatCurrency(order.total_price)}</div>
                 <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
                 <div>
                   <TimeAgo datetime={order.created_at} locale="en" />

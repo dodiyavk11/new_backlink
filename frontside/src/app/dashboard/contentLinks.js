@@ -1,4 +1,5 @@
 import React from "react";
+import CurrencyFormatter from "../shared/CurrencyFormatter";
 
 const ContentLinksComponent = ({ content, goToContentLink }) => (
   <tr key={content.hash_id} onClick={() => goToContentLink(content.hash_id)}>
@@ -11,7 +12,7 @@ const ContentLinksComponent = ({ content, goToContentLink }) => (
     <td>{content.contentData.domain_rating}</td>
     <td>{content.contentData.authority}</td>
     <td>{content.contentData.trust_flow}</td>
-    <td className="h3">${content.price}</td>
+    <td className="h3">{CurrencyFormatter.formatCurrency(content.price)}</td>
   </tr>
 );
 

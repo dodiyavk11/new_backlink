@@ -5,6 +5,7 @@ import ApiServices from "../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Trans } from "react-i18next";
+import CurrencyFormatter from "./CurrencyFormatter";
 
 class PlaceOrderDetailsModal extends Component {
   constructor(props) {
@@ -194,12 +195,13 @@ class PlaceOrderDetailsModal extends Component {
   };
 
   updateSubmitDisabled = () => {
-    const { textCreation, filename, linktarget, anchortext } = this.state;
+    const { textCreation, filename, linktarget, anchortext,chooseByBack } = this.state;
     let isSubmitDisabled;
     if (textCreation === "Own") {
       isSubmitDisabled = !filename || !linktarget || !anchortext;
     } else if (textCreation === "Editorial") {
-      isSubmitDisabled = !linktarget || !anchortext;
+      // isSubmitDisabled = !linktarget || !anchortext;
+      isSubmitDisabled = !linktarget || (chooseByBack && anchortext === null);
     } else {
       isSubmitDisabled = false;
     }
@@ -499,7 +501,7 @@ class PlaceOrderDetailsModal extends Component {
                       }
                     ></i>{" "}
                     1000 <Trans>Words</Trans>
-                    <span className="float-right fontBold600">+$50</span>
+                    <span className="float-right fontBold600">+{CurrencyFormatter.formatCurrency(50)}</span>
                   </label>
                 </div>
               </div>
@@ -535,7 +537,7 @@ class PlaceOrderDetailsModal extends Component {
                     >
                       <Trans>NEW</Trans>
                     </span>
-                    <span className="float-right fontBold600">+$27.00</span>
+                    <span className="float-right fontBold600">+{CurrencyFormatter.formatCurrency(27.00)}</span>
                   </div>
                 </div>
               </div>
@@ -546,7 +548,7 @@ class PlaceOrderDetailsModal extends Component {
                   </p>
                 </div>
                 <div className="col-sm-6">
-                  <p className="textRight">${this.props.contetnPrice}</p>
+                  <p className="textRight">{CurrencyFormatter.formatCurrency(this.props.contetnPrice)}</p>
                 </div>
               </div>
               <div className="row">
@@ -560,7 +562,7 @@ class PlaceOrderDetailsModal extends Component {
                     {textCreationPrice === 0 ? (
                       <Trans>Free</Trans>
                     ) : (
-                      `$${textCreationPrice}`
+                      <span>{CurrencyFormatter.formatCurrency(textCreationPrice)}</span>
                     )}
                   </p>
                 </div>
@@ -573,7 +575,7 @@ class PlaceOrderDetailsModal extends Component {
                     </p>
                   </div>
                   <div className="col-sm-6">
-                    <p className="textRight">{approveTextPrice}</p>
+                    <p className="textRight">{CurrencyFormatter.formatCurrency(approveTextPrice)}</p>
                   </div>
                 </div>
               )}
@@ -585,7 +587,7 @@ class PlaceOrderDetailsModal extends Component {
                   </p>
                 </div>
                 <div className="col-sm-6">
-                  <p className="textRight h4 fontBold700">${totalAmount}</p>
+                  <p className="textRight h4 fontBold700">{CurrencyFormatter.formatCurrency(totalAmount)}</p>
                 </div>
               </div>
             </Modal.Body>
@@ -808,7 +810,7 @@ class PlaceOrderDetailsModal extends Component {
               disabled={submitDisabled}
               onClick={this.handleplaceOrder}
             >
-              <Trans>Buy now for</Trans> ${totalAmount}
+              <Trans>Buy now for</Trans> {CurrencyFormatter.formatCurrency(totalAmount)}
             </button>
             <button
               className="btn btn-primary btn btn-rounded custamFilterBtn"

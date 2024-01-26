@@ -805,6 +805,17 @@ class ApiServices {
         return response;
       });
   }
+
+  exportOrderCsv() {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(`${this.APP_URL}publisher/orders/export`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
 }
 
 export default new ApiServices();

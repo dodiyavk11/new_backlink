@@ -19,6 +19,7 @@ import {
   TableRow,
   TableSortLabel,
 } from "@material-ui/core";
+import CurrencyFormatter from "../shared/CurrencyFormatter";
 
 export class MarketPlace extends Component {
   constructor(props) {
@@ -534,7 +535,7 @@ export class MarketPlace extends Component {
         width: 160,
         align: "right",
         renderCell: (row) => (
-          <span className="fontBold700 textColorCls">${row.price}</span>
+          <span className="fontBold700 textColorCls">{CurrencyFormatter.formatCurrency(row.price)}</span>
         ),
       },
       {

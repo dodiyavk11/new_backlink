@@ -378,5 +378,9 @@
     "Link bundle data update successfully.":"Link-Bündel-Daten erfolgreich aktualisiert.",
     "Something went to wrong.":"Es ist etwas schiefgegangen.",
     "Invoice download":"Download der Rechnung.",
-    "Inovice":"Rechnung"
+    "Inovice":"Rechnung",
+    "Order summary":"Bestellübersicht",
+    "Thanks for your Order":"Vielen Dank für Ihre Bestellung",
+    "Thank you":"Vielen Dank",
+    "View":"Ansehen"
 }

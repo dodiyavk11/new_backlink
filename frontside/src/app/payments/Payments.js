@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Trans } from "react-i18next";
 import { withTranslation } from "react-i18next";
+import CurrencyFormatter from "../shared/CurrencyFormatter";
 
 import {
   Paper,
@@ -157,7 +158,7 @@ export class Payments extends Component {
         id: "amount",
         label: <Trans>Amount</Trans>,
         sortable: true,
-        renderCell: (row) => <span>${row.amount}</span>,
+        renderCell: (row) => <span>{CurrencyFormatter.formatCurrency(row.amount)}</span>,
       },
       {
         id: "type",

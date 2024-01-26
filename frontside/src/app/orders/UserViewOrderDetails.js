@@ -7,6 +7,7 @@ import "../../assets/custom.css";
 import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../services/api.service";
 import MessageComponents from "../shared/MessageComponents";
+import CurrencyFormatter from "../shared/CurrencyFormatter";
 
 export class UserViewOrderDetails extends Component {
   constructor(props) {
@@ -225,7 +226,7 @@ export class UserViewOrderDetails extends Component {
                       </span>
                     </h4>
                     <h5>
-                      <Trans>Amount</Trans>: <b>${orderData.total_price}</b>
+                      <Trans>Amount</Trans>: <b>{CurrencyFormatter.formatCurrency(orderData.total_price)}</b>
                     </h5>
                   </div>
                 </div>
@@ -444,7 +445,7 @@ export class UserViewOrderDetails extends Component {
                           </td>
                           <td className="text-end-ct">
                             {orderData.approveText === 1
-                              ? "$" + orderData.approveTextPrice
+                              ? <span>{CurrencyFormatter.formatCurrency(orderData.approveTextPrice)}</span>
                               : "N/A"}
                           </td>
                         </tr>
@@ -455,7 +456,7 @@ export class UserViewOrderDetails extends Component {
                             </td>
                             <td className="text-end-ct">
                               {orderData.textCreationPrice > 0
-                                ? "$" + orderData.textCreationPrice
+                                ? <span>{CurrencyFormatter.formatCurrency(orderData.textCreationPrice)}</span>
                                 : "Free"}
                             </td>
                           </tr>
@@ -464,7 +465,7 @@ export class UserViewOrderDetails extends Component {
                           <td>
                             <Trans>Price</Trans>
                           </td>
-                          <td className="text-end-ct">${orderData.price}</td>
+                          <td className="text-end-ct">{CurrencyFormatter.formatCurrency(orderData.price)}</td>
                         </tr>
                         <tr>
                           <td className="h4 fontBold600">
@@ -472,7 +473,7 @@ export class UserViewOrderDetails extends Component {
                           </td>
                           <td className="text-end-ct">
                             <span className="h3 fontBold600">
-                              ${orderData.total_price}
+                              {CurrencyFormatter.formatCurrency(orderData.total_price)}
                             </span>
                           </td>
                         </tr>

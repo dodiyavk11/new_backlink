@@ -5,6 +5,7 @@ import ApiServices from "../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Trans } from "react-i18next";
+import CurrencyFormatter from "./CurrencyFormatter";
 
 class CartItem extends Component {
   constructor(props) {
@@ -172,6 +173,7 @@ class CartItem extends Component {
     this.setState(
       (prevState) => ({
         chooseByBacklink: !prevState.chooseByBack,
+        chooseByBack: !prevState.chooseByBack,
         anchortext: !prevState.chooseByBack ? "" : "",
       }),
       () => {
@@ -507,7 +509,7 @@ class CartItem extends Component {
                         }
                       ></i>{" "}
                       1000 <Trans>Words</Trans>
-                      <span className="float-right fontBold600">+$50</span>
+                      <span className="float-right fontBold600">+{CurrencyFormatter.formatCurrency(50)}</span>
                     </label>
                   </div>
                 </div>
@@ -543,7 +545,7 @@ class CartItem extends Component {
                       >
                         <Trans>NEW</Trans>
                       </span>
-                      <span className="float-right fontBold600">+$27.00</span>
+                      <span className="float-right fontBold600">+{CurrencyFormatter.formatCurrency(27.00)}</span>
                     </div>
                   </div>
                 </div>
@@ -554,7 +556,7 @@ class CartItem extends Component {
                     </p>
                   </div>
                   <div className="col-sm-6">
-                    <p className="textRight">${this.props.item.price}</p>
+                    <p className="textRight">{CurrencyFormatter.formatCurrency(this.props.item.price)}</p>
                   </div>
                 </div>
                 <div className="row">
@@ -568,7 +570,7 @@ class CartItem extends Component {
                       {textCreationPrice === 0 ? (
                         <Trans>Free</Trans>
                       ) : (
-                        `$${textCreationPrice}`
+                        <span>{CurrencyFormatter.formatCurrency(textCreationPrice)}</span>
                       )}
                     </p>
                   </div>
@@ -581,7 +583,7 @@ class CartItem extends Component {
                       </p>
                     </div>
                     <div className="col-sm-6">
-                      <p className="textRight">{approveTextPrice}</p>
+                      <p className="textRight">{CurrencyFormatter.formatCurrency(approveTextPrice)}</p>
                     </div>
                   </div>
                 )}
@@ -593,7 +595,7 @@ class CartItem extends Component {
                     </p>
                   </div>
                   <div className="col-sm-6">
-                    <p className="textRight h4 fontBold700">${totalAmount}</p>
+                    <p className="textRight h4 fontBold700">{CurrencyFormatter.formatCurrency(totalAmount)}</p>
                   </div>
                 </div>
                 <div className="modal2">

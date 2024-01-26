@@ -17,6 +17,7 @@ import {
   TableRow,
   TableSortLabel,
 } from "@material-ui/core";
+import CurrencyFormatter from "../shared/CurrencyFormatter"
 
 export class Transaction extends Component {
   constructor(props) {
@@ -337,7 +338,7 @@ export class Transaction extends Component {
         label: "Amount",
         sortable: true,
         width: 90,
-        renderCell: (row) => <span>${row.total_price}</span>,
+        renderCell: (row) => <span>{CurrencyFormatter.formatCurrency(row.total)}</span>,
       },
       // {
       //   id: "aciton",
