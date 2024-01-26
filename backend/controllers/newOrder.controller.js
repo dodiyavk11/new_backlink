@@ -218,7 +218,6 @@ exports.addNewOrder = async (req, res) => {
           data: placeOrderData,
         });
       } catch (err) {
-        console.log(err);
         return res.status(500).send({
           status: false,
           message: "Something went wrong",
@@ -229,7 +228,6 @@ exports.addNewOrder = async (req, res) => {
 
     processOrder(orderData);
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       status: false,
       message: "Something went wrong",
@@ -467,7 +465,6 @@ exports.addCartOrder = async (req, res) => {
           data: placeOrderData,
         });
       } catch (err) {
-        console.log(err);
         return res.status(500).send({
           status: false,
           message: "Something went wrong",
@@ -477,7 +474,6 @@ exports.addCartOrder = async (req, res) => {
     };
     processOrders(req.body);
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       status: false,
       message: "Something went wrong",
@@ -599,7 +595,6 @@ exports.cancelOrder = async (req, res) => {
       error: "You can not cancel this Order.",
     });
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       status: false,
       message: "Something went to wrong.",
@@ -789,7 +784,6 @@ exports.exportDataCsvPublisher = async (req, res) => {
   };
 
   const orderDataInstances = await Models.newOrder.findAll(baseQuery);
-  console.log(orderDataInstances)
   const customHeaders = [
     "Id",
     "Domain Name",
@@ -881,7 +875,6 @@ exports.publisherUpdateOrderStatus = async (req, res) => {
       data: orderData,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       status: false,
       message: "Something wnet to wrong, Please try again.",
@@ -905,7 +898,6 @@ exports.textFileUpload = async (req, res) => {
       .status(200)
       .send({ status: true, message: "File upload successfully.", data: data });
   } catch (err) {
-    console.log(err);
     res
       .status(500)
       .send({ status: false, message: "Something went to wrong." });
@@ -969,7 +961,6 @@ exports.addToCart = async (req, res) => {
         .send({ status: true, message: "Add to cart failed.", data: [] });
     }
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       status: false,
       message: "Something went wrong.",
@@ -997,7 +988,6 @@ exports.deleteItem = async (req, res) => {
         .send({ status: false, message: "Cart item not found." });
     }
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       status: false,
       message: "Something went to wrong.",
@@ -1035,7 +1025,6 @@ exports.getCart = async (req, res) => {
       data: cartItem,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       status: true,
       message: "Something went to wrong.",
@@ -1055,7 +1044,6 @@ exports.viewSingleOrderPublisher = async (req, res) => {
       data: getOrderData,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       status: false,
       message: "Something went to wrong please try again.",
@@ -1153,7 +1141,6 @@ async function getCartData(user_id) {
     });
     return results;
   } catch (err) {
-    console.log(err);
   }
 }
 
@@ -1266,7 +1253,6 @@ async function createFilterQuery(body, type, baseQuery) {
 
     return baseQuery;
   } catch (err) {
-    console.log(err);
     return false;
   }
 }
@@ -1285,7 +1271,6 @@ async function getPublisherDomainData(domain_id = null, hash_id = null) {
     }
     return publisherData;
   } catch (err) {
-    console.log(err);
     return false;
   }
 }
@@ -1300,7 +1285,6 @@ async function getBacklinksData(domain_id) {
       return backlinkPrice;
     }
   } catch (err) {
-    console.log(err);
     return false;
   }
 }
@@ -1339,7 +1323,6 @@ async function checkUserBalance(user_id, hash_id, addOnPrice) {
     }
     return false;
   } catch (err) {
-    console.log(err);
     return false;
   }
 }
