@@ -1,4 +1,4 @@
-const { addNewOrder,getPublisherOrder,publisherUpdateOrderStatus,cancelOrder, getUserOrders, getAdminAllOrders,textFileUpload, textFileDelete,addToCart, deleteItem, getCart, addCartOrder,viewSingleOrderPublisher,viewSingleOrderUser,viewSingleOrderAdmin, linkBundlePlaceOrder, exportDataCsvPublisher } = require("../controllers/newOrder.controller");
+const { addNewOrder,getPublisherOrder,publisherUpdateOrderStatus,cancelOrder, getUserOrders, getAdminAllOrders,textFileUpload, textFileDelete,addToCart, deleteItem, getCart, addCartOrder,viewSingleOrderPublisher,viewSingleOrderUser,viewSingleOrderAdmin, linkBundlePlaceOrder, exportDataCsvPublisher, donwlodFile } = require("../controllers/newOrder.controller");
 const { isLogin, isCustomer,isAdmin,isPublisher } = require("../middleware/checkAuthenticate");
 const { uploadOrderFile, uploadOrderFinalFile,textFileUploadTemp } = require("../middleware/orderFileHandler")
 const { checkOrderLimitInSubscriptionPlan } = require("../middleware/checkIsPlanOrderAndDomainLimit");
@@ -29,4 +29,5 @@ module.exports = (app) => {
 	app.get("/admin/order/view/:orderId",[isLogin,isAdmin],viewSingleOrderAdmin);
 
 	app.post("/link-bundle/:planId/placeOrder",[isLogin,isCustomer],linkBundlePlaceOrder)
+	app.get('/file-download/:filename/:order_id',[isLogin],donwlodFile)
 }

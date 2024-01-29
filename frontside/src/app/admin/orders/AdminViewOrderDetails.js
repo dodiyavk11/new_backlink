@@ -9,6 +9,7 @@ import ApiServices from "../../services/api.service";
 import MessageComponents from "../../shared/MessageComponents";
 import Spinner from "../../shared/Spinner";
 import CurrencyFormatter from "../../shared/CurrencyFormatter";
+import axios from "axios";
 
 export class AdminViewOrderDetails extends Component {
   constructor(props) {
@@ -22,6 +23,37 @@ export class AdminViewOrderDetails extends Component {
       order_id: order_id,
     };
   }
+
+  handleDownload = async (filename) => {
+    const APP_URL = process.env.REACT_APP_BASE_URL;
+    try {
+      const authToken = localStorage.getItem("token");
+      const response = await axios.get(`${APP_URL}file-download/${filename}/${this.state.order_id}`, {
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      const blob = new Blob([response.data]);
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = window.URL.createObjectURL(blob);
+      downloadLink.download = filename;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    } catch (error) {
+      console.error(
+        "Error downloading file:",
+        error.response ? error.response.data : error.message
+      );
+      toast.error(<Trans>Error while downloading file.</Trans>, {
+        position: "top-center",
+        autoClose: 2000,
+      });
+    }
+  };
 
   handleGoBack = () => {
     this.props.history.goBack();
@@ -76,9 +108,7 @@ export class AdminViewOrderDetails extends Component {
   render() {
     const { orderData, category, domainData, orderFile } = this.state;
     if (Object.keys(orderData).length === 0) {
-      return (
-        <Spinner/>
-      );
+      return <Spinner />;
     }
     const getStatusClass = (status) => {
       switch (status) {
@@ -144,7 +174,12 @@ export class AdminViewOrderDetails extends Component {
                       </span>
                     </h4>
                     <h5>
-                      <Trans>Amount</Trans>: <b>{CurrencyFormatter.formatCurrency(orderData.total_price)}</b>
+                      <Trans>Amount</Trans>:{" "}
+                      <b>
+                        {CurrencyFormatter.formatCurrency(
+                          orderData.total_price
+                        )}
+                      </b>
                     </h5>
                   </div>
                 </div>
@@ -163,7 +198,9 @@ export class AdminViewOrderDetails extends Component {
                             <Trans>Customer</Trans>
                           </th>
                           <td className="text-end-ct">
-                          {orderData.customer ? `${orderData.customer.firstName} ${orderData.customer.lastName}` : ""}
+                            {orderData.customer
+                              ? `${orderData.customer.firstName} ${orderData.customer.lastName}`
+                              : ""}
                           </td>
                         </tr>
                         <tr>
@@ -171,7 +208,9 @@ export class AdminViewOrderDetails extends Component {
                             <Trans>Email</Trans>
                           </th>
                           <td className="text-end-ct">
-                          {orderData.customer ? `${orderData.customer.email}` : ""}
+                            {orderData.customer
+                              ? `${orderData.customer.email}`
+                              : ""}
                           </td>
                         </tr>
                         <tr>
@@ -317,7 +356,18 @@ export class AdminViewOrderDetails extends Component {
                               <Trans>Text file</Trans>
                             </td>
                             <td className="text-end-ct">
-                              <span className="sampleFile ml-4">
+                              <span
+                                className="sampleFile ml-4"
+                                onClick={() =>
+                                  this.handleDownload(orderFile.file_name)
+                                }
+                                style={{ cursor: "pointer" }}
+                              >
+                                <b className="text-warning">
+                                  <Trans>Download text file</Trans>
+                                </b>
+                              </span>
+                              {/* <span className="sampleFile ml-4">
                                 <a
                                   href={`${ApiServices.APP_URL.replace(
                                     /\/$/,
@@ -333,7 +383,7 @@ export class AdminViewOrderDetails extends Component {
                                     <Trans>Download text file</Trans>
                                   </b>
                                 </a>
-                              </span>
+                              </span> */}
                             </td>
                           </tr>
                         )}
@@ -378,9 +428,15 @@ export class AdminViewOrderDetails extends Component {
                             <Trans>Text approval price</Trans>
                           </td>
                           <td className="text-end-ct">
-                            {orderData.approveText === 1
-                              ? <span>{CurrencyFormatter.formatCurrency(orderData.approveTextPrice)}</span>
-                              : "N/A"}
+                            {orderData.approveText === 1 ? (
+                              <span>
+                                {CurrencyFormatter.formatCurrency(
+                                  orderData.approveTextPrice
+                                )}
+                              </span>
+                            ) : (
+                              "N/A"
+                            )}
                           </td>
                         </tr>
                         {orderData.textCreation === "Editorial" && (
@@ -389,9 +445,15 @@ export class AdminViewOrderDetails extends Component {
                               <Trans>Text creation price</Trans>
                             </td>
                             <td className="text-end-ct">
-                              {orderData.textCreationPrice > 0
-                                ? <span>{CurrencyFormatter.formatCurrency(orderData.textCreationPrice)}</span>
-                                : "Free"}
+                              {orderData.textCreationPrice > 0 ? (
+                                <span>
+                                  {CurrencyFormatter.formatCurrency(
+                                    orderData.textCreationPrice
+                                  )}
+                                </span>
+                              ) : (
+                                "Free"
+                              )}
                             </td>
                           </tr>
                         )}
@@ -407,7 +469,9 @@ export class AdminViewOrderDetails extends Component {
                           </td>
                           <td className="text-end-ct">
                             <span className="h3 fontBold600">
-                              {CurrencyFormatter.formatCurrency(orderData.total_price)}
+                              {CurrencyFormatter.formatCurrency(
+                                orderData.total_price
+                              )}
                             </span>
                           </td>
                         </tr>

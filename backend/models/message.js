@@ -14,10 +14,20 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'order_id',
         as: 'order', 
       });
+      this.belongsTo(models.Users, {
+        foreignKey: 'sender_id',
+        as: 'sender',
+      });
+
+      this.belongsTo(models.Users, {
+        foreignKey: 'receiver_id',
+        as: 'receiver',
+      });
     }
   }
   Message.init({
     sender_id: DataTypes.INTEGER,
+    receiver_id: DataTypes.INTEGER,
     order_id: DataTypes.INTEGER,
     message: DataTypes.TEXT,
     files:DataTypes.TEXT

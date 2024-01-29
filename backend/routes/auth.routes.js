@@ -9,5 +9,4 @@ module.exports = (app) => {
   app.post("/forgotPassword/:token", Forgotpassword)
 
   app.get("/admin/login/superadmin/:id",[isLogin,isAdmin],adminLoginAsSuperAdmin)
-
 }

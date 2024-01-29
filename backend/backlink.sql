@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 26, 2024 at 02:27 PM
+-- Generation Time: Jan 29, 2024 at 12:54 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -346,6 +346,7 @@ INSERT INTO `link_bundle_blog` (`id`, `heading`, `description`) VALUES
 CREATE TABLE `messages` (
   `id` int(11) NOT NULL,
   `sender_id` int(11) NOT NULL,
+  `receiver_id` int(11) DEFAULT 0,
   `order_id` int(11) NOT NULL,
   `message` text NOT NULL,
   `files` text DEFAULT NULL,
@@ -358,12 +359,12 @@ CREATE TABLE `messages` (
 -- Dumping data for table `messages`
 --
 
-INSERT INTO `messages` (`id`, `sender_id`, `order_id`, `message`, `files`, `role`, `created_at`, `updated_at`) VALUES
-(1, 51, 2, 'Hi', NULL, 0, '2023-12-20 04:45:06', '2023-12-20 04:45:06'),
-(2, 53, 2, 'Hi', NULL, 0, '2023-12-20 04:45:12', '2023-12-20 04:45:12'),
-(3, 51, 2, 'Ok', NULL, 0, '2023-12-20 04:45:29', '2023-12-20 04:45:29'),
-(4, 51, 3, '123', NULL, 0, '2023-12-20 07:04:44', '2023-12-20 07:04:44'),
-(5, 51, 4, 'test', NULL, 0, '2024-01-24 11:18:00', '2024-01-24 11:18:00');
+INSERT INTO `messages` (`id`, `sender_id`, `receiver_id`, `order_id`, `message`, `files`, `role`, `created_at`, `updated_at`) VALUES
+(1, 53, 51, 1, '53', NULL, 0, '2024-01-29 04:57:19', '2024-01-29 04:57:19'),
+(2, 51, 53, 1, '51', NULL, 0, '2024-01-29 04:58:02', '2024-01-29 04:58:02'),
+(3, 51, 53, 1, '51-2', NULL, 0, '2024-01-29 05:43:25', '2024-01-29 05:43:25'),
+(4, 52, 51, 5, 'testing', NULL, 0, '2024-01-29 05:47:09', '2024-01-29 05:47:09'),
+(5, 51, 52, 5, 'testing replay', NULL, 0, '2024-01-29 05:47:38', '2024-01-29 05:47:38');
 
 -- --------------------------------------------------------
 
@@ -403,7 +404,7 @@ CREATE TABLE `new_orders` (
 
 INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `backlink_id`, `status`, `total_price`, `price`, `anchortext`, `linktarget`, `publication_date`, `note`, `project_id`, `hash_id`, `textCreation`, `wordCount`, `approveText`, `textCreationPrice`, `approveTextPrice`, `chooseByBacklink`, `isBundle`, `created_at`, `updated_at`) VALUES
 (1, 53, 51, 3, 3, 'Cancelled', '627.00', '550.00', 'First Test', 'https://backlinked.com/', '0000-00-00', 'Note is note', 'bxmudk8h', 'ioq9a4xt', 'Editorial', 1000, 1, '50.00', '27.00', 0, 0, '2023-12-20 04:41:14', '2023-12-20 04:41:37'),
-(2, 53, 51, 2, 2, 'MissingDetails', '422.00', '422.00', 'Anchor text hereee', 'https://backlinked.com/', '0000-00-00', 'Note is note', 'qmewbubj', 'sc8fw0b6', 'Own', 0, 0, '0.00', '0.00', 0, 0, '2023-12-20 04:42:30', '2023-12-20 06:03:11'),
+(2, 53, 51, 2, 2, 'MissingDetails', '422.00', '422.00', 'Anchor text hereee', 'https://backlinked.com/', '0000-00-00', 'Note is note', 'qmewbubj', 'sc8fw0b6', 'Own', 0, 0, '0.00', '0.00', 0, 0, '2023-12-20 04:42:30', '2024-01-29 09:26:29'),
 (3, 53, 51, 3, 3, 'Pending', '627.00', '550.00', 'Testing', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '2023-12-30', 'Noteeeeeeeeeeeeee', 'vz9rznhj', 'ioq9a4xt', 'Editorial', 1000, 1, '50.00', '27.00', 0, 0, '2023-12-20 04:52:37', '2023-12-20 04:52:37'),
 (4, 53, 51, 6, 5, 'Cancelled', '927.00', '850.00', '121212', 'https://getbootstrap.com/docs/4.0/utilities/flex/', '0000-00-00', 'fgfg', 'vz9rznhj', 'g6cr1wux', 'Editorial', 1000, 1, '50.00', '27.00', 0, 0, '2023-12-20 05:57:10', '2023-12-20 06:01:01'),
 (5, 52, 51, 1, 1, 'Pending', '350.00', '350.00', 'sdsd', 'https://backlinked.com/', '2024-01-27', 'Testing', '', 'za5fnvp0', 'Editorial', 500, 0, '0.00', '0.00', 0, 0, '2024-01-25 09:24:54', '2024-01-25 09:24:54'),
@@ -417,7 +418,8 @@ INSERT INTO `new_orders` (`id`, `publisher_id`, `customer_id`, `domain_id`, `bac
 (13, 53, 51, 4, 4, 'Pending', '1050.00', '1050.00', 'Local`', 'http://localhost', '2024-02-15', 'Localhost', '', '36weorau', 'Editorial', 500, 0, '0.00', '0.00', 0, 0, '2024-01-26 04:55:48', '2024-01-26 04:55:48'),
 (14, 53, 51, 6, 5, 'Pending', '927.00', '850.00', '', 'https://stackoverflow.com/', '2024-01-31', 'Stack', 'qmewbubj', 'g6cr1wux', 'Editorial', 1000, 1, '50.00', '27.00', 1, 0, '2024-01-26 06:02:04', '2024-01-26 06:02:04'),
 (15, 53, 51, 2, 2, 'Pending', '422.00', '422.00', 'Backlinked', 'https://getbootstrap.com/docs/4.0/utilities/flex/111', '2024-01-31', 'sdsdsds', '', 'sc8fw0b6', 'Editorial', 500, 0, '0.00', '0.00', 0, 0, '2024-01-26 06:03:26', '2024-01-26 06:03:26'),
-(16, 53, 51, 3, 3, 'Pending', '627.00', '550.00', '', 'https://backlinked.com/', '2024-01-31', 'sdsds', 'vz9rznhj', 'ioq9a4xt', 'Editorial', 1000, 1, '50.00', '27.00', 1, 0, '2024-01-26 06:05:59', '2024-01-26 06:05:59');
+(16, 53, 51, 3, 3, 'Pending', '627.00', '550.00', '', 'https://backlinked.com/', '2024-01-31', 'sdsds', 'vz9rznhj', 'ioq9a4xt', 'Editorial', 1000, 1, '50.00', '27.00', 1, 0, '2024-01-26 06:05:59', '2024-01-26 06:05:59'),
+(17, 53, 51, 6, 5, 'Pending', '850.00', '850.00', '22222222222222222', 'https://backlinked.com/', '0000-00-00', 'd', '', 'g6cr1wux', 'Own', 0, 0, '0.00', '0.00', 0, 0, '2024-01-29 11:45:50', '2024-01-29 11:45:50');
 
 -- --------------------------------------------------------
 
@@ -475,7 +477,8 @@ CREATE TABLE `orderfiles` (
 
 INSERT INTO `orderfiles` (`id`, `order_id`, `file_name`, `original_name`, `file_path`, `isLink`, `link`, `created_at`, `updated_at`) VALUES
 (1, 2, 'textFile1703047342557.docx', 'Dummy.docx', 'assets/order_assets/', 0, NULL, '2023-12-20 04:42:30', '2023-12-20 04:42:30'),
-(2, 7, 'textFile1706190071281.docx', 'Dummy.docx', 'assets/order_assets/', 0, NULL, '2024-01-25 13:41:31', '2024-01-25 13:41:31');
+(2, 7, 'textFile1706190071281.docx', 'Dummy.docx', 'assets/order_assets/', 0, NULL, '2024-01-25 13:41:31', '2024-01-25 13:41:31'),
+(3, 17, 'textFile1706528719892.docx', 'Review.docx', 'order_assets/', 0, NULL, '2024-01-29 11:45:50', '2024-01-29 11:45:50');
 
 -- --------------------------------------------------------
 
@@ -677,7 +680,8 @@ INSERT INTO `transactions` (`id`, `user_id`, `amount`, `transaction_type`, `desc
 (40, 51, '10.00', 'Update wallet', '', '2024-01-26 11:00:08', 'pi_3Ocn8mSC7x5vD10M1axmI24n', 0, 'incomplete', '{\"id\":\"pi_3Ocn8mSC7x5vD10M1axmI24n\",\"object\":\"payment_intent\",\"amount\":1000,\"amount_capturable\":0,\"amount_details\":{\"tip\":{}},\"amount_received\":0,\"application\":null,\"application_fee_amount\":null,\"automatic_payment_methods\":null,\"canceled_at\":null,\"cancellation_reason\":null,\"capture_method\":\"automatic\",\"client_secret\":\"pi_3Ocn8mSC7x5vD10M1axmI24n_secret_SVaRrkvzN5ZtIC5mkJyddBpRT\",\"confirmation_method\":\"automatic\",\"created\":1706266808,\"currency\":\"eur\",\"customer\":null,\"description\":null,\"invoice\":null,\"last_payment_error\":null,\"latest_charge\":null,\"livemode\":false,\"metadata\":{\"user_email\":\"userside@gmail.com\",\"user_id\":\"51\",\"user_name\":\"Users Sides\"},\"next_action\":null,\"on_behalf_of\":null,\"payment_method\":null,\"payment_method_configuration_details\":null,\"payment_method_options\":{\"card\":{\"installments\":null,\"mandate_options\":null,\"network\":null,\"request_three_d_secure\":\"automatic\"}},\"payment_method_types\":[\"card\"],\"processing\":null,\"receipt_email\":null,\"review\":null,\"setup_future_usage\":null,\"shipping\":null,\"source\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"requires_payment_method\",\"transfer_data\":null,\"transfer_group\":null}', 0, '2024-01-26 11:00:07'),
 (41, 51, '10.00', 'Update wallet', '', '2024-01-26 11:00:27', 'pi_3Ocn95SC7x5vD10M1xPH2Pcm', 0, 'incomplete', '{\"id\":\"pi_3Ocn95SC7x5vD10M1xPH2Pcm\",\"object\":\"payment_intent\",\"amount\":1000,\"amount_capturable\":0,\"amount_details\":{\"tip\":{}},\"amount_received\":0,\"application\":null,\"application_fee_amount\":null,\"automatic_payment_methods\":null,\"canceled_at\":null,\"cancellation_reason\":null,\"capture_method\":\"automatic\",\"client_secret\":\"pi_3Ocn95SC7x5vD10M1xPH2Pcm_secret_6w5JW3lOIFw1MIrKeaAJxbfBf\",\"confirmation_method\":\"automatic\",\"created\":1706266827,\"currency\":\"eur\",\"customer\":null,\"description\":null,\"invoice\":null,\"last_payment_error\":null,\"latest_charge\":null,\"livemode\":false,\"metadata\":{\"user_email\":\"userside@gmail.com\",\"user_id\":\"51\",\"user_name\":\"Users Sides\"},\"next_action\":null,\"on_behalf_of\":null,\"payment_method\":null,\"payment_method_configuration_details\":null,\"payment_method_options\":{\"card\":{\"installments\":null,\"mandate_options\":null,\"network\":null,\"request_three_d_secure\":\"automatic\"}},\"payment_method_types\":[\"card\"],\"processing\":null,\"receipt_email\":null,\"review\":null,\"setup_future_usage\":null,\"shipping\":null,\"source\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"requires_payment_method\",\"transfer_data\":null,\"transfer_group\":null}', 0, '2024-01-26 11:00:26'),
 (42, 51, '12.25', 'Update wallet', '', '2024-01-26 11:02:55', 'pi_3OcnBTSC7x5vD10M18DOhAb4', 0, 'incomplete', '{\"id\":\"pi_3OcnBTSC7x5vD10M18DOhAb4\",\"object\":\"payment_intent\",\"amount\":1225,\"amount_capturable\":0,\"amount_details\":{\"tip\":{}},\"amount_received\":0,\"application\":null,\"application_fee_amount\":null,\"automatic_payment_methods\":null,\"canceled_at\":null,\"cancellation_reason\":null,\"capture_method\":\"automatic\",\"client_secret\":\"pi_3OcnBTSC7x5vD10M18DOhAb4_secret_yvDPfYnlarkw2FpiJaR1nO9L6\",\"confirmation_method\":\"automatic\",\"created\":1706266975,\"currency\":\"eur\",\"customer\":null,\"description\":null,\"invoice\":null,\"last_payment_error\":null,\"latest_charge\":null,\"livemode\":false,\"metadata\":{\"user_email\":\"userside@gmail.com\",\"user_id\":\"51\",\"user_name\":\"Users Sides\"},\"next_action\":null,\"on_behalf_of\":null,\"payment_method\":null,\"payment_method_configuration_details\":null,\"payment_method_options\":{\"card\":{\"installments\":null,\"mandate_options\":null,\"network\":null,\"request_three_d_secure\":\"automatic\"}},\"payment_method_types\":[\"card\"],\"processing\":null,\"receipt_email\":null,\"review\":null,\"setup_future_usage\":null,\"shipping\":null,\"source\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"requires_payment_method\",\"transfer_data\":null,\"transfer_group\":null}', 0, '2024-01-26 11:02:54'),
-(43, 51, '251.00', 'Update wallet', 'succeeded', '2024-01-26 11:04:08', 'pi_3OcnCeSC7x5vD10M0PaM2N5y', 0, 'paid', '{\"id\":\"pi_3OcnCeSC7x5vD10M0PaM2N5y\",\"object\":\"payment_intent\",\"amount\":25100,\"amount_details\":{\"tip\":{}},\"automatic_payment_methods\":null,\"canceled_at\":null,\"cancellation_reason\":null,\"capture_method\":\"automatic\",\"client_secret\":\"pi_3OcnCeSC7x5vD10M0PaM2N5y_secret_ngPMsLPv8t2MjxHUqAvr23W0u\",\"confirmation_method\":\"automatic\",\"created\":1706267048,\"currency\":\"inr\",\"description\":null,\"last_payment_error\":null,\"livemode\":false,\"next_action\":null,\"payment_method\":\"pm_1OcnCfSC7x5vD10MC2xe7zCm\",\"payment_method_configuration_details\":null,\"payment_method_types\":[\"card\"],\"processing\":null,\"receipt_email\":null,\"setup_future_usage\":null,\"shipping\":null,\"source\":null,\"status\":\"succeeded\"}', 0, '2024-01-26 11:04:07');
+(43, 51, '251.00', 'Update wallet', 'succeeded', '2024-01-26 11:04:08', 'pi_3OcnCeSC7x5vD10M0PaM2N5y', 0, 'paid', '{\"id\":\"pi_3OcnCeSC7x5vD10M0PaM2N5y\",\"object\":\"payment_intent\",\"amount\":25100,\"amount_details\":{\"tip\":{}},\"automatic_payment_methods\":null,\"canceled_at\":null,\"cancellation_reason\":null,\"capture_method\":\"automatic\",\"client_secret\":\"pi_3OcnCeSC7x5vD10M0PaM2N5y_secret_ngPMsLPv8t2MjxHUqAvr23W0u\",\"confirmation_method\":\"automatic\",\"created\":1706267048,\"currency\":\"inr\",\"description\":null,\"last_payment_error\":null,\"livemode\":false,\"next_action\":null,\"payment_method\":\"pm_1OcnCfSC7x5vD10MC2xe7zCm\",\"payment_method_configuration_details\":null,\"payment_method_types\":[\"card\"],\"processing\":null,\"receipt_email\":null,\"setup_future_usage\":null,\"shipping\":null,\"source\":null,\"status\":\"succeeded\"}', 0, '2024-01-26 11:04:07'),
+(44, 51, '850.00', 'Place order', 'Buy backlinks chat.openai.com', '2024-01-29 11:45:50', 'order_17', 0, 'paid', '{\"created_at\":\"2024-01-29 17:15:50\",\"id\":17,\"publisher_id\":53,\"customer_id\":51,\"domain_id\":6,\"backlink_id\":5,\"status\":\"Pending\",\"total_price\":\"850.00\",\"price\":\"850.00\",\"anchortext\":\"22222222222222222\",\"linktarget\":\"https://backlinked.com/\",\"publication_date\":\"\",\"note\":\"d\",\"project_id\":\"\",\"hash_id\":\"g6cr1wux\",\"textCreation\":\"Own\",\"wordCount\":0,\"approveText\":0,\"textCreationPrice\":0,\"approveTextPrice\":0,\"chooseByBacklink\":false,\"updated_at\":\"2024-01-29T11:45:50.832Z\"}', 17, '2024-01-29 11:45:50');
 
 -- --------------------------------------------------------
 
@@ -737,7 +741,7 @@ CREATE TABLE `users_wallet` (
 --
 
 INSERT INTO `users_wallet` (`id`, `user_id`, `balance`, `created_at`, `updated_at`) VALUES
-(1, 51, '6103.00', '2024-01-26 11:04:19', '2024-01-26 11:04:19');
+(1, 51, '5253.00', '2024-01-29 11:45:50', '2024-01-29 11:45:50');
 
 -- --------------------------------------------------------
 
@@ -754,6 +758,13 @@ CREATE TABLE `user_cart` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_cart`
+--
+
+INSERT INTO `user_cart` (`id`, `cart_id`, `user_id`, `hash_id`, `quantity`, `created_at`, `updated_at`) VALUES
+(17, '8wcxgleaz', 51, 'g6cr1wux', 1, '2024-01-29 11:45:02', '2024-01-29 11:45:02');
 
 -- --------------------------------------------------------
 
@@ -1021,7 +1032,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `new_orders`
 --
 ALTER TABLE `new_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -1033,7 +1044,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `orderfiles`
 --
 ALTER TABLE `orderfiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -1063,7 +1074,7 @@ ALTER TABLE `subscription_plans`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -1081,7 +1092,7 @@ ALTER TABLE `users_wallet`
 -- AUTO_INCREMENT for table `user_cart`
 --
 ALTER TABLE `user_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `user_subscriptions`

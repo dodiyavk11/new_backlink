@@ -8,6 +8,7 @@ import ApiServices from "../../services/api.service";
 import MessageComponents from "../../shared/MessageComponents";
 import { Trans } from "react-i18next";
 import CurrencyFormatter from "../../shared/CurrencyFormatter";
+import axios from "axios";
 
 export class PublisherViewOrderDetails extends Component {
   constructor(props) {
@@ -30,6 +31,36 @@ export class PublisherViewOrderDetails extends Component {
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+  };
+  handleDownload = async (filename) => {
+    const APP_URL = process.env.REACT_APP_BASE_URL;
+    try {
+      const authToken = localStorage.getItem("token");
+      const response = await axios.get(`${APP_URL}file-download/${filename}/${this.state.order_id}`, {
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      const blob = new Blob([response.data]);
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = window.URL.createObjectURL(blob);
+      downloadLink.download = filename;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    } catch (error) {
+      console.error(
+        "Error downloading file:",
+        error.response ? error.response.data : error.message
+      );
+      toast.error(<Trans>Error while downloading file.</Trans>, {
+        position: "top-center",
+        autoClose: 2000,
+      });
+    }
   };
   handleShowAlert = () => {
     toast.error(
@@ -318,8 +349,21 @@ export class PublisherViewOrderDetails extends Component {
                               <Trans>Text file</Trans>
                             </td>
                             <td className="text-end-ct">
-                              <span className="sampleFile ml-4">
-                                <a
+                              <span
+                                className="sampleFile ml-4"
+                                onClick={() =>
+                                  this.handleDownload(orderFile.file_name)
+                                }
+                                style={{cursor:"pointer"}}
+                              >
+                                <b className="text-warning">
+                                  <Trans>Download text file</Trans>
+                                </b>
+                              </span>
+
+                              {/* <span className="sampleFile ml-4" onClick={() => this.handleDownload(orderFile.file_name)}>
+                                teststs */}
+                              {/* <a
                                   href={`${ApiServices.APP_URL.replace(
                                     /\/$/,
                                     ""
@@ -333,8 +377,8 @@ export class PublisherViewOrderDetails extends Component {
                                   <b className="text-warning">
                                     <Trans>Download text file</Trans>
                                   </b>
-                                </a>
-                              </span>
+                                </a> */}
+                              {/* </span> */}
                             </td>
                           </tr>
                         )}
@@ -343,13 +387,7 @@ export class PublisherViewOrderDetails extends Component {
                             <Trans>Target Url</Trans>
                           </td>
                           <td className="text-end-ct">
-                            <a
-                              href={orderData.linktarget}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <Trans>Go to</Trans>
-                            </a>
+                            {orderData.linktarget}
                           </td>
                         </tr>
                         <tr>
@@ -385,9 +423,15 @@ export class PublisherViewOrderDetails extends Component {
                             <Trans>Text approval price</Trans>
                           </td>
                           <td className="text-end-ct">
-                            {orderData.approveText === 1
-                              ? <span>{CurrencyFormatter.formatCurrency(orderData.approveTextPrice)}</span>
-                              : "N/A"}
+                            {orderData.approveText === 1 ? (
+                              <span>
+                                {CurrencyFormatter.formatCurrency(
+                                  orderData.approveTextPrice
+                                )}
+                              </span>
+                            ) : (
+                              "N/A"
+                            )}
                           </td>
                         </tr>
                         {orderData.textCreation === "Editorial" && (
@@ -396,9 +440,15 @@ export class PublisherViewOrderDetails extends Component {
                               <Trans>Text creation price</Trans>
                             </td>
                             <td className="text-end-ct">
-                              {orderData.textCreationPrice > 0
-                                ? <span>{CurrencyFormatter.formatCurrency(orderData.textCreationPrice)}</span>
-                                : "Free"}
+                              {orderData.textCreationPrice > 0 ? (
+                                <span>
+                                  {CurrencyFormatter.formatCurrency(
+                                    orderData.textCreationPrice
+                                  )}
+                                </span>
+                              ) : (
+                                "Free"
+                              )}
                             </td>
                           </tr>
                         )}
@@ -406,7 +456,9 @@ export class PublisherViewOrderDetails extends Component {
                           <td>
                             <Trans>Price</Trans>
                           </td>
-                          <td className="text-end-ct">{CurrencyFormatter.formatCurrency(orderData.price)}</td>
+                          <td className="text-end-ct">
+                            {CurrencyFormatter.formatCurrency(orderData.price)}
+                          </td>
                         </tr>
                         <tr>
                           <td className="h4 fontBold600">
@@ -414,7 +466,9 @@ export class PublisherViewOrderDetails extends Component {
                           </td>
                           <td className="text-end-ct">
                             <span className="h3 fontBold600">
-                              {CurrencyFormatter.formatCurrency(orderData.total_price)}
+                              {CurrencyFormatter.formatCurrency(
+                                orderData.total_price
+                              )}
                             </span>
                           </td>
                         </tr>

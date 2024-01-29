@@ -91,10 +91,9 @@ export class MessageComponents extends Component {
     }
   }
   scrollToBottom = () => {
-    if(this.props.isShowTypeMsg)
-    { 
+    if (this.props.isShowTypeMsg) {
       this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }    
+    }
   };
 
   render() {
@@ -109,7 +108,9 @@ export class MessageComponents extends Component {
                 className="card-header d-flex justify-content-between align-items-center p-3 text-white border-bottom-0"
                 style={{ backgroundColor: "#ff9756" }}
               >
-                <p className="mb-0 fw-bold"><Trans>Order Message</Trans></p>
+                <p className="mb-0 fw-bold">
+                  <Trans>Order Message</Trans>
+                </p>
               </div>
               <div
                 className="card-body border"
@@ -120,58 +121,56 @@ export class MessageComponents extends Component {
                     <React.Fragment key={message.id}>
                       {message.sender_id === currentUser ? (
                         <>
-                          <div className="d-flex flex-row justify-content-end">
+                          <div className="flex-row justify-content-end">
+                            <div
+                              style={{ textAlign: "end" }}
+                              className="mr-2 mt-1"
+                            >                              
+                              <div className="text-end d-flex flex-row justify-content-end messageTime small">
+                              <p className="m-1"><Trans>You</Trans></p>
+                                <TimeAgo className="mt-2"
+                                  datetime={message.created_at}
+                                  locale="en"
+                                />
+                                {/* <i
+                                  className="mdi mdi-delete pl-1 cursorClass"
+                                  onClick={() => this.deleteMessage(message.id)}
+                                ></i> */}
+                              </div>
+                            </div>
                             <div
                               className="p-3 me-3 border"
                               style={{
                                 borderRadius: "15px",
-                                backgroundColor: "#fbfbfb",
+                                backgroundColor: "rgb(53 66 82 / 14%)",
+                                textAlign: "end",
                               }}
                             >
                               <p className="small mb-0">{message.message}</p>
                             </div>
-                            <img
-                              src={require("../../assets/images/faces-clipart/pic-4.png")}
-                              alt="You"
-                              title="You"
-                              style={{ width: "45px", height: "100%" }}
-                            />
-                          </div>
-                          <div className="text-end d-flex flex-row justify-content-end messageTime small mb-4">
-                            <TimeAgo
-                              datetime={message.created_at}
-                              locale="en"
-                            />
-                            <i
-                              className="mdi mdi-delete pl-1 cursorClass"
-                              onClick={() => this.deleteMessage(message.id)}
-                            ></i>
                           </div>
                         </>
                       ) : (
                         <>
-                          <div className="d-flex flex-row justify-content-start">
-                            <img
-                              src={require("../../assets/images/faces-clipart/pic-1.png")}
-                              alt="Publisher"
-                              style={{ width: "45px", height: "100%" }}
-                              title="Publisher"
-                            />
+                          <div className="justify-content-start mb-1">
+                            <div>
+                              {`${message.sender.firstName} ${message.sender.lastName} `}
+                              <span className="messageTime">
+                                <TimeAgo
+                                  datetime={message.created_at}
+                                  locale="en"
+                                />
+                              </span>
+                            </div>
                             <div
                               className="p-3 ms-3"
                               style={{
                                 borderRadius: "15px",
-                                backgroundColor: "rgba(57, 192, 237, .2)",
+                                backgroundColor: "rgb(255 151 86 / 14%)",
                               }}
                             >
                               <p className="small mb-0">{message.message}</p>
                             </div>
-                          </div>
-                          <div className="text-end small mb-4 pl-5 messageTime">
-                            <TimeAgo
-                              datetime={message.created_at}
-                              locale="en"
-                            />
                           </div>
                         </>
                       )}
@@ -179,7 +178,9 @@ export class MessageComponents extends Component {
                   ))
                 ) : (
                   <p>
-                    <b><Trans>No messages available.</Trans></b>
+                    <b>
+                      <Trans>No messages available.</Trans>
+                    </b>
                   </p>
                 )}
               </div>

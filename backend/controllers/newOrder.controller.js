@@ -139,7 +139,7 @@ exports.addNewOrder = async (req, res) => {
         // Move the file from temp_file to order_assets
         if (filename !== "") {
           const sourceDir = "./assets/temp_file";
-          const destDir = "./assets/order_assets";
+          const destDir = "./order_assets";
           sourcePath = path.join(sourceDir, filename);
           destPath = path.join(destDir, filename);
 
@@ -159,7 +159,7 @@ exports.addNewOrder = async (req, res) => {
             order_id: placeOrder.dataValues.id,
             file_name: filename,
             original_name: originalname,
-            file_path: "assets/order_assets/",
+            file_path: "order_assets/",
           });
           await moveFile(sourcePath, destPath);
         }
@@ -382,7 +382,7 @@ exports.addCartOrder = async (req, res) => {
           // Move the file from temp_file to order_assets
           if (filename !== "") {
             const sourceDir = "./assets/temp_file";
-            const destDir = "./assets/order_assets";
+            const destDir = "./order_assets";
             sourcePath = path.join(sourceDir, filename);
             destPath = path.join(destDir, filename);
 
@@ -402,7 +402,7 @@ exports.addCartOrder = async (req, res) => {
               order_id: placeOrder.dataValues.id,
               file_name: filename,
               original_name: originalname,
-              file_path: "assets/order_assets/",
+              file_path: "order_assets/",
             });
             await moveFile(sourcePath, destPath);
           }
@@ -1504,3 +1504,35 @@ exports.linkBundlePlaceOrder = async (req, res) => {
     });
   }
 };
+
+exports.donwlodFile = async (req, res) => {
+  try{
+  const filename = req.params.filename;
+  const order_id = req.params.order_id;
+  const user_id = req.userId;
+
+  const userData = await Models.Users.findOne({ where:{ id: user_id } });
+  const orderData = await Models.newOrder.findOne({ where:{ id: order_id } });
+  console.log(orderData.publisher_id)
+  console.log(orderData.customer_id)
+  console.log(userData.isAdmin)
+
+  if(orderData.publisher_id === user_id || orderData.customer_id === user_id || userData.isAdmin === 1)
+  {
+    const filePath = `./order_assets/${filename}`;
+    return res.download(filePath, filename, function (err) {
+      if (err) {
+        console.error("Error sending file:", err);
+        res.status(500).send({ status: false,message:"Error sending file"});
+      } else {
+        console.log("File sent successfully");
+        // res.status(200).send({ status: true,message:"File downloaded successfully"});
+      }
+    });
+  }  
+  return res.status(500).send({ status: false, message:"Unauthorized access." })
+  }catch(err)
+  {
+      res.status(500).send({ status: false,message:"Error processing download request"});
+  }
+}

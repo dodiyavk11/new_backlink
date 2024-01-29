@@ -3942,6 +3942,37 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Download order text file protected api",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUzLCJpYXQiOjE3MDY1MjQ5NjAsImV4cCI6MTcwNjU2MDk2MH0.n-AcZGxz0MBb07Upzde2_Wtl5gZd7_ybgpTPapo6_hA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/file-download/textFile1703047342557.docx/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"file-download",
+						"textFile1703047342557.docx",
+						"2"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
