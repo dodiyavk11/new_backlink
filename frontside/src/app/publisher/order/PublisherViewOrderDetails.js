@@ -204,7 +204,7 @@ export class PublisherViewOrderDetails extends Component {
                   <Trans>Order for</Trans> {domainData.domain_name}
                 </h2>
                 <h5>
-                  <Trans>Placed at</Trans>: {orderData.created_at}
+                  <Trans>Placed at</Trans>: {CurrencyFormatter.formatDateTime(new Date(orderData.created_at))}
                 </h5>
                 <hr />
               </div>

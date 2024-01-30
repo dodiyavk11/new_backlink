@@ -5,6 +5,7 @@ const { Op } = require("sequelize");
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 require("dotenv").config();
+const { formatCurrency, formatDateCustom, formatDateTimeCustom } = require("../utils/otherUtility.js");
 
 function createInvoice(invoice, path) {
   let doc = new PDFDocument({ size: "A4", margin: 50 });
@@ -39,7 +40,7 @@ function generateCustomerInformation(doc, invoice) {
 
   const customerInformationTop = 200;
   const parsedTimestamp = moment(invoice.created_at);
-  const formattedTimestamp = parsedTimestamp.format("YYYY-MM-DD HH:mm:ss");
+  const formattedTimestamp = parsedTimestamp.format("DD.MM.YYYY HH:mm:ss");
   doc
     .fontSize(10)
     .text("Invoice Number:", 50, customerInformationTop)
@@ -216,10 +217,10 @@ function generateHr(doc, y) {
   doc.strokeColor("#aaaaaa").lineWidth(1).moveTo(50, y).lineTo(550, y).stroke();
 }
 
-function formatCurrency(cents) {
-  // return "$" + (cents / 100).toFixed(2);
-  return "€" + parseFloat(cents).toFixed(2);
-}
+// function formatCurrency(cents) {
+//   // return "$" + (cents / 100).toFixed(2);
+//   return "€" + parseFloat(cents).toFixed(2);
+// }
 
 function formatDate(date) {
   const day = date.getDate();

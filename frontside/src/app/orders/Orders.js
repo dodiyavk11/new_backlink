@@ -6,7 +6,7 @@ import { Trans, withTranslation } from "react-i18next";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import { CPopover, CButton } from "@coreui/react";
 import "../../assets/custom.css";
-import CurrencyFormatter from "../shared/CurrencyFormatter"
+import CurrencyFormatter from "../shared/CurrencyFormatter";
 
 export class Orders extends Component {
   constructor(props) {
@@ -109,6 +109,43 @@ export class Orders extends Component {
   };
   handleCheckboxChange = (event, columnName) => {
     this.toggleColumn(columnName);
+  };
+
+  handleExport = async () => {
+    ApiServices.exportOrderCsv()
+      .then((res) => {
+        if (res.status) {
+          setTimeout(() => {
+            const link = document.createElement("a");
+            link.href = `${process.env.REACT_APP_BASE_URL}${res.data.filepath}`;
+            link.download = res.data.fileName;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }, 500);
+        } else {
+          toast.error(res.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 401 &&
+          err.response.data.message !== "You cannot access this page"
+        ) {
+          this.setState({ isAuthenticated: false });
+          this.props.history.push("/login");
+        } else {
+          toast.error(err.response.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      });
   };
 
   updateFilterData = () => {
@@ -241,7 +278,10 @@ export class Orders extends Component {
             </h3>
           </div>
           <div className="ExportBtn">
-            <button className="btn btn-rounded d-inline-flex btn-sm">
+            <button
+              className="btn btn-rounded d-inline-flex btn-sm"
+              onClick={this.handleExport}
+            >
               <i className="mdi mdi-exit-to-app mr-2"></i>
               <Trans>Export</Trans>
             </button>
@@ -522,7 +562,9 @@ export class Orders extends Component {
                               {order.id}
                             </td>
                             <td className={showDate ? "show" : "hide"}>
-                              {order.created_at}
+                              {CurrencyFormatter.formatDateTime(
+                                new Date(order.created_at)
+                              )}
                             </td>
                             <td className={showStatus ? "show" : "hide"}>
                               <span
@@ -550,7 +592,9 @@ export class Orders extends Component {
                               {order.linktarget}
                             </td>
                             <td className={showAmount ? "show" : "hide"}>
-                              {CurrencyFormatter.formatCurrency(order.total_price)}
+                              {CurrencyFormatter.formatCurrency(
+                                order.total_price
+                              )}
                             </td>
                           </tr>
                         ))}

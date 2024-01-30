@@ -561,7 +561,8 @@ export class PublisherOrders extends Component {
                               {order.id}
                             </td>
                             <td className={showDate ? "show" : "hide"}>
-                              {order.created_at}
+                              {/* {order.created_at} */}
+                              {CurrencyFormatter.formatDateTime(new Date(order.created_at))}
                             </td>
                             <td className={showStatus ? "show" : "hide"}>
                               <span

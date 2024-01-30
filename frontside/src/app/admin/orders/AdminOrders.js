@@ -283,7 +283,7 @@ export class AdminOrders extends Component {
         label: <Trans>Order Date</Trans>,
         width: 130,
         sortable: false,
-        renderCell: (row) => <span>{row.created_at}</span>,
+        renderCell: (row) => <span>{CurrencyFormatter.formatDateTime(new Date(row.created_at))}</span>,
       },
       {
         id: "status",

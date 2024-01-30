@@ -761,7 +761,16 @@ exports.getPublisherOrder = async (req, res) => {
 };
 
 exports.exportDataCsvPublisher = async (req, res) => {
-  const publisher_id = req.userId;
+  const user_id = req.userId;
+  const checkUser = await Models.Users.findOne({ where: { id: user_id } });
+  let wheres = {};
+  if(checkUser.isAdmin === 2)
+  {
+    wheres = { publisher_id: user_id };
+  }
+  else if(checkUser.isAdmin === 0){
+    wheres = { customer_id: user_id };
+  }
   const baseQuery = {
     include: [
       {
@@ -780,7 +789,7 @@ exports.exportDataCsvPublisher = async (req, res) => {
       "publication_date",
       "note",
     ],
-    where: { publisher_id: publisher_id },
+    where: wheres,
   };
 
   const orderDataInstances = await Models.newOrder.findAll(baseQuery);
@@ -804,7 +813,7 @@ exports.exportDataCsvPublisher = async (req, res) => {
       "Domain Name": domainData.domain_name || "",
       Price: formatCurrency(plainInstance.price),
       "Total Price": formatCurrency(plainInstance.total_price),
-      "Status": plainInstance.status,
+      Status: plainInstance.status,
       Anchortext: plainInstance.anchortext,
       Linktarget: plainInstance.linktarget,
       "Publication Date": plainInstance.publication_date,
@@ -817,7 +826,7 @@ exports.exportDataCsvPublisher = async (req, res) => {
     data: orderData,
   });
 
-  const fileName = `order_${publisher_id}.csv`;
+  const fileName = `order_${user_id}.csv`;
   const tempFileDirectory = path.resolve("./assets/csv", fileName);
 
   fs.writeFileSync(tempFileDirectory, customCsv, { encoding: "utf-8" });
@@ -1140,8 +1149,7 @@ async function getCartData(user_id) {
       where: { user_id: user_id },
     });
     return results;
-  } catch (err) {
-  }
+  } catch (err) {}
 }
 
 async function createFilterQuery(body, type, baseQuery) {
@@ -1506,33 +1514,43 @@ exports.linkBundlePlaceOrder = async (req, res) => {
 };
 
 exports.donwlodFile = async (req, res) => {
-  try{
-  const filename = req.params.filename;
-  const order_id = req.params.order_id;
-  const user_id = req.userId;
+  try {
+    const filename = req.params.filename;
+    const order_id = req.params.order_id;
+    const user_id = req.userId;
 
-  const userData = await Models.Users.findOne({ where:{ id: user_id } });
-  const orderData = await Models.newOrder.findOne({ where:{ id: order_id } });
-  console.log(orderData.publisher_id)
-  console.log(orderData.customer_id)
-  console.log(userData.isAdmin)
-
-  if(orderData.publisher_id === user_id || orderData.customer_id === user_id || userData.isAdmin === 1)
-  {
-    const filePath = `./order_assets/${filename}`;
-    return res.download(filePath, filename, function (err) {
-      if (err) {
-        console.error("Error sending file:", err);
-        res.status(500).send({ status: false,message:"Error sending file"});
-      } else {
-        console.log("File sent successfully");
-        // res.status(200).send({ status: true,message:"File downloaded successfully"});
-      }
+    const userData = await Models.Users.findOne({ where: { id: user_id } });
+    const orderData = await Models.newOrder.findOne({
+      where: { id: order_id },
     });
-  }  
-  return res.status(500).send({ status: false, message:"Unauthorized access." })
-  }catch(err)
-  {
-      res.status(500).send({ status: false,message:"Error processing download request"});
+    console.log(orderData.publisher_id);
+    console.log(orderData.customer_id);
+    console.log(userData.isAdmin);
+
+    if (
+      orderData.publisher_id === user_id ||
+      orderData.customer_id === user_id ||
+      userData.isAdmin === 1
+    ) {
+      const filePath = `./order_assets/${filename}`;
+      return res.download(filePath, filename, function (err) {
+        if (err) {
+          console.error("Error sending file:", err);
+          res
+            .status(500)
+            .send({ status: false, message: "Error sending file" });
+        } else {
+          console.log("File sent successfully");
+          // res.status(200).send({ status: true,message:"File downloaded successfully"});
+        }
+      });
+    }
+    return res
+      .status(500)
+      .send({ status: false, message: "Unauthorized access." });
+  } catch (err) {
+    res
+      .status(500)
+      .send({ status: false, message: "Error processing download request" });
   }
-}
+};

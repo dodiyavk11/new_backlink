@@ -160,7 +160,7 @@ export class AdminViewOrderDetails extends Component {
                         ? "Link Bundle"
                         : domainData.domain_name}
                     </h2>
-                    <h5>Placed at: {orderData.created_at}</h5>
+                    <h5>Placed at: {CurrencyFormatter.formatDateTime(new Date(orderData.created_at))}</h5>
                   </div>
                   <div>
                     <h4 className="h4">

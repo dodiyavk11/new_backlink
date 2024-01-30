@@ -20,7 +20,7 @@ module.exports = (app) => {
 
 	/* publisher route */
 	app.post('/publisher/orders',[isLogin,isPublisher],getPublisherOrder)
-	app.get('/publisher/orders/export',[isLogin,isPublisher],exportDataCsvPublisher)
+	app.get('/publisher/orders/export',[isLogin],exportDataCsvPublisher)
 	app.post('/publisher/updateOrderStatus/:orderId',[isLogin,isPublisher],publisherUpdateOrderStatus)
 
 	/* for publisher and user both view single order */
