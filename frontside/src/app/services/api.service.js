@@ -816,6 +816,28 @@ class ApiServices {
         return response;
       });
   }
+
+  publisherUnreadMessageCount(){
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(`${this.APP_URL}publisher/message/unread`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  publisherReadMessage(order_id){
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(`${this.APP_URL}publisher/message/read/${order_id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
 }
 
 export default new ApiServices();

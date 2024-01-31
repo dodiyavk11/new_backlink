@@ -27,7 +27,7 @@ class AddPublisherProjects extends Component {
   }
 
   componentDidMount() {
-    this.getDomainCategoryList();    
+    this.getDomainCategoryList();
   }
 
   getDomainCategoryList = () => {

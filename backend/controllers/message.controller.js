@@ -18,7 +18,7 @@ exports.addMessageToOrder = async (req, res) => {
       return res
         .status(404)
         .send({ status: false, message: "Please send a message", data: [] });
-    let chatData = { sender_id: userId, receiver_id, order_id };
+    let chatData = { sender_id: userId, receiver_id, order_id, isRead: 0 };
     if (message || message !== "") {
       chatData.message = message;
     }
@@ -40,23 +40,19 @@ exports.addMessageToOrder = async (req, res) => {
     // getUserInfo.dataValues.isAdmin !== 0 && await Models.Orders.update({ update_status: 2 }, { where: { id: order_id } })
     // getUserInfo.dataValues.isAdmin === 0 && await Models.Orders.update({ update_status_admin: 2 }, { where: { id: order_id } })
 
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Order message saved success",
-        data: data,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Order message saved success",
+      data: data,
+    });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something went to wrong.",
-        data: [],
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something went to wrong.",
+      data: [],
+      error: err.message,
+    });
   }
 };
 
@@ -68,8 +64,16 @@ exports.getOrderMessageByOrderId = async (req, res) => {
     const getMessages = await Models.Message.findAll({
       where: { order_id },
       include: [
-        { model: Models.Users, as: "sender", attributes:["firstName","lastName","id"] },
-        { model: Models.Users, as: "receiver", attributes:["firstName","lastName","id"] },
+        {
+          model: Models.Users,
+          as: "sender",
+          attributes: ["firstName", "lastName", "id"],
+        },
+        {
+          model: Models.Users,
+          as: "receiver",
+          attributes: ["firstName", "lastName", "id"],
+        },
       ],
     });
 
@@ -104,23 +108,19 @@ exports.getOrderMessageByOrderId = async (req, res) => {
 
     getUserImg.map((val, i) => (getMessages[i].dataValues.user_profile = val));
     getUsername.map((val, i) => (getMessages[i].dataValues.user_name = val));
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Order Message fecthed success",
-        data: getMessages,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Order Message fecthed success",
+      data: getMessages,
+    });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something went to wrong.",
-        data: [],
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something went to wrong.",
+      data: [],
+      error: err.message,
+    });
   }
 };
 
@@ -141,23 +141,19 @@ exports.deleteOrderMessage = async (req, res) => {
     const deleteMessageData = await Models.Message.destroy({
       where: { id, order_id, sender_id: userId },
     });
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Message deleted success.",
-        data: deleteMessageData,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Message deleted success.",
+      data: deleteMessageData,
+    });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: true,
-        message: "Something went to wrong",
-        data: [],
-        error: err.message,
-      });
+    res.status(500).send({
+      status: true,
+      message: "Something went to wrong",
+      data: [],
+      error: err.message,
+    });
   }
 };
 
@@ -169,7 +165,7 @@ exports.publisherMessageMenu = async (req, res) => {
         "order_id",
         [
           Sequelize.literal(`
-			        (SELECT CONCAT(message, ',,', created_at) 
+			        (SELECT CONCAT(message, ',,', created_at, ',,', isRead) 
 			         FROM messages 
 			         WHERE id = (SELECT MAX(id) 
 			                     FROM messages 
@@ -199,12 +195,49 @@ exports.publisherMessageMenu = async (req, res) => {
     const messageData = await Models.Message.findAll(baseQuery);
     res.status(200).send({ status: true, data: messageData });
   } catch (err) {
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something went to wrong.",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something went to wrong.",
+      error: err.message,
+    });
+  }
+};
+
+exports.publisherUnreadMessageCount = async (req, res) => {
+  try {
+    const publisher_id = req.userId;
+    const unreadMessageCount = await Models.Message.count({
+      where: { receiver_id: publisher_id, isRead: 0 },
+    });
+    res.status(200).send({ status: true, data: unreadMessageCount });
+  } catch (err) {
+    res.status(500).send({
+      status: false,
+      message: "Something went to wrong.",
+      error: err.message,
+    });
+  }
+};
+
+exports.publisherReadMessage = async (req, res) => {
+  try {
+    const { order_id } = req.params;
+    const updateRead = await Models.Message.update(
+      { isRead: 1 },
+      {
+        where: { order_id },
+      }
+    );
+    const publisher_id = req.userId;
+    const unreadMessageCount = await Models.Message.count({
+      where: { receiver_id: publisher_id, isRead: 0 },
+    });
+    res.status(200).send({ status: true, data: unreadMessageCount });
+  } catch (err) {
+    res.status(500).send({
+      status: false,
+      message: "Something went to wrong.",
+      error: err.message,
+    });
   }
 };

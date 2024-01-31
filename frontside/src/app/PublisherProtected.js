@@ -5,6 +5,7 @@ const PublisherProtected = ({
   component: Component,
   isAuthenticated,
   isAdmin,
+  publisherReadMessage,
   ...rest
 }) => {
   return (
@@ -12,7 +13,7 @@ const PublisherProtected = ({
       {...rest}
       render={(props) =>
         isAuthenticated && isAdmin === "2" ? (
-          <Component {...props} />
+          <Component {...props} publisherReadMessage={publisherReadMessage} />
         ) : (
           <Redirect to="/login" />         
         )

@@ -232,6 +232,7 @@ export class PublisherOrders extends Component {
   };
 
   goToOrderViewLink = (order_id) => {
+    this.props.publisherReadMessage(order_id)
     this.props.history.push(`/publisher/order/${order_id}`);
   };
 

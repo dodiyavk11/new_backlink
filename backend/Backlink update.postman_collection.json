@@ -3973,6 +3973,75 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Publisher get unread messagecount",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUzLCJpYXQiOjE3MDY3MDMyNTQsImV4cCI6MTcwNjczOTI1NH0.TW-zJCKXADcCzVHhMlnpUqhuHHkvjiJTxIM-nA471NQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/publisher/message/unread",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"message",
+						"unread"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publisher order message as read",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUzLCJpYXQiOjE3MDY3MDMyNTQsImV4cCI6MTcwNjczOTI1NH0.TW-zJCKXADcCzVHhMlnpUqhuHHkvjiJTxIM-nA471NQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/publisher/message/read/:order_id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"message",
+						"read",
+						":order_id"
+					],
+					"variable": [
+						{
+							"key": "order_id",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

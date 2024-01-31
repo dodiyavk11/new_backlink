@@ -317,6 +317,7 @@ class Sidebar extends Component {
                   </svg>
                   <span className="menu-title">
                     <Trans>Messages</Trans>
+                    <span className="badge badge-danger">{this.props.unRead}</span>
                   </span>
                 </Link>
               </li>

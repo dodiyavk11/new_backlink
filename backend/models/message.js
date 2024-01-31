@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     receiver_id: DataTypes.INTEGER,
     order_id: DataTypes.INTEGER,
     message: DataTypes.TEXT,
-    files:DataTypes.TEXT
+    files:DataTypes.TEXT,
+    isRead:DataTypes.INTEGER
   }, {
     sequelize,
     createdAt: 'created_at',

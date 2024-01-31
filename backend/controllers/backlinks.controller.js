@@ -30,22 +30,18 @@ exports.getPublisherDomainList = async (req, res) => {
       ...baseQuery,
       order: [["id", "DESC"]],
     });
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "List fetch successfully.",
-        data: publisherDomainList,
-      });
+    res.status(200).send({
+      status: true,
+      message: "List fetch successfully.",
+      data: publisherDomainList,
+    });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something went to wrong.",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something went to wrong.",
+      error: err.message,
+    });
   }
 };
 
@@ -75,22 +71,18 @@ exports.getPublisherDomain = async (req, res) => {
       where: { user_id: userId, hash_id: hash_id },
       ...baseQuery,
     });
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Domain fetch succesfully.",
-        data: domainData,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Domain fetch succesfully.",
+      data: domainData,
+    });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something wnet to wrong.",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something wnet to wrong.",
+      error: err.message,
+    });
   }
 };
 
@@ -208,13 +200,11 @@ exports.addPublisherDomain = async (req, res) => {
         // }
       });
       /* dummy email end*/
-      res
-        .status(200)
-        .send({
-          status: true,
-          message: "Domain added successfully",
-          data: addDomain,
-        });
+      res.status(200).send({
+        status: true,
+        message: "Domain added successfully",
+        data: addDomain,
+      });
 
       if (isMainThread) {
         const domainId = addDomain.id;
@@ -246,14 +236,12 @@ exports.addPublisherDomain = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Domain add failed.",
-        data: [],
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Domain add failed.",
+      data: [],
+      error: err.message,
+    });
   }
 };
 
@@ -313,13 +301,11 @@ exports.editPublisherDomain = async (req, res) => {
     const updateDomain = await Models.publisherDomain.update(updateData, {
       where: { id: domainId, user_id: user_id },
     });
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Domain updated successfully.",
-        data: updateDomain,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Domain updated successfully.",
+      data: updateDomain,
+    });
     // }
     // else
     // {
@@ -327,13 +313,11 @@ exports.editPublisherDomain = async (req, res) => {
     // }
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Domain update failed.",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Domain update failed.",
+      error: err.message,
+    });
   }
 };
 
@@ -341,22 +325,18 @@ exports.deletePublisherDomain = async (req, res) => {
   try {
     const id = req.params;
     const deleteDomain = await Models.publisherDomain.destroy({ where: id });
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Domain deleted successfully.",
-        data: deleteDomain,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Domain deleted successfully.",
+      data: deleteDomain,
+    });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Domain delete failed.",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Domain delete failed.",
+      error: err.message,
+    });
   }
 };
 
@@ -437,28 +417,31 @@ exports.getConetentLinks = async (req, res) => {
         product_id: contentData.map((data) => data.id),
       },
     });
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Content links get successfully.",
-        data: { contentData, favoriteProducts },
-      });
+    res.status(200).send({
+      status: true,
+      message: "Content links get successfully.",
+      data: { contentData, favoriteProducts },
+    });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something went to wrong, Please try again.",
-        data: [],
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something went to wrong, Please try again.",
+      data: [],
+    });
   }
 };
 
 exports.getDailyDealsConetentLinks = async (req, res) => {
   try {
-	const userId = req.userId;
+    const userId = req.userId;
+    const projectCategory = await Models.Domains.findAll({
+      attributes: ["category_id"],
+      where: { user_id: userId },
+    });
+    const categoryIdsArray = projectCategory.map(
+      (category) => category.category_id
+    );
     const baseQuery = {
       include: [
         {
@@ -471,9 +454,9 @@ exports.getDailyDealsConetentLinks = async (req, res) => {
           as: "contentData",
         },
       ],
-      where: { status: 1 },
+      where: { category_id: categoryIdsArray, status: 1 },
     };
-    
+
     // const contentData = await Models.publisherDomain.findAll({ ...baseQuery,order: [['id', 'DESC']] });
     const contentData = await Models.publisherDomain.findAll({
       ...baseQuery,
@@ -486,22 +469,18 @@ exports.getDailyDealsConetentLinks = async (req, res) => {
         product_id: contentData.map((data) => data.id),
       },
     });
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Content links get successfully.",
-        data: { contentData, favoriteProducts },
-      });
+    res.status(200).send({
+      status: true,
+      message: "Content links get successfully.",
+      data: { contentData, favoriteProducts },
+    });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something went to wrong, Please try again.",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something went to wrong, Please try again.",
+      error: err.message,
+    });
   }
 };
 
@@ -538,13 +517,11 @@ exports.getSingleConetentLinks = async (req, res) => {
     res.status(200).send({ status: true, data: contentData });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something wnet to wrong",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something wnet to wrong",
+      error: err.message,
+    });
   }
 };
 
@@ -665,22 +642,18 @@ exports.publisherExcelFileDataAdd = async (req, res) => {
       });
     });
 
-    res
-      .status(200)
-      .json({
-        status: true,
-        message:
-          "File uploaded successfully, If there are any issues with the file data, it will be skipped from being stored in our portal. Otherwise, after some time, the data will be displayed here.",
-        data: result,
-      });
+    res.status(200).json({
+      status: true,
+      message:
+        "File uploaded successfully, If there are any issues with the file data, it will be skipped from being stored in our portal. Otherwise, after some time, the data will be displayed here.",
+      data: result,
+    });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .json({
-        status: false,
-        message: "Error occurred while reading the file.",
-      });
+    res.status(500).json({
+      status: false,
+      message: "Error occurred while reading the file.",
+    });
   }
 };
 
@@ -703,21 +676,17 @@ exports.addToFavorite = async (req, res) => {
         user_id,
       },
     });
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Content link added in favorite,",
-        data: favoriteProducts,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Content link added in favorite,",
+      data: favoriteProducts,
+    });
   } catch (err) {
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Contetn link can not added in Favorite, an error occurred.",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Contetn link can not added in Favorite, an error occurred.",
+      error: err.message,
+    });
   }
 };
 
@@ -754,22 +723,18 @@ exports.adminViewPublisherDomain = async (req, res) => {
       where: { hash_id: hash_id },
       ...baseQuery,
     });
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Backlinks fetch succesfully.",
-        data: domainData,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Backlinks fetch succesfully.",
+      data: domainData,
+    });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something wnet to wrong.",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something wnet to wrong.",
+      error: err.message,
+    });
   }
 };
 
@@ -780,21 +745,17 @@ exports.updateBacklinkStatus = async (req, res) => {
       { status },
       { where: { id, hash_id } }
     );
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Update successfully.",
-        data: updateStatus,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Update successfully.",
+      data: updateStatus,
+    });
   } catch (err) {
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Status cannot update, an error occurred.",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Status cannot update, an error occurred.",
+      error: err.message,
+    });
   }
 };
 
@@ -863,21 +824,17 @@ exports.ConetentLinksList = async (req, res) => {
       ...baseQuery,
       order: [["id", "DESC"]],
     });
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Content links get successfully.",
-        data: contentData,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Content links get successfully.",
+      data: contentData,
+    });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something went to wrong, Please try again.",
-        data: [],
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something went to wrong, Please try again.",
+      data: [],
+    });
   }
 };

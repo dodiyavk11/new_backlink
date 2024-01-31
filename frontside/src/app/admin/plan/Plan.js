@@ -308,7 +308,9 @@ export class Plan extends Component {
                         </h4>
                         <ul className="features">
                           <li className="mt-3 h2">
-                            <h2>{CurrencyFormatter.formatCurrency(plans.price)}</h2>
+                            <h2>
+                              {CurrencyFormatter.formatCurrency(plans.price)}
+                            </h2>
                           </li>
                           <li>{plans.description}</li>
                           <li>
@@ -379,7 +381,7 @@ export class Plan extends Component {
                           </li>
                           <li className="pl-2">
                             <div className="d-flex">
-                              <p className="mr-3 planRound fontBold500">
+                              {/* <p className="mr-3 planRound fontBold500">
                                 <Trans>Blog</Trans>
                               </p>
                               <p className="mr-3 planRound fontBold500">
@@ -387,7 +389,18 @@ export class Plan extends Component {
                               </p>
                               <p className="mr-3 planRound fontBold500">
                                 <Trans>Newspapers</Trans>
-                              </p>
+                              </p> */}
+                              {plans.placement_in &&
+                                plans.placement_in
+                                  .split(",")
+                                  .map((placement, index) => (
+                                    <p
+                                      key={index}
+                                      className="mr-3 planRound fontBold500"
+                                    >
+                                      <Trans>{placement.trim()}</Trans>
+                                    </p>
+                                  ))}
                             </div>
                           </li>
                           <li>
@@ -614,6 +627,24 @@ export class Plan extends Component {
                         id="validity"
                         aria-label="validity"
                         value={editingPlan.validity}
+                        onChange={this.handleChange}
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <label
+                        className="font-weight-bold"
+                        htmlFor="placement_in"
+                      >
+                        <Trans>PLACEMENT IN</Trans>
+                      </label>
+                      <Form.Control
+                        type="text"
+                        className="form-control form-control-lg"
+                        placeholder="E.g Blog,Magazines,Newspapers"
+                        name="placement_in"
+                        id="placement_in"
+                        aria-label="placement_in"
+                        value={editingPlan.placement_in || ""}
                         onChange={this.handleChange}
                       />
                     </Form.Group>

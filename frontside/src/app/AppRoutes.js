@@ -69,6 +69,7 @@ class AppRoutes extends Component {
       isAdmin: isAdmin,
       cartLength: 0,
       cartData: [],
+      unRead:0,
     };
     this.updateCartLength = this.updateCartLength.bind(this);
   }
@@ -124,7 +125,7 @@ class AppRoutes extends Component {
   };
   updateCartLength = (newCartLength) => {
     this.setState({ cartLength: newCartLength });
-    this.getCartData();
+    this.getCartData();    
   };
   getCartData = () => {
     ApiServices.getUserCartData().then(
@@ -133,6 +134,46 @@ class AppRoutes extends Component {
           this.setState({
             cartLength: res.data.data.length,
             cartData: res.data.data,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        // alert(resMessage);
+      }
+    );
+  };
+  publisherUnreadMessageCount = () => {
+    ApiServices.publisherUnreadMessageCount().then(
+      (res) => {
+        if (res.data.status) {
+          this.setState({
+            unRead: res.data.data,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        // alert(resMessage);
+      }
+    );
+  };
+  publisherReadMessage = (id) => {
+    ApiServices.publisherReadMessage(id).then(
+      (res) => {
+        if (res.data.status) {
+          this.setState({
+            unRead: res.data.data,
           });
         }
       },
@@ -173,6 +214,7 @@ class AppRoutes extends Component {
   };
   componentDidMount() {
     this.getCartData();
+    this.publisherUnreadMessageCount();
   }
   render() {
     let navbarComponent =
@@ -192,7 +234,8 @@ class AppRoutes extends Component {
       !this.isLoginPageOrRegister() && !this.state.isFullPageLayout ? (
         <Sidebar
           isAuthenticated={this.state.isAuthenticated}
-          isAdmin={this.state.isAdmin}
+          isAdmin={this.state.isAdmin}    
+          unRead={this.state.unRead}
         />
       ) : (
         ""
@@ -467,6 +510,7 @@ class AppRoutes extends Component {
                     component={PublisherOrders}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
+                    publisherReadMessage={this.publisherReadMessage}
                   />
                   <PublisherProtected
                     exact
@@ -488,6 +532,7 @@ class AppRoutes extends Component {
                     component={PublisherMessages}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
+                    publisherReadMessage={this.publisherReadMessage}
                   />
                   {/* <Route path="/login" component={ Login } /> */}
                   {/* <Route path="/login" component={(props) => <Login {...props} handleLoginSuccess={this.handleLoginSuccess} />} /> */}

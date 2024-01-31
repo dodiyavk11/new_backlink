@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
 		credits_quota: DataTypes.INTEGER,
 		status: DataTypes.INTEGER,
 		validity:DataTypes.INTEGER,
+		placement_in:DataTypes.STRING,
 	},
 	{
 		sequelize,

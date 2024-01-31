@@ -45,6 +45,7 @@ export class Messages extends Component {
   }
 
   goToOrderViewLink = (order_id) => {
+    this.props.publisherReadMessage(order_id)
     this.props.history.push(`/publisher/order/${order_id}`);
   };
 
@@ -74,6 +75,9 @@ export class Messages extends Component {
                             <Trans>Sr</Trans>
                           </th>
                           <th>
+                            <Trans>Order ID</Trans>
+                          </th>
+                          <th>
                             <Trans>Domain</Trans>
                           </th>
                           <th>
@@ -89,6 +93,7 @@ export class Messages extends Component {
                           const parts = message.message.split(",,");
                           const msg = parts[0].trim();
                           const created_at = parts[1].trim();
+                          const isRead = parts[2].trim();
 
                           return (
                             <tr
@@ -98,8 +103,9 @@ export class Messages extends Component {
                               }
                             >
                               <td>{index + 1}</td>
+                              <td>{message.order.id}</td>
                               <td>{message.order.domain.domain_name}</td>
-                              <td>{msg}</td>
+                              <td>{msg} { isRead === "0" && <span className="badge badge-danger">New</span>}</td>
                               <td>
                                 <TimeAgo datetime={created_at} locale="en" />
                               </td>
