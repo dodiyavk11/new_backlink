@@ -58,6 +58,7 @@ const DomainView = lazy(() => import("./publisher/domain/DomainView"));
 const CartPage = lazy(() => import("./shared/Cart"));
 const paymentSuccess = lazy(() => import("./paymentSuccess"));
 const ContactUs = lazy(() => import("./admin/contactUs/ContactUs"));
+const Settings = lazy(() => import("./admin/setting/Settings"));
 
 class AppRoutes extends Component {
   constructor(props) {
@@ -69,7 +70,7 @@ class AppRoutes extends Component {
       isAdmin: isAdmin,
       cartLength: 0,
       cartData: [],
-      unRead:0,
+      unRead: 0,
     };
     this.updateCartLength = this.updateCartLength.bind(this);
   }
@@ -125,7 +126,7 @@ class AppRoutes extends Component {
   };
   updateCartLength = (newCartLength) => {
     this.setState({ cartLength: newCartLength });
-    this.getCartData();    
+    this.getCartData();
   };
   getCartData = () => {
     ApiServices.getUserCartData().then(
@@ -234,7 +235,7 @@ class AppRoutes extends Component {
       !this.isLoginPageOrRegister() && !this.state.isFullPageLayout ? (
         <Sidebar
           isAuthenticated={this.state.isAuthenticated}
-          isAdmin={this.state.isAdmin}    
+          isAdmin={this.state.isAdmin}
           unRead={this.state.unRead}
         />
       ) : (
@@ -481,11 +482,19 @@ class AppRoutes extends Component {
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
-                  
+
                   <AdminProtected
                     exact
                     path="/admin/contact-us"
                     component={ContactUs}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+
+                  <AdminProtected
+                    exact
+                    path="/admin/settings"
+                    component={Settings}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
@@ -496,6 +505,7 @@ class AppRoutes extends Component {
                     component={publisherDomain}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
+                    publisherUnreadMessageCount={this.publisherUnreadMessageCount}
                   />
                   <PublisherProtected
                     exact

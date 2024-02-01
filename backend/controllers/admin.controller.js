@@ -236,3 +236,36 @@ exports.linkBundleBlogGet = async (req, res) => {
     });
   }
 };
+
+exports.getAdminSetting = async(req, res) => {
+  try{
+    let settings = await Models.adminSetting.findOne();
+    if(!settings){
+      settings = {
+        vat: process.env.DEFAULT_VAT
+      }
+    }
+    res.status(200).send({ status: true, data: settings });
+  }catch(err){
+    res.status(500).send({ status: false,error: err.message, message: "Something went wrong"});
+  }
+}
+exports.updateAdminSettings = async(req, res) => {
+  try{   
+    const { id, vat} = req.body;
+    const dataUpdate = { vat };
+    let store;
+    if (id && id !== "") {
+      store = await Models.adminSetting.update(dataUpdate, { where: { id } });
+    } else {
+      store = await Models.adminSetting.create(dataUpdate);
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Data update successfully.",
+      data: store,
+    });
+  }catch(err){
+    res.status(500).send({ status: false,error: err.message, message: "Something went wrong"});
+  }
+}

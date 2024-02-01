@@ -8,7 +8,10 @@ const {
   adminGetContactUsData,
   adminMarkSolve,
 } = require("../controllers/account.controller");
-const { invoidePdfGenerate } = require("../controllers/generateInvoicePdf.controller");
+const {
+  invoidePdfGenerate,
+  invoidePdfGeneratePublisher,
+} = require("../controllers/generateInvoicePdf.controller");
 const {
   userProfileAdminSide,
   userList,
@@ -18,8 +21,15 @@ const {
   adminToUpdateuser,
   linkBundleBlogUpdate,
   linkBundleBlogGet,
+  getAdminSetting,
+  updateAdminSettings,
 } = require("../controllers/admin.controller");
-const { isLogin, isAdmin, isCustomer } = require("../middleware/checkAuthenticate");
+const {
+  isLogin,
+  isAdmin,
+  isCustomer,
+  isPublisher,
+} = require("../middleware/checkAuthenticate");
 const { upload } = require("../middleware/ProfilePicMiddle");
 module.exports = (app) => {
   app.get("/account/user/profile", [isLogin], userProfile);
@@ -72,5 +82,12 @@ module.exports = (app) => {
     linkBundleBlogUpdate
   );
 
-  app.post("/user/generate-invoice",[isLogin, isCustomer], invoidePdfGenerate)
+  app.post("/user/generate-invoice", [isLogin, isCustomer], invoidePdfGenerate);
+  app.post(
+    "/publisher/generate-invoice",
+    [isLogin, isPublisher],
+    invoidePdfGeneratePublisher
+  );
+  app.get("/get-settings", [isLogin], getAdminSetting);
+  app.patch("/update/settings", [isLogin, isAdmin], updateAdminSettings);
 };

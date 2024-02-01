@@ -365,5 +365,6 @@
     "You can add contentlinks to your cart":"You can add contentlinks to your cart",
     "Your cart is empty":"Your cart is empty",
     "Text":"Text",
-    "Summary":"Summary"
+    "Summary":"Summary",
+    "creditMessage": "You will be credited {{amount}}. The total amount payable of {{totalAmount}} includes applicable VAT in the amount of {{vatRate}}%."
 }

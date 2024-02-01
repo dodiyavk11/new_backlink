@@ -81,6 +81,7 @@ export class Domain extends Component {
   };
   componentDidMount() {
     this.getPublisherDataList();
+    this.props.publisherUnreadMessageCount();
   }
 
   render() {

@@ -385,5 +385,14 @@
     "View":"Ansehen",
     "You": "Toi",
     "Error while downloading file.":"Fehler beim Herunterladen der Datei",
-    "Order ID":"Bestellnummer"
+    "Order ID":"Bestellnummer",
+    "Payment":"Zahlung",
+    "Invoice":"Rechnung",
+    "paid": "bezahlt",
+    "refunded": "erstattet",
+    "VAT e.g 19":"Mehrwertsteuer zum Beispiel 19",
+    "VAT":"Mehrwertsteuer",
+    "Setting data update successfully.":"Einstellungen erfolgreich aktualisiert.",
+    "Default VAT is 19%":"Standardmäßiger Mehrwertsteuersatz beträgt 19%",
+    "creditMessage": "Sie erhalten eine Gutschrift in Höhe von {{amount}}. Der Gesamtbetrag von {{totalAmount}} beinhaltet die anwendbare Mehrwertsteuer in Höhe von {{vatRate}}%."
 }

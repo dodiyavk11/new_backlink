@@ -4,6 +4,8 @@ import { Link, NavLink, withRouter } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { withTranslation } from "react-i18next";
 import ApiServices from "../services/api.service";
+import CurrencyFormatter from "./CurrencyFormatter";
+
 class Navbar extends Component {
   constructor(props) {
     super(props);
@@ -48,6 +50,7 @@ class Navbar extends Component {
   };
 
   componentDidMount() {
+    this.props.getCartData();
     this.setState({
       cartDatas: this.props.cartData,
     });
@@ -191,7 +194,7 @@ class Navbar extends Component {
                           <h6>
                             <Link to={`/content/${order.hash_id}`}>
                               <Trans>
-                                <b>${order.cartItems.price}</b>
+                                <b>{CurrencyFormatter.formatCurrency(order.cartItems.price)}</b>
                               </Trans>
                             </Link>
                             <i
@@ -215,7 +218,7 @@ class Navbar extends Component {
                         </div>
                         <div>
                           <h3>
-                            <b>${totalItemPrice}</b>
+                            <b>{CurrencyFormatter.formatCurrency(totalItemPrice)}</b>
                           </h3>
                         </div>
                       </div>

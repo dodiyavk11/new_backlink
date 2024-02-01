@@ -4042,6 +4042,35 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get admin Setting like VAT",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTcwNjc2Mzk2NiwiZXhwIjoxNzA2Nzk5OTY2fQ.Dy6O_bl6LrjdHVhfKxfhexiphuVPQQ8FdmruWFuxejM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/get-settings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"get-settings"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

@@ -4,7 +4,7 @@ import ApiServices from "../../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
-import { Trans } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 import { CPopover, CButton } from "@coreui/react";
 import "../../../assets/custom.css";
 import CurrencyFormatter from "../../shared/CurrencyFormatter";
@@ -232,14 +232,58 @@ export class PublisherOrders extends Component {
   };
 
   goToOrderViewLink = (order_id) => {
-    this.props.publisherReadMessage(order_id)
+    this.props.publisherReadMessage(order_id);
     this.props.history.push(`/publisher/order/${order_id}`);
   };
 
   togglePopover = () => {
     this.setState((prevState) => ({ showPopover: !prevState.showPopover }));
   };
+
+  handleDownloadInvoice = (id, order_id, user_id) => {
+    this.setState({ isLoading: true });
+    const data = {
+      id,
+      order_id,
+      user_id,
+    };
+    ApiServices.generateInvoicePdfPublisher(data).then(
+      (res) => {
+        if (res.status) {
+          setTimeout(() => {
+            const link = document.createElement("a");
+            link.href = `${process.env.REACT_APP_BASE_URL}${res.data.filepath}`;
+            link.download = `invoice_${id}.pdf`;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }, 500);
+        } else {
+          toast.error(<Trans>Something went to wrong.</Trans>, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
+
   render() {
+    const { t } = this.props;
     const {
       showPopover,
       showAnchor,
@@ -538,6 +582,12 @@ export class PublisherOrders extends Component {
                           <th className={showProduct ? "show" : "hide"}>
                             <Trans>Domain</Trans>
                           </th>
+                          <th className={showProduct ? "show" : "hide"}>
+                            <Trans>Payment</Trans>
+                          </th>
+                          <th className={showProduct ? "show" : "hide"}>
+                            <Trans>Invoice</Trans>
+                          </th>
                           {/* <th className={showProject ? "show" : "hide"}>
                             Project
                           </th> */}
@@ -556,14 +606,29 @@ export class PublisherOrders extends Component {
                         {this.state.orderData.map((order) => (
                           <tr
                             key={order.id}
-                            onClick={() => this.goToOrderViewLink(order.id)}
+                            // onClick={() => this.goToOrderViewLink(order.id)}
+                            onClick={(e) => {
+                              e.preventDefault(); // Prevent default behavior for all clicks
+
+                              if (e.target.tagName.toLowerCase() === "i") {
+                                this.handleDownloadInvoice(
+                                  order.transaction.id,
+                                  order.id,
+                                  order.customer_id
+                                );
+                              } else {
+                                this.goToOrderViewLink(order.id);
+                              }
+                            }}
                           >
                             <td className={showID ? "show" : "hide"}>
                               {order.id}
                             </td>
                             <td className={showDate ? "show" : "hide"}>
                               {/* {order.created_at} */}
-                              {CurrencyFormatter.formatDateTime(new Date(order.created_at))}
+                              {CurrencyFormatter.formatDateTime(
+                                new Date(order.created_at)
+                              )}
                             </td>
                             <td className={showStatus ? "show" : "hide"}>
                               <span
@@ -576,6 +641,20 @@ export class PublisherOrders extends Component {
                             </td>
                             <td className={showProduct ? "show" : "hide"}>
                               {order.domain.domain_name}
+                            </td>
+                            <td className={showProduct ? "show" : "hide"}>
+                              <Trans>{order.transaction.status}</Trans>
+                            </td>
+                            <td className={showProduct ? "show" : "hide"}>
+                              <span
+                                style={{ cursor: "pointer", fontSize: "23px" }}
+                              >
+                                <i
+                                  className="mdi mdi-receipt"
+                                  style={{ color: "#ea6918" }}
+                                  title={t("Invoice download")}
+                                ></i>
+                              </span>
                             </td>
                             {/* <td className={showProject ? "show" : "hide"}>
                               {order.project.domain_name}
@@ -633,4 +712,5 @@ export class PublisherOrders extends Component {
     );
   }
 }
-export default withRouter(PublisherOrders);
+// export default withRouter(PublisherOrders);
+export default withTranslation()(PublisherOrders);

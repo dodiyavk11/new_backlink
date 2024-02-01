@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   transaction.init({
     user_id: DataTypes.INTEGER,
     amount:DataTypes.DECIMAL(8, 2),
+    inc_vat:DataTypes.DECIMAL(10, 2),
     transaction_type: DataTypes.STRING,
     description: DataTypes.STRING,
     payment_created: {

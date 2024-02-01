@@ -805,6 +805,16 @@ class ApiServices {
         return response;
       });
   }
+  generateInvoicePdfPublisher(data) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .post(`${this.APP_URL}publisher/generate-invoice`, data, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
 
   exportOrderCsv() {
     const authToken = localStorage.getItem("token");
@@ -833,6 +843,49 @@ class ApiServices {
     return axios
       .get(`${this.APP_URL}publisher/message/read/${order_id}`, {
         headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  getSettings(){
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(`${this.APP_URL}get-settings`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  getVatPercentage() {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(`${this.APP_URL}get-settings`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.data.data.vat;
+        } else {
+          throw new Error("Failed to fetch settings");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        throw error;
+      });
+  }
+  updateAdminSetting(formData){
+    const authToken = localStorage.getItem("token");
+    return axios
+      .patch(`${this.APP_URL}update/settings`, formData, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
       })
       .then((response) => {
         return response;

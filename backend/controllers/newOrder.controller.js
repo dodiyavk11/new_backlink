@@ -632,7 +632,6 @@ exports.getUserOrders = async (req, res) => {
       data: getOrderData,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       status: false,
       message: "Something went to wrong, Please try again.",
@@ -705,7 +704,6 @@ exports.getAdminAllOrders = async (req, res) => {
       data: getOrderData,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       status: false,
       message: "Something went to wrong, Please try again.",
@@ -736,6 +734,11 @@ exports.getPublisherOrder = async (req, res) => {
             ],
           },
         },
+        {
+          model: Models.Transactions,
+          as: "transaction",
+          attributes:["id","order_id","status"]
+        },
       ],
       where: { publisher_id: publisher_id },
     };
@@ -751,7 +754,6 @@ exports.getPublisherOrder = async (req, res) => {
       data: orderData,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       status: false,
       message: "Something went to wrong.",
@@ -1523,9 +1525,6 @@ exports.donwlodFile = async (req, res) => {
     const orderData = await Models.newOrder.findOne({
       where: { id: order_id },
     });
-    console.log(orderData.publisher_id);
-    console.log(orderData.customer_id);
-    console.log(userData.isAdmin);
 
     if (
       orderData.publisher_id === user_id ||

@@ -317,7 +317,9 @@ class Sidebar extends Component {
                   </svg>
                   <span className="menu-title">
                     <Trans>Messages</Trans>
-                    <span className="badge badge-danger">{this.props.unRead}</span>
+                    <span className="badge badge-danger">
+                      {this.props.unRead}
+                    </span>
                   </span>
                 </Link>
               </li>
@@ -572,6 +574,22 @@ class Sidebar extends Component {
 
                   <span className="menu-title">
                     <Trans>Contact us</Trans>
+                  </span>
+                </Link>
+              </li>
+
+              <li
+                className={
+                  this.isPathActive("/admin/settings")
+                    ? "nav-item active"
+                    : "nav-item"
+                }
+              >
+                <Link className="nav-link p-0 pl-2" to="/admin/settings">
+                  <i className="mdi mdi-settings mr-3" style={{fontSize:"24px"}}></i>
+
+                  <span className="menu-title">
+                    <Trans>Settings</Trans>
                   </span>
                 </Link>
               </li>

@@ -57,7 +57,7 @@ exports.initPaymentFrontSide = async (req, res) => {
   try {
   	const id = req.userId;
   	const userInfo = await Models.Users.findOne({ where:{ id } })
-  	const { amount, currency } = req.body;
+  	const { amount, currency, originalAmount } = req.body;
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount * 100,
       currency: currency || 'inr',
@@ -78,7 +78,7 @@ exports.initPaymentFrontSide = async (req, res) => {
 	const seconds = String(date.getSeconds()).padStart(2, '0');
 	const payment_created = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
-    const tranInfo = { user_id:id ,amount,transaction_type:"Update wallet",description:"",payment_created,transaction_id:paymentIntent.id,status:"incomplete",paymentData:paymentIntent }
+    const tranInfo = { user_id:id ,amount:originalAmount,inc_vat:amount,transaction_type:"Update wallet",description:"",payment_created,transaction_id:paymentIntent.id,status:"incomplete",paymentData:paymentIntent }
 	const createTranscation = await Models.Transactions.create(tranInfo);
     res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {

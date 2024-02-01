@@ -26,6 +26,7 @@ export class Dashboard extends Component {
       show: false,
       showModal: false,
       amount: 0,
+      vat: 0,
     };
   }
   showProjectModal = () => this.setState({ showModal: true });
@@ -104,6 +105,23 @@ export class Dashboard extends Component {
     );
   };
   componentDidMount() {
+    ApiServices.getVatPercentage()
+      .then((vat) => {
+        if (vat) {
+          this.setState({ vat: vat });
+        } else {
+          toast.error(<Trans>Something went to wrong.</Trans>, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      })
+      .catch((error) => {
+        toast.error(<Trans>Something went to wrong.</Trans>, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      });
     ApiServices.getDashboard()
       .then((res) => {
         if (!res.status) {
@@ -157,11 +175,13 @@ export class Dashboard extends Component {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                <h2 className="fontBold latterSpacing"><Trans>Add balance</Trans></h2>
+                <h2 className="fontBold latterSpacing">
+                  <Trans>Add balance</Trans>
+                </h2>
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <StripePayment />
+              <StripePayment vat={this.state.vat} />
             </Modal.Body>
             <Modal.Footer>
               {/* <Button className="btn btn-gradient-secondary btn-rounded btn-fw" variant="secondary" onClick={this.handleClose}>
@@ -206,9 +226,13 @@ export class Dashboard extends Component {
                 <div className="card-body dashboardCard">
                   <div className="d-flex flex-row justify-content-between">
                     <div className="p-2 bd-highlight d-flex flex-column">
-                      <h4><Trans>Available</Trans></h4>
+                      <h4>
+                        <Trans>Available</Trans>
+                      </h4>
                       <h2>
-                        <b>{CurrencyFormatter.formatCurrency(this.state.balance)}</b>
+                        <b>
+                          {CurrencyFormatter.formatCurrency(this.state.balance)}
+                        </b>
                       </h2>
                     </div>
                     <div className="p-2 bd-highlight d-flex align-items-center justify-content-center">
@@ -313,17 +337,29 @@ export class Dashboard extends Component {
             <div className="col-lg-8 grid-margin stretch-card">
               <div className="card bRadius">
                 <div className="card-body">
-                  <h4 className="card-title"><Trans>Daily Deals</Trans> 5</h4>
+                  <h4 className="card-title">
+                    <Trans>Daily Deals</Trans> 5
+                  </h4>
                   <hr />
                   <div className="table-responsive">
                     <table className="table table-hover top5Deals">
                       <thead>
                         <tr>
-                          <th><Trans>Name</Trans></th>
-                          <th><Trans>DR</Trans></th>
-                          <th><Trans>DA</Trans></th>
-                          <th><Trans>TF</Trans></th>
-                          <th><Trans>Price</Trans></th>
+                          <th>
+                            <Trans>Name</Trans>
+                          </th>
+                          <th>
+                            <Trans>DR</Trans>
+                          </th>
+                          <th>
+                            <Trans>DA</Trans>
+                          </th>
+                          <th>
+                            <Trans>TF</Trans>
+                          </th>
+                          <th>
+                            <Trans>Price</Trans>
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -374,7 +410,9 @@ export class Dashboard extends Component {
                   </text>
                 </svg>
                 <div className="card-body" style={{ padding: "1.5rem 1.5rem" }}>
-                  <h5 className="card-title"><Trans>Resource</Trans></h5>
+                  <h5 className="card-title">
+                    <Trans>Resource</Trans>
+                  </h5>
                   <div className="d-flex justify-content-between p-1">
                     <div className="mr-2">
                       <svg

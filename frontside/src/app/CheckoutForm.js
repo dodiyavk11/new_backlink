@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { Trans } from "react-i18next";
 import "react-toastify/dist/ReactToastify.css";
+import CurrencyFormatter from "./shared/CurrencyFormatter";
 
 class CheckoutForm extends Component {
   constructor(props) {
@@ -23,16 +24,16 @@ class CheckoutForm extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { stripe, elements, amount, history } = this.props;
+    const { stripe, elements, amount, history, originalAmount } = this.props;
     if (!stripe || !elements) {
       return;
-    }    
+    }
     const { error: submitError } = await elements.submit();
     if (submitError) {
-      toast.error(submitError.message,{
-        position:"top-center",
-        autoClose:1500
-      })
+      toast.error(submitError.message, {
+        position: "top-center",
+        autoClose: 1500,
+      });
       // console.error(submitError);
       return;
     }
@@ -47,7 +48,10 @@ class CheckoutForm extends Component {
             Authorization: `Bearer ${authToken}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ amount: amount }),
+          body: JSON.stringify({
+            amount: amount,
+            originalAmount: originalAmount,
+          }),
         }
       );
 
@@ -63,17 +67,14 @@ class CheckoutForm extends Component {
       });
 
       if (error) {
-        // console.error(error);
         toast.error("Payment error", {
           position: "top-center",
           autoClose: 1500,
         });
       } else {
-        // console.log("Payment succeeded");
-        // console.log(paymentIntent);
         const paymentId = paymentIntent.id;
         const paymentData = {
-          amount: amount,
+          amount: originalAmount,
           paymentData: paymentIntent,
         };
         apiService
@@ -105,7 +106,7 @@ class CheckoutForm extends Component {
   };
 
   render() {
-    const { stripe } = this.props;
+    const { stripe, amount } = this.props;
     const { loading } = this.state;
     return (
       <>
@@ -114,9 +115,15 @@ class CheckoutForm extends Component {
           <button
             type="submit"
             className="btn btn-rounded btn-fw btn-block mt-3"
-            disabled={!stripe}
+            disabled={!stripe || loading}
           >
-            {loading && stripe ? <Trans>Processing, please wait</Trans> : <Trans>Pay</Trans>}
+            {loading && stripe ? (
+              <Trans>Processing, please wait</Trans>
+            ) : (
+              <Trans>
+                Pay {CurrencyFormatter.formatCurrency(amount)}
+              </Trans>
+            )}
           </button>
         </form>
       </>
@@ -131,6 +138,7 @@ const InjectedCheckoutForm = (props) => (
         stripe={stripe}
         elements={elements}
         amount={props.amount}
+        originalAmount={props.originalAmount}
         history={props.history}
       />
     )}
