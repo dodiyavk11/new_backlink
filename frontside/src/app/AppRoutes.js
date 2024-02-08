@@ -59,6 +59,8 @@ const CartPage = lazy(() => import("./shared/Cart"));
 const paymentSuccess = lazy(() => import("./paymentSuccess"));
 const ContactUs = lazy(() => import("./admin/contactUs/ContactUs"));
 const Settings = lazy(() => import("./admin/setting/Settings"));
+const AdminPayments = lazy(() => import("./admin/payments/Payments"));
+const PublisherPayments = lazy(() => import("./publisher/payments/Payments"));
 
 class AppRoutes extends Component {
   constructor(props) {
@@ -499,13 +501,23 @@ class AppRoutes extends Component {
                     isAdmin={this.state.isAdmin}
                   />
 
+                  <AdminProtected
+                    exact
+                    path="/admin/payments"
+                    component={AdminPayments}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+
                   <PublisherProtected
                     exact
                     path="/publisher/domain"
                     component={publisherDomain}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
-                    publisherUnreadMessageCount={this.publisherUnreadMessageCount}
+                    publisherUnreadMessageCount={
+                      this.publisherUnreadMessageCount
+                    }
                   />
                   <PublisherProtected
                     exact
@@ -543,6 +555,14 @@ class AppRoutes extends Component {
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                     publisherReadMessage={this.publisherReadMessage}
+                  />
+
+                  <PublisherProtected
+                    exact
+                    path="/publisher/payments"
+                    component={PublisherPayments}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
                   />
                   {/* <Route path="/login" component={ Login } /> */}
                   {/* <Route path="/login" component={(props) => <Login {...props} handleLoginSuccess={this.handleLoginSuccess} />} /> */}

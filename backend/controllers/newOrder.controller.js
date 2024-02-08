@@ -737,7 +737,7 @@ exports.getPublisherOrder = async (req, res) => {
         {
           model: Models.Transactions,
           as: "transaction",
-          attributes:["id","order_id","status"]
+          attributes: ["id", "order_id", "status"],
         },
       ],
       where: { publisher_id: publisher_id },
@@ -764,13 +764,12 @@ exports.getPublisherOrder = async (req, res) => {
 
 exports.exportDataCsvPublisher = async (req, res) => {
   const user_id = req.userId;
+  const lang = req.query.lang;
   const checkUser = await Models.Users.findOne({ where: { id: user_id } });
   let wheres = {};
-  if(checkUser.isAdmin === 2)
-  {
+  if (checkUser.isAdmin === 2) {
     wheres = { publisher_id: user_id };
-  }
-  else if(checkUser.isAdmin === 0){
+  } else if (checkUser.isAdmin === 0) {
     wheres = { customer_id: user_id };
   }
   const baseQuery = {
@@ -795,38 +794,96 @@ exports.exportDataCsvPublisher = async (req, res) => {
   };
 
   const orderDataInstances = await Models.newOrder.findAll(baseQuery);
-  const customHeaders = [
-    "Id",
-    "Domain Name",
-    "Price",
-    "Total Price",
-    "Status",
-    "Anchortext",
-    "Linktarget",
-    "Publication Date",
-    "Note",
-  ];
+
+  let customHeaders;
+  let propertyMapping;
+
+  if (lang === "en") {
+    customHeaders = [
+      "Id",
+      "Domain Name",
+      "Price",
+      "Total Price",
+      "Status",
+      "Anchortext",
+      "Linktarget",
+      "Publication Date",
+      "Note",
+    ];
+
+    propertyMapping = {
+      Id: "id",
+      "Domain Name": "domain.domain_name",
+      Price: "price",
+      "Total Price": "total_price",
+      Status: "status",
+      Anchortext: "anchortext",
+      Linktarget: "linktarget",
+      "Publication Date": "publication_date",
+      Note: "note",
+    };
+  } else {
+    customHeaders = [
+      "ID",
+      "Domain-Name",
+      "Preis",
+      "Gesamtpreis",
+      "Status",
+      "Anker-Text",
+      "Link-Ziel",
+      "Veröffentlichungsdatum",
+      "Notiz",
+    ];
+
+    propertyMapping = {
+      ID: "id",
+      "Domain-Name": "domain.domain_name",
+      Preis: "price",
+      Gesamtpreis: "total_price",
+      Status: "status",
+      "Anker-Text": "anchortext",
+      "Link-Ziel": "linktarget",
+      Veröffentlichungsdatum: "publication_date",
+      Notiz: "note",
+    };
+  }
 
   const orderData = orderDataInstances.map((instance) => {
     const plainInstance = instance.get({ plain: true });
-    const domainData = plainInstance.domain || {};
-    return {
-      Id: plainInstance.id,
-      "Domain Name": domainData.domain_name || "",
-      Price: formatCurrency(plainInstance.price),
-      "Total Price": formatCurrency(plainInstance.total_price),
-      Status: plainInstance.status,
-      Anchortext: plainInstance.anchortext,
-      Linktarget: plainInstance.linktarget,
-      "Publication Date": plainInstance.publication_date,
-      Note: plainInstance.note,
-    };
+    const mappedObject = {};
+
+    customHeaders.forEach((header) => {
+      const property = propertyMapping[header];
+      let value = plainInstance;
+
+      if (property) {
+        const nestedProperties = property.split(".");
+        for (const nestedProperty of nestedProperties) {
+          value = value[nestedProperty];
+          if (value === undefined) {
+            break;
+          }
+        }
+      }
+
+      mappedObject[header] =
+        header === "Price" ||
+        header === "Total Price" ||
+        header === "Preis" ||
+        header === "Gesamtpreis"
+          ? formatCurrency(value)
+          : value || "";
+    });
+
+    return mappedObject;
   });
 
-  const customCsv = Papa.unparse({
-    fields: customHeaders,
-    data: orderData,
-  });
+  const customCsv =
+    "\uFEFF" +
+    Papa.unparse({
+      fields: customHeaders,
+      data: orderData,
+    });
 
   const fileName = `order_${user_id}.csv`;
   const tempFileDirectory = path.resolve("./assets/csv", fileName);

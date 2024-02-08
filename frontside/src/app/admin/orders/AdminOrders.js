@@ -19,6 +19,10 @@ import {
   TableSortLabel,
 } from "@material-ui/core";
 import CurrencyFormatter from "../../shared/CurrencyFormatter";
+import DatePicker, { registerLocale } from "react-datepicker";
+import de from "date-fns/locale/de/index.js";
+import "react-datepicker/dist/react-datepicker.css";
+registerLocale("de", de);
 
 export class AdminOrders extends Component {
   constructor(props) {
@@ -41,8 +45,8 @@ export class AdminOrders extends Component {
         datetime: true,
         status: true,
         backlink: false,
-        publisher:true,
-        customer:true,
+        publisher: true,
+        customer: true,
         project: false,
         anchortext: false,
         targeturl: false,
@@ -162,9 +166,17 @@ export class AdminOrders extends Component {
     const selectedValues = selectedOptions.map((option) => option.value);
     this.setState({ selectedProduct: selectedValues }, this.updateFilterData);
   };
-  handleDateChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ selectedDate: value }, this.updateFilterData);
+  // handleDateChange = (e) => {
+  //   const { name, value } = e.target;
+  //   this.setState({ selectedDate: value }, this.updateFilterData);
+  // };
+  handleDateChange = (selectedDate) => {
+    if (selectedDate === null) {
+      this.setState({ selectedDate: '' }, this.updateFilterData);
+    }
+    else{
+      this.setState({ selectedDate: selectedDate }, this.updateFilterData);
+    }    
   };
 
   handleOnSearch = (e) => {
@@ -199,11 +211,20 @@ export class AdminOrders extends Component {
       selectedDate,
       searchValue,
     } = this.state;
+    let formattedDate;
+    if (selectedDate !== "") {
+      const inputDate = new Date(selectedDate);
+      const year = inputDate.getFullYear();
+      const month = (inputDate.getMonth() + 1).toString().padStart(2, "0");
+      const day = inputDate.getDate().toString().padStart(2, "0");
+
+      formattedDate = `${year}-${month}-${day}`;
+    }
     const filterData = {
       status: selectedStatus.length ? selectedStatus : [],
       productType: selectedProduct.length ? selectedProduct : {},
       project: selectedProject.length ? selectedProject : {},
-      date: { min: selectedDate || "", max: selectedDate || "" },
+      date: { min: formattedDate || "", max: formattedDate || "" },
       search: searchValue,
     };
     this.fetchAdminOrder(filterData);
@@ -235,7 +256,7 @@ export class AdminOrders extends Component {
   }
 
   componentDidMount() {
-    this.fetchAdminOrder();    
+    this.fetchAdminOrder();
   }
   render() {
     const {
@@ -283,7 +304,11 @@ export class AdminOrders extends Component {
         label: <Trans>Order Date</Trans>,
         width: 130,
         sortable: false,
-        renderCell: (row) => <span>{CurrencyFormatter.formatDateTime(new Date(row.created_at))}</span>,
+        renderCell: (row) => (
+          <span>
+            {CurrencyFormatter.formatDateTime(new Date(row.created_at))}
+          </span>
+        ),
       },
       {
         id: "status",
@@ -324,7 +349,13 @@ export class AdminOrders extends Component {
         align: "right",
         width: 90,
         sortable: false,
-        renderCell: (row) => <span>{row.customer ? `${row.customer.firstName} ${row.customer.lastName}` : "N/A"}</span>,
+        renderCell: (row) => (
+          <span>
+            {row.customer
+              ? `${row.customer.firstName} ${row.customer.lastName}`
+              : "N/A"}
+          </span>
+        ),
       },
       {
         id: "publisher",
@@ -332,7 +363,13 @@ export class AdminOrders extends Component {
         align: "right",
         width: 90,
         sortable: false,
-        renderCell: (row) => <span>{row.publisher ? `${row.publisher.firstName} ${row.publisher.lastName}` : "N/A"}</span>,
+        renderCell: (row) => (
+          <span>
+            {row.publisher
+              ? `${row.publisher.firstName} ${row.publisher.lastName}`
+              : "N/A"}
+          </span>
+        ),
       },
       {
         id: "anchortext",
@@ -361,7 +398,9 @@ export class AdminOrders extends Component {
         label: <Trans>Amount</Trans>,
         sortable: true,
         width: 90,
-        renderCell: (row) => <span>{CurrencyFormatter.formatCurrency(row.total_price)}</span>,
+        renderCell: (row) => (
+          <span>{CurrencyFormatter.formatCurrency(row.total_price)}</span>
+        ),
       },
     ];
 
@@ -381,262 +420,271 @@ export class AdminOrders extends Component {
                 <div className="card-body projectsCard">
                   <ToastContainer />
                   <div className="d-flex justify-content-between MarketPlaceTab">
-                      <div className="float-left flex">
-                        <form className="form-inline">
-                          <div className="input-group input-focus mr-2">
-                            <div className="input-group-prepend">
-                              <span className="input-group-text bg-white customSearchIcon">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="13"
-                                  height="13"
-                                  fill="currentColor"
-                                  className="bi bi-search"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                </svg>
-                              </span>
-                            </div>
-                            <input
-                              type="search"
-                              // placeholder="Search backlink"
-                              placeholder={t("Search backlink")}
-                              className="form-control border-left-0 customSearch p-0"
-                              onChange={this.handleOnSearch}
-                              value={searchValue}
-                            />
+                    <div className="float-left flex">
+                      <form className="form-inline">
+                        <div className="input-group input-focus mr-2">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text bg-white customSearchIcon">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="13"
+                                height="13"
+                                fill="currentColor"
+                                className="bi bi-search"
+                                viewBox="0 0 16 16"
+                              >
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                              </svg>
+                            </span>
                           </div>
-                          <ReactMultiSelectCheckboxes
-                            options={this.state.status}
-                            placeholderButtonLabel={t("Status")}
-                            onChange={this.handleStatusChange}
+                          <input
+                            type="search"
+                            // placeholder="Search backlink"
+                            placeholder={t("Search backlink")}
+                            className="form-control border-left-0 customSearch p-0"
+                            onChange={this.handleOnSearch}
+                            value={searchValue}
                           />
-                          <CPopover
-                            // trigger="focus"
-                            className="datepickerPopoverclass"
+                        </div>
+                        <ReactMultiSelectCheckboxes
+                          options={this.state.status}
+                          placeholderButtonLabel={t("Status")}
+                          onChange={this.handleStatusChange}
+                        />
+                        <CPopover
+                          // trigger="focus"
+                          className="datepickerPopoverclass"
+                        >
+                          <button
+                            type="button"
+                            className="css-1r4vtzz custamFilterBtn"
                           >
-                            <button
-                              type="button"
-                              className="css-1r4vtzz custamFilterBtn"
-                            >
-                              <span className="css-1v99tuv">
-                                <input
+                            <span className="css-1v99tuv">
+                              {/* <input
                                   type="date"
                                   placeholder="Date"
                                   onChange={this.handleDateChange}
-                                />
-                              </span>
-                              <span className="css-1gpjby2">
-                                <svg
-                                  width="24"
-                                  height="24"
-                                  viewBox="0 0 24 24"
-                                  focusable="false"
-                                  role="presentation"
-                                >
-                                  <path
-                                    d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z"
-                                    fill="currentColor"
-                                    fillRule="evenodd"
-                                  ></path>
-                                </svg>
-                              </span>
-                            </button>
-                          </CPopover>
-                        </form>
-                      </div>
-                      <div>
-                        <div
-                          className="float-right flex"
-                          style={{ position: "relative" }}
-                        >
-                          <button
-                            className="btn btn-rounded custamFilterBtn"
-                            onClick={this.togglePopover}
-                          >
-                            {" "}
-                            <svg
-                              width={20}
-                              id="adjustments"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                                /> */}
+                              <DatePicker
+                                className="border-0"
+                                selected={this.state.selectedDate}
+                                onChange={this.handleDateChange}
+                                isClearable
+                                locale="de"
+                                dateFormat="dd-MM-yyyy"
+                                placeholderText="dd-mm-yyyy"
                               />
-                            </svg>
-                            <Trans>Customize table</Trans>
+                            </span>
+                            <span className="css-1gpjby2">
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                focusable="false"
+                                role="presentation"
+                              >
+                                <path
+                                  d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z"
+                                  fill="currentColor"
+                                  fillRule="evenodd"
+                                ></path>
+                              </svg>
+                            </span>
                           </button>
-                          {showPopover && (
-                            <div
-                              className="popover bRadius"
-                              style={{ top: "100%", left: 0 }}
-                            >
-                              <div className="popover-content">
-                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                                  <span className="mr-4 text-nowrap">
-                                    Datetime
-                                  </span>
-                                  <label className="switch">
-                                    <input
-                                      type="checkbox"
-                                      checked={columnVisibility.datetime}
-                                      onClick={() =>
-                                        this.handleToggleColumnVisibility(
-                                          "datetime"
-                                        )
-                                      }
-                                    />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                                  <span className="mr-4 text-nowrap">
-                                    <Trans>Status</Trans>
-                                  </span>
-                                  <label className="switch">
-                                    <input
-                                      type="checkbox"
-                                      checked={columnVisibility.status}
-                                      onClick={() =>
-                                        this.handleToggleColumnVisibility(
-                                          "status"
-                                        )
-                                      }
-                                    />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                                  <span className="mr-4">
-                                    <Trans>Backlink</Trans>
-                                  </span>
-                                  <label className="switch">
-                                    <input
-                                      type="checkbox"
-                                      checked={columnVisibility.backlink}
-                                      onClick={() =>
-                                        this.handleToggleColumnVisibility(
-                                          "backlink"
-                                        )
-                                      }
-                                    />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                                  <span className="mr-4 text-nowrap">
-                                    <Trans>Project</Trans>
-                                  </span>
-                                  <label className="switch">
-                                    <input
-                                      type="checkbox"
-                                      checked={columnVisibility.project}
-                                      onClick={() =>
-                                        this.handleToggleColumnVisibility(
-                                          "project"
-                                        )
-                                      }
-                                    />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                                  <span className="mr-4 text-nowrap">
-                                    <Trans>Customer</Trans>
-                                  </span>
-                                  <label className="switch">
-                                    <input
-                                      type="checkbox"
-                                      checked={columnVisibility.customer}
-                                      onClick={() =>
-                                        this.handleToggleColumnVisibility(
-                                          "customer"
-                                        )
-                                      }
-                                    />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                                  <span className="mr-4 text-nowrap">
-                                    <Trans>Advertiser</Trans>
-                                  </span>
-                                  <label className="switch">
-                                    <input
-                                      type="checkbox"
-                                      checked={columnVisibility.publisher}
-                                      onClick={() =>
-                                        this.handleToggleColumnVisibility(
-                                          "publisher"
-                                        )
-                                      }
-                                    />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                                  <span className="mr-4 pull-left text-nowrap">
-                                    <Trans>Anchor text</Trans>
-                                  </span>
-                                  <label className="switch pull-right">
-                                    <input
-                                      type="checkbox"
-                                      checked={columnVisibility.anchortext}
-                                      onClick={() =>
-                                        this.handleToggleColumnVisibility(
-                                          "anchortext"
-                                        )
-                                      }
-                                    />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                                  <span className="mr-4 text-nowrap">
-                                    <Trans>Target url</Trans>
-                                  </span>
-                                  <label className="switch">
-                                    <input
-                                      type="checkbox"
-                                      checked={columnVisibility.targeturl}
-                                      onClick={() =>
-                                        this.handleToggleColumnVisibility(
-                                          "targeturl"
-                                        )
-                                      }
-                                    />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center mb-3 bdr">
-                                  <span className="mr-4 text-nowrap">
-                                    <Trans>Amount</Trans>
-                                  </span>
-                                  <label className="switch">
-                                    <input
-                                      type="checkbox"
-                                      checked={columnVisibility.total_price}
-                                      onClick={() =>
-                                        this.handleToggleColumnVisibility(
-                                          "total_price"
-                                        )
-                                      }
-                                    />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
+                        </CPopover>
+                      </form>
+                    </div>
+                    <div>
+                      <div
+                        className="float-right flex"
+                        style={{ position: "relative" }}
+                      >
+                        <button
+                          className="btn btn-rounded custamFilterBtn"
+                          onClick={this.togglePopover}
+                        >
+                          {" "}
+                          <svg
+                            width={20}
+                            id="adjustments"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                            />
+                          </svg>
+                          <Trans>Customize table</Trans>
+                        </button>
+                        {showPopover && (
+                          <div
+                            className="popover bRadius"
+                            style={{ top: "100%", left: 0 }}
+                          >
+                            <div className="popover-content">
+                              <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                <span className="mr-4 text-nowrap">
+                                  Datetime
+                                </span>
+                                <label className="switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={columnVisibility.datetime}
+                                    onClick={() =>
+                                      this.handleToggleColumnVisibility(
+                                        "datetime"
+                                      )
+                                    }
+                                  />
+                                  <span className="slider round"></span>
+                                </label>
+                              </div>
+                              <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                <span className="mr-4 text-nowrap">
+                                  <Trans>Status</Trans>
+                                </span>
+                                <label className="switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={columnVisibility.status}
+                                    onClick={() =>
+                                      this.handleToggleColumnVisibility(
+                                        "status"
+                                      )
+                                    }
+                                  />
+                                  <span className="slider round"></span>
+                                </label>
+                              </div>
+                              <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                <span className="mr-4">
+                                  <Trans>Backlink</Trans>
+                                </span>
+                                <label className="switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={columnVisibility.backlink}
+                                    onClick={() =>
+                                      this.handleToggleColumnVisibility(
+                                        "backlink"
+                                      )
+                                    }
+                                  />
+                                  <span className="slider round"></span>
+                                </label>
+                              </div>
+                              <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                <span className="mr-4 text-nowrap">
+                                  <Trans>Project</Trans>
+                                </span>
+                                <label className="switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={columnVisibility.project}
+                                    onClick={() =>
+                                      this.handleToggleColumnVisibility(
+                                        "project"
+                                      )
+                                    }
+                                  />
+                                  <span className="slider round"></span>
+                                </label>
+                              </div>
+                              <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                <span className="mr-4 text-nowrap">
+                                  <Trans>Customer</Trans>
+                                </span>
+                                <label className="switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={columnVisibility.customer}
+                                    onClick={() =>
+                                      this.handleToggleColumnVisibility(
+                                        "customer"
+                                      )
+                                    }
+                                  />
+                                  <span className="slider round"></span>
+                                </label>
+                              </div>
+                              <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                <span className="mr-4 text-nowrap">
+                                  <Trans>Advertiser</Trans>
+                                </span>
+                                <label className="switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={columnVisibility.publisher}
+                                    onClick={() =>
+                                      this.handleToggleColumnVisibility(
+                                        "publisher"
+                                      )
+                                    }
+                                  />
+                                  <span className="slider round"></span>
+                                </label>
+                              </div>
+                              <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                <span className="mr-4 pull-left text-nowrap">
+                                  <Trans>Anchor text</Trans>
+                                </span>
+                                <label className="switch pull-right">
+                                  <input
+                                    type="checkbox"
+                                    checked={columnVisibility.anchortext}
+                                    onClick={() =>
+                                      this.handleToggleColumnVisibility(
+                                        "anchortext"
+                                      )
+                                    }
+                                  />
+                                  <span className="slider round"></span>
+                                </label>
+                              </div>
+                              <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                <span className="mr-4 text-nowrap">
+                                  <Trans>Target url</Trans>
+                                </span>
+                                <label className="switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={columnVisibility.targeturl}
+                                    onClick={() =>
+                                      this.handleToggleColumnVisibility(
+                                        "targeturl"
+                                      )
+                                    }
+                                  />
+                                  <span className="slider round"></span>
+                                </label>
+                              </div>
+                              <div className="d-flex justify-content-between align-items-center mb-3 bdr">
+                                <span className="mr-4 text-nowrap">
+                                  <Trans>Amount</Trans>
+                                </span>
+                                <label className="switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={columnVisibility.total_price}
+                                    onClick={() =>
+                                      this.handleToggleColumnVisibility(
+                                        "total_price"
+                                      )
+                                    }
+                                  />
+                                  <span className="slider round"></span>
+                                </label>
                               </div>
                             </div>
-                          )}
-                        </div>
+                          </div>
+                        )}
                       </div>
+                    </div>
                   </div>
                   <hr style={{ marginBottom: "0px" }} />
                   <div

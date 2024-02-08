@@ -7,6 +7,10 @@ import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import { CPopover, CButton } from "@coreui/react";
 import "../../assets/custom.css";
 import CurrencyFormatter from "../shared/CurrencyFormatter";
+import DatePicker, { registerLocale } from "react-datepicker";
+import de from "date-fns/locale/de/index.js";
+import "react-datepicker/dist/react-datepicker.css";
+registerLocale("de", de);
 
 export class Orders extends Component {
   constructor(props) {
@@ -93,9 +97,13 @@ export class Orders extends Component {
     const selectedValues = selectedOptions.map((option) => option.value);
     this.setState({ selectedProduct: selectedValues }, this.updateFilterData);
   };
-  handleDateChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ selectedDate: value }, this.updateFilterData);
+  handleDateChange = (selectedDate) => {
+    if (selectedDate === null) {
+      this.setState({ selectedDate: '' }, this.updateFilterData);
+    }
+    else{
+      this.setState({ selectedDate: selectedDate }, this.updateFilterData);
+    }    
   };
 
   handleOnSearch = (e) => {
@@ -112,7 +120,7 @@ export class Orders extends Component {
   };
 
   handleExport = async () => {
-    ApiServices.exportOrderCsv()
+    ApiServices.exportOrderCsv(this.props.i18n.language)
       .then((res) => {
         if (res.status) {
           setTimeout(() => {
@@ -156,11 +164,20 @@ export class Orders extends Component {
       selectedDate,
       searchValue,
     } = this.state;
+    let formattedDate;
+    if (selectedDate !== "") {
+      const inputDate = new Date(selectedDate);
+      const year = inputDate.getFullYear();
+      const month = (inputDate.getMonth() + 1).toString().padStart(2, "0");
+      const day = inputDate.getDate().toString().padStart(2, "0");
+
+      formattedDate = `${year}-${month}-${day}`;
+    }
     const filterData = {
       status: selectedStatus.length ? selectedStatus : [],
       productType: selectedProduct.length ? selectedProduct : {},
       project: selectedProject.length ? selectedProject : {},
-      date: { min: selectedDate || "", max: selectedDate || "" },
+      date: { min: formattedDate || "", max: formattedDate || "" },
       search: searchValue,
     };
     ApiServices.userOrderListFilter(filterData)
@@ -239,7 +256,12 @@ export class Orders extends Component {
   togglePopover = () => {
     this.setState((prevState) => ({ showPopover: !prevState.showPopover }));
   };
+  clickOutside = () => {
+    alert("clicked outside");
+  };
   render() {
+    const dateFormat = "Pp";
+
     const {
       showPopover,
       showAnchor,
@@ -251,6 +273,7 @@ export class Orders extends Component {
       showTarget,
       showAmount,
       searchValue,
+      selectedDate,
     } = this.state;
     const getStatusClass = (status) => {
       switch (status) {
@@ -343,10 +366,28 @@ export class Orders extends Component {
                           className="css-1r4vtzz custamFilterBtn"
                         >
                           <span className="css-1v99tuv">
-                            <input
+                            {/* <input
                               type="date"
                               placeholder="Date"
                               onChange={this.handleDateChange}
+                            /> */}
+                            {/* <DatePicker
+                              {...this.props}
+                              dateFormat={dateFormat}
+                              locale="de"
+                              ref={(node) => {
+                                this.ref = node;
+                              }}
+                              onClickOutside={this.clickOutside}
+                            /> */}
+                            <DatePicker
+                              className="border-0"
+                              selected={this.state.selectedDate}
+                              onChange={this.handleDateChange}
+                              isClearable
+                              locale="de"
+                              dateFormat="dd-MM-yyyy"
+                              placeholderText="dd-mm-yyyy"
                             />
                           </span>
                           <span className="css-1gpjby2">

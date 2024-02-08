@@ -6,6 +6,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Trans } from "react-i18next";
 import CurrencyFormatter from "./CurrencyFormatter";
+import DatePicker, { registerLocale } from "react-datepicker";
+import de from "date-fns/locale/de/index.js";
+import "react-datepicker/dist/react-datepicker.css";
+registerLocale("de", de);
 
 class PlaceOrderDetailsModal extends Component {
   constructor(props) {
@@ -68,6 +72,16 @@ class PlaceOrderDetailsModal extends Component {
     });
     this.updateSubmitDisabled();
   };
+
+  handleDateChange = (publication_date) => {
+    if (publication_date === null) {
+      this.setState({ publication_date: '' });
+    }
+    else{
+      this.setState({ publication_date: publication_date });
+    }    
+  };
+
   handleRadioChange = (value) => {
     this.setState(
       {
@@ -195,7 +209,8 @@ class PlaceOrderDetailsModal extends Component {
   };
 
   updateSubmitDisabled = () => {
-    const { textCreation, filename, linktarget, anchortext,chooseByBack } = this.state;
+    const { textCreation, filename, linktarget, anchortext, chooseByBack } =
+      this.state;
     let isSubmitDisabled;
     if (textCreation === "Own") {
       isSubmitDisabled = !filename || !linktarget || !anchortext;
@@ -225,10 +240,19 @@ class PlaceOrderDetailsModal extends Component {
       approveTextPrice,
       approveText,
     } = this.state;
+    let formattedDate;
+    if (publication_date !== "") {
+      const inputDate = new Date(publication_date);
+      const year = inputDate.getFullYear();
+      const month = (inputDate.getMonth() + 1).toString().padStart(2, "0");
+      const day = inputDate.getDate().toString().padStart(2, "0");
+
+      formattedDate = `${year}-${month}-${day}`;
+    }
     const formData = {
       anchortext: anchortext,
       linktarget: linktarget,
-      publication_date: publication_date,
+      publication_date: formattedDate,
       note: note,
       project_id: project_id,
       originalname: originalname,
@@ -501,7 +525,9 @@ class PlaceOrderDetailsModal extends Component {
                       }
                     ></i>{" "}
                     1000 <Trans>Words</Trans>
-                    <span className="float-right fontBold600">+{CurrencyFormatter.formatCurrency(50)}</span>
+                    <span className="float-right fontBold600">
+                      +{CurrencyFormatter.formatCurrency(50)}
+                    </span>
                   </label>
                 </div>
               </div>
@@ -537,7 +563,9 @@ class PlaceOrderDetailsModal extends Component {
                     >
                       <Trans>NEW</Trans>
                     </span>
-                    <span className="float-right fontBold600">+{CurrencyFormatter.formatCurrency(27.00)}</span>
+                    <span className="float-right fontBold600">
+                      +{CurrencyFormatter.formatCurrency(27.0)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -548,7 +576,9 @@ class PlaceOrderDetailsModal extends Component {
                   </p>
                 </div>
                 <div className="col-sm-6">
-                  <p className="textRight">{CurrencyFormatter.formatCurrency(this.props.contetnPrice)}</p>
+                  <p className="textRight">
+                    {CurrencyFormatter.formatCurrency(this.props.contetnPrice)}
+                  </p>
                 </div>
               </div>
               <div className="row">
@@ -562,7 +592,9 @@ class PlaceOrderDetailsModal extends Component {
                     {textCreationPrice === 0 ? (
                       <Trans>Free</Trans>
                     ) : (
-                      <span>{CurrencyFormatter.formatCurrency(textCreationPrice)}</span>
+                      <span>
+                        {CurrencyFormatter.formatCurrency(textCreationPrice)}
+                      </span>
                     )}
                   </p>
                 </div>
@@ -575,7 +607,9 @@ class PlaceOrderDetailsModal extends Component {
                     </p>
                   </div>
                   <div className="col-sm-6">
-                    <p className="textRight">{CurrencyFormatter.formatCurrency(approveTextPrice)}</p>
+                    <p className="textRight">
+                      {CurrencyFormatter.formatCurrency(approveTextPrice)}
+                    </p>
                   </div>
                 </div>
               )}
@@ -587,7 +621,9 @@ class PlaceOrderDetailsModal extends Component {
                   </p>
                 </div>
                 <div className="col-sm-6">
-                  <p className="textRight h4 fontBold700">{CurrencyFormatter.formatCurrency(totalAmount)}</p>
+                  <p className="textRight h4 fontBold700">
+                    {CurrencyFormatter.formatCurrency(totalAmount)}
+                  </p>
                 </div>
               </div>
             </Modal.Body>
@@ -745,9 +781,8 @@ class PlaceOrderDetailsModal extends Component {
                     <p className="customText mb-0">
                       <Trans>When should your contentlink be placed?</Trans>
                     </p>
-                  </label>
-
-                  <input
+                  </label><br/>
+                  {/* <input
                     type="date"
                     name="publication_date"
                     className="form-control border"
@@ -756,6 +791,17 @@ class PlaceOrderDetailsModal extends Component {
                     onChange={this.handleChange}
                     value={publication_date}
                     min={new Date().toISOString().split('T')[0]}
+                  /> */}
+                  <DatePicker
+                    name="publication_date"
+                    selected={this.state.publication_date}
+                    onChange={this.handleDateChange}
+                    isClearable
+                    className="form-control"
+                    locale="de"
+                    dateFormat="dd-MM-yyyy"
+                    placeholderText="dd-mm-yyyy"
+                    minDate={new Date()}
                   />
                 </div>
               </div>
@@ -810,7 +856,8 @@ class PlaceOrderDetailsModal extends Component {
               disabled={submitDisabled}
               onClick={this.handleplaceOrder}
             >
-              <Trans>Buy now for</Trans> {CurrencyFormatter.formatCurrency(totalAmount)}
+              <Trans>Buy now for</Trans>{" "}
+              {CurrencyFormatter.formatCurrency(totalAmount)}
             </button>
             <button
               className="btn btn-primary btn btn-rounded custamFilterBtn"

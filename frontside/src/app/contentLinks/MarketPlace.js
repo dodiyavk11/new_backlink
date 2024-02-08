@@ -662,7 +662,7 @@ export class MarketPlace extends Component {
                 <CButton className="css-1r4vtzz custamFilterBtn">
                   {min !== 30 || max !== 200000 ? (
                     <span className="css-1v99tuv">
-                      <Trans>Prize</Trans>: ${min} - ${max}
+                      <Trans>Prize</Trans>: {CurrencyFormatter.formatCurrency(min)} - {CurrencyFormatter.formatCurrency(max)}
                     </span>
                   ) : (
                     <span className="css-1v99tuv">

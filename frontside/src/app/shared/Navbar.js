@@ -370,7 +370,19 @@ class Navbar extends Component {
                       <i className="mdi mdi-wallet mr-2 text-primary"></i>
                       <Trans>Payments</Trans>
                     </Link>
-                  )}                  
+                  )}    
+                  {isAdmin === "1" && (
+                    <Link to="/admin/payments" className="dropdown-item">
+                      <i className="mdi mdi-wallet mr-2 text-primary"></i>
+                      <Trans>Payments</Trans>
+                    </Link>
+                  )}    
+                  {isAdmin === "2" && (
+                    <Link to="/publisher/payments" className="dropdown-item">
+                      <i className="mdi mdi-wallet mr-2 text-primary"></i>
+                      <Trans>Payments</Trans>
+                    </Link>
+                  )}                 
                   <Link to="/settings/profile" className="dropdown-item">
                     <i className="mdi mdi-account-circle mr-2 text-primary"></i>
                     <Trans>Profile</Trans>

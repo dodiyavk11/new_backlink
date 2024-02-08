@@ -461,7 +461,9 @@ export class AdminViewOrderDetails extends Component {
                           <td>
                             <Trans>Price</Trans>
                           </td>
-                          <td className="text-end-ct">${orderData.price}</td>
+                          <td className="text-end-ct">{CurrencyFormatter.formatCurrency(
+                                    orderData.price
+                                  )}</td>
                         </tr>
                         <tr>
                           <td className="h4 fontBold600">

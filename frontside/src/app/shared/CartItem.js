@@ -6,6 +6,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Trans } from "react-i18next";
 import CurrencyFormatter from "./CurrencyFormatter";
+import DatePicker, { registerLocale } from "react-datepicker";
+import de from "date-fns/locale/de/index.js";
+import "react-datepicker/dist/react-datepicker.css";
+registerLocale("de", de);
 
 class CartItem extends Component {
   constructor(props) {
@@ -198,6 +202,27 @@ class CartItem extends Component {
       }
     );
   };
+
+  handleDateChange = (publication_date) => {
+    if (publication_date === null) {
+      this.props.updateCartItem(this.props.item.id, {
+        publication_date: "",
+      });
+      this.setState({ publication_date: '' });
+    } else {
+      this.setState({ publication_date: publication_date });
+      const inputDate = new Date(publication_date);
+      const year = inputDate.getFullYear();
+      const month = (inputDate.getMonth() + 1).toString().padStart(2, "0");
+      const day = inputDate.getDate().toString().padStart(2, "0");
+
+      let formattedDate = `${year}-${month}-${day}`;
+      this.props.updateCartItem(this.props.item.id, {
+        publication_date: formattedDate,
+      });
+    }
+  };
+
   handleFileUpload = (event) => {
     const file = event.target.files[0];
     const formData = new FormData();
@@ -509,7 +534,9 @@ class CartItem extends Component {
                         }
                       ></i>{" "}
                       1000 <Trans>Words</Trans>
-                      <span className="float-right fontBold600">+{CurrencyFormatter.formatCurrency(50)}</span>
+                      <span className="float-right fontBold600">
+                        +{CurrencyFormatter.formatCurrency(50)}
+                      </span>
                     </label>
                   </div>
                 </div>
@@ -545,7 +572,9 @@ class CartItem extends Component {
                       >
                         <Trans>NEW</Trans>
                       </span>
-                      <span className="float-right fontBold600">+{CurrencyFormatter.formatCurrency(27.00)}</span>
+                      <span className="float-right fontBold600">
+                        +{CurrencyFormatter.formatCurrency(27.0)}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -556,7 +585,9 @@ class CartItem extends Component {
                     </p>
                   </div>
                   <div className="col-sm-6">
-                    <p className="textRight">{CurrencyFormatter.formatCurrency(this.props.item.price)}</p>
+                    <p className="textRight">
+                      {CurrencyFormatter.formatCurrency(this.props.item.price)}
+                    </p>
                   </div>
                 </div>
                 <div className="row">
@@ -570,7 +601,9 @@ class CartItem extends Component {
                       {textCreationPrice === 0 ? (
                         <Trans>Free</Trans>
                       ) : (
-                        <span>{CurrencyFormatter.formatCurrency(textCreationPrice)}</span>
+                        <span>
+                          {CurrencyFormatter.formatCurrency(textCreationPrice)}
+                        </span>
                       )}
                     </p>
                   </div>
@@ -583,7 +616,9 @@ class CartItem extends Component {
                       </p>
                     </div>
                     <div className="col-sm-6">
-                      <p className="textRight">{CurrencyFormatter.formatCurrency(approveTextPrice)}</p>
+                      <p className="textRight">
+                        {CurrencyFormatter.formatCurrency(approveTextPrice)}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -595,7 +630,9 @@ class CartItem extends Component {
                     </p>
                   </div>
                   <div className="col-sm-6">
-                    <p className="textRight h4 fontBold700">{CurrencyFormatter.formatCurrency(totalAmount)}</p>
+                    <p className="textRight h4 fontBold700">
+                      {CurrencyFormatter.formatCurrency(totalAmount)}
+                    </p>
                   </div>
                 </div>
                 <div className="modal2">
@@ -719,7 +756,7 @@ class CartItem extends Component {
                         </p>
                       </label>
 
-                      <input
+                      {/* <input
                         type="date"
                         name="publication_date"
                         className="form-control"
@@ -728,6 +765,18 @@ class CartItem extends Component {
                         onChange={this.handleChange}
                         value={publication_date}
                         min={new Date().toISOString().split('T')[0]}
+                      /> */}
+                      <br/>
+                      <DatePicker
+                        name="publication_date"
+                        selected={publication_date}
+                        onChange={this.handleDateChange}
+                        isClearable
+                        className="form-control"
+                        locale="de"
+                        dateFormat="dd-MM-yyyy"
+                        placeholderText="dd-mm-yyyy"
+                        minDate={new Date()}
                       />
                     </div>
                   </div>

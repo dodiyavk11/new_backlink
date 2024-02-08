@@ -1,5 +1,5 @@
-const { dashboard,setting,updateNotification,addCustomerDomain,getProjects,addMessageToOrder,transactionHistory,imageTest,getUserDomain,userAddStaticAmount,updateMonthlyBudget,updateArchiveProject, getUserWalletBalance, linkBundlePlaceOrderCheckBalance } = require("../controllers/customer.controller")
-const { isLogin, isCustomer } = require("../middleware/checkAuthenticate")
+const { dashboard,setting,updateNotification,addCustomerDomain,getProjects,addMessageToOrder,transactionHistory, publisherTransaction, adminTransaction,imageTest,getUserDomain,userAddStaticAmount,updateMonthlyBudget,updateArchiveProject, getUserWalletBalance, linkBundlePlaceOrderCheckBalance } = require("../controllers/customer.controller")
+const { isLogin, isCustomer, isPublisher, isAdmin } = require("../middleware/checkAuthenticate")
 const { checkDomainLimitInSubscriptionPlan } = require("../middleware/checkIsPlanOrderAndDomainLimit");
 module.exports = (app) =>{
     app.get("/user/dashboard",[isLogin,isCustomer],dashboard)
@@ -8,6 +8,8 @@ module.exports = (app) =>{
     app.patch("/user/setting/notification",[isLogin,isCustomer],updateNotification)
     app.post("/user/project",[isLogin,isCustomer,checkDomainLimitInSubscriptionPlan],addCustomerDomain)
     app.get("/user/transactionHistory",[isLogin,isCustomer],transactionHistory)
+    app.get("/publisher/transactionHistory",[isLogin,isPublisher],publisherTransaction)
+    app.get("/admin/transactionHistory",[isLogin,isAdmin],adminTransaction)
     app.get("/user/domain/:hash_id",[isLogin,isCustomer],getUserDomain)
     app.patch("/domain/archive/:hash_id/:status",[isLogin,isCustomer],updateArchiveProject)
 

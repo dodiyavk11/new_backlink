@@ -754,6 +754,20 @@ class ApiServices {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
+  
+  publisherPaymetnTransaction() {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}publisher/transactionHistory`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  adminPaymetnTransaction() {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}admin/transactionHistory`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
 
   sendPaymentResponse(paymentId, paymentData) {
     const authToken = localStorage.getItem("token");
@@ -816,10 +830,21 @@ class ApiServices {
       });
   }
 
-  exportOrderCsv() {
+  generateInvoicePdfAdmin(data) {
     const authToken = localStorage.getItem("token");
     return axios
-      .get(`${this.APP_URL}publisher/orders/export`, {
+      .post(`${this.APP_URL}admin/generate-invoice`, data, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  exportOrderCsv(lang) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(`${this.APP_URL}publisher/orders/export?lang=${lang}`, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {

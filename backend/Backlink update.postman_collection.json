@@ -4071,6 +4071,66 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Admin get all transaction ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTcwNzM2MzA1MCwiZXhwIjoxNzA3Mzk5MDUwfQ.D755DjUq8DZ5I_DC4rJyRnDLHH_n0pCtAhLUg6GreFs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/admin/transactionHistory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"transactionHistory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publisher get transaction ",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUzLCJpYXQiOjE3MDczNjQ2NjEsImV4cCI6MTcwNzQwMDY2MX0.wRc2Nr3WFbKO-tZNKGu3BJCULjmiY4CIcqAUuzvzbmY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/publisher/transactionHistory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"publisher",
+						"transactionHistory"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

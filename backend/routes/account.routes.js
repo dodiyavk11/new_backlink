@@ -11,6 +11,7 @@ const {
 const {
   invoidePdfGenerate,
   invoidePdfGeneratePublisher,
+  invoidePdfGenerateAdmin,
 } = require("../controllers/generateInvoicePdf.controller");
 const {
   userProfileAdminSide,
@@ -87,6 +88,11 @@ module.exports = (app) => {
     "/publisher/generate-invoice",
     [isLogin, isPublisher],
     invoidePdfGeneratePublisher
+  );
+  app.post(
+    "/admin/generate-invoice",
+    [isLogin, isAdmin],
+    invoidePdfGenerateAdmin
   );
   app.get("/get-settings", [isLogin], getAdminSetting);
   app.patch("/update/settings", [isLogin, isAdmin], updateAdminSettings);
