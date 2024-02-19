@@ -8,6 +8,8 @@ import PublisherUplaodExcelDomain from "../common/PublisherUplaodExcelDomain";
 import { Trans } from "react-i18next";
 import "../../../assets/custom.css";
 import CurrencyFormatter from "../../shared/CurrencyFormatter"
+import AdminBack from "../../shared/AdminBack";
+
 export class Domain extends Component {
   constructor(props) {
     super(props);
@@ -89,7 +91,7 @@ export class Domain extends Component {
       <div className="dashboardPublisher">
         <div className="page-header">
           <h3 className="fontBold latterSpacing">
-            <Trans>Domain</Trans>
+            <Trans>Domain</Trans> <AdminBack/>
           </h3>
         </div>
         <div className="row">

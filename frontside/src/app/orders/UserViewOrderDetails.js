@@ -9,6 +9,7 @@ import ApiServices from "../services/api.service";
 import MessageComponents from "../shared/MessageComponents";
 import CurrencyFormatter from "../shared/CurrencyFormatter";
 import axios from "axios";
+import AdminBack from "../shared/AdminBack";
 
 export class UserViewOrderDetails extends Component {
   constructor(props) {
@@ -214,6 +215,7 @@ export class UserViewOrderDetails extends Component {
                 >
                   <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                 </button>
+                <AdminBack/>
                 {orderData.status !== "Cancelled" &&
                 orderData.status === "Pending" ? (
                   <button

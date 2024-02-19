@@ -9,6 +9,7 @@ import MessageComponents from "../../shared/MessageComponents";
 import { Trans } from "react-i18next";
 import CurrencyFormatter from "../../shared/CurrencyFormatter";
 import axios from "axios";
+import AdminBack from "../../shared/AdminBack";
 
 export class PublisherViewOrderDetails extends Component {
   constructor(props) {
@@ -198,6 +199,7 @@ export class PublisherViewOrderDetails extends Component {
                 >
                   <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                 </button>
+                <AdminBack/>
               </div>
               <div className="card-body dashboardCard">
                 <h2 className="h2">

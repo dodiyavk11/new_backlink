@@ -8,6 +8,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { Trans } from "react-i18next";
 import "../../assets/custom.css";
 import CurrencyFormatter from "../shared/CurrencyFormatter";
+import AdminBack from "../shared/AdminBack";
 
 export class LinkBundles extends Component {
   constructor(props) {
@@ -234,7 +235,7 @@ export class LinkBundles extends Component {
         <div className="bundleLinkPage">
           <div className="page-header">
             <h3 className="fontBold latterSpacing">
-              <Trans>Link bundles</Trans>
+              <Trans>Link bundles</Trans> <AdminBack/>
             </h3>
           </div>
           <ToastContainer />

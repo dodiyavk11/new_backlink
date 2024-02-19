@@ -11,6 +11,7 @@ import "../../assets/custom.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Trans } from "react-i18next";
+import AdminBack from "../shared/AdminBack";
 
 export class Profile extends Component {
   constructor(props) {
@@ -59,7 +60,7 @@ export class Profile extends Component {
       <div className="settingPage">
         <div className="page-header">
           <h3 className="fontBold latterSpacing">
-            <Trans>Settings</Trans>
+            <Trans>Settings</Trans> <AdminBack/>
           </h3>
         </div>
         <ToastContainer />

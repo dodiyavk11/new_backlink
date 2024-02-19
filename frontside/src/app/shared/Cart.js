@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import CartItem from "../shared/CartItem";
 import { Trans } from "react-i18next";
 import CurrencyFormatter from "./CurrencyFormatter";
+import AdminBack from "./AdminBack";
 
 export class Cart extends Component {
   constructor(props) {
@@ -160,7 +161,7 @@ export class Cart extends Component {
       <div className="CartPage">
         <div className="page-header">
           <h3 className="fontBold latterSpacing">
-            <Trans>Cart</Trans>
+            <Trans>Cart</Trans> <AdminBack/>
           </h3>
         </div>
         <ToastContainer />

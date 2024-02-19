@@ -13,6 +13,7 @@ import CreateProjectModal from "../shared/CreateProjectModal";
 import { Trans } from "react-i18next";
 import "react-toastify/dist/ReactToastify.css";
 import "../../assets/custom.css";
+import AdminBack from "../shared/AdminBack";
 
 export class Projects extends Component {
   constructor(props) {
@@ -92,7 +93,7 @@ export class Projects extends Component {
       <div className="projectsPage">
         <div className="page-header">
           <h3 className="fontBold latterSpacing">
-            <Trans>Projects</Trans>
+            <Trans>Projects</Trans> <AdminBack/>
           </h3>
         </div>
         <ToastContainer />

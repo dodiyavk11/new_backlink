@@ -8,6 +8,7 @@ import { CPopover, CButton } from "@coreui/react";
 import TableFilter from "./CustomizeTableFilter";
 import MarketPlace from "./MarketPlace";
 import { DailyDeals } from "./DailyDeals";
+import AdminBack from "../shared/AdminBack";
 import "../../assets/custom.css";
 import { Trans } from "react-i18next";
 
@@ -21,11 +22,11 @@ export class ContentLinksHome extends Component {
         language: true,
         rating: true,
         dr: true,
-        da: true,
-        svi: true,
+        da: false,
+        svi: false,
         tf: false,
-        rd: false,
-        traffic: false,
+        rd: true,
+        traffic: true,
         price: true,
       },
     };
@@ -57,7 +58,7 @@ export class ContentLinksHome extends Component {
       <div className="ContentLinkHomePage">
         <div className="page-header">
           <h3 className="fontBold latterSpacing">
-            <Trans>Contentlinks</Trans>
+            <Trans>Contentlinks</Trans> <AdminBack/>
           </h3>
         </div>
         <div className="row">

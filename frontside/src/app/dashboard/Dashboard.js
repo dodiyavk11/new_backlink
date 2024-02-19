@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Modal, Button } from "react-bootstrap";
 import CreateProjectModal from "../shared/CreateProjectModal";
+import AdminBack from "../shared/AdminBack";
 import OrderComponent from "./Order";
 import DomainComponent from "./Domain";
 import ContentLinksComponent from "./contentLinks";
@@ -217,7 +218,7 @@ export class Dashboard extends Component {
           <ToastContainer />
           <div className="page-header">
             <h3 className="fontBold latterSpacing">
-              <Trans>Dashboard(U)</Trans>
+              <Trans>Dashboard(U)</Trans> <AdminBack/>
             </h3>
           </div>
           <div className="row">

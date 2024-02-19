@@ -221,7 +221,7 @@ export class BacklinkView extends Component {
                 </div>
                 <hr />
                 <div className="row g-2">
-                  <div className="col-sm-4" style={{ paddingRight: "0px" }}>
+                  {/* <div className="col-sm-4" style={{ paddingRight: "0px" }}>
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
@@ -240,7 +240,6 @@ export class BacklinkView extends Component {
                       </div>
                       <div className="dataInside">
                         <span className="p-3 h3">
-                          {/* {contentInsideData.visibility_index}                           */}
                           {this.state.hoveredValue !== null
                             ? this.state.hoveredValue
                             : contentInsideData.visibility_index}
@@ -261,12 +260,7 @@ export class BacklinkView extends Component {
                               display: false,
                             },
                             tooltips: {
-                              enabled: false,
-                              // callbacks: {
-                              //   label: function (tooltipItem) {
-                              //     return tooltipItem.yLabel;
-                              //   },
-                              // },
+                              enabled: false,                              
                             },
                             scales: {
                               yAxes: [
@@ -297,7 +291,7 @@ export class BacklinkView extends Component {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-sm-4" style={{ paddingRight: "0px" }}>
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
@@ -452,8 +446,85 @@ export class BacklinkView extends Component {
                       </div>
                     </div>
                   </div>
+                  <div className="col-sm-4" style={{ paddingRight: "0px" }}>
+                    <div className="border">
+                      <div className="p-3 d-flex flex-row justify-content-between">
+                        <div>
+                          <b>
+                            <Trans>Traffic</Trans>
+                          </b>
+                        </div>
+                        <div>
+                          <img
+                            alt="ahrefs"
+                            src={require("../../../assets/images/project/ahrefs.svg")}
+                            className="rounded"
+                            style={{ width: "1.5rem" }}
+                          />
+                        </div>
+                      </div>
+                      <div className="dataInside">
+                        <span className="p-3 h3">
+                          {/* {contentInsideData.visibility_index}                           */}
+                          {this.state.hoveredValue !== null
+                            ? this.state.hoveredValue
+                            : contentInsideData.traffic}
+                        </span>
+                        <p style={{ paddingLeft: "18px" }}>
+                          <span className="h6">
+                            {this.state.hoverLabel !== null
+                              ? this.state.hoverLabel
+                              : this.state.data.labels[0]}
+                          </span>
+                        </p>
+                        <Line
+                          data={this.state.data}
+                          options={{
+                            onHover: (event, chartElements) =>
+                              this.handleHover(event, chartElements, "rDomain"),
+                            legend: {
+                              display: false,
+                            },
+                            tooltips: {
+                              enabled: false,
+                              // callbacks: {
+                              //   label: function (tooltipItem) {
+                              //     return tooltipItem.yLabel;
+                              //   },
+                              // },
+                            },
+                            scales: {
+                              yAxes: [
+                                {
+                                  gridLines: {
+                                    display: false,
+                                  },
+                                  ticks: {
+                                    display: false,
+                                    maxTicksLimit: 10,
+                                  },
+                                },
+                              ],
+                              xAxes: [
+                                {
+                                  gridLines: {
+                                    display: false,
+                                  },
+                                  ticks: {
+                                    display: false,
+                                    maxTicksLimit: 10,
+                                  },
+                                },
+                              ],
+                            },
+                          }}
+                          ref={(ref) => (this.chartRef = ref)}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="row g-2 mt-2">
+                {/* <div className="row g-2 mt-2">
                   <div className="col-sm-4" style={{ paddingRight: "0px" }}>
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
@@ -473,7 +544,6 @@ export class BacklinkView extends Component {
                       </div>
                       <div className="dataInside">
                         <span className="p-3 h3">
-                          {/* {contentInsideData.visibility_index}                           */}
                           {this.state.hoveredValue !== null
                             ? this.state.hoveredValue
                             : contentInsideData.citation_flow}
@@ -495,11 +565,6 @@ export class BacklinkView extends Component {
                             },
                             tooltips: {
                               enabled: false,
-                              // callbacks: {
-                              //   label: function (tooltipItem) {
-                              //     return tooltipItem.yLabel;
-                              //   },
-                              // },
                             },
                             scales: {
                               yAxes: [
@@ -550,7 +615,6 @@ export class BacklinkView extends Component {
                       </div>
                       <div className="dataInside">
                         <span className="p-3 h3">
-                          {/* {contentInsideData.visibility_index}                           */}
                           {this.state.hoveredValue !== null
                             ? this.state.hoveredValue
                             : contentInsideData.trust_flow}
@@ -572,11 +636,6 @@ export class BacklinkView extends Component {
                             },
                             tooltips: {
                               enabled: false,
-                              // callbacks: {
-                              //   label: function (tooltipItem) {
-                              //     return tooltipItem.yLabel;
-                              //   },
-                              // },
                             },
                             scales: {
                               yAxes: [
@@ -627,7 +686,6 @@ export class BacklinkView extends Component {
                       </div>
                       <div className="dataInside">
                         <span className="p-3 h3">
-                          {/* {contentInsideData.visibility_index}                           */}
                           {this.state.hoveredValue !== null
                             ? this.state.hoveredValue
                             : contentInsideData.authority}
@@ -653,11 +711,6 @@ export class BacklinkView extends Component {
                             },
                             tooltips: {
                               enabled: false,
-                              // callbacks: {
-                              //   label: function (tooltipItem) {
-                              //     return tooltipItem.yLabel;
-                              //   },
-                              // },
                             },
                             scales: {
                               yAxes: [
@@ -689,7 +742,7 @@ export class BacklinkView extends Component {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="row g-2 mt-4 pl-3">
                   <div className="col-sm-12 border bRadius">
                     <div className="mt-2 mb-2 p-2 dashboardHome">
@@ -718,7 +771,11 @@ export class BacklinkView extends Component {
                                         {order.status}
                                       </span>
                                       <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <div>{CurrencyFormatter.formatCurrency(order.total_price)}</div>
+                                      <div>
+                                        {CurrencyFormatter.formatCurrency(
+                                          order.total_price
+                                        )}
+                                      </div>
                                       <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
                                       <div>
                                         <TimeAgo
@@ -727,9 +784,17 @@ export class BacklinkView extends Component {
                                         />
                                       </div>
                                       <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <span>{order.customer ? `${order.customer.firstName} ${order.customer.lastName}` : "-"}</span>
+                                      <span>
+                                        {order.customer
+                                          ? `${order.customer.firstName} ${order.customer.lastName}`
+                                          : "-"}
+                                      </span>
                                       <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <span>{order.customer ? `${order.customer.email}` : "-"}</span>
+                                      <span>
+                                        {order.customer
+                                          ? `${order.customer.email}`
+                                          : "-"}
+                                      </span>
                                     </div>
                                   </td>
                                 </tr>
@@ -926,7 +991,9 @@ export class BacklinkView extends Component {
                         </td>
                         <td className="text-end-ct">
                           <span className="h3 fontBold600">
-                            {CurrencyFormatter.formatCurrency(contentData.price)}
+                            {CurrencyFormatter.formatCurrency(
+                              contentData.price
+                            )}
                           </span>
                         </td>
                       </tr>

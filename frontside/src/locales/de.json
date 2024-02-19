@@ -394,5 +394,6 @@
     "VAT":"Mehrwertsteuer",
     "Setting data update successfully.":"Einstellungen erfolgreich aktualisiert.",
     "Default VAT is 19%":"Standardmäßiger Mehrwertsteuersatz beträgt 19%",
-    "creditMessage": "Sie erhalten eine Gutschrift in Höhe von {{amount}}. Der Gesamtbetrag von {{totalAmount}} beinhaltet die anwendbare Mehrwertsteuer in Höhe von {{vatRate}}%."
+    "creditMessage": "Sie erhalten eine Gutschrift in Höhe von {{amount}}. Der Gesamtbetrag von {{totalAmount}} beinhaltet die anwendbare Mehrwertsteuer in Höhe von {{vatRate}}%.",
+    "Back to Admin":"Zurück zum Administrator"
 }

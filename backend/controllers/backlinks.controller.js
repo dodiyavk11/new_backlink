@@ -176,30 +176,6 @@ exports.addPublisherDomain = async (req, res) => {
       const email = await emailTemplate(text);
       sendVerifyMail(userInfo.dataValues.email, subject, "", email);
 
-      /* dummy email start*/
-      var transport = nodemailer.createTransport({
-        host: "sandbox.smtp.mailtrap.io",
-        port: 2525,
-        auth: {
-          user: "5486eff1d5793c",
-          pass: "e17b0b8e8f08ac",
-        },
-      });
-
-      const mailOptions = {
-        from: "rjnaghera@gmail.com",
-        to: userInfo.dataValues.email,
-        subject: subject,
-        text: email,
-      };
-      transport.sendMail(mailOptions, (error, info) => {
-        // if (error) {
-        //   console.error(error);
-        // } else {
-        //   console.log('Email sent: ' + info.response);
-        // }
-      });
-      /* dummy email end*/
       res.status(200).send({
         status: true,
         message: "Domain added successfully",
@@ -364,6 +340,14 @@ exports.getConetentLinks = async (req, res) => {
           model: Models.publisherDomainData,
           as: "contentData",
         },
+        {
+          model: Models.DomainRequest,
+          as: "domainRequest",
+          where: {
+            user_id: userId,
+          },
+          required: false,
+        },
       ],
       where: { status: 1 },
     };
@@ -411,11 +395,27 @@ exports.getConetentLinks = async (req, res) => {
       ...baseQuery,
       order: [["id", "DESC"]],
     });
+
     const favoriteProducts = await Models.favoriteProducts.findAll({
       where: {
         user_id: userId,
         product_id: contentData.map((data) => data.id),
       },
+    });
+    contentData.map((data, index) => {
+      if (
+        (data.domainRequest.length > 0 && data.domainRequest[0].status === 0) ||
+        data.domainRequest.length === 0
+      ) {        
+        const lastDotIndex = data.domain_name.lastIndexOf(".");
+        if (lastDotIndex !== -1) {
+          const subdomain = data.domain_name.substring(0, lastDotIndex);
+          contentData[index].domain_name = `****${data.domain_name.substring(
+            lastDotIndex
+          )}`;
+        }
+        contentData[index].category.name = "***";
+      }
     });
     res.status(200).send({
       status: true,
@@ -453,6 +453,14 @@ exports.getDailyDealsConetentLinks = async (req, res) => {
           model: Models.publisherDomainData,
           as: "contentData",
         },
+        {
+          model: Models.DomainRequest,
+          as: "domainRequest",
+          where: {
+            user_id: userId,
+          },
+          required: false,
+        },
       ],
       where: { category_id: categoryIdsArray, status: 1 },
     };
@@ -462,13 +470,31 @@ exports.getDailyDealsConetentLinks = async (req, res) => {
       ...baseQuery,
       order: [["price", "ASC"]],
       limit: 5,
-    });
+    });    
+
     const favoriteProducts = await Models.favoriteProducts.findAll({
       where: {
         user_id: userId,
         product_id: contentData.map((data) => data.id),
       },
     });
+
+    contentData.map((data, index) => {
+      if (
+        (data.domainRequest.length > 0 && data.domainRequest[0].status === 0) ||
+        data.domainRequest.length === 0
+      ) {        
+        const lastDotIndex = data.domain_name.lastIndexOf(".");
+        if (lastDotIndex !== -1) {
+          const subdomain = data.domain_name.substring(0, lastDotIndex);
+          contentData[index].domain_name = `****${data.domain_name.substring(
+            lastDotIndex
+          )}`;
+        }
+        contentData[index].category.name = "***";
+      }
+    });
+
     res.status(200).send({
       status: true,
       message: "Content links get successfully.",
@@ -499,6 +525,14 @@ exports.getSingleConetentLinks = async (req, res) => {
           model: Models.publisherDomainData,
           as: "contentData",
         },
+        {
+          model: Models.DomainRequest,
+          as: "domainRequest",
+          where: {
+            user_id: userId,
+          },
+          required: false,
+        },
       ],
       where: {},
     };
@@ -513,6 +547,21 @@ exports.getSingleConetentLinks = async (req, res) => {
         product_id: contentData.id,
       },
     });
+
+    if (
+      (contentData.domainRequest.length > 0 && contentData.domainRequest.status === 0) ||
+      contentData.domainRequest.length === 0
+    ) {
+      const lastDotIndex = contentData.domain_name.lastIndexOf(".");
+      if (lastDotIndex !== -1) {
+        const subdomain = contentData.domain_name.substring(0, lastDotIndex);
+        contentData.domain_name = `****${contentData.domain_name.substring(
+          lastDotIndex
+        )}`;
+      }
+      contentData.category.name = "***";
+    }
+
     contentData.dataValues.isFovarite = favoriteProducts ? 1 : 0;
     res.status(200).send({ status: true, data: contentData });
   } catch (err) {
@@ -745,6 +794,27 @@ exports.updateBacklinkStatus = async (req, res) => {
       { status },
       { where: { id, hash_id } }
     );
+    if (status === "1") {
+      const getData = await Models.publisherDomain.findOne({
+        where: { id, hash_id },
+      });
+      const getPublisherData = await Models.Users.findOne({
+        where: { id: getData.user_id },
+      });
+
+      const mailText = await Models.email_format.findOne({
+        where: { email_type: "backlink_actived" },
+      });
+
+      let text = mailText.email_content;
+      let subject = mailText.header;
+      let username =
+        getPublisherData.firstName + " " + getPublisherData.lastName;
+      text = text.replace("{user_name}", username);
+      text = text.replace("{backlink_name}", getData.domain_name);
+      const email = await emailTemplate(text);
+      sendVerifyMail(getPublisherData.email, subject, "", email);
+    }
     res.status(200).send({
       status: true,
       message: "Update successfully.",

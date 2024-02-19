@@ -80,7 +80,7 @@ class AuthService {
       })
       .then((response) => {
         if (response.data.token) {
-          localStorage.clear();
+          // localStorage.clear();
           localStorage.setItem("email", response.data.email);
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("isAdmin", response.data.data.isAdmin);

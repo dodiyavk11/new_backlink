@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Trans } from "react-i18next";
 import { withTranslation } from "react-i18next";
 import CurrencyFormatter from "../../shared/CurrencyFormatter";
+import AdminBack from "../../shared/AdminBack";
 
 import {
   Paper,
@@ -232,7 +233,7 @@ export class Payments extends Component {
           <div className="d-flex justify-content-between">
             <div className="page-header">
               <h3 className="fontBold latterSpacing">
-                <Trans>Transactions</Trans>
+                <Trans>Transactions</Trans> <AdminBack/>
               </h3>
             </div>
           </div>

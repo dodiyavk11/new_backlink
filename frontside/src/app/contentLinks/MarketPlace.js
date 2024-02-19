@@ -494,27 +494,27 @@ export class MarketPlace extends Component {
         width: 90,
         renderCell: (row) => <span>{row.contentData.domain_rating}</span>,
       },
-      {
-        id: "da",
-        label: <Trans>DA</Trans>,
-        align: "right",
-        width: 90,
-        renderCell: (row) => <span>{row.contentData.authority}</span>,
-      },
-      {
-        id: "svi",
-        label: <Trans>SI</Trans>,
-        align: "right",
-        width: 90,
-        renderCell: (row) => <span>{row.contentData.visibility_index}</span>,
-      },
-      {
-        id: "tf",
-        label: <Trans>TF</Trans>,
-        align: "right",
-        width: 90,
-        renderCell: (row) => <span>{row.contentData.trust_flow}</span>,
-      },
+      // {
+      //   id: "da",
+      //   label: <Trans>DA</Trans>,
+      //   align: "right",
+      //   width: 90,
+      //   renderCell: (row) => <span>{row.contentData.authority}</span>,
+      // },
+      // {
+      //   id: "svi",
+      //   label: <Trans>SI</Trans>,
+      //   align: "right",
+      //   width: 90,
+      //   renderCell: (row) => <span>{row.contentData.visibility_index}</span>,
+      // },
+      // {
+      //   id: "tf",
+      //   label: <Trans>TF</Trans>,
+      //   align: "right",
+      //   width: 90,
+      //   renderCell: (row) => <span>{row.contentData.trust_flow}</span>,
+      // },
       {
         id: "rd",
         label: <Trans>RD</Trans>,
@@ -535,7 +535,9 @@ export class MarketPlace extends Component {
         width: 160,
         align: "right",
         renderCell: (row) => (
-          <span className="fontBold700 textColorCls">{CurrencyFormatter.formatCurrency(row.price)}</span>
+          <span className="fontBold700 textColorCls">
+            {CurrencyFormatter.formatCurrency(row.price)}
+          </span>
         ),
       },
       {
@@ -662,7 +664,9 @@ export class MarketPlace extends Component {
                 <CButton className="css-1r4vtzz custamFilterBtn">
                   {min !== 30 || max !== 200000 ? (
                     <span className="css-1v99tuv">
-                      <Trans>Prize</Trans>: {CurrencyFormatter.formatCurrency(min)} - {CurrencyFormatter.formatCurrency(max)}
+                      <Trans>Prize</Trans>:{" "}
+                      {CurrencyFormatter.formatCurrency(min)} -{" "}
+                      {CurrencyFormatter.formatCurrency(max)}
                     </span>
                   ) : (
                     <span className="css-1v99tuv">
@@ -794,7 +798,7 @@ export class MarketPlace extends Component {
         {this.state.isMoreFilter && (
           <div className="moreFilter">
             <div className="row">
-              <div className="col-sm-4">
+              {/* <div className="col-sm-4">
                 <div className="my-4 d-flex flex-row justify-content-start">
                   <img
                     alt="Metrics"
@@ -838,8 +842,8 @@ export class MarketPlace extends Component {
                     />
                   </div>
                 </div>
-              </div>
-              <div className="col-sm-4">
+              </div> */}
+              {/* <div className="col-sm-4">
                 <div className="my-4 d-flex flex-row justify-content-start">
                   <img
                     alt="Metrics"
@@ -883,8 +887,8 @@ export class MarketPlace extends Component {
                     />
                   </div>
                 </div>
-              </div>
-              <div className="col-sm-4">
+              </div> */}
+              {/* <div className="col-sm-4">
                 <div className="my-4 d-flex flex-row justify-content-start">
                   <img
                     alt="Metrics"
@@ -928,10 +932,10 @@ export class MarketPlace extends Component {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="row mt-5">
-              <div className="col-sm-4">
+              {/* <div className="col-sm-4">
                 <div className="my-4 d-flex flex-row justify-content-start">
                   <img
                     alt="Metrics"
@@ -972,6 +976,51 @@ export class MarketPlace extends Component {
                       onChange={(e) => this.handleInputChange(e, "tMax")}
                       min={0}
                       max={84}
+                    />
+                  </div>
+                </div>
+              </div> */}
+              <div className="col-sm-4">
+                <div className="my-4 d-flex flex-row justify-content-start">
+                  <img
+                    alt="Metrics"
+                    src={require("../../assets/images/project/ahrefs.svg")}
+                    className="rounded mr-4"
+                    style={{ width: "1.5rem" }}
+                  />
+                  <Typography>
+                    <Trans>Domain Rating</Trans>
+                  </Typography>
+                </div>
+                <div>
+                  <Slider
+                    value={[dMin, dMax]}
+                    onChange={this.handleSliderChangeD}
+                    valueLabelDisplay="auto"
+                    aria-labelledby="range-slider"
+                    min={0}
+                    max={94}
+                    style={{ color: "#ff9756" }}
+                  />
+                  <div
+                    style={{ display: "flex", alignItems: "center" }}
+                    className="mb-2"
+                  >
+                    <input
+                      className="form-control form-control inpRound mr-2"
+                      value={dMin}
+                      type="number"
+                      onChange={(e) => this.handleInputChange(e, "dMin")}
+                      min={0}
+                      max={94}
+                    />
+                    <input
+                      className="form-control form-control inpRound"
+                      value={dMax}
+                      type="number"
+                      onChange={(e) => this.handleInputChange(e, "dMax")}
+                      min={0}
+                      max={94}
                     />
                   </div>
                 </div>

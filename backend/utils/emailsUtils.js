@@ -85,7 +85,7 @@ exports.sendWelcomEmailWithAttachement = async(email, subject, text, link,attach
 }
 
 exports.emailTemplate = async (message) => {
-  const url = 'https://nodejs.org/static/images/logo.svg';
+  const url = process.env.LOGO_URL || "http://localhost:3000/assets/logo.png";
   const html = `
     <div className="mail_formmate" style="background-color: #f7f7f2; width: 700px; margin: auto;">
       <div className="center_img" style="width:100%;height: 120px; padding-top: 20px; padding-bottom: 20px; filter: invert(1);">

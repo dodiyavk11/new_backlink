@@ -8,6 +8,7 @@ import { Trans, withTranslation } from "react-i18next";
 import { CPopover, CButton } from "@coreui/react";
 import "../../../assets/custom.css";
 import CurrencyFormatter from "../../shared/CurrencyFormatter";
+import AdminBack from "../../shared/AdminBack";
 import DatePicker, { registerLocale } from "react-datepicker";
 import de from "date-fns/locale/de/index.js";
 import "react-datepicker/dist/react-datepicker.css";
@@ -338,7 +339,7 @@ export class PublisherOrders extends Component {
         <div className="d-flex justify-content-between">
           <div className="page-header">
             <h3 className="fontBold latterSpacing">
-              <Trans>Orders</Trans>
+              <Trans>Orders</Trans> <AdminBack/>
             </h3>
           </div>
           <ToastContainer />

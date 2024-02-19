@@ -49,7 +49,7 @@ export class TableFilter extends Component {
             <span className="slider round"></span>
           </label>
         </div>
-        <div className="d-flex justify-content-between align-items-center mb-3 ">
+        {/* <div className="d-flex justify-content-between align-items-center mb-3 ">
           <span className="mr-4 text-nowrap">Moz Domain Authority</span>
           <label className="switch">
             <input
@@ -61,8 +61,8 @@ export class TableFilter extends Component {
             />
             <span className="slider round"></span>
           </label>
-        </div>
-        <div className="d-flex justify-content-between align-items-center mb-3 ">
+        </div> */}
+        {/* <div className="d-flex justify-content-between align-items-center mb-3 ">
           <span className="mr-4 pull-left text-nowrap">
             Sistrix Visibility Index
           </span>
@@ -76,8 +76,8 @@ export class TableFilter extends Component {
             />
             <span className="slider round"></span>
           </label>
-        </div>
-        <div className="d-flex justify-content-between align-items-center mb-3 ">
+        </div> */}
+        {/* <div className="d-flex justify-content-between align-items-center mb-3 ">
           <span className="mr-4 text-nowrap">Majestic Trustflow</span>
           <label className="switch">
             <input
@@ -89,7 +89,7 @@ export class TableFilter extends Component {
             />
             <span className="slider round"></span>
           </label>
-        </div>
+        </div> */}
         <div className="d-flex justify-content-between align-items-center mb-3 ">
           <span className="mr-4 text-nowrap">Ahrefs Referring Domains</span>
           <label className="switch">

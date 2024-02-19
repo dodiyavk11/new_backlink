@@ -10,6 +10,7 @@ import TimeAgo from "timeago-react";
 import ApiServices from "../services/api.service";
 import { Trans } from "react-i18next";
 import CurrencyFormatter from "../shared/CurrencyFormatter";
+import AdminBack from "../shared/AdminBack";
 
 export class ProjectView extends Component {
   constructor(props) {
@@ -249,6 +250,7 @@ export class ProjectView extends Component {
                 >
                   <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                 </button>
+                <AdminBack />
                 <button
                   className="btn btn-rounded font-weight-medium auth-form-btn"
                   onClick={() =>
@@ -271,83 +273,6 @@ export class ProjectView extends Component {
                 </div>
                 <hr />
                 <div className="row g-2">
-                  <div className="col-sm-4" style={{ paddingRight: "0px" }}>
-                    <div className="border">
-                      <div className="p-3 d-flex flex-row justify-content-between">
-                        <div>
-                          <b>
-                            <Trans>Visibility index</Trans>
-                          </b>
-                        </div>
-                        <div>
-                          <img
-                            alt="Metrics"
-                            src={require("../../assets/images/project/metrics.svg")}
-                            className="rounded"
-                            style={{ width: "1.5rem" }}
-                          />
-                        </div>
-                      </div>
-                      <div className="dataInside">
-                        <span className="p-3 h3">
-                          {/* {contentInsideData.visibility_index}                           */}
-                          {this.state.hoveredValue !== null
-                            ? this.state.hoveredValue
-                            : contentInsideData.visibility_index}
-                        </span>
-                        <p style={{ paddingLeft: "18px" }}>
-                          <span className="h6">
-                            {this.state.hoverLabel !== null
-                              ? this.state.hoverLabel
-                              : this.state.data.labels[0]}
-                          </span>
-                        </p>
-                        <Line
-                          data={this.state.data}
-                          options={{
-                            onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements, "vIndex"),
-                            legend: {
-                              display: false,
-                            },
-                            tooltips: {
-                              enabled: false,
-                              // callbacks: {
-                              //   label: function (tooltipItem) {
-                              //     return tooltipItem.yLabel;
-                              //   },
-                              // },
-                            },
-                            scales: {
-                              yAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                              xAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                            },
-                          }}
-                          ref={(ref) => (this.chartRef = ref)}
-                        />
-                      </div>
-                    </div>
-                  </div>
                   <div className="col-sm-4" style={{ paddingRight: "0px" }}>
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
@@ -501,21 +426,19 @@ export class ProjectView extends Component {
                         />
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div className="row g-2 mt-2">
+                  </div>                  
                   <div className="col-sm-4" style={{ paddingRight: "0px" }}>
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
                           <b>
-                            <Trans>Citation Flow</Trans>
+                            <Trans>Traffic</Trans>
                           </b>
                         </div>
                         <div>
                           <img
-                            alt="majestic"
-                            src={require("../../assets/images/project/majestic.svg")}
+                            alt="ahrefs"
+                            src={require("../../assets/images/project/ahrefs.svg")}
                             className="rounded"
                             style={{ width: "1.5rem" }}
                           />
@@ -526,7 +449,7 @@ export class ProjectView extends Component {
                           {/* {contentInsideData.visibility_index}                           */}
                           {this.state.hoveredValue !== null
                             ? this.state.hoveredValue
-                            : contentInsideData.citation_flow}
+                            : contentInsideData.traffic}
                         </span>
                         <p style={{ paddingLeft: "18px" }}>
                           <span className="h6">
@@ -539,165 +462,7 @@ export class ProjectView extends Component {
                           data={this.state.data}
                           options={{
                             onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements, "cFlow"),
-                            legend: {
-                              display: false,
-                            },
-                            tooltips: {
-                              enabled: false,
-                              // callbacks: {
-                              //   label: function (tooltipItem) {
-                              //     return tooltipItem.yLabel;
-                              //   },
-                              // },
-                            },
-                            scales: {
-                              yAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                              xAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                            },
-                          }}
-                          ref={(ref) => (this.chartRef = ref)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-4" style={{ paddingRight: "0px" }}>
-                    <div className="border">
-                      <div className="p-3 d-flex flex-row justify-content-between">
-                        <div>
-                          <b>
-                            <Trans>Trust Flow</Trans>
-                          </b>
-                        </div>
-                        <div>
-                          <img
-                            alt="majestic"
-                            src={require("../../assets/images/project/majestic.svg")}
-                            className="rounded"
-                            style={{ width: "1.5rem" }}
-                          />
-                        </div>
-                      </div>
-                      <div className="dataInside">
-                        <span className="p-3 h3">
-                          {/* {contentInsideData.visibility_index}                           */}
-                          {this.state.hoveredValue !== null
-                            ? this.state.hoveredValue
-                            : contentInsideData.trust_flow}
-                        </span>
-                        <p style={{ paddingLeft: "18px" }}>
-                          <span className="h6">
-                            {this.state.hoverLabel !== null
-                              ? this.state.hoverLabel
-                              : this.state.data.labels[0]}
-                          </span>
-                        </p>
-                        <Line
-                          data={this.state.data}
-                          options={{
-                            onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements, "tFlow"),
-                            legend: {
-                              display: false,
-                            },
-                            tooltips: {
-                              enabled: false,
-                              // callbacks: {
-                              //   label: function (tooltipItem) {
-                              //     return tooltipItem.yLabel;
-                              //   },
-                              // },
-                            },
-                            scales: {
-                              yAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                              xAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                            },
-                          }}
-                          ref={(ref) => (this.chartRef = ref)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-4" style={{ paddingRight: "0px" }}>
-                    <div className="border">
-                      <div className="p-3 d-flex flex-row justify-content-between">
-                        <div>
-                          <b>
-                            <Trans>Domain Authority</Trans>
-                          </b>
-                        </div>
-                        <div>
-                          <img
-                            alt="moz"
-                            src={require("../../assets/images/project/moz.svg")}
-                            className="rounded"
-                            style={{ width: "1.5rem" }}
-                          />
-                        </div>
-                      </div>
-                      <div className="dataInside">
-                        <span className="p-3 h3">
-                          {/* {contentInsideData.visibility_index}                           */}
-                          {this.state.hoveredValue !== null
-                            ? this.state.hoveredValue
-                            : contentInsideData.authority}
-                        </span>
-                        <p style={{ paddingLeft: "18px" }}>
-                          <span className="h6">
-                            {this.state.hoverLabel !== null
-                              ? this.state.hoverLabel
-                              : this.state.data.labels[0]}
-                          </span>
-                        </p>
-                        <Line
-                          data={this.state.data}
-                          options={{
-                            onHover: (event, chartElements) =>
-                              this.handleHover(
-                                event,
-                                chartElements,
-                                "dAuthority"
-                              ),
+                              this.handleHover(event, chartElements, "rDomain"),
                             legend: {
                               display: false,
                             },
@@ -743,7 +508,9 @@ export class ProjectView extends Component {
                 <div className="row g-2 mt-4 pl-3">
                   <div className="col-sm-12 border bRadius">
                     <div className="mt-2 mb-2 p-2 dashboardHome">
-                      <h4 className="card-title"><Trans>Orders</Trans></h4>
+                      <h4 className="card-title">
+                        <Trans>Orders</Trans>
+                      </h4>
                       <hr />
                       {orderData.map((order) => (
                         <div className="card" key={order.id}>
@@ -777,7 +544,11 @@ export class ProjectView extends Component {
                                         {order.status}
                                       </span>
                                       <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <div>{CurrencyFormatter.formatCurrency(order.total_price)}</div>
+                                      <div>
+                                        {CurrencyFormatter.formatCurrency(
+                                          order.total_price
+                                        )}
+                                      </div>
                                       <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
                                       <div>
                                         <TimeAgo

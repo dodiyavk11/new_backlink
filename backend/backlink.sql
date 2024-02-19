@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 08, 2024 at 02:23 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 7.4.33
+-- Generation Time: Feb 19, 2024 at 02:30 PM
+-- Server version: 10.3.16-MariaDB
+-- PHP Version: 7.2.20
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -35,7 +36,7 @@ CREATE TABLE `blogs` (
   `status` int(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `blogs`
@@ -59,7 +60,7 @@ CREATE TABLE `contact_us` (
   `status` int(1) DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `contact_us`
@@ -98,7 +99,7 @@ CREATE TABLE `customer_domain_data` (
   `authority` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customer_domain_data`
@@ -131,7 +132,7 @@ CREATE TABLE `domains` (
   `hash_id` varchar(25) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `domains`
@@ -158,7 +159,7 @@ CREATE TABLE `domain_categories` (
   `description` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `domain_categories`
@@ -206,6 +207,30 @@ INSERT INTO `domain_categories` (`id`, `name`, `description`, `createdAt`, `upda
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `domain_request`
+--
+
+CREATE TABLE `domain_request` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `publisher_id` int(11) DEFAULT NULL,
+  `domain_id` int(11) DEFAULT NULL,
+  `message` text NOT NULL,
+  `status` int(1) DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `domain_request`
+--
+
+INSERT INTO `domain_request` (`id`, `user_id`, `publisher_id`, `domain_id`, `message`, `status`, `created_at`, `updated_at`) VALUES
+(1, 51, 53, 6, 'test', 0, '2024-02-19 18:47:26', '2024-02-19 18:59:42');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `domain_tags`
 --
 
@@ -215,7 +240,7 @@ CREATE TABLE `domain_tags` (
   `status` int(11) NOT NULL DEFAULT 1,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `domain_tags`
@@ -241,7 +266,7 @@ CREATE TABLE `email_formats` (
   `isDefault` int(1) DEFAULT 0,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `email_formats`
@@ -258,7 +283,8 @@ INSERT INTO `email_formats` (`id`, `email_title`, `email_type`, `email_content`,
 (9, 'Order Cancel', 'order_cancel', '<p><strong>Hello,</strong> {name}</p><p>The status of your order \"<strong>{order_name}</strong>\" has been changed to \"<strong>{order_status}</strong>\".</p><p>Your order has been Cancelled successfully,and <strong>Rs.{amount}</strong> refunded in your wallet.</p><p>Take a look at your order now:</p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"background-color: rgb(192, 222, 96);\"><strong>Login</strong></a></p><p>&nbsp;</p>', 'Your order has been Cancelled successfully', NULL, 1, '2023-10-12 14:13:23', '2023-12-18 13:20:23'),
 (11, 'Order Delete', 'order_delete', '<p>Hi {username},</p><p>Your Order {ordername} has been deleted successfully.</p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><em>login</em> to view</a></p>', 'Your Order has been delete ', NULL, 0, '2023-12-18 16:05:47', '2023-12-18 16:06:32'),
 (12, 'Forgot Password Link', 'forgot_password', '<p>Hello <strong>{user_name},</strong></p><p>Please click here below link to reset your account password :</p><p><strong style=\"background-color: rgb(192, 222, 96);\">{verification_Link}</strong></p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked.com</strong></a></p>', 'Click link to reset password', NULL, 1, '2023-12-20 10:51:19', '2023-12-20 10:58:22'),
-(13, 'User contact us', 'user_contact_us', '<p>Hi Admin,</p><p>Our FairLinked user has contacted us with an issue.</p><p><br></p><p><strong>Name : </strong>{name}</p><p><strong>Email : </strong>{email}</p><p><strong>Phone : </strong>{phone}</p><p><strong>Problem : </strong>{problem}</p>', 'User Contact us', NULL, 1, '2024-01-24 09:31:10', '2024-01-24 09:31:10');
+(13, 'User contact us', 'user_contact_us', '<p>Hi Admin,</p><p>Our FairLinked user has contacted us with an issue.</p><p><br></p><p><strong>Name : </strong>{name}</p><p><strong>Email : </strong>{email}</p><p><strong>Phone : </strong>{phone}</p><p><strong>Problem : </strong>{problem}</p>', 'User Contact us', NULL, 1, '2024-01-24 09:31:10', '2024-01-24 09:31:10'),
+(14, 'Backlink Activation', 'backlink_actived', '<p><strong>Hello {user_name},</strong></p><p>Your submitted <strong>{backlink_name}</strong> backlink has been reviewed and activated by our <strong>FairLinked</strong> team.</p><p><br></p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked.com</strong></a></p>', 'Your submitted backlink has been reviewed.', NULL, 1, '2024-02-19 15:23:46', '2024-02-19 15:23:46');
 
 -- --------------------------------------------------------
 
@@ -273,7 +299,7 @@ CREATE TABLE `faqs` (
   `status` int(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `faqs`
@@ -295,7 +321,7 @@ CREATE TABLE `favorite_products` (
   `user_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -305,8 +331,8 @@ CREATE TABLE `favorite_products` (
 
 CREATE TABLE `forgotpasswords` (
   `id` int(11) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `token` varchar(255) DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `createdAt` datetime DEFAULT current_timestamp(),
   `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -334,7 +360,7 @@ CREATE TABLE `link_bundle_blog` (
   `id` int(11) NOT NULL,
   `heading` varchar(255) DEFAULT NULL,
   `description` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `link_bundle_blog`
@@ -360,28 +386,28 @@ CREATE TABLE `messages` (
   `isRead` int(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `messages`
 --
 
 INSERT INTO `messages` (`id`, `sender_id`, `receiver_id`, `order_id`, `message`, `files`, `role`, `isRead`, `created_at`, `updated_at`) VALUES
-(1, 53, 51, 1, '53', NULL, 0, 1, '2024-01-29 04:57:19', '2024-02-08 10:31:23'),
-(2, 51, 53, 1, '51', NULL, 0, 1, '2024-01-29 04:58:02', '2024-02-08 10:31:23'),
-(3, 51, 53, 1, '51-2', NULL, 0, 1, '2024-01-29 05:43:25', '2024-02-08 10:31:23'),
-(4, 52, 51, 5, 'testing', NULL, 0, 0, '2024-01-29 05:47:09', '2024-01-29 05:47:09'),
-(5, 51, 52, 5, 'testing replay', NULL, 0, 0, '2024-01-29 05:47:38', '2024-01-29 05:47:38'),
+(1, 53, 51, 1, '53', NULL, 0, 1, '2024-01-29 04:57:19', '2024-02-19 09:21:39'),
+(2, 51, 53, 1, '51', NULL, 0, 1, '2024-01-29 04:58:02', '2024-02-19 09:21:39'),
+(3, 51, 53, 1, '51-2', NULL, 0, 1, '2024-01-29 05:43:25', '2024-02-19 09:21:39'),
+(4, 52, 51, 5, 'testing', NULL, 0, 1, '2024-01-29 05:47:09', '2024-02-19 06:52:32'),
+(5, 51, 52, 5, 'testing replay', NULL, 0, 1, '2024-01-29 05:47:38', '2024-02-19 06:52:32'),
 (6, 53, 51, 2, '123', NULL, 0, 1, '2024-01-31 12:39:44', '2024-01-31 12:59:57'),
-(7, 51, 53, 1, 'hi', NULL, 0, 1, '2024-01-31 12:55:29', '2024-02-08 10:31:23'),
+(7, 51, 53, 1, 'hi', NULL, 0, 1, '2024-01-31 12:55:29', '2024-02-19 09:21:39'),
 (8, 51, 53, 2, '123', NULL, 0, 1, '2024-01-31 12:58:50', '2024-01-31 12:59:57'),
 (9, 51, 53, 3, '456', NULL, 0, 1, '2024-01-31 12:59:01', '2024-01-31 13:13:35'),
 (10, 51, 53, 3, '789', NULL, 0, 1, '2024-01-31 12:59:16', '2024-01-31 13:13:35'),
 (11, 51, 53, 4, '1011', NULL, 0, 1, '2024-01-31 12:59:31', '2024-01-31 13:00:01'),
 (12, 51, 53, 3, '1155', NULL, 0, 1, '2024-01-31 13:09:49', '2024-01-31 13:13:35'),
-(13, 51, 53, 1, 'hi', NULL, 0, 1, '2024-01-31 13:13:49', '2024-02-08 10:31:23'),
-(14, 51, 53, 1, '456666', NULL, 0, 1, '2024-01-31 13:14:21', '2024-02-08 10:31:23'),
-(15, 51, 53, 1, '01022024', NULL, 0, 1, '2024-02-01 09:47:37', '2024-02-08 10:31:23');
+(13, 51, 53, 1, 'hi', NULL, 0, 1, '2024-01-31 13:13:49', '2024-02-19 09:21:39'),
+(14, 51, 53, 1, '456666', NULL, 0, 1, '2024-01-31 13:14:21', '2024-02-19 09:21:39'),
+(15, 51, 53, 1, '01022024', NULL, 0, 1, '2024-02-01 09:47:37', '2024-02-19 09:21:39');
 
 -- --------------------------------------------------------
 
@@ -413,7 +439,7 @@ CREATE TABLE `new_orders` (
   `isBundle` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `new_orders`
@@ -460,7 +486,7 @@ CREATE TABLE `notifications` (
   `email_recommendations_available` tinyint(1) DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `notifications`
@@ -488,7 +514,7 @@ CREATE TABLE `orderfiles` (
   `link` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `orderfiles`
@@ -522,7 +548,7 @@ CREATE TABLE `orders` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `soft_delete` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -550,7 +576,7 @@ CREATE TABLE `publisher_domains` (
   `hash_id` varchar(25) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `publisher_domains`
@@ -558,11 +584,11 @@ CREATE TABLE `publisher_domains` (
 
 INSERT INTO `publisher_domains` (`id`, `domain_name`, `tld`, `price`, `category_id`, `status`, `anchorText`, `deliveryTime`, `attribute`, `sensitiveTopic`, `sensitiveTopicCharge`, `minWordCount`, `textByCustomer`, `textInclude`, `language`, `user_id`, `hash_id`, `created_at`, `updated_at`) VALUES
 (1, 'google.com', 'com', '350.00', 10, 1, 'As desired', 10, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 52, 'za5fnvp0', '2023-12-20 04:31:49', '2023-12-20 04:32:20'),
-(2, 'getbootstrap.com', 'com', '422.39', 10, 1, 'As desired', 11, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'sc8fw0b6', '2023-12-20 04:34:17', '2024-01-26 09:52:44'),
+(2, 'getbootstrap.com', 'com', '422.39', 10, 1, 'As desired', 11, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'sc8fw0b6', '2023-12-20 04:34:17', '2024-02-19 10:29:26'),
 (3, 'backlinked.com', 'com', '550.00', 6, 1, 'As desired', 15, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'ioq9a4xt', '2023-12-20 04:35:13', '2023-12-20 04:35:25'),
 (4, 'placeholder.com', 'com', '1050.00', 23, 1, 'As desired / No restrictions', 5, 'dofollow', 0, '20.00', 400, 0, 0, 'en', 53, '36weorau', '2023-12-20 05:01:01', '2023-12-20 05:01:30'),
-(5, 'tutorialspoint.com', 'com', '650.00', 25, 0, 'As desired', 20, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'oaun65va', '2023-12-20 05:39:49', '2023-12-20 05:39:49'),
-(6, 'chat.openai.com', 'com', '850.00', 31, 1, 'As desired', 20, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'g6cr1wux', '2023-12-20 05:41:08', '2023-12-20 05:56:18');
+(5, 'tutorialspoint.com', 'com', '650.00', 25, 0, 'As desired', 20, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'oaun65va', '2023-12-20 05:39:49', '2024-02-19 10:29:14'),
+(6, 'chat.openai.com', 'com', '850.00', 31, 1, 'As desired', 20, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'g6cr1wux', '2023-12-20 05:41:08', '2024-02-19 12:59:22');
 
 -- --------------------------------------------------------
 
@@ -587,7 +613,7 @@ CREATE TABLE `publisher_domain_data` (
   `authority` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `publisher_domain_data`
@@ -610,7 +636,7 @@ INSERT INTO `publisher_domain_data` (`id`, `domain_id`, `traffic`, `anchor_text`
 CREATE TABLE `settings` (
   `id` int(11) NOT NULL,
   `vat` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `settings`
@@ -640,7 +666,7 @@ CREATE TABLE `subscription_plans` (
   `placement_in` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `subscription_plans`
@@ -668,10 +694,8 @@ CREATE TABLE `transactions` (
   `transaction_id` varchar(255) DEFAULT NULL,
   `isPlan` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0: order or other extra payment, 1: subscription plan payment',
   `status` varchar(25) NOT NULL,
-  `paymentData` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`paymentData`)),
-  `order_id` int(11) DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `paymentData` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
+) ;
 
 --
 -- Dumping data for table `transactions`
@@ -764,7 +788,7 @@ CREATE TABLE `users` (
   `isDeleted` int(1) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
@@ -789,7 +813,7 @@ CREATE TABLE `users_wallet` (
   `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users_wallet`
@@ -813,7 +837,7 @@ CREATE TABLE `user_cart` (
   `quantity` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -832,7 +856,7 @@ CREATE TABLE `user_subscriptions` (
   `credits` int(11) DEFAULT 0,
   `transaction_id` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 is Active Plan\r\n0 Expire '
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
@@ -871,6 +895,12 @@ ALTER TABLE `domains`
 -- Indexes for table `domain_categories`
 --
 ALTER TABLE `domain_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `domain_request`
+--
+ALTER TABLE `domain_request`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -972,13 +1002,6 @@ ALTER TABLE `subscription_plans`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `transactions`
---
-ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `customer_id` (`user_id`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -1042,6 +1065,12 @@ ALTER TABLE `domain_categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
+-- AUTO_INCREMENT for table `domain_request`
+--
+ALTER TABLE `domain_request`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `domain_tags`
 --
 ALTER TABLE `domain_tags`
@@ -1051,7 +1080,7 @@ ALTER TABLE `domain_tags`
 -- AUTO_INCREMENT for table `email_formats`
 --
 ALTER TABLE `email_formats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `faqs`
@@ -1135,7 +1164,7 @@ ALTER TABLE `subscription_plans`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -1153,7 +1182,7 @@ ALTER TABLE `users_wallet`
 -- AUTO_INCREMENT for table `user_cart`
 --
 ALTER TABLE `user_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `user_subscriptions`

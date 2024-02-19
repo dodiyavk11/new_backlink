@@ -76,7 +76,7 @@ class AppRoutes extends Component {
     };
     this.updateCartLength = this.updateCartLength.bind(this);
   }
-  handleLoginSuccess = () => {
+  handleLoginSuccess = (is) => {
     const isAdmin = localStorage.getItem("isAdmin");
     this.setState(
       {
@@ -85,16 +85,27 @@ class AppRoutes extends Component {
       },
       () => {
         if (isAdmin === "1") {
+          const adminToken = localStorage.getItem("token");
+          localStorage.setItem("adminToken", adminToken);
+          localStorage.setItem("adminLogin", 1);
+          const userData = localStorage.getItem("userData");
+          localStorage.setItem("adminUser", userData);
           this.props.history.push("/admin/orders");
         } else if (isAdmin === "2") {
-          this.props.history.push("/publisher/domain");
+          if (is) {
+            window.location.href = "/publisher/domain";
+          } else {
+            this.props.history.push("/publisher/domain");
+          }
         } else {
-          this.props.history.push("/dashboard");
+          if (is) {
+            window.location.href = "/dashboard";
+          } else {
+            this.props.history.push("/dashboard");
+          }
         }
-        // this.props.history.push("/dashboard");
       }
     );
-    // window.location.reload();
   };
 
   isLoginPageOrRegister = () => {
@@ -121,6 +132,9 @@ class AppRoutes extends Component {
     localStorage.removeItem("userData");
     localStorage.removeItem("isAdmin");
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminLogin");
+    localStorage.removeItem("adminUser");
     this.setState({
       isAuthenticated: false,
     });
@@ -147,7 +161,6 @@ class AppRoutes extends Component {
             error.response.data.message) ||
           error.message ||
           error.toString();
-        // alert(resMessage);
       }
     );
   };
@@ -167,7 +180,6 @@ class AppRoutes extends Component {
             error.response.data.message) ||
           error.message ||
           error.toString();
-        // alert(resMessage);
       }
     );
   };
@@ -187,7 +199,6 @@ class AppRoutes extends Component {
             error.response.data.message) ||
           error.message ||
           error.toString();
-        // alert(resMessage);
       }
     );
   };
@@ -207,11 +218,7 @@ class AppRoutes extends Component {
             error.response.data &&
             error.response.data.message) ||
           error.message ||
-          error.toString();
-        // toast.error(resMessage, {
-        //   position: "top-center",
-        //   autoClose: 2000,
-        // });
+          error.toString();        
       }
     );
   };
@@ -252,24 +259,7 @@ class AppRoutes extends Component {
           <div className="main-panel">
             <div className="content-wrapper">
               <Suspense fallback={<Spinner />}>
-                <Switch>
-                  {/* <Route
-                    path="/login"
-                    render={(props) =>
-                      this.state.isAuthenticated ? (
-                        this.state.isAdmin ? (
-                          <Redirect to="/admin/dashboard" />
-                        ) : (
-                          <Redirect to="/dashboard" />
-                        )
-                      ) : (
-                        <Login
-                          {...props}
-                          handleLoginSuccess={this.handleLoginSuccess}
-                        />
-                      )
-                    }
-                  /> */}
+                <Switch>                 
                   <Route
                     path="/login"
                     render={(props) => (

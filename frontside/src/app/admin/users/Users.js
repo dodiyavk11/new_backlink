@@ -200,7 +200,7 @@ export class Users extends Component {
         });
       });
   };
-  getUserList = (filter=null) => {
+  getUserList = (filter = null) => {
     ApiServices.adminUserList(filter)
       .then((res) => {
         if (!res.data.status) {
@@ -232,7 +232,9 @@ export class Users extends Component {
   handleLoginClick = (userId) => {
     AuthService.loginAsSuperAdmin(userId).then(
       () => {
-        this.props.handleLoginSuccess();
+        setTimeout(() => {
+          this.props.handleLoginSuccess(1);
+        }, 100);
         // window.location.reload();
       },
       (error) => {
@@ -258,7 +260,7 @@ export class Users extends Component {
   };
 
   updateFilterData = () => {
-    const filter = { q: this.state.searchValue }
+    const filter = { q: this.state.searchValue };
     this.getUserList(filter);
   };
 

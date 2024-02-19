@@ -4,6 +4,7 @@ import ApiServices from "../../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import { Trans } from "react-i18next";
 import TimeAgo from "timeago-react";
+import AdminBack from "../../shared/AdminBack";
 import "../../../assets/custom.css";
 
 export class Messages extends Component {
@@ -57,7 +58,7 @@ export class Messages extends Component {
         <div className="d-flex justify-content-between">
           <div className="page-header">
             <h3 className="fontBold latterSpacing">
-              <Trans>Order messages</Trans>
+              <Trans>Order messages</Trans> <AdminBack/>
             </h3>
           </div>
           <ToastContainer />
