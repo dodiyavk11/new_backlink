@@ -61,6 +61,7 @@ const ContactUs = lazy(() => import("./admin/contactUs/ContactUs"));
 const Settings = lazy(() => import("./admin/setting/Settings"));
 const AdminPayments = lazy(() => import("./admin/payments/Payments"));
 const PublisherPayments = lazy(() => import("./publisher/payments/Payments"));
+const DomainRevealRequest = lazy(() => import("./publisher/notification/DomainRevealRequest"));
 
 class AppRoutes extends Component {
   constructor(props) {
@@ -528,6 +529,13 @@ class AppRoutes extends Component {
                     exact
                     path="/publisher/order/:order_id"
                     component={PublisherViewOrderDetails}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  <PublisherProtected
+                    exact
+                    path="/publisher/request-domain"
+                    component={DomainRevealRequest}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />

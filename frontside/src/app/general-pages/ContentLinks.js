@@ -11,12 +11,17 @@ import PlaceOrderDetailsModal from "../shared/PlaceOrderDetailsModal";
 import { Trans } from "react-i18next";
 import CurrencyFormatter from "../shared/CurrencyFormatter";
 import AdminBack from "../shared/AdminBack";
+import RevealDomainModal from "../shared/RevealDomainModal";
 
 export class ContentLinks extends Component {
   constructor(props) {
     const { hash_id } = props.match.params;
     super(props);
     this.state = {
+      showModal: false,
+      domain_id: null,
+      publisher_id: null,
+      domainRequest: [],
       contentData: [],
       contentInsideData: [],
       category: [],
@@ -51,6 +56,44 @@ export class ContentLinks extends Component {
     };
   }
   showProjectModal = () => this.setState({ showModalStep1: true });
+
+  showModal = () => this.setState({ showModal: true });
+  closeModal = () => this.setState({ showModal: false });
+
+  handleRequestClick = (domain_id, publisher_id) => {
+    this.setState({
+      domain_id: domain_id,
+      publisher_id: publisher_id,
+      showModal: true,
+    });
+  };
+
+  handleFormSubmitReq = (formData) => {
+    formData.domain_id = this.state.domain_id;
+    formData.publisher_id = this.state.publisher_id;
+    ApiServices.addDomainRevealRequest(formData).then(
+      () => {
+        toast.success(<Trans>Your request send success</Trans>, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+        this.closeModal();
+        this.getContentLinkData();
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
 
   handleNextStep = () => {
     this.setState({
@@ -128,6 +171,9 @@ export class ContentLinks extends Component {
           if (res.data.data.category) {
             this.setState({ category: res.data.data.category });
           }
+          if (res.data.data.domainRequest) {
+            this.setState({ domainRequest: res.data.data.domainRequest });
+          }
           if (res.data.data.contentData) {
             this.setState({ contentInsideData: res.data.data.contentData });
           }
@@ -183,6 +229,7 @@ export class ContentLinks extends Component {
     const contentData = this.state.contentData;
     const category = this.state.category;
     const contentInsideData = this.state.contentInsideData;
+    const domainRequest = this.state.domainRequest;
     if (!contentData) {
       return (
         <div className="text-danger">
@@ -199,6 +246,11 @@ export class ContentLinks extends Component {
     return (
       <div>
         <ToastContainer />
+        <RevealDomainModal
+          showModal={this.state.showModal}
+          handleClose={this.closeModal}
+          onSubmit={this.handleFormSubmitReq}
+        />
         <div className="row">
           <div className="col-lg-8 grid-margin">
             <div className="card">
@@ -210,7 +262,7 @@ export class ContentLinks extends Component {
                   >
                     <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                   </button>
-                  <AdminBack/>
+                  <AdminBack />
                 </div>
                 <div>
                   <a
@@ -219,7 +271,8 @@ export class ContentLinks extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <i className="mdi mdi-arrow-top-right"></i> <Trans>Visit domain</Trans>
+                    <i className="mdi mdi-arrow-top-right"></i>{" "}
+                    <Trans>Visit domain</Trans>
                   </a>
                   <svg
                     onClick={() => this.handleFavorite(contentData.id)}
@@ -252,12 +305,14 @@ export class ContentLinks extends Component {
                   </div>
                 </div>
                 <hr />
-                <div className="row g-2">                  
+                <div className="row g-2">
                   <div className="col-sm-4" style={{ paddingRight: "0px" }}>
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b><Trans>Domain Rating</Trans></b>
+                          <b>
+                            <Trans>Domain Rating</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -327,12 +382,14 @@ export class ContentLinks extends Component {
                         />
                       </div>
                     </div>
-                  </div>                  
+                  </div>
                   <div className="col-sm-4" style={{ paddingRight: "0px" }}>
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
                         <div>
-                          <b><Trans>Referring Domains</Trans></b>
+                          <b>
+                            <Trans>Referring Domains</Trans>
+                          </b>
                         </div>
                         <div>
                           <img
@@ -480,15 +537,19 @@ export class ContentLinks extends Component {
                       </div>
                     </div>
                   </div>
-                </div>                
+                </div>
                 <div className="row g-2 mt-4 pl-3">
                   <div className="col-sm-12 warrantyClass">
                     <div className="mt-2 mb-2 p-2">
-                      <span className="fontBold700"><Trans>FairLinked warranty</Trans></span>
+                      <span className="fontBold700">
+                        <Trans>FairLinked warranty</Trans>
+                      </span>
                       <p className="customText2 pt-1">
-                      <Trans>We give you a 12 month warranty on every link you
-                        buy (from the date of publication). Usually our links
-                        stay online for much longer.</Trans>
+                        <Trans>
+                          We give you a 12 month warranty on every link you buy
+                          (from the date of publication). Usually our links stay
+                          online for much longer.
+                        </Trans>
                       </p>
                     </div>
                   </div>
@@ -499,13 +560,15 @@ export class ContentLinks extends Component {
           <div className="col-lg-4 grid-margin">
             <div className="card">
               <div className="card-body p-3">
-                <h4 className="card-title"><Trans>Orders</Trans></h4>
+                <h4 className="card-title">
+                  <Trans>Orders</Trans>
+                </h4>
                 <div className="">
                   <table className="table">
                     <tbody>
                       <tr>
                         <td>
-                        <Trans>Traffic</Trans>{" "}
+                          <Trans>Traffic</Trans>{" "}
                           <Tooltip
                             title="Traffic describes the monthly users of a website. (organic only)"
                             placement="right"
@@ -532,7 +595,7 @@ export class ContentLinks extends Component {
                       </tr>
                       <tr>
                         <td>
-                        <Trans>Anchor text</Trans>
+                          <Trans>Anchor text</Trans>
                           <Tooltip
                             title="Anchor text refers to the clickable text of a link."
                             placement="right"
@@ -557,7 +620,7 @@ export class ContentLinks extends Component {
                       </tr>
                       <tr>
                         <td>
-                        <Trans>Delivery time</Trans>
+                          <Trans>Delivery time</Trans>
                           <Tooltip
                             title="Turnaround time is based on real data and is expressed in business days."
                             placement="right"
@@ -582,7 +645,7 @@ export class ContentLinks extends Component {
                       </tr>
                       <tr>
                         <td>
-                        <Trans>Link</Trans>
+                          <Trans>Link</Trans>
                           <Tooltip
                             title="Dofollow links are particularly high on Google, while nofollow links don't have much impact on your ranking. It is estimated by an independent thrid party."
                             placement="right"
@@ -605,7 +668,7 @@ export class ContentLinks extends Component {
                       </tr>
                       <tr>
                         <td>
-                        <Trans>Language</Trans>
+                          <Trans>Language</Trans>
                           <Tooltip
                             title="Language in which your article will be written by us."
                             placement="right"
@@ -630,7 +693,7 @@ export class ContentLinks extends Component {
                       </tr>
                       <tr>
                         <td>
-                        <Trans>TLD</Trans>
+                          <Trans>TLD</Trans>
                           <Tooltip
                             title="Domain extension of the selected website."
                             placement="right"
@@ -652,38 +715,71 @@ export class ContentLinks extends Component {
                         <td className="text-end-ct">.{contentData.tld}</td>
                       </tr>
                       <tr>
-                        <td><Trans>Price</Trans></td>
+                        <td>
+                          <Trans>Price</Trans>
+                        </td>
                         <td className="text-end-ct">
                           <span className="h3 fontBold600">
-                            {CurrencyFormatter.formatCurrency(contentData.price)}
+                            {CurrencyFormatter.formatCurrency(
+                              contentData.price
+                            )}
                           </span>
                         </td>
                       </tr>
                       <tr>
                         <td colSpan={2} className="text-center">
-                          <div className="btn-group-md mb-2">
+                          {domainRequest.length > 0 &&
+                          domainRequest[0].status === 0 ? (
+                            <p>
+                              <b>
+                                <Trans>Your reveal request is Pending</Trans>
+                                ...
+                              </b>
+                            </p>
+                          ) : domainRequest.length > 0 &&
+                            domainRequest[0].status === 2 ? (
+                            <p className="text-danger">
+                              <b>
+                                <Trans>Your reveal request is Declined</Trans>
+                              </b>
+                            </p>
+                          ) : domainRequest.length === 0 ? (
                             <button
                               className="btn btn-rounded font-weight-medium auth-form-btn"
                               style={{ width: "100%" }}
-                              onClick={this.showProjectModal}
-                            >
-                              <Trans>Order now</Trans>
-                            </button>
-                          </div>
-                          <div className="btn-group-md">
-                            <button
-                              className="btn btn-primary btn btn-rounded custamFilterBtn"
-                              // onClick={() =>
-                              //   this.handleAddtoCart(contentData.hash_id)
-                              // }
                               onClick={() =>
-                                this.props.handleAddtoCart(contentData.hash_id)
+                                this.handleRequestClick(
+                                  contentData.id,
+                                  contentData.user_id
+                                )
                               }
-                              style={{ width: "100%" }}
                             >
-                              <Trans>Add to cart</Trans>
+                              <Trans>Send Request</Trans>
                             </button>
-                          </div>
+                          ) : (
+                            <>
+                              <div className="btn-group-md">
+                                <button
+                                  className="btn btn-rounded font-weight-medium auth-form-btn"
+                                  style={{ width: "100%" }}
+                                  onClick={this.showProjectModal}
+                                >
+                                  <Trans>Order now</Trans>
+                                </button>
+                              </div>
+                              <button
+                                className="btn btn-primary btn btn-rounded custamFilterBtn"
+                                onClick={() =>
+                                  this.props.handleAddtoCart(
+                                    contentData.hash_id
+                                  )
+                                }
+                                style={{ width: "100%" }}
+                              >
+                                <Trans>Add to cart</Trans>
+                              </button>
+                            </>
+                          )}
                         </td>
                       </tr>
                     </tbody>
@@ -693,20 +789,29 @@ export class ContentLinks extends Component {
             </div>
             <div className="card mt-4">
               <div className="card-body">
-                <h4 className="card-title"><Trans>Orders process</Trans></h4>
+                <h4 className="card-title">
+                  <Trans>Orders process</Trans>
+                </h4>
                 <p>
-                <Trans>After configuring and ordering your backlink, the site owner
-                  must first accept your order.</Trans>
+                  <Trans>
+                    After configuring and ordering your backlink, the site owner
+                    must first accept your order.
+                  </Trans>
                 </p>
 
                 <p>
-                <Trans>We will then immediately begin with the text creation. As soon
-                  as the text is ready, we send it to the site operator for
-                  publication.</Trans>
+                  <Trans>
+                    We will then immediately begin with the text creation. As
+                    soon as the text is ready, we send it to the site operator
+                    for publication.
+                  </Trans>
                 </p>
                 <p>
-                <Trans>As soon as the text is online, we will inform you by mail. You
-                  can find the finished backlink on the orders detail page.</Trans>
+                  <Trans>
+                    As soon as the text is online, we will inform you by mail.
+                    You can find the finished backlink on the orders detail
+                    page.
+                  </Trans>
                 </p>
               </div>
             </div>

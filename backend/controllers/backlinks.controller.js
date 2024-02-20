@@ -404,9 +404,9 @@ exports.getConetentLinks = async (req, res) => {
     });
     contentData.map((data, index) => {
       if (
-        (data.domainRequest.length > 0 && data.domainRequest[0].status === 0) ||
+        (data.domainRequest.length > 0 && data.domainRequest[0].status === 0) || (data.domainRequest.length > 0 && data.domainRequest[0].status === 2) ||
         data.domainRequest.length === 0
-      ) {        
+      ) {
         const lastDotIndex = data.domain_name.lastIndexOf(".");
         if (lastDotIndex !== -1) {
           const subdomain = data.domain_name.substring(0, lastDotIndex);
@@ -470,7 +470,7 @@ exports.getDailyDealsConetentLinks = async (req, res) => {
       ...baseQuery,
       order: [["price", "ASC"]],
       limit: 5,
-    });    
+    });
 
     const favoriteProducts = await Models.favoriteProducts.findAll({
       where: {
@@ -481,9 +481,9 @@ exports.getDailyDealsConetentLinks = async (req, res) => {
 
     contentData.map((data, index) => {
       if (
-        (data.domainRequest.length > 0 && data.domainRequest[0].status === 0) ||
+        (data.domainRequest.length > 0 && data.domainRequest[0].status === 0) || (data.domainRequest.length > 0 && data.domainRequest[0].status === 2) ||
         data.domainRequest.length === 0
-      ) {        
+      ) {
         const lastDotIndex = data.domain_name.lastIndexOf(".");
         if (lastDotIndex !== -1) {
           const subdomain = data.domain_name.substring(0, lastDotIndex);
@@ -549,7 +549,9 @@ exports.getSingleConetentLinks = async (req, res) => {
     });
 
     if (
-      (contentData.domainRequest.length > 0 && contentData.domainRequest.status === 0) ||
+      (contentData.domainRequest.length > 0 &&
+        contentData.domainRequest[0].status === 0) || (contentData.domainRequest.length > 0 &&
+          contentData.domainRequest[0].status === 2) ||
       contentData.domainRequest.length === 0
     ) {
       const lastDotIndex = contentData.domain_name.lastIndexOf(".");
@@ -906,5 +908,145 @@ exports.ConetentLinksList = async (req, res) => {
       message: "Something went to wrong, Please try again.",
       data: [],
     });
+  }
+};
+
+exports.userDomainRevealRequest = async (req, res) => {
+  try {
+    const user_id = req.userId;
+    const { domain_id, message, publisher_id } = req.body;
+    const requestData = {
+      user_id,
+      domain_id,
+      message,
+      publisher_id,
+      status: 0,
+    };
+    const addRequest = await Models.DomainRequest.create(requestData);
+    if (addRequest) {
+      const publisherData = await Models.Users.findOne({
+        where: { id: publisher_id },
+      });
+      const domainData = await Models.publisherDomain.findOne({
+        where: { id: domain_id },
+      });
+      const mailText = await Models.email_format.findOne({
+        where: { email_type: "domain_reveal_request" },
+      });
+
+      let text = mailText.email_content;
+      let subject = mailText.header;
+      let username = publisherData.firstName + " " + publisherData.lastName;
+      text = text.replace("{user_name}", username);
+      text = text.replace("{domain_name}", domainData.domain_name);
+      text = text.replace("{message}", message);
+      const email = await emailTemplate(text);
+      sendVerifyMail(publisherData.email, subject, "", email);
+    }
+    res
+      .status(200)
+      .send({
+        status: true,
+        message: "Request send successfully",
+        data: addRequest,
+      });
+  } catch (err) {
+    res
+      .status(500)
+      .send({
+        status: false,
+        message: "Something went to wrong, Please try again",
+        error: err.message,
+      });
+  }
+};
+
+exports.getPublisherDomainRevealRequest = async (req, res) => {
+  try {
+    const user_id = req.userId;
+    const baseQuery = {
+      include: [
+        {
+          model: Models.DomainRequest,
+          as: "domainRequest",
+          where: {
+            publisher_id: user_id,
+          },
+          required: true,
+        },
+      ],
+      where: {},
+    };
+    const contentData = await Models.publisherDomain.findAll({
+      ...baseQuery,
+      where: { user_id },
+    });
+    res
+      .status(200)
+      .send({
+        status: true,
+        message: "Request fetch successfully",
+        data: contentData,
+      });
+  } catch (err) {
+    res
+      .status(500)
+      .send({
+        message: "Someting went to wrong",
+        error: err.message,
+        data: [],
+      });
+  }
+};
+
+exports.publisherRevealRequestUpdate = async (req, res) => {
+  try {
+    const { id, status } = req.body;
+    const getRequest =await Models.DomainRequest.findOne({ where:{ id } })
+    if(getRequest)
+    {
+      const updateStatus = await Models.DomainRequest.update(
+        { status },
+        { where: { id } }
+      );
+      const domainData = await Models.publisherDomain.findOne({
+        where: { id: getRequest.domain_id },
+      });
+
+      const userData = await Models.Users.findOne({
+        where: { id: getRequest.user_id },
+      });
+
+      const mailText = await Models.email_format.findOne({
+        where: { email_type: "domain_reveal_request_update" },
+      });
+      let statusIs;
+      if(status === 1)
+      {
+        statusIs = "Accepted";
+      }
+      else{
+        statusIs = "Declined";
+      }
+  
+      let text = mailText.email_content;
+      let subject = mailText.header;
+      let username = userData.firstName + " " + userData.lastName;
+      text = text.replace("{user_name}", username);
+      text = text.replace("{domain_name}", domainData.domain_name);
+      text = text.replace("{status}", statusIs);
+      const email = await emailTemplate(text);
+      sendVerifyMail(userData.email, subject, "", email);
+      res.status(200).send({ status:true, data:updateStatus})
+    }
+    
+  } catch (err) {
+    res
+      .status(500)
+      .send({
+        status: false,
+        message: "Something went to wrong",
+        error: err.message,
+      });
   }
 };

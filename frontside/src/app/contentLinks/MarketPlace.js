@@ -5,6 +5,7 @@ import { CPopover, CButton } from "@coreui/react";
 import ApiServices from "../services/api.service";
 import { ToastContainer, toast } from "react-toastify";
 import { Trans, withTranslation } from "react-i18next";
+import RevealDomainModal from "../shared/RevealDomainModal";
 import "react-toastify/dist/ReactToastify.css";
 import {
   Typography,
@@ -25,6 +26,9 @@ export class MarketPlace extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showModal: false,
+      domain_id: null,
+      publisher_id: null,
       rows: [],
       favoriteProducts: [],
       isDisable: false,
@@ -100,9 +104,46 @@ export class MarketPlace extends Component {
   //   this.setState({ selectedRow: index });
   //   // }
   // };
+  showModal = () => this.setState({ showModal: true });
+  closeModal = () => this.setState({ showModal: false });
+
+  handleRequestClick = (domain_id, publisher_id) => {
+    this.setState({
+      domain_id: domain_id,
+      publisher_id: publisher_id,
+      showModal: true,
+    });
+  };
+
+  handleFormSubmit = (formData) => {
+    formData.domain_id = this.state.domain_id;
+    formData.publisher_id = this.state.publisher_id;
+    ApiServices.addDomainRevealRequest(formData).then(
+      () => {
+        toast.success(<Trans>Your request send success</Trans>, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+        this.closeModal();
+        this.fetchContentLinkData();
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        toast.error(resMessage, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+    );
+  };
 
   gotoViewContentLink = (hash_id, event, index) => {
-    const nonClickableTags = ["button", "svg", "path"];
+    const nonClickableTags = ["button", "svg", "path", "i"];
     if (!nonClickableTags.includes(event.target.tagName.toLowerCase())) {
       this.props.history.push(`/content/${hash_id}`);
     }
@@ -553,7 +594,42 @@ export class MarketPlace extends Component {
 
           return (
             <div>
-              <svg
+              {row.domainRequest.length > 0 &&
+              row.domainRequest[0].status === 0 ? (
+                <i
+                  className="mdi mdi-timer-sand"
+                  style={{ fontSize: "30px", cursor: "pointer" }}
+                  title="Request Pending"
+                ></i>
+              ) : row.domainRequest.length === 0 ? (
+                <i
+                  onClick={() => this.handleRequestClick(row.id, row.user_id)}
+                  className="mdi mdi-comment-question-outline"
+                  style={{ fontSize: "30px", cursor: "pointer" }}
+                  title="Send Request"
+                ></i>
+              ) : row.domainRequest.length > 0 &&
+                row.domainRequest[0].status === 2 ? (
+                <i
+                  className="mdi mdi-close-circle"
+                  title="Your request declined."
+                  style={{ fontSize: "25px", cursor: "pointer", color: "red" }}
+                ></i>
+              ) : (
+                <svg
+                  onClick={() => this.props.handleAddtoCart(row.hash_id)}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  className="bi bi-bag"
+                  viewBox="0 0 16 16"
+                  style={{ color: "#757575c9", cursor: "pointer" }}
+                >
+                  <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                </svg>
+              )}
+              {/* <svg
                 onClick={() => this.props.handleAddtoCart(row.hash_id)}
                 xmlns="http://www.w3.org/2000/svg"
                 width={20}
@@ -563,7 +639,7 @@ export class MarketPlace extends Component {
                 style={{ color: "#757575c9", fontWeight: "bold" }}
               >
                 <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-              </svg>
+              </svg> */}
               <svg
                 onClick={() => this.handleFavorite(row.id)}
                 width={22}
@@ -594,6 +670,11 @@ export class MarketPlace extends Component {
     return (
       <>
         <ToastContainer />
+        <RevealDomainModal
+          showModal={this.state.showModal}
+          handleClose={this.closeModal}
+          onSubmit={this.handleFormSubmit}
+        />
         <div className="d-flex justify-content-between MarketPlaceTab">
           <div className="float-left flex">
             <form className="form-inline">

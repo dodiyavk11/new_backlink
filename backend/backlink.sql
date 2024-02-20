@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 19, 2024 at 02:30 PM
+-- Generation Time: Feb 20, 2024 at 10:25 AM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.2.20
 
@@ -216,17 +216,11 @@ CREATE TABLE `domain_request` (
   `publisher_id` int(11) DEFAULT NULL,
   `domain_id` int(11) DEFAULT NULL,
   `message` text NOT NULL,
+  `pmessage` text DEFAULT NULL,
   `status` int(1) DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `domain_request`
---
-
-INSERT INTO `domain_request` (`id`, `user_id`, `publisher_id`, `domain_id`, `message`, `status`, `created_at`, `updated_at`) VALUES
-(1, 51, 53, 6, 'test', 0, '2024-02-19 18:47:26', '2024-02-19 18:59:42');
 
 -- --------------------------------------------------------
 
@@ -284,7 +278,9 @@ INSERT INTO `email_formats` (`id`, `email_title`, `email_type`, `email_content`,
 (11, 'Order Delete', 'order_delete', '<p>Hi {username},</p><p>Your Order {ordername} has been deleted successfully.</p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><em>login</em> to view</a></p>', 'Your Order has been delete ', NULL, 0, '2023-12-18 16:05:47', '2023-12-18 16:06:32'),
 (12, 'Forgot Password Link', 'forgot_password', '<p>Hello <strong>{user_name},</strong></p><p>Please click here below link to reset your account password :</p><p><strong style=\"background-color: rgb(192, 222, 96);\">{verification_Link}</strong></p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked.com</strong></a></p>', 'Click link to reset password', NULL, 1, '2023-12-20 10:51:19', '2023-12-20 10:58:22'),
 (13, 'User contact us', 'user_contact_us', '<p>Hi Admin,</p><p>Our FairLinked user has contacted us with an issue.</p><p><br></p><p><strong>Name : </strong>{name}</p><p><strong>Email : </strong>{email}</p><p><strong>Phone : </strong>{phone}</p><p><strong>Problem : </strong>{problem}</p>', 'User Contact us', NULL, 1, '2024-01-24 09:31:10', '2024-01-24 09:31:10'),
-(14, 'Backlink Activation', 'backlink_actived', '<p><strong>Hello {user_name},</strong></p><p>Your submitted <strong>{backlink_name}</strong> backlink has been reviewed and activated by our <strong>FairLinked</strong> team.</p><p><br></p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked.com</strong></a></p>', 'Your submitted backlink has been reviewed.', NULL, 1, '2024-02-19 15:23:46', '2024-02-19 15:23:46');
+(14, 'Backlink Activation', 'backlink_actived', '<p><strong>Hello {user_name},</strong></p><p>Your submitted <strong>{backlink_name}</strong> backlink has been reviewed and activated by our <strong>FairLinked</strong> team.</p><p><br></p><p><strong>Best regards</strong></p><p><a href=\"http://fairlinked.bestprojectmanagementtool.com/app/login\" rel=\"noopener noreferrer\" target=\"_blank\"><strong>FairLinked.com</strong></a></p>', 'Your submitted backlink has been reviewed.', NULL, 1, '2024-02-19 15:23:46', '2024-02-19 15:23:46'),
+(15, 'New domain reveal request', 'domain_reveal_request', '<p><strong>Hello {user_name},</strong></p><p>Your domain <strong>{domain_name} </strong>have new Reveal request.</p><p><strong>Message: </strong>{message}</p><p><br></p><p><strong>FairLinked</strong> team.</p>', 'You have new Domain reveal request', NULL, 1, '2024-02-20 10:15:17', '2024-02-20 10:15:17'),
+(16, 'Domain reveal request update', 'domain_reveal_request_update', '<p><strong>Hello {user_name},</strong></p><p>Your request to reveal the domain <strong>{domain_name}</strong> has been <strong>{status}</strong>.</p><p><br></p><p><strong>FairLinked</strong> team.</p>', 'Your domain reveal request is update', NULL, 1, '2024-02-20 14:48:05', '2024-02-20 14:48:05');
 
 -- --------------------------------------------------------
 
@@ -796,8 +792,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `password`, `profile`, `phone`, `postal_code`, `address`, `city`, `country`, `company`, `vat_id`, `bulk_invoice`, `invoice_email`, `isAdmin`, `isDeleted`, `created_at`, `updated_at`) VALUES
 (2, 'jayesh.besticoder@gmail.com', 1, 'Admin', 'Side', '$2a$11$fCg11cAgOk7RvVCffz7TuulHBoIYOMATc6iq6PjtlbbB5ieju4dG2', 'profileImg_1701080292599.png', '1234567890', 123, 'admin', 'admin', 'Germany', 'Admin', 'null', 0, '', 1, 0, '2023-09-13 17:40:39', '2023-11-28 18:36:04'),
-(51, 'userside@gmail.com', 1, 'Users', 'Sides', '$2a$11$JRvGg878F9NbRiomWLj2OOcogSgLyrKR3Q1yAfGxQ0JJViiC7NLjy', 'profileImg_1703046435122.png', '123456789', 1233, 'vrl', 'new', 'Germany', 'Bus', 'VAT123AT', 1, 'example@mail.com', 0, 0, '2023-12-20 09:57:15', '2023-12-20 11:41:07'),
-(52, 'publisher@mail.com', 1, 'publisher', 'Side', '$2a$11$AyGO9mjpnaNiOKXhEztUo.VDBAfuXZUw6Wcx6lO3AdHiMio.jLmoi', 'profileImg_1703046553894.png', '123456789', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-20 09:59:14', '2024-01-24 12:53:35'),
+(51, 'urjwpwhoso@zlorkun.com', 1, 'Users', 'Sides', '$2a$11$JRvGg878F9NbRiomWLj2OOcogSgLyrKR3Q1yAfGxQ0JJViiC7NLjy', 'profileImg_1703046435122.png', '123456789', 1233, 'vrl', 'new', 'Germany', 'Bus', 'VAT123AT', 1, 'example@mail.com', 0, 0, '2023-12-20 09:57:15', '2023-12-20 11:41:07'),
+(52, 'publisher@gmail.com', 1, 'publisher', 'Side', '$2a$11$AyGO9mjpnaNiOKXhEztUo.VDBAfuXZUw6Wcx6lO3AdHiMio.jLmoi', 'profileImg_1703046553894.png', '123456789', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-20 09:59:14', '2024-01-24 12:53:35'),
 (53, 'publisher2@gmail.com', 1, 'Publisher22', 'Side 22', '$2a$11$JDIXcKDP1maRbhZvWwl.B.EMBD.ZA/RbhSPS/U1/lkcKulA0AoJou', NULL, '123456789', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-20 10:03:08', '2024-01-24 12:56:29'),
 (55, 'epys84x532@bloheyz.com', 1, 'Test', 'Dev User', '$2a$11$/IrYNKKj.wgXAtKvduVTUei1H8SNBt5zwraM1HzybjdFJ3ZKMME3m', NULL, '132345', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 0, '2024-02-08 16:09:17', '2024-02-08 16:09:32');
 
@@ -1068,7 +1064,7 @@ ALTER TABLE `domain_categories`
 -- AUTO_INCREMENT for table `domain_request`
 --
 ALTER TABLE `domain_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `domain_tags`
@@ -1080,7 +1076,7 @@ ALTER TABLE `domain_tags`
 -- AUTO_INCREMENT for table `email_formats`
 --
 ALTER TABLE `email_formats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `faqs`
@@ -1092,7 +1088,7 @@ ALTER TABLE `faqs`
 -- AUTO_INCREMENT for table `favorite_products`
 --
 ALTER TABLE `favorite_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `forgotpasswords`
@@ -1182,7 +1178,7 @@ ALTER TABLE `users_wallet`
 -- AUTO_INCREMENT for table `user_cart`
 --
 ALTER TABLE `user_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `user_subscriptions`

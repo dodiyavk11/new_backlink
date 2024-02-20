@@ -1,4 +1,4 @@
-const { getDomainBacklinksDetails, addPublisherDomain,getSingleConetentLinks, addToFavorite, publisherExcelFileDataAdd,editPublisherDomain,deletePublisherDomain,getPublisherDomainList,getConetentLinks, getDailyDealsConetentLinks,getPublisherOrder, publisherUpdateOrderStatus, getPublisherDomain, adminViewPublisherDomain,updateBacklinkStatus,ConetentLinksList } = require('../controllers/backlinks.controller')
+const { getDomainBacklinksDetails, addPublisherDomain,getSingleConetentLinks, addToFavorite, publisherExcelFileDataAdd,editPublisherDomain,deletePublisherDomain,getPublisherDomainList,getConetentLinks, getDailyDealsConetentLinks,getPublisherOrder, publisherUpdateOrderStatus, getPublisherDomain, adminViewPublisherDomain,updateBacklinkStatus,ConetentLinksList, userDomainRevealRequest, getPublisherDomainRevealRequest, publisherRevealRequestUpdate } = require('../controllers/backlinks.controller')
 const { isLogin, isPublisher, isAdmin, isCustomer,isAdminAndIsCustomer } =require('../middleware/checkAuthenticate')
 const { uploadExcel } = require("../middleware/excelUpload.js")
 
@@ -19,4 +19,7 @@ module.exports = (app) => {
 
 	app.get('/admin/contentlinks/:hash_id',[isLogin,isAdmin], adminViewPublisherDomain)
 	app.get("/admin/contentlinks/:hash_id/:status/:id",[isLogin,isAdmin], updateBacklinkStatus)
+	app.post("/user/domain-reveal-request",[isLogin, isCustomer], userDomainRevealRequest)
+	app.get("/publisher/get-domain-reveal-request",[isLogin,isPublisher], getPublisherDomainRevealRequest)
+	app.post("/publisher/update/reveal-request",[isLogin,isPublisher], publisherRevealRequestUpdate)
 }

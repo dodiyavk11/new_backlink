@@ -559,6 +559,28 @@ class ApiServices {
       });
   }
 
+  getPublisherRevealRequest() {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(`${this.APP_URL}publisher/get-domain-reveal-request`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  publisherUpdateRevealRequest(data){
+    const authToken = localStorage.getItem('token');
+    return axios
+      .post(`${this.APP_URL}publisher/update/reveal-request`, data, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
   adminGetAllOrders(filterdata = null) {
     const authToken = localStorage.getItem("token");
     return axios
@@ -911,6 +933,16 @@ class ApiServices {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
         },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+  addDomainRevealRequest(formData) {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .post(`${this.APP_URL}user/domain-reveal-request`, formData, {
+        headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {
         return response;
