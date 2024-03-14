@@ -6,18 +6,13 @@ const ProtectedRoute = ({
   component: Component,
   isAuthenticated,
   isAdmin,
-  cartLength,
-  updateCartLength,
-  handleAddtoCart,
-  getCartData,
-  cartData,
   ...rest
 }) => (
   <Route
     {...rest}
     render={(props) =>
       isAuthenticated && isAdmin === "0" ? (
-        <Component {...props} getCartData={getCartData} isAuthenticated={isAuthenticated} isAdmin={isAdmin} cartData={cartData} cartLength={cartLength} updateCartLength={updateCartLength} handleAddtoCart={handleAddtoCart} />
+        <Component {...props} isAuthenticated={isAuthenticated} isAdmin={isAdmin} />
       ) : (
         <Redirect to="/login" />
         // <div>

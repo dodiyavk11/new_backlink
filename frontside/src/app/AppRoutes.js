@@ -10,19 +10,16 @@ import Sidebar from "./shared/Sidebar";
 import Footer from "./shared/Footer";
 import ApiServices from "./services/api.service";
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
-const AdminDashboard = lazy(() => import("./admin/dashboard/Dashboard"));
 const Projects = lazy(() => import("./projects/Projects"));
 const ContentLinks = lazy(() => import("./general-pages/ContentLinks"));
 const ContentLinksHome = lazy(() => import("./contentLinks/ContentLinks"));
 const LinkBundles = lazy(() => import("./linkBundle/LinkBundles"));
 const Payments = lazy(() => import("./payments/Payments"));
 const Profile = lazy(() => import("./setting/Profile"));
-const Orders = lazy(() => import("./orders/Orders"));
 const Login = lazy(() => import("./user-pages/Login"));
 const Register = lazy(() => import("./user-pages/Register"));
 const BlankPage = lazy(() => import("./general-pages/BlankPage"));
 const Users = lazy(() => import("./admin/users/Users"));
-const AdminOrders = lazy(() => import("./admin/orders/AdminOrders"));
 const Plan = lazy(() => import("./admin/plan/Plan"));
 const AdminContentLinks = lazy(() =>
   import("./admin/contentLinks/ContentLinks")
@@ -39,29 +36,19 @@ const ChangePasswordViaLink = lazy(() =>
 );
 const VerifyEmail = lazy(() => import("./user-pages/VerifyEmail"));
 const publisherDomain = lazy(() => import("./publisher/domain/Domain"));
-const PublisherOrders = lazy(() => import("./publisher/order/PublisherOrders"));
-const PublisherViewOrderDetails = lazy(() =>
-  import("./publisher/order/PublisherViewOrderDetails")
-);
-const PublisherMessages = lazy(() => import("./publisher/message/Messages"));
-const UserViewOrderDetails = lazy(() =>
-  import("./orders/UserViewOrderDetails")
-);
-const AdminViewOrderDetails = lazy(() =>
-  import("./admin/orders/AdminViewOrderDetails")
-);
 const AdminProjectView = lazy(() => import("./admin/projects/ProjectView"));
 const emailTemplate = lazy(() => import("./admin/email/EmailTemplate"));
 const domainCategory = lazy(() => import("./admin/category/DomainCategory"));
 const ProjectView = lazy(() => import("./projects/ProjectView"));
 const DomainView = lazy(() => import("./publisher/domain/DomainView"));
-const CartPage = lazy(() => import("./shared/Cart"));
 const paymentSuccess = lazy(() => import("./paymentSuccess"));
 const ContactUs = lazy(() => import("./admin/contactUs/ContactUs"));
 const Settings = lazy(() => import("./admin/setting/Settings"));
 const AdminPayments = lazy(() => import("./admin/payments/Payments"));
 const PublisherPayments = lazy(() => import("./publisher/payments/Payments"));
-const DomainRevealRequest = lazy(() => import("./publisher/notification/DomainRevealRequest"));
+const DomainRevealRequest = lazy(() =>
+  import("./publisher/notification/DomainRevealRequest")
+);
 
 class AppRoutes extends Component {
   constructor(props) {
@@ -71,11 +58,8 @@ class AppRoutes extends Component {
     this.state = {
       isAuthenticated: !!token,
       isAdmin: isAdmin,
-      cartLength: 0,
-      cartData: [],
       unRead: 0,
     };
-    this.updateCartLength = this.updateCartLength.bind(this);
   }
   handleLoginSuccess = (is) => {
     const isAdmin = localStorage.getItem("isAdmin");
@@ -91,7 +75,7 @@ class AppRoutes extends Component {
           localStorage.setItem("adminLogin", 1);
           const userData = localStorage.getItem("userData");
           localStorage.setItem("adminUser", userData);
-          this.props.history.push("/admin/orders");
+          this.props.history.push("/admin/contentlinks");
         } else if (isAdmin === "2") {
           if (is) {
             window.location.href = "/publisher/domain";
@@ -141,90 +125,45 @@ class AppRoutes extends Component {
     });
     this.props.history.push("/login");
   };
-  updateCartLength = (newCartLength) => {
-    this.setState({ cartLength: newCartLength });
-    this.getCartData();
-  };
-  getCartData = () => {
-    ApiServices.getUserCartData().then(
-      (res) => {
-        if (res.data.status) {
-          this.setState({
-            cartLength: res.data.data.length,
-            cartData: res.data.data,
-          });
-        }
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-      }
-    );
-  };
   publisherUnreadMessageCount = () => {
-    ApiServices.publisherUnreadMessageCount().then(
-      (res) => {
-        if (res.data.status) {
-          this.setState({
-            unRead: res.data.data,
-          });
-        }
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-      }
-    );
+    // ApiServices.publisherUnreadMessageCount().then(
+    //   (res) => {
+    //     if (res.data.status) {
+    //       this.setState({
+    //         unRead: res.data.data,
+    //       });
+    //     }
+    //   },
+    //   (error) => {
+    //     const resMessage =
+    //       (error.response &&
+    //         error.response.data &&
+    //         error.response.data.message) ||
+    //       error.message ||
+    //       error.toString();
+    //   }
+    // );
   };
   publisherReadMessage = (id) => {
-    ApiServices.publisherReadMessage(id).then(
-      (res) => {
-        if (res.data.status) {
-          this.setState({
-            unRead: res.data.data,
-          });
-        }
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-      }
-    );
-  };
-  handleAddtoCart = (hash_id) => {
-    ApiServices.addToCartContentLink(hash_id).then(
-      (res) => {
-        if (res.data.status) {
-          this.setState({
-            cartLength: res.data.data.length,
-            cartData: res.data.data,
-          });
-        }
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();        
-      }
-    );
+    // ApiServices.publisherReadMessage(id).then(
+    //   (res) => {
+    //     if (res.data.status) {
+    //       this.setState({
+    //         unRead: res.data.data,
+    //       });
+    //     }
+    //   },
+    //   (error) => {
+    //     const resMessage =
+    //       (error.response &&
+    //         error.response.data &&
+    //         error.response.data.message) ||
+    //       error.message ||
+    //       error.toString();
+    //   }
+    // );
   };
   componentDidMount() {
-    this.getCartData();
     this.publisherUnreadMessageCount();
   }
   render() {
@@ -233,10 +172,6 @@ class AppRoutes extends Component {
         <Navbar
           handleLogout={this.handleLogout}
           isAuthenticated={this.state.isAuthenticated}
-          cartLength={this.state.cartLength}
-          updateCartLength={this.updateCartLength}
-          getCartData={this.getCartData}
-          cartData={this.state.cartData}
         />
       ) : (
         ""
@@ -260,7 +195,7 @@ class AppRoutes extends Component {
           <div className="main-panel">
             <div className="content-wrapper">
               <Suspense fallback={<Spinner />}>
-                <Switch>                 
+                <Switch>
                   <Route
                     path="/login"
                     render={(props) => (
@@ -305,7 +240,6 @@ class AppRoutes extends Component {
                     component={ContentLinks}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
-                    handleAddtoCart={this.handleAddtoCart}
                   />
                   <ProtectedRoute
                     exact
@@ -327,18 +261,6 @@ class AppRoutes extends Component {
                     component={ContentLinksHome}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
-                    cartLength={this.state.cartLength}
-                    updateCartLength={this.updateCartLength}
-                    handleAddtoCart={this.handleAddtoCart}
-                    getCartData={this.getCartData}
-                    cartData={this.state.cartData}
-                  />
-                  <ProtectedRoute
-                    exact
-                    path="/orders"
-                    component={Orders}
-                    isAuthenticated={this.state.isAuthenticated}
-                    isAdmin={this.state.isAdmin}
                   />
                   <ProtectedRoute
                     exact
@@ -353,18 +275,7 @@ class AppRoutes extends Component {
                     component={Payments}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
-                  />
-                  <ProtectedRoute
-                    exact
-                    path="/cart"
-                    component={CartPage}
-                    isAuthenticated={this.state.isAuthenticated}
-                    isAdmin={this.state.isAdmin}
-                    cartLength={this.state.cartLength}
-                    updateCartLength={this.updateCartLength}
-                    getCartData={this.getCartData}
-                    cartData={this.state.cartData}
-                  />
+                  />                  
                   <AuthProtected
                     exact
                     path="/settings/profile"
@@ -386,21 +297,7 @@ class AppRoutes extends Component {
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
-                  <ProtectedRoute
-                    exact
-                    path="/order/:order_id"
-                    component={UserViewOrderDetails}
-                    isAuthenticated={this.state.isAuthenticated}
-                    isAdmin={this.state.isAdmin}
-                  />
-
-                  <AdminProtected
-                    exact
-                    path="/admin/dashboard"
-                    component={AdminDashboard}
-                    isAuthenticated={this.state.isAuthenticated}
-                    isAdmin={this.state.isAdmin}
-                  />
+                  
                   <AdminProtected
                     exact
                     path="/admin/users"
@@ -416,14 +313,7 @@ class AppRoutes extends Component {
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
-
-                  <AdminProtected
-                    exact
-                    path="/admin/orders"
-                    component={AdminOrders}
-                    isAuthenticated={this.state.isAuthenticated}
-                    isAdmin={this.state.isAdmin}
-                  />
+                 
                   <AdminProtected
                     exact
                     path="/admin/contentlinks"
@@ -442,14 +332,6 @@ class AppRoutes extends Component {
                     exact
                     path="/admin/projects"
                     component={AdminProjects}
-                    isAuthenticated={this.state.isAuthenticated}
-                    isAdmin={this.state.isAdmin}
-                  />
-
-                  <AdminProtected
-                    exact
-                    path="/admin/order/:order_id"
-                    component={AdminViewOrderDetails}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
@@ -519,21 +401,6 @@ class AppRoutes extends Component {
                   />
                   <PublisherProtected
                     exact
-                    path="/publisher/orders"
-                    component={PublisherOrders}
-                    isAuthenticated={this.state.isAuthenticated}
-                    isAdmin={this.state.isAdmin}
-                    publisherReadMessage={this.publisherReadMessage}
-                  />
-                  <PublisherProtected
-                    exact
-                    path="/publisher/order/:order_id"
-                    component={PublisherViewOrderDetails}
-                    isAuthenticated={this.state.isAuthenticated}
-                    isAdmin={this.state.isAdmin}
-                  />
-                  <PublisherProtected
-                    exact
                     path="/publisher/request-domain"
                     component={DomainRevealRequest}
                     isAuthenticated={this.state.isAuthenticated}
@@ -545,14 +412,6 @@ class AppRoutes extends Component {
                     component={DomainView}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
-                  />
-                  <PublisherProtected
-                    exact
-                    path="/publisher/messages"
-                    component={PublisherMessages}
-                    isAuthenticated={this.state.isAuthenticated}
-                    isAdmin={this.state.isAdmin}
-                    publisherReadMessage={this.publisherReadMessage}
                   />
 
                   <PublisherProtected

@@ -59,12 +59,7 @@ exports.getPublisherDomain = async (req, res) => {
         {
           model: Models.publisherDomainData,
           as: "contentData",
-        },
-        {
-          model: Models.newOrder,
-          as: "orderData",
-          limit: 3,
-        },
+        },        
       ],
     };
     const domainData = await Models.publisherDomain.findOne({
@@ -755,19 +750,7 @@ exports.adminViewPublisherDomain = async (req, res) => {
         {
           model: Models.publisherDomainData,
           as: "contentData",
-        },
-        {
-          model: Models.newOrder,
-          as: "orderData",
-          limit: 3,
-          include: [
-            {
-              model: Models.Users,
-              as: "customer",
-              attributes: ["firstName", "lastName", "email"],
-            },
-          ],
-        },
+        }        
       ],
     };
     const domainData = await Models.publisherDomain.findOne({

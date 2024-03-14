@@ -1,7 +1,0 @@
-.cursor-not-allowed input{
-    cursor: not-allowed;
-}
-.myformcheck  .MuiSwitch-switchBase.Mui-checked {
-    transform: translateX(22px) !important;
-    color: #fff;
-}

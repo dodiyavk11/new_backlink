@@ -8,8 +8,6 @@ module.exports = (app) => {
   require("./blog.routes")(app)
   require("./faq.routes")(app)
   require("./customer.routes")(app)
-  require("./message.routes")(app)
-  require("./order.routes")(app)
   require("./payment.routes")(app)
   require("./ahref.routes")(app)
   require("./subscriptionPlan.routes")(app)

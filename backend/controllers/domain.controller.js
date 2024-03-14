@@ -271,20 +271,7 @@ exports.getUserDomainDetails = async(req, res) => {
 		    },		    
 		  ],
 		}
-		const domainData = await Models.Domains.findOne({ where:{ hash_id:hash_id }, ...baseQuery });
-		const customer_id = domainData.user_id;
-		const getOrders = await Models.newOrder.findAll({
-							  where: { project_id: hash_id,customer_id  },
-							  limit: 3,
-							  include: [
-							    {
-							      model: Models.publisherDomain,
-							      as: 'domain',
-							      attributes: ['domain_name'],
-							    },
-							  ],
-							});
-		domainData.dataValues.orderData = getOrders;
+		const domainData = await Models.Domains.findOne({ where:{ hash_id:hash_id }, ...baseQuery });		
 		res.status(200).send({ status: true, message: "Domain fetch successfully.", data: domainData });
 	}
 	catch(err)

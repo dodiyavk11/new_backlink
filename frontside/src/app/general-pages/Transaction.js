@@ -97,12 +97,12 @@ export class Transaction extends Component {
   //   // }
   // };
 
-  gotoViewOrder = (id, event, index) => {
-    const nonClickableTags = ["button", "svg", "path"];
-    if (!nonClickableTags.includes(event.target.tagName.toLowerCase())) {
-      this.props.history.push(`/admin/order/${id}`);
-    }
-  };
+  // gotoViewOrder = (id, event, index) => {
+  //   const nonClickableTags = ["button", "svg", "path"];
+  //   if (!nonClickableTags.includes(event.target.tagName.toLowerCase())) {
+  //     this.props.history.push(`/admin/order/${id}`);
+  //   }
+  // };
 
   handleChangePage = (event, newPage) => {
     this.setState({ page: newPage });

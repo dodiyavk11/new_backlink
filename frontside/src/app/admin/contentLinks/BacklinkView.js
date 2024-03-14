@@ -23,7 +23,6 @@ export class BacklinkView extends Component {
       category: [],
       hash_id: hash_id,
       domain_id: 0,
-      orderData: [],
       data: {
         labels: [
           "Jan 23",
@@ -104,11 +103,7 @@ export class BacklinkView extends Component {
           }
         }
       });
-  };
-
-  viewOrder = (order_id) => {
-    this.props.history.push(`/admin/order/${order_id}`);
-  };
+  };  
 
   loadDomainViewData = () => {
     ApiServices.adminBacklinkView(this.state.hash_id)
@@ -125,10 +120,7 @@ export class BacklinkView extends Component {
           });
           if (res.data.data.category) {
             this.setState({ category: res.data.data.category });
-          }
-          if (res.data.data.orderData) {
-            this.setState({ orderData: res.data.data.orderData });
-          }
+          }          
           if (res.data.data.contentData) {
             this.setState({ contentInsideData: res.data.data.contentData });
           }
@@ -157,7 +149,7 @@ export class BacklinkView extends Component {
     this.loadDomainViewData();
   }
   render() {
-    const { contentData, category, contentInsideData, orderData } = this.state;
+    const { contentData, category, contentInsideData } = this.state;
     const getStatusClass = (status) => {
       switch (status) {
         case "Pending":
@@ -220,78 +212,7 @@ export class BacklinkView extends Component {
                   </div>
                 </div>
                 <hr />
-                <div className="row g-2">
-                  {/* <div className="col-sm-4" style={{ paddingRight: "0px" }}>
-                    <div className="border">
-                      <div className="p-3 d-flex flex-row justify-content-between">
-                        <div>
-                          <b>
-                            <Trans>Visibility index</Trans>
-                          </b>
-                        </div>
-                        <div>
-                          <img
-                            alt="Metrics"
-                            src={require("../../../assets/images/project/metrics.svg")}
-                            className="rounded"
-                            style={{ width: "1.5rem" }}
-                          />
-                        </div>
-                      </div>
-                      <div className="dataInside">
-                        <span className="p-3 h3">
-                          {this.state.hoveredValue !== null
-                            ? this.state.hoveredValue
-                            : contentInsideData.visibility_index}
-                        </span>
-                        <p style={{ paddingLeft: "18px" }}>
-                          <span className="h6">
-                            {this.state.hoverLabel !== null
-                              ? this.state.hoverLabel
-                              : this.state.data.labels[0]}
-                          </span>
-                        </p>
-                        <Line
-                          data={this.state.data}
-                          options={{
-                            onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements, "vIndex"),
-                            legend: {
-                              display: false,
-                            },
-                            tooltips: {
-                              enabled: false,                              
-                            },
-                            scales: {
-                              yAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                              xAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                            },
-                          }}
-                          ref={(ref) => (this.chartRef = ref)}
-                        />
-                      </div>
-                    </div>
-                  </div> */}
+                <div className="row g-2">                  
                   <div className="col-sm-4" style={{ paddingRight: "0px" }}>
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
@@ -523,308 +444,7 @@ export class BacklinkView extends Component {
                       </div>
                     </div>
                   </div>
-                </div>
-                {/* <div className="row g-2 mt-2">
-                  <div className="col-sm-4" style={{ paddingRight: "0px" }}>
-                    <div className="border">
-                      <div className="p-3 d-flex flex-row justify-content-between">
-                        <div>
-                          <b>
-                            <Trans>Citation Flow</Trans>
-                          </b>
-                        </div>
-                        <div>
-                          <img
-                            alt="majestic"
-                            src={require("../../../assets/images/project/majestic.svg")}
-                            className="rounded"
-                            style={{ width: "1.5rem" }}
-                          />
-                        </div>
-                      </div>
-                      <div className="dataInside">
-                        <span className="p-3 h3">
-                          {this.state.hoveredValue !== null
-                            ? this.state.hoveredValue
-                            : contentInsideData.citation_flow}
-                        </span>
-                        <p style={{ paddingLeft: "18px" }}>
-                          <span className="h6">
-                            {this.state.hoverLabel !== null
-                              ? this.state.hoverLabel
-                              : this.state.data.labels[0]}
-                          </span>
-                        </p>
-                        <Line
-                          data={this.state.data}
-                          options={{
-                            onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements, "cFlow"),
-                            legend: {
-                              display: false,
-                            },
-                            tooltips: {
-                              enabled: false,
-                            },
-                            scales: {
-                              yAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                              xAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                            },
-                          }}
-                          ref={(ref) => (this.chartRef = ref)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-4" style={{ paddingRight: "0px" }}>
-                    <div className="border">
-                      <div className="p-3 d-flex flex-row justify-content-between">
-                        <div>
-                          <b>
-                            <Trans>Trust Flow</Trans>
-                          </b>
-                        </div>
-                        <div>
-                          <img
-                            alt="majestic"
-                            src={require("../../../assets/images/project/majestic.svg")}
-                            className="rounded"
-                            style={{ width: "1.5rem" }}
-                          />
-                        </div>
-                      </div>
-                      <div className="dataInside">
-                        <span className="p-3 h3">
-                          {this.state.hoveredValue !== null
-                            ? this.state.hoveredValue
-                            : contentInsideData.trust_flow}
-                        </span>
-                        <p style={{ paddingLeft: "18px" }}>
-                          <span className="h6">
-                            {this.state.hoverLabel !== null
-                              ? this.state.hoverLabel
-                              : this.state.data.labels[0]}
-                          </span>
-                        </p>
-                        <Line
-                          data={this.state.data}
-                          options={{
-                            onHover: (event, chartElements) =>
-                              this.handleHover(event, chartElements, "tFlow"),
-                            legend: {
-                              display: false,
-                            },
-                            tooltips: {
-                              enabled: false,
-                            },
-                            scales: {
-                              yAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                              xAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                            },
-                          }}
-                          ref={(ref) => (this.chartRef = ref)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-sm-4" style={{ paddingRight: "0px" }}>
-                    <div className="border">
-                      <div className="p-3 d-flex flex-row justify-content-between">
-                        <div>
-                          <b>
-                            <Trans>Domain Authority</Trans>
-                          </b>
-                        </div>
-                        <div>
-                          <img
-                            alt="moz"
-                            src={require("../../../assets/images/project/moz.svg")}
-                            className="rounded"
-                            style={{ width: "1.5rem" }}
-                          />
-                        </div>
-                      </div>
-                      <div className="dataInside">
-                        <span className="p-3 h3">
-                          {this.state.hoveredValue !== null
-                            ? this.state.hoveredValue
-                            : contentInsideData.authority}
-                        </span>
-                        <p style={{ paddingLeft: "18px" }}>
-                          <span className="h6">
-                            {this.state.hoverLabel !== null
-                              ? this.state.hoverLabel
-                              : this.state.data.labels[0]}
-                          </span>
-                        </p>
-                        <Line
-                          data={this.state.data}
-                          options={{
-                            onHover: (event, chartElements) =>
-                              this.handleHover(
-                                event,
-                                chartElements,
-                                "dAuthority"
-                              ),
-                            legend: {
-                              display: false,
-                            },
-                            tooltips: {
-                              enabled: false,
-                            },
-                            scales: {
-                              yAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                              xAxes: [
-                                {
-                                  gridLines: {
-                                    display: false,
-                                  },
-                                  ticks: {
-                                    display: false,
-                                    maxTicksLimit: 10,
-                                  },
-                                },
-                              ],
-                            },
-                          }}
-                          ref={(ref) => (this.chartRef = ref)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-                <div className="row g-2 mt-4 pl-3">
-                  <div className="col-sm-12 border bRadius">
-                    <div className="mt-2 mb-2 p-2 dashboardHome">
-                      <h4 className="card-title">
-                        <Trans>Orders</Trans>
-                      </h4>
-                      <hr />
-                      {orderData.map((order) => (
-                        <div className="card" key={order.id}>
-                          <div
-                            className="card-body"
-                            style={{ padding: "1.5rem 0.5rem" }}
-                          >
-                            <table>
-                              <tbody>
-                                <tr onClick={() => this.viewOrder(order.id)}>
-                                  <td>
-                                    <h4>{order.anchortext}</h4>
-                                    <div className="extraInfo flex-wrap d-flex justify-content-between">
-                                      <span
-                                        style={{ padding: "3px" }}
-                                        className={`badge ${getStatusClass(
-                                          order.status
-                                        )}`}
-                                      >
-                                        {order.status}
-                                      </span>
-                                      <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <div>
-                                        {CurrencyFormatter.formatCurrency(
-                                          order.total_price
-                                        )}
-                                      </div>
-                                      <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <div>
-                                        <TimeAgo
-                                          datetime={order.created_at}
-                                          locale="en"
-                                        />
-                                      </div>
-                                      <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <span>
-                                        {order.customer
-                                          ? `${order.customer.firstName} ${order.customer.lastName}`
-                                          : "-"}
-                                      </span>
-                                      <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <span>
-                                        {order.customer
-                                          ? `${order.customer.email}`
-                                          : "-"}
-                                      </span>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      ))}
-                      {!orderData.length && (
-                        <div className="card">
-                          <div className="card-body dashboardCard">
-                            <h4 className="text-center">
-                              <Trans>No Orders.</Trans>
-                            </h4>
-                          </div>
-                        </div>
-                      )}
-                      {orderData.length > 0 && (
-                        <div className="card bRadius cRadiusTop">
-                          <div className="card-body text-center p-0">
-                            <hr />
-                            <Link to="/admin/orders" className="hrefTitle">
-                              <Trans>View all</Trans>
-                            </Link>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                </div>                
               </div>
             </div>
           </div>

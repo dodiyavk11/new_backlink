@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import { withRouter, Link } from "react-router-dom";
 import { Line } from "react-chartjs-2";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,7 +6,6 @@ import AuthService from "../services/auth.service";
 import "../../assets/custom.css";
 import Tooltip from "@material-ui/core/Tooltip";
 import ApiServices from "../services/api.service";
-import PlaceOrderDetailsModal from "../shared/PlaceOrderDetailsModal";
 import { Trans } from "react-i18next";
 import CurrencyFormatter from "../shared/CurrencyFormatter";
 import AdminBack from "../shared/AdminBack";
@@ -26,8 +24,6 @@ export class ContentLinks extends Component {
       contentInsideData: [],
       category: [],
       hash_id: hash_id,
-      showModalStep1: false,
-      showModalStep2: false,
       data: {
         labels: [
           "Jan 23",
@@ -55,7 +51,6 @@ export class ContentLinks extends Component {
       hoverLabel: null,
     };
   }
-  showProjectModal = () => this.setState({ showModalStep1: true });
 
   showModal = () => this.setState({ showModal: true });
   closeModal = () => this.setState({ showModal: false });
@@ -95,13 +90,6 @@ export class ContentLinks extends Component {
     );
   };
 
-  handleNextStep = () => {
-    this.setState({
-      showModalStep1: false,
-      showModalStep2: true,
-    });
-  };
-
   handleFavorite = (id) => {
     ApiServices.userFavoriteUpdate(id).then(
       (res) => {
@@ -122,20 +110,6 @@ export class ContentLinks extends Component {
         });
       }
     );
-  };
-
-  handleBackStep = () => {
-    this.setState({
-      showModalStep1: true,
-      showModalStep2: false,
-    });
-  };
-
-  handleClose = () => {
-    this.setState({
-      showModalStep1: false,
-      showModalStep2: false,
-    });
   };
 
   handleFormSubmit = (formData) => {
@@ -201,30 +175,6 @@ export class ContentLinks extends Component {
   componentDidMount() {
     this.getContentLinkData();
   }
-  handleAddtoCart = (hash_id) => {
-    ApiServices.addToCartContentLink(hash_id).then(
-      (res) => {
-        if (res.data.status) {
-          toast.success(res.data.message, {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        toast.error(resMessage, {
-          position: "top-center",
-          autoClose: 2000,
-        });
-      }
-    );
-  };
   render() {
     const contentData = this.state.contentData;
     const category = this.state.category;
@@ -762,22 +712,11 @@ export class ContentLinks extends Component {
                                 <button
                                   className="btn btn-rounded font-weight-medium auth-form-btn"
                                   style={{ width: "100%" }}
-                                  onClick={this.showProjectModal}
+                                  // onClick={}
                                 >
-                                  <Trans>Order now</Trans>
+                                  <Trans>Chat</Trans>
                                 </button>
                               </div>
-                              <button
-                                className="btn btn-primary btn btn-rounded custamFilterBtn"
-                                onClick={() =>
-                                  this.props.handleAddtoCart(
-                                    contentData.hash_id
-                                  )
-                                }
-                                style={{ width: "100%" }}
-                              >
-                                <Trans>Add to cart</Trans>
-                              </button>
                             </>
                           )}
                         </td>
@@ -817,15 +756,6 @@ export class ContentLinks extends Component {
             </div>
           </div>
         </div>
-        <PlaceOrderDetailsModal
-          showModal={this.state.showModalStep1}
-          showModal2={this.state.showModalStep2}
-          handleClose={this.handleClose}
-          handleNextStep={this.handleNextStep}
-          handleBackStep={this.handleBackStep}
-          contetnPrice={contentData.price}
-          contentLinkId={this.state.hash_id}
-        />
       </div>
     );
   }

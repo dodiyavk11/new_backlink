@@ -84,26 +84,7 @@ exports.userList = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const id = req.params.id;
-    const isDeleted = req.params.isDeleted;
-    // const hasRelatedDomains = await Models.Domains.findOne({ where: { user_id: userId } });
-    // if (hasRelatedDomains) {
-    // 	await Models.Domains.destroy({ where: { user_id: userId } });
-    // 	const domainIds = await Models.Domains.findAll({
-    //       attributes: ['id'],
-    //       where: { user_id: userId },
-    //       raw: true,
-    //     }).map(domain => domain.id);
-
-    //     await Models.customerDomainData.destroy({ where: { domain_id: domainIds } });
-    //     await Models.Domains.destroy({ where: { user_id: userId } });
-    //     await Models.newOrder.destroy({ where: { customer_id: userId } });
-    // }
-    // const getUserInfo = await Models.Users.findOne({ where: { id: userId } })
-    // if (getUserInfo && getUserInfo.dataValues.profile) {
-    // 	unlinkProfile(getUserInfo.dataValues.profile)
-    // }
-    // const deleteSetting = await Models.Setting.destroy({ where: { user_id: userId } })
-    // const deleteUser = await Models.Users.destroy({ where: { id: userId } });
+    const isDeleted = req.params.isDeleted;    
     const updateUser = await Models.Users.update(
       { isDeleted },
       { where: { id } }

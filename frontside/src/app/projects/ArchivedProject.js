@@ -52,11 +52,7 @@ const ArchivedProjects = ({ project, goToProjectViewLink }) => {
             <div>
               0 <Trans>Recommendations</Trans>
             </div>
-            <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-            <div>
-              {project.order_count} <Trans>Orders</Trans>
-            </div>
-            <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
+            <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>            
             <div>
               <TimeAgo datetime={project.created_at} locale="en" />
             </div>

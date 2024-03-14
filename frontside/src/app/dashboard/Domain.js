@@ -16,9 +16,7 @@ const DomainComponent = ({ item,goToProjectViewLink }) => (
               <h4>{item.domain_name}</h4>
               <div className="extraInfo d-flex flex-wrap justify-content-between">
                 <div>0 Recommendations</div>
-                <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                <div>{item.order_count} Orders</div>
-                <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
+                <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>                
                 <div>
                   <TimeAgo datetime={item.created_at} locale="en" />
                 </div>

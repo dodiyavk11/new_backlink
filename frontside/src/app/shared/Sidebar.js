@@ -131,33 +131,6 @@ class Sidebar extends Component {
               </li>
               <li
                 className={
-                  this.isPathActive("/orders") ? "nav-item active" : "nav-item"
-                }
-              >
-                <Link className="nav-link" to="/orders">
-                  <svg
-                    width={24}
-                    className="mr-3"
-                    id="newspaper"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-                    />
-                  </svg>
-                  <span className="menu-title">
-                    <Trans>Orders</Trans>
-                  </span>
-                </Link>
-              </li>
-              <li
-                className={
                   this.isPathActive("/tables") ? "nav-item active" : "nav-item"
                 }
               >
@@ -269,62 +242,6 @@ class Sidebar extends Component {
               </li>
               <li
                 className={
-                  this.isPathActive("/publisher/orders")
-                    ? "nav-item active"
-                    : "nav-item"
-                }
-              >
-                <Link className="nav-link" to="/publisher/orders">
-                  <svg
-                    width={24}
-                    className="mr-3"
-                    id="newspaper"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-                    />
-                  </svg>
-                  <span className="menu-title">
-                    <Trans>Orders</Trans>
-                  </span>
-                </Link>
-              </li>
-              <li
-                className={
-                  this.isPathActive("/publisher/messages")
-                    ? "nav-item active"
-                    : "nav-item"
-                }
-              >
-                <Link className="nav-link" to="/publisher/messages">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    style={{ marginRight: "22px" }}
-                    stroke="currentColor"
-                    className="bi bi-envelope"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
-                  </svg>
-                  <span className="menu-title">
-                    <Trans>Messages</Trans>
-                    <span className="badge badge-danger">
-                      {this.props.unRead}
-                    </span>
-                  </span>
-                </Link>
-              </li>
-              <li
-                className={
                   this.isPathActive("/publisher/request-domain")
                     ? "nav-item active"
                     : "nav-item"
@@ -373,71 +290,7 @@ class Sidebar extends Component {
           ) : null}
 
           {props.isAdmin === "1" ? (
-            <>
-              {/* <li
-                className={
-                  this.isPathActive("/admin/dashboard")
-                    ? "nav-item active"
-                    : "nav-item"
-                }
-              >
-                <Link className="nav-link" to="/admin/dashboard">
-                  <svg
-                    width="24"
-                    className="mr-3"
-                    id="chart-pie"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"
-                    />
-                  </svg>
-                  <span className="menu-title">
-                    <Trans>Dashboard</Trans>
-                  </span>
-                </Link>
-              </li> */}
-              <li
-                className={
-                  this.isPathActive("/admin/orders")
-                    ? "nav-item active"
-                    : "nav-item"
-                }
-              >
-                <Link className="nav-link" to="/admin/orders">
-                  <svg
-                    width={24}
-                    className="mr-3"
-                    id="newspaper"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-                    />
-                  </svg>
-                  <span className="menu-title">
-                    <Trans>Orders</Trans>
-                  </span>
-                </Link>
-              </li>
+            <>              
               <li
                 className={
                   this.isPathActive("/admin/contentlinks")

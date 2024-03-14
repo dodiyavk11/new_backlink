@@ -239,50 +239,50 @@ exports.invoidePdfGenerate = async (req, res) => {
     const transactionData = await Models.Transactions.findAll({
       where: { id },
     });
-    if (order_id) {
-      let wheres = { id: order_id };
-      const baseQuery = {
-        include: [
-          {
-            model: Models.publisherDomain,
-            as: "domain",
-            attributes: { exclude: ["updated_at", "created_at", "id"] },
-          },
-        ],
-        where: wheres,
-      };
-      pdfData = await Models.newOrder.findAll(baseQuery);
-    } else {
-      pdfData = transactionData;
-    }
-    if (transactionData) {
-      const invoice = {
-        shipping: {
-          name: `${getUser.firstName} ${getUser.lastName}`,
-          address: getUser.address,
-          city: getUser.city,
-          state: getUser.city,
-          country: getUser.country,
-          postal_code: getUser.postal_code,
-        },
-        items: pdfData,
-        subtotal: transactionData[0].dataValues.amount,
-        paid: 0,
-        discount: 0,
-        order_id: order_id,
-        invoice_nr: `#${order_id ? order_id : id}`,
-        created_at: transactionData[0].dataValues.created_at,
-        transaction_id: transactionData[0].dataValues.transaction_id,
-        status:transactionData[0].dataValues.status,
-      };
+    // if (order_id) {
+    //   let wheres = { id: order_id };
+    //   const baseQuery = {
+    //     include: [
+    //       {
+    //         model: Models.publisherDomain,
+    //         as: "domain",
+    //         attributes: { exclude: ["updated_at", "created_at", "id"] },
+    //       },
+    //     ],
+    //     where: wheres,
+    //   };
+    //   pdfData = await Models.newOrder.findAll(baseQuery);
+    // } else {
+    //   pdfData = transactionData;
+    // }
+    // if (transactionData) {
+    //   const invoice = {
+    //     shipping: {
+    //       name: `${getUser.firstName} ${getUser.lastName}`,
+    //       address: getUser.address,
+    //       city: getUser.city,
+    //       state: getUser.city,
+    //       country: getUser.country,
+    //       postal_code: getUser.postal_code,
+    //     },
+    //     items: pdfData,
+    //     subtotal: transactionData[0].dataValues.amount,
+    //     paid: 0,
+    //     discount: 0,
+    //     order_id: order_id,
+    //     invoice_nr: `#${order_id ? order_id : id}`,
+    //     created_at: transactionData[0].dataValues.created_at,
+    //     transaction_id: transactionData[0].dataValues.transaction_id,
+    //     status:transactionData[0].dataValues.status,
+    //   };
 
-      createInvoice(invoice, "./assets/invoices/invoice.pdf");
-      return res.status(200).send({
-        status: true,
-        message: "Pdf generated success",
-        filepath: "assets/invoices/invoice.pdf",
-      });
-    }
+    //   createInvoice(invoice, "./assets/invoices/invoice.pdf");
+    //   return res.status(200).send({
+    //     status: true,
+    //     message: "Pdf generated success",
+    //     filepath: "assets/invoices/invoice.pdf",
+    //   });
+    // }
     return res.status(404).send({ status: false, message: "Order not found." });
   } catch (err) {
     res.status(500).send({
@@ -302,50 +302,50 @@ exports.invoidePdfGeneratePublisher = async (req, res) => {
     const transactionData = await Models.Transactions.findAll({
       where: { id },
     });
-    if (order_id) {
-      let wheres = { id: order_id };
-      const baseQuery = {
-        include: [
-          {
-            model: Models.publisherDomain,
-            as: "domain",
-            attributes: { exclude: ["updated_at", "created_at", "id"] },
-          },
-        ],
-        where: wheres,
-      };
-      pdfData = await Models.newOrder.findAll(baseQuery);
-    } else {
-      pdfData = transactionData;
-    }
-    if (transactionData) {
-      const invoice = {
-        shipping: {
-          name: `${getUser.firstName} ${getUser.lastName}`,
-          address: getUser.address,
-          city: getUser.city,
-          state: getUser.city,
-          country: getUser.country,
-          postal_code: getUser.postal_code,
-        },
-        items: pdfData,
-        subtotal: transactionData[0].dataValues.amount,
-        paid: 0,
-        discount: 0,
-        order_id: order_id,
-        invoice_nr: `#${order_id ? order_id : id}`,
-        created_at: transactionData[0].dataValues.created_at,
-        transaction_id: transactionData[0].dataValues.transaction_id,
-        status:transactionData[0].dataValues.status,
-      };
+    // if (order_id) {
+    //   let wheres = { id: order_id };
+    //   const baseQuery = {
+    //     include: [
+    //       {
+    //         model: Models.publisherDomain,
+    //         as: "domain",
+    //         attributes: { exclude: ["updated_at", "created_at", "id"] },
+    //       },
+    //     ],
+    //     where: wheres,
+    //   };
+    //   pdfData = await Models.newOrder.findAll(baseQuery);
+    // } else {
+    //   pdfData = transactionData;
+    // }
+    // if (transactionData) {
+    //   const invoice = {
+    //     shipping: {
+    //       name: `${getUser.firstName} ${getUser.lastName}`,
+    //       address: getUser.address,
+    //       city: getUser.city,
+    //       state: getUser.city,
+    //       country: getUser.country,
+    //       postal_code: getUser.postal_code,
+    //     },
+    //     items: pdfData,
+    //     subtotal: transactionData[0].dataValues.amount,
+    //     paid: 0,
+    //     discount: 0,
+    //     order_id: order_id,
+    //     invoice_nr: `#${order_id ? order_id : id}`,
+    //     created_at: transactionData[0].dataValues.created_at,
+    //     transaction_id: transactionData[0].dataValues.transaction_id,
+    //     status:transactionData[0].dataValues.status,
+    //   };
 
-      createInvoice(invoice, "./assets/invoices/invoice.pdf");
-      return res.status(200).send({
-        status: true,
-        message: "Pdf generated success",
-        filepath: "assets/invoices/invoice.pdf",
-      });
-    }
+    //   createInvoice(invoice, "./assets/invoices/invoice.pdf");
+    //   return res.status(200).send({
+    //     status: true,
+    //     message: "Pdf generated success",
+    //     filepath: "assets/invoices/invoice.pdf",
+    //   });
+    // }
     return res.status(404).send({ status: false, message: "Order not found." });
   } catch (err) {
     res.status(500).send({
@@ -365,50 +365,50 @@ exports.invoidePdfGenerateAdmin = async (req, res) => {
     const transactionData = await Models.Transactions.findAll({
       where: { id },
     });
-    if (order_id) {
-      let wheres = { id: order_id };
-      const baseQuery = {
-        include: [
-          {
-            model: Models.publisherDomain,
-            as: "domain",
-            attributes: { exclude: ["updated_at", "created_at", "id"] },
-          },
-        ],
-        where: wheres,
-      };
-      pdfData = await Models.newOrder.findAll(baseQuery);
-    } else {
-      pdfData = transactionData;
-    }
-    if (transactionData) {
-      const invoice = {
-        shipping: {
-          name: `${getUser.firstName} ${getUser.lastName}`,
-          address: getUser.address,
-          city: getUser.city,
-          state: getUser.city,
-          country: getUser.country,
-          postal_code: getUser.postal_code,
-        },
-        items: pdfData,
-        subtotal: transactionData[0].dataValues.amount,
-        paid: 0,
-        discount: 0,
-        order_id: order_id,
-        invoice_nr: `#${order_id ? order_id : id}`,
-        created_at: transactionData[0].dataValues.created_at,
-        transaction_id: transactionData[0].dataValues.transaction_id,
-        status:transactionData[0].dataValues.status,
-      };
+    // if (order_id) {
+    //   let wheres = { id: order_id };
+    //   const baseQuery = {
+    //     include: [
+    //       {
+    //         model: Models.publisherDomain,
+    //         as: "domain",
+    //         attributes: { exclude: ["updated_at", "created_at", "id"] },
+    //       },
+    //     ],
+    //     where: wheres,
+    //   };
+    //   pdfData = await Models.newOrder.findAll(baseQuery);
+    // } else {
+    //   pdfData = transactionData;
+    // }
+    // if (transactionData) {
+    //   const invoice = {
+    //     shipping: {
+    //       name: `${getUser.firstName} ${getUser.lastName}`,
+    //       address: getUser.address,
+    //       city: getUser.city,
+    //       state: getUser.city,
+    //       country: getUser.country,
+    //       postal_code: getUser.postal_code,
+    //     },
+    //     items: pdfData,
+    //     subtotal: transactionData[0].dataValues.amount,
+    //     paid: 0,
+    //     discount: 0,
+    //     order_id: order_id,
+    //     invoice_nr: `#${order_id ? order_id : id}`,
+    //     created_at: transactionData[0].dataValues.created_at,
+    //     transaction_id: transactionData[0].dataValues.transaction_id,
+    //     status:transactionData[0].dataValues.status,
+    //   };
 
-      createInvoice(invoice, "./assets/invoices/invoice.pdf");
-      return res.status(200).send({
-        status: true,
-        message: "Pdf generated success",
-        filepath: "assets/invoices/invoice.pdf",
-      });
-    }
+    //   createInvoice(invoice, "./assets/invoices/invoice.pdf");
+    //   return res.status(200).send({
+    //     status: true,
+    //     message: "Pdf generated success",
+    //     filepath: "assets/invoices/invoice.pdf",
+    //   });
+    // }
     return res.status(404).send({ status: false, message: "Order not found." });
   } catch (err) {
     res.status(500).send({

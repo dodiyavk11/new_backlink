@@ -34,7 +34,6 @@ export class ContentLinks extends Component {
       orderBy: "id",
       order: "desc",
       selectedRow: null,
-      orderData: [],
       showPopover: false,
       min: 30,
       max: 200000,

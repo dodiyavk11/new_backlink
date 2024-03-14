@@ -5,7 +5,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthService from "../../services/auth.service";
 import "../../../assets/custom.css";
-import Tooltip from "@material-ui/core/Tooltip";
 import TimeAgo from "timeago-react";
 import ApiServices from "../../services/api.service";
 import { Trans } from "react-i18next";
@@ -17,7 +16,6 @@ export class ProjectView extends Component {
     super(props);
     this.state = {
       contentData: [],
-      orderData: [],
       contentInsideData: [],
       category: [],
       hash_id: hash_id,
@@ -62,9 +60,6 @@ export class ProjectView extends Component {
       this.setState({ hoverLabel: null });
     }
   };
-  viewOrder = (order_id) => {
-    this.props.history.push(`/admin/order/${order_id}`);
-  };
   handleGoBack = () => {
     this.props.history.goBack();
   };
@@ -93,10 +88,7 @@ export class ProjectView extends Component {
           });
           if (res.data.data.category) {
             this.setState({ category: res.data.data.category });
-          }
-          if (res.data.data.orderData) {
-            this.setState({ orderData: res.data.data.orderData });
-          }
+          }          
           if (res.data.data.contentData) {
             this.setState({ contentInsideData: res.data.data.contentData });
           }
@@ -127,7 +119,7 @@ export class ProjectView extends Component {
   }
 
   render() {
-    const { contentData, category, contentInsideData, orderData } = this.state;
+    const { contentData, category, contentInsideData } = this.state;
     const getStatusClass = (status) => {
       switch (status) {
         case "Pending":
@@ -424,84 +416,7 @@ export class ProjectView extends Component {
                       </div>
                     </div>
                   </div>
-                </div>              
-                <div className="row g-2 mt-4 pl-3">
-                  <div className="col-sm-12 border bRadius">
-                    <div className="mt-2 mb-2 p-2 dashboardHome">
-                      <h4 className="card-title">
-                        <Trans>Orders</Trans>
-                      </h4>
-                      <hr />
-                      {orderData.map((order) => (
-                        <div className="card" key={order.id}>
-                          <div
-                            className="card-body"
-                            style={{ padding: "1.5rem 0.5rem" }}
-                          >
-                            <table>
-                              <tbody>
-                                <tr onClick={() => this.viewOrder(order.id)}>
-                                  <td>
-                                    <h4>
-                                      {order.domain
-                                        ? order.domain.domain_name
-                                        : "Link Bundle"}
-                                    </h4>
-                                    <div className="extraInfo flex-wrap d-flex justify-content-between">
-                                      <div>
-                                        {contentData.domain_name
-                                          ? contentData.domain_name
-                                          : "No project"}
-                                      </div>
-
-                                      <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <span
-                                        style={{ padding: "3px" }}
-                                        className={`badge ${getStatusClass(
-                                          order.status
-                                        )}`}
-                                      >
-                                        {order.status}
-                                      </span>
-                                      <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <div>{CurrencyFormatter.formatCurrency(order.total_price)}</div>
-                                      <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <div>
-                                        <TimeAgo
-                                          datetime={order.created_at}
-                                          locale="en"
-                                        />
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      ))}
-                      {!orderData.length && (
-                        <div className="card">
-                          <div className="card-body dashboardCard">
-                            <h4 className="text-center">
-                              <Trans>No Orders.</Trans>
-                            </h4>
-                          </div>
-                        </div>
-                      )}
-                      {orderData.length > 0 && (
-                        <div className="card bRadius cRadiusTop">
-                          <div className="card-body text-center p-0">
-                            <hr />
-                            <Link to="/admin/orders" className="hrefTitle">
-                              <Trans>View all</Trans>
-                            </Link>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                </div>                              
               </div>
             </div>
           </div>

@@ -36,25 +36,7 @@ exports.dashboard = async (req, res) => {
             "credits",
             "status",
           ],
-        },
-        {
-          model: Models.newOrder,
-          as: "orders",
-          limit: 5,
-          order: [["created_at", "DESC"]],
-          include: [
-            {
-              model: Models.publisherDomain,
-              as: "domain",
-              attributes: { exclude: ["updated_at", "created_at", "id"] },
-            },
-            {
-              model: Models.Domains,
-              as: "project",
-              attributes: { exclude: ["updated_at", "created_at", "id"] },
-            },
-          ],
-        },
+        },        
       ],
       attributes: { exclude: ["password"] },
     });
@@ -74,13 +56,7 @@ exports.dashboard = async (req, res) => {
             const domainParts = domain.domain_name.split(".");
             customizedDomain.tld = domainParts[domainParts.length - 1];
             customizedDomain.image_url =
-              "/assets/domain_img/" + domain.hash_id + ".png";
-            const orderCount = await Models.newOrder.count({
-              where: {
-                domain_id: domain.id,
-              },
-            });
-            customizedDomain.order_count = orderCount;
+              "/assets/domain_img/" + domain.hash_id + ".png";            
           } else {
             customizedDomain.tld = "";
           }
@@ -410,19 +386,7 @@ exports.getUserDomain = async (req, res) => {
     const domainData = await Models.Domains.findOne({
       where: { user_id: userId, hash_id: hash_id },
       ...baseQuery,
-    });
-    const getOrders = await Models.newOrder.findAll({
-      where: { project_id: hash_id, customer_id: userId },
-      limit: 3,
-      include: [
-        {
-          model: Models.publisherDomain,
-          as: "domain",
-          attributes: ["domain_name"],
-        },
-      ],
-    });
-    domainData.dataValues.orderData = getOrders;
+    });   
     res
       .status(200)
       .send({
@@ -533,24 +497,24 @@ exports.transactionHistory = async (req, res) => {
 exports.publisherTransaction = async (req, res) => {
   try {
     const userId = req.userId;
-    const orderData = await Models.newOrder.findAll({
-      where: { publisher_id: userId },
-    });
-    const orderIds = orderData.map((order) => order.id);
-    const publisherTransaction = await Models.Transactions.findAll({
-      where: {
-        order_id: {
-          [Op.in]: orderIds,
-        },
-      },
-      order: [["id", "DESC"]],
-    });
+    // const orderData = await Models.newOrder.findAll({
+    //   where: { publisher_id: userId },
+    // });
+    // const orderIds = orderData.map((order) => order.id);
+    // const publisherTransaction = await Models.Transactions.findAll({
+    //   where: {
+    //     order_id: {
+    //       [Op.in]: orderIds,
+    //     },
+    //   },
+    //   order: [["id", "DESC"]],
+    // });
     res
       .status(200)
       .send({
         status: true,
         message: "Publisher Transaction fecth successfully.",
-        data: publisherTransaction,
+        data: [],
       });
   } catch (err) {
     console.log(err);

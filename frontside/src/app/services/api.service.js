@@ -116,179 +116,7 @@ class ApiServices {
       .then((response) => {
         return response;
       });
-  }
-  addToCartContentLink(hash_id) {
-    const authToken = localStorage.getItem("token");
-    const url = `${this.APP_URL}user/cart/add-item/${hash_id}`;
-    return axios
-      .post(
-        url,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        return response;
-      });
-  }
-  orderTextFileUpload(file) {
-    const authToken = localStorage.getItem("token");
-    const url = `${this.APP_URL}files`;
-    return axios
-      .post(
-        url,
-        { file },
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((response) => {
-        return response;
-      });
-  }
-  orderUplodedDelete(filename) {
-    const authToken = localStorage.getItem("token");
-    const url = `${this.APP_URL}files/delete/${filename}`;
-    return axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
-      .then((response) => {
-        return response;
-      });
-  }
-
-  singleContentLinkPlaceOrder(orderData, contetnId) {
-    const authToken = localStorage.getItem("token");
-    const {
-      anchortext,
-      linktarget,
-      publication_date,
-      note,
-      project_id,
-      originalname,
-      filename,
-      textCreation,
-      chooseByBacklink,
-      textCreationPrice,
-      approveTextPrice,
-      approveText,
-      wordCount,
-    } = orderData;
-    const url = `${this.APP_URL}order/${contetnId}/placeOrder`;
-    return axios
-      .post(
-        url,
-        {
-          anchortext,
-          linktarget,
-          publication_date,
-          note,
-          project_id,
-          originalname,
-          filename,
-          textCreation,
-          chooseByBacklink,
-          textCreationPrice,
-          approveTextPrice,
-          approveText,
-          wordCount,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        return response;
-      });
-  }
-
-  cartPlaceOrder(orderData) {
-    const authToken = localStorage.getItem("token");
-    const url = `${this.APP_URL}order/cart/order`;
-    return axios
-      .post(url, orderData, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        return response;
-      });
-  }
-
-  getUserOrderList() {
-    const authToken = localStorage.getItem("token");
-    const url = `${this.APP_URL}user/orders`;
-    return axios
-      .post(
-        url,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        return response;
-      });
-  }
-  userOrderListFilter(filterData) {
-    const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "user/orders";
-    return axios
-      .post(url, filterData, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        return response;
-      });
-  }
-  SingleOrderView(orderId, urls) {
-    const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + urls + orderId;
-    return axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
-      .then((response) => {
-        return response;
-      });
-  }
-
-  userCancelOrder(orderId) {
-    const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "order/cancelOrder/" + orderId;
-    return axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
-      .then((response) => {
-        return response;
-      });
-  }
+  }  
 
   getContentLinkList(filterdata = null) {
     const authToken = localStorage.getItem("token");
@@ -322,29 +150,7 @@ class ApiServices {
         return response;
       });
   }
-
-  getUserCartData() {
-    const authToken = localStorage.getItem("token");
-    return axios
-      .get(this.APP_URL + "user/cart", {
-        headers: { Authorization: `Bearer ${authToken}` },
-      })
-      .then((response) => {
-        return response;
-      });
-  }
-
-  deleteItemFromCart(cartId) {
-    const authToken = localStorage.getItem("token");
-    return axios
-      .delete(this.APP_URL + "user/cart/" + cartId, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      })
-      .then((response) => {
-        return response;
-      });
-  }
-
+  
   getProjectViewData(hash_id) {
     const authToken = localStorage.getItem("token");
     return axios.get(`${this.APP_URL}user/domain/${hash_id}`, {
@@ -410,54 +216,7 @@ class ApiServices {
         return response;
       });
   }
-  getPublisherOrderList() {
-    const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "publisher/orders";
-    return axios
-      .post(
-        url,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      )
-      .then((response) => {
-        return response;
-      });
-  }
-  publisherOrderFilter(filterData) {
-    const authToken = localStorage.getItem("token");
-    const url = this.APP_URL + "publisher/orders";
-    return axios
-      .post(url, filterData, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
-      .then((response) => {
-        return response;
-      });
-  }
-
-  publisherUpdateOrderStatus(order_id, status) {
-    const authToken = localStorage.getItem("token");
-    const url = `${this.APP_URL}publisher/updateOrderStatus/${order_id}`;
-    return axios
-      .post(
-        url,
-        { status },
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      )
-      .then((response) => {
-        return response;
-      });
-  }
+  
   publisherDomainUpdate(domain_id, formData) {
     const authToken = localStorage.getItem("token");
     const url = `${this.APP_URL}publisher/updateDomain/${domain_id}`;
@@ -579,18 +338,7 @@ class ApiServices {
       .then((response) => {
         return response;
       });
-  }
-
-  adminGetAllOrders(filterdata = null) {
-    const authToken = localStorage.getItem("token");
-    return axios
-      .post(this.APP_URL + "admin/orders", filterdata, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      })
-      .then((response) => {
-        return response;
-      });
-  }
+  }  
 
   adminUserList(filterdata = null) {
     const authToken = localStorage.getItem("token");
@@ -861,18 +609,7 @@ class ApiServices {
       .then((response) => {
         return response;
       });
-  }
-
-  exportOrderCsv(lang) {
-    const authToken = localStorage.getItem("token");
-    return axios
-      .get(`${this.APP_URL}publisher/orders/export?lang=${lang}`, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      })
-      .then((response) => {
-        return response;
-      });
-  }
+  } 
 
   publisherUnreadMessageCount(){
     const authToken = localStorage.getItem("token");

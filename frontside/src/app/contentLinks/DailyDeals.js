@@ -200,13 +200,17 @@ export class DailyDeals extends Component {
                             title="Request Pending"
                           ></i>
                         ) : item.domainRequest.length > 0 &&
-                        item.domainRequest[0].status === 2 ? (
-                        <i
-                          className="mdi mdi-close-circle"
-                          title="Your request declined."
-                          style={{ fontSize: "25px", cursor: "pointer", color: "red" }}
-                        ></i>
-                      ) : item.domainRequest.length === 0 ? (
+                          item.domainRequest[0].status === 2 ? (
+                          <i
+                            className="mdi mdi-close-circle"
+                            title="Your request declined."
+                            style={{
+                              fontSize: "25px",
+                              cursor: "pointer",
+                              color: "red",
+                            }}
+                          ></i>
+                        ) : item.domainRequest.length === 0 ? (
                           <i
                             onClick={() =>
                               this.handleRequestClick(item.id, item.user_id)
@@ -216,20 +220,12 @@ export class DailyDeals extends Component {
                             title="Send Request"
                           ></i>
                         ) : (
-                          <svg
-                            onClick={() =>
-                              this.props.handleAddtoCart(item.hash_id)
-                            }
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="currentColor"
-                            className="bi bi-bag"
-                            viewBox="0 0 16 16"
-                            style={{ color: "#757575c9", cursor: "pointer" }}
-                          >
-                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                          </svg>
+                          <i
+                            // onClick={() => this.props.handleAddtoCart(item.hash_id)}
+                            className="mdi mdi-message-outline"
+                            style={{ fontSize: "30px", cursor: "pointer" }}
+                            title="Chat"
+                          ></i>
                         )}
                       </td>
                     </tr>

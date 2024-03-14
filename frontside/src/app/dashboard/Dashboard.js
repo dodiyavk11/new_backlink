@@ -3,17 +3,13 @@ import { withRouter, Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Modal, Button } from "react-bootstrap";
 import CreateProjectModal from "../shared/CreateProjectModal";
 import AdminBack from "../shared/AdminBack";
-import OrderComponent from "./Order";
 import DomainComponent from "./Domain";
 import ContentLinksComponent from "./contentLinks";
 import ApiServices from "../services/api.service";
-import StripePayment from "../stripePayment";
 import { Trans } from "react-i18next";
 import "../../assets/custom.css";
-import CurrencyFormatter from "../shared/CurrencyFormatter";
 
 export class Dashboard extends Component {
   constructor(props) {
@@ -21,13 +17,8 @@ export class Dashboard extends Component {
     this.state = {
       dashboardData: {},
       domains: [],
-      balance: 0,
-      orders: [],
       contentData: [],
-      show: false,
       showModal: false,
-      amount: 0,
-      vat: 0,
     };
   }
   showProjectModal = () => this.setState({ showModal: true });
@@ -37,52 +28,11 @@ export class Dashboard extends Component {
     this.setState({ show: false });
   };
 
-  handleAmountChange = (event) => {
-    this.setState({ amount: event.target.value });
-  };
-
-  handleAddAmountSubmit = () => {
-    const amount = this.state.amount;
-    ApiServices.userAddStaticAmountTesting(amount).then(
-      (res) => {
-        if (res.data.status) {
-          this.setState({
-            amount: 0,
-            balance: res.data.data.balance,
-            show: false,
-          });
-          toast.success(res.data.message, {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        toast.error(resMessage, {
-          position: "top-center",
-          autoClose: 2000,
-        });
-      }
-    );
-  };
-
   goToContentLink = (hash_id) => {
     this.props.history.push(`/content/${hash_id}`);
   };
-  goToOrderLink = (order_id) => {
-    this.props.history.push(`/order/${order_id}`);
-  };
   goToProjectViewLink = (hash_id) => {
     this.props.history.push(`/projects/${hash_id}`);
-  };
-  handleShow = () => {
-    this.setState({ show: true });
   };
 
   handleFormSubmit = (formData) => {
@@ -106,23 +56,6 @@ export class Dashboard extends Component {
     );
   };
   componentDidMount() {
-    ApiServices.getVatPercentage()
-      .then((vat) => {
-        if (vat) {
-          this.setState({ vat: vat });
-        } else {
-          toast.error(<Trans>Something went to wrong.</Trans>, {
-            position: "top-center",
-            autoClose: 2000,
-          });
-        }
-      })
-      .catch((error) => {
-        toast.error(<Trans>Something went to wrong.</Trans>, {
-          position: "top-center",
-          autoClose: 2000,
-        });
-      });
     ApiServices.getDashboard()
       .then((res) => {
         if (!res.status) {
@@ -132,17 +65,9 @@ export class Dashboard extends Component {
           });
         } else {
           this.setState({ dashboardData: res.data.data });
-          this.setState({ domains: res.data.data.domains });
-          if (res.data.data.orders) {
-            this.setState({ orders: res.data.data.orders });
-          }
+          this.setState({ domains: res.data.data.domains });          
           if (res.data.data.contentData) {
             this.setState({ contentData: res.data.data.contentData });
-          }
-          if (res.data.data.userAccountBalnace) {
-            this.setState({
-              balance: res.data.data.userAccountBalnace.balance,
-            });
           }
         }
       })
@@ -166,89 +91,14 @@ export class Dashboard extends Component {
     return (
       <>
         <div className="dashboardHome">
-          <Modal
-            size="md"
-            className="addBalanceModal"
-            show={this.state.show}
-            onHide={this.handleClose}
-            backdrop="static"
-            keyboard={false}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>
-                <h2 className="fontBold latterSpacing">
-                  <Trans>Add balance</Trans>
-                </h2>
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <StripePayment vat={this.state.vat} />
-            </Modal.Body>
-            <Modal.Footer>
-              {/* <Button className="btn btn-gradient-secondary btn-rounded btn-fw" variant="secondary" onClick={this.handleClose}>
-              Close
-            </Button>
-            <Button className="btn btn-gradient-primary btn-rounded btn-fw" variant="primary" onClick={this.handleClose}>
-              Save Changes
-            </Button> */}
-            </Modal.Footer>
-            {/* <div className="form-group">
-              <label htmlFor="exampleInputName1">Amount</label>
-              <input
-                value={this.state.amount}
-                onChange={this.handleAmountChange}
-                placeholder="Enter amount"
-                type="number"
-                className="form-control"
-              />
-            </div>
-            <button
-              className="btn btn-rounded btn-fw btn-block"
-              type="submit"
-              onClick={this.handleAddAmountSubmit}
-            >
-              Add amount
-            </button> */}
-            <img
-              src={require("../../assets/images/by-stripe.svg")}
-              alt="Success"
-              style={{ width: "auto", height: "25px", marginRight: "5px" }}
-            />
-          </Modal>
           <ToastContainer />
           <div className="page-header">
             <h3 className="fontBold latterSpacing">
-              <Trans>Dashboard(U)</Trans> <AdminBack/>
+              <Trans>Dashboard(U)</Trans> <AdminBack />
             </h3>
           </div>
           <div className="row">
-            <div className="col-lg-6 grid-margin">
-              <div className="card mb-4 bRadius">
-                <div className="card-body dashboardCard">
-                  <div className="d-flex flex-row justify-content-between">
-                    <div className="p-2 bd-highlight d-flex flex-column">
-                      <h4>
-                        <Trans>Available</Trans>
-                      </h4>
-                      <h2>
-                        <b>
-                          {CurrencyFormatter.formatCurrency(this.state.balance)}
-                        </b>
-                      </h2>
-                    </div>
-                    <div className="p-2 bd-highlight d-flex align-items-center justify-content-center">
-                      <button
-                        onClick={this.handleShow}
-                        type="button"
-                        className="btn btn-rounded btn-fw"
-                      >
-                        <i className="mdi mdi-plus mr-2"></i>
-                        <Trans>Add Balance</Trans>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="col-lg-12 grid-margin">              
               <div className="card bRadius cRadiusBottom">
                 <div className="card-body dashProHead">
                   <div className="d-flex flex-row justify-content-between">
@@ -297,42 +147,7 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               )}
-            </div>
-            <div className="col-lg-6 grid-margin stretch-card">
-              <div className="card bRadius">
-                <div className="card-body">
-                  <h4 className="card-title">
-                    <Trans>Orders</Trans>
-                  </h4>
-                  {this.state.orders.map((order) => (
-                    <OrderComponent
-                      key={order.id}
-                      order={order}
-                      viewOrder={this.goToOrderLink}
-                    />
-                  ))}
-                  {!this.state.orders.length && (
-                    <div className="card">
-                      <div className="card-body dashboardCard">
-                        <h4 className="text-center">
-                          <Trans>No Orders.</Trans>
-                        </h4>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                {this.state.orders.length > 0 && (
-                  <div className="card bRadius cRadiusTop">
-                    <div className="card-body text-center">
-                      <hr />
-                      <Link to="/orders" className="hrefTitle">
-                        <Trans>View all</Trans>
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+            </div>            
           </div>
           <div className="row">
             <div className="col-lg-8 grid-margin stretch-card">

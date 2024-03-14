@@ -1,0 +1,2 @@
+React node version is 14
+nvm use 14

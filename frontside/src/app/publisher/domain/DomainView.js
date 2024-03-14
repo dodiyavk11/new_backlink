@@ -23,7 +23,6 @@ export class DomainView extends Component {
       category: [],
       hash_id: hash_id,
       showModal: false,
-      orderData: [],
       data: {
         labels: [
           "Jan 23",
@@ -70,9 +69,6 @@ export class DomainView extends Component {
   handleGoBack = () => {
     this.props.history.goBack();
   };
-  viewOrder = (order_id) => {
-    this.props.history.push(`/publisher/order/${order_id}`);
-  };
 
   loadDomainViewData = () => {
     ApiServices.getPublisherDomainViewData(this.state.hash_id)
@@ -86,9 +82,6 @@ export class DomainView extends Component {
           this.setState({ contentData: res.data.data });
           if (res.data.data.category) {
             this.setState({ category: res.data.data.category });
-          }
-          if (res.data.data.orderData) {
-            this.setState({ orderData: res.data.data.orderData });
           }
           if (res.data.data.contentData) {
             this.setState({ contentInsideData: res.data.data.contentData });
@@ -118,7 +111,7 @@ export class DomainView extends Component {
     this.loadDomainViewData();
   }
   render() {
-    const { contentData, category, contentInsideData, orderData } = this.state;
+    const { contentData, category, contentInsideData } = this.state;
     const getStatusClass = (status) => {
       switch (status) {
         case "Pending":
@@ -161,7 +154,7 @@ export class DomainView extends Component {
                 >
                   <i className="mdi mdi-arrow-left"></i> <Trans>Back</Trans>
                 </button>
-                <AdminBack/>
+                <AdminBack />
                 <a
                   className="btn btn-rounded font-weight-medium auth-form-btn"
                   href={`http://${contentData.domain_name}`}
@@ -180,7 +173,7 @@ export class DomainView extends Component {
                   </div>
                 </div>
                 <hr />
-                <div className="row g-2">                  
+                <div className="row g-2">
                   <div className="col-sm-4" style={{ paddingRight: "0px" }}>
                     <div className="border">
                       <div className="p-3 d-flex flex-row justify-content-between">
@@ -412,72 +405,6 @@ export class DomainView extends Component {
                       </div>
                     </div>
                   </div>
-                </div>          
-                <div className="row g-2 mt-4 pl-3">
-                  <div className="col-sm-12 border bRadius">
-                    <div className="mt-2 mb-2 p-2 dashboardHome">
-                      <h4 className="card-title">
-                        <Trans>Orders</Trans>
-                      </h4>
-                      <hr />
-                      {orderData.map((order) => (
-                        <div className="card" key={order.id}>
-                          <div
-                            className="card-body"
-                            style={{ padding: "1.5rem 0.5rem" }}
-                          >
-                            <table>
-                              <tbody>
-                                <tr onClick={() => this.viewOrder(order.id)}>
-                                  <td>
-                                    <h4>{order.anchortext}</h4>
-                                    <div className="extraInfo flex-wrap d-flex justify-content-between">
-                                      <span
-                                        style={{ padding: "3px" }}
-                                        className={`badge ${getStatusClass(
-                                          order.status
-                                        )}`}
-                                      >
-                                        {order.status}
-                                      </span>
-                                      <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <div>{CurrencyFormatter.formatCurrency(order.total_price)}</div>
-                                      <i className="mdi mdi-checkbox-blank-circle d-flex align-items-center justify-content-center iconBash"></i>
-                                      <div>
-                                        <TimeAgo
-                                          datetime={order.created_at}
-                                          locale="en"
-                                        />
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      ))}
-                      {!orderData.length && (
-                        <div className="card">
-                          <div className="card-body dashboardCard">
-                            <h4 className="text-center">
-                              <Trans>No Orders.</Trans>
-                            </h4>
-                          </div>
-                        </div>
-                      )}
-                      {orderData.length > 0 && (
-                        <div className="card bRadius cRadiusTop">
-                          <div className="card-body text-center p-0">
-                            <hr />
-                            <Link to="/publisher/orders" className="hrefTitle">
-                              <Trans>View all</Trans>
-                            </Link>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -645,7 +572,9 @@ export class DomainView extends Component {
                         </td>
                         <td className="text-end-ct">
                           <span className="h3 fontBold600">
-                            {CurrencyFormatter.formatCurrency(contentData.price)}
+                            {CurrencyFormatter.formatCurrency(
+                              contentData.price
+                            )}
                           </span>
                         </td>
                       </tr>
