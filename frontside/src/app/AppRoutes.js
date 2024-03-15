@@ -50,6 +50,8 @@ const DomainRevealRequest = lazy(() =>
   import("./publisher/notification/DomainRevealRequest")
 );
 
+const SubscriptionPlan = lazy(() => import("./admin/subscription/Subscription"));
+
 class AppRoutes extends Component {
   constructor(props) {
     super(props);
@@ -275,7 +277,7 @@ class AppRoutes extends Component {
                     component={Payments}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
-                  />                  
+                  />
                   <AuthProtected
                     exact
                     path="/settings/profile"
@@ -297,7 +299,7 @@ class AppRoutes extends Component {
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
-                  
+
                   <AdminProtected
                     exact
                     path="/admin/users"
@@ -313,7 +315,15 @@ class AppRoutes extends Component {
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />
-                 
+
+                  <AdminProtected
+                    exact
+                    path="/admin/subscription"
+                    component={SubscriptionPlan}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+
                   <AdminProtected
                     exact
                     path="/admin/contentlinks"

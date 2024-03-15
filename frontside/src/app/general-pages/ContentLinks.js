@@ -173,6 +173,11 @@ export class ContentLinks extends Component {
       });
   };
   componentDidMount() {
+    ApiServices.checkHasSubscription().then((res) => {
+      if (!res.data.data) {
+        this.props.history.push("/marketplace/linkbundle");
+      }
+    });
     this.getContentLinkData();
   }
   render() {

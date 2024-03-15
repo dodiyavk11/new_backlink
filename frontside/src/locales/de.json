@@ -403,5 +403,10 @@
     "Accepted": "Akzeptiert",
     "Declined": "Abgelehnt",
     "Your reveal request is Declined":"Dein Anfrage zur Enthüllung wurde abgelehnt",
-    "Your request send success":"Deine Anfrage wurde erfolgreich versendet"
+    "Your request send success":"Deine Anfrage wurde erfolgreich versendet",
+    "Add Subscription": "Abonnement hinzufügen",
+    "Subscription": "Abonnement",
+    "Edit Subscription": "Abonnement bearbeiten",
+    "Max request per day(in number)": "Maximale Anfragen pro Tag (in Zahl)",
+    "Update Subscription": "Abonnement aktualisieren"
 }

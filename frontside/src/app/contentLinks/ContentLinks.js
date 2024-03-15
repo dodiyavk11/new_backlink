@@ -10,6 +10,7 @@ import MarketPlace from "./MarketPlace";
 import { DailyDeals } from "./DailyDeals";
 import AdminBack from "../shared/AdminBack";
 import "../../assets/custom.css";
+import ApiServices from "../services/api.service";
 import { Trans } from "react-i18next";
 
 export class ContentLinksHome extends Component {
@@ -52,13 +53,21 @@ export class ContentLinksHome extends Component {
     }));
   };
 
+  componentDidMount() {
+    ApiServices.checkHasSubscription().then((res) => {
+      if (!res.data.data) {
+        this.props.history.push("/marketplace/linkbundle");
+      }
+    });
+  }
+
   render() {
     const { value, columnVisibility } = this.state;
     return (
       <div className="ContentLinkHomePage">
         <div className="page-header">
           <h3 className="fontBold latterSpacing">
-            <Trans>Contentlinks</Trans> <AdminBack/>
+            <Trans>Contentlinks</Trans> <AdminBack />
           </h3>
         </div>
         <div className="row">

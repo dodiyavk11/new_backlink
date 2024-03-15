@@ -401,6 +401,13 @@ class ApiServices {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
+  
+  activeSubscription() {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}subscription/list/active`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
 
   getLinkBundleBlogData() {
     const authToken = localStorage.getItem("token");
@@ -432,6 +439,42 @@ class ApiServices {
         headers: { Authorization: `Bearer ${authToken}` },
       }
     );
+  }
+
+  addSubscription(formData) {
+    const authToken = localStorage.getItem("token");
+    return axios.post(
+      `${this.APP_URL}add/subscription`,
+      formData,
+      {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }
+    );
+  }
+
+  updateSubscription(formData, id) {
+    const authToken = localStorage.getItem("token");
+    return axios.patch(
+      `${this.APP_URL}subscription/update/${id}`,
+      formData,
+      {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }
+    );
+  }
+
+  updateSubscriptionStatus(id, status) {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}admin/subscription/update/${id}/${status}`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  }
+
+  subscriptionList() {
+    const authToken = localStorage.getItem("token");
+    return axios.get(`${this.APP_URL}new-subscription/list`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
   }
 
   getEmailTemplate() {
@@ -679,6 +722,17 @@ class ApiServices {
     const authToken = localStorage.getItem("token");
     return axios
       .post(`${this.APP_URL}user/domain-reveal-request`, formData, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  checkHasSubscription() {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(`${this.APP_URL}get-active-subscription`, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => {

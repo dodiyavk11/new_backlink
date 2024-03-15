@@ -198,6 +198,11 @@ export class ProjectView extends Component {
   };
 
   componentDidMount() {
+    ApiServices.checkHasSubscription().then((res) => {
+      if (!res.data.data) {
+        this.props.history.push("/marketplace/linkbundle");
+      }
+    });
     this.getProjecViewtData();
   }
 

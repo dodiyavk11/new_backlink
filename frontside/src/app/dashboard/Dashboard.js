@@ -56,6 +56,11 @@ export class Dashboard extends Component {
     );
   };
   componentDidMount() {
+    ApiServices.checkHasSubscription().then((res) => {
+      if (!res.data.data) {
+        this.props.history.push("/marketplace/linkbundle");
+      }
+    });
     ApiServices.getDashboard()
       .then((res) => {
         if (!res.status) {
@@ -65,7 +70,7 @@ export class Dashboard extends Component {
           });
         } else {
           this.setState({ dashboardData: res.data.data });
-          this.setState({ domains: res.data.data.domains });          
+          this.setState({ domains: res.data.data.domains });
           if (res.data.data.contentData) {
             this.setState({ contentData: res.data.data.contentData });
           }
@@ -98,7 +103,7 @@ export class Dashboard extends Component {
             </h3>
           </div>
           <div className="row">
-            <div className="col-lg-12 grid-margin">              
+            <div className="col-lg-12 grid-margin">
               <div className="card bRadius cRadiusBottom">
                 <div className="card-body dashProHead">
                   <div className="d-flex flex-row justify-content-between">
@@ -147,7 +152,7 @@ export class Dashboard extends Component {
                   </div>
                 </div>
               )}
-            </div>            
+            </div>
           </div>
           <div className="row">
             <div className="col-lg-8 grid-margin stretch-card">

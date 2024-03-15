@@ -130,7 +130,7 @@ export class LinkBundles extends Component {
   }
 
   getsubscriptionPlan() {
-    ApiServices.activeSubscription()
+    ApiServices.subscriptionPlan()
       .then((res) => {
         if (!res.status) {
           toast.error(res.data.message, {
@@ -235,7 +235,7 @@ export class LinkBundles extends Component {
         <div className="bundleLinkPage">
           <div className="page-header">
             <h3 className="fontBold latterSpacing">
-              <Trans>Link bundles</Trans> <AdminBack />
+              <Trans>Link bundles</Trans> <AdminBack/>
             </h3>
           </div>
           <ToastContainer />
@@ -257,11 +257,7 @@ export class LinkBundles extends Component {
                       style={{ width: "30%" }}
                     ></img>
                     {linkBundleData && linkBundleData.description ? (
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: linkBundleData.description,
-                        }}
-                      />
+                      <span dangerouslySetInnerHTML={{ __html: linkBundleData.description }} />
                     ) : (
                       <>
                         <p className="customText2 mt-4">
@@ -344,9 +340,7 @@ export class LinkBundles extends Component {
                           </h4>
                           <ul className="features">
                             <li className="mt-3 h2">
-                              <h2>
-                                {CurrencyFormatter.formatCurrency(plans.price)}
-                              </h2>
+                              <h2>{CurrencyFormatter.formatCurrency(plans.price)}</h2>
                             </li>
                             <li>{plans.description}</li>
                             <li>
@@ -361,12 +355,10 @@ export class LinkBundles extends Component {
                             <li className="psale">
                               <span className="notification-icon--fixed">
                                 <span className="notification-badge fontBold500">
-                                  {plans.max_request_per_day}
+                                  {plans.max_domains_per_month}
                                 </span>
                               </span>
-                              <span className="psale pl-1">
-                                Daily domain request to owner
-                              </span>
+                              <span className="psale pl-1">Selllinks</span>
                             </li>
                             <li>
                               <hr />
@@ -377,21 +369,111 @@ export class LinkBundles extends Component {
                             <li className="pl-1">
                               <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
                               <span className="ml-1">
-                                Maximum Domain Request per day{" "}
-                                {plans.max_request_per_day}
+                                <Trans>Cancellation period of</Trans>{" "}
+                                {plans.cancellation_period} days
                               </span>
                             </li>
                             <li className="pl-1">
                               <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
                               <span className="ml-1">
-                                Validity {plans.validity} days
+                                <Trans>Maximum Order per month</Trans>{" "}
+                                {plans.max_orders}
                               </span>
                             </li>
                             <li className="pl-1">
                               <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
                               <span className="ml-1">
-                                Direct chat to owner
+                                <Trans>Validity</Trans> {plans.validity} days
                               </span>
+                            </li>
+                            <li className="pl-1">
+                              <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
+                              <span className="ml-1">
+                                <Trans>Credit price</Trans>{" "}
+                                {plans.credits_price}
+                              </span>
+                            </li>
+                            <li className="pl-1">
+                              <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
+                              <span className="ml-1">
+                                <Trans>Credit quota</Trans>{" "}
+                                {plans.credits_quota}
+                              </span>
+                            </li>
+                            <li>
+                              <hr />
+                            </li>
+                            <li className="detailsText pl-1 ctColor">
+                              <Trans>REPORTING</Trans>
+                            </li>
+                            <li className="pl-1">
+                              <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
+                              <span className="ml-1">
+                                <Trans>You choose the anchor text</Trans>
+                              </span>
+                            </li>
+                            <li>
+                              <hr />
+                            </li>
+                            <li className="detailsText pl-1 ctColor">
+                              <Trans>PLACEMENT IN</Trans>
+                            </li>
+                            <li className="pl-2">
+                              <div className="d-flex">
+                                <p className="mr-3 planRound fontBold500">
+                                  <Trans>Blog</Trans>
+                                </p>
+                                <p className="mr-3 planRound fontBold500">
+                                  <Trans>Magazines</Trans>
+                                </p>
+                                <p className="mr-3 planRound fontBold500">
+                                  <Trans>Newspapers</Trans>
+                                </p>
+                              </div>
+                            </li>
+                            <li>
+                              <hr />
+                            </li>
+                            <li className="detailsText pl-1 ctColor">
+                              <Trans>METRICS</Trans>
+                            </li>
+                            <li className="pl-2">
+                              <div className="d-flex">
+                                <img
+                                  alt="Metrics"
+                                  src={require("../../assets/images/project/ahrefs.svg")}
+                                  className="rounded mr-2"
+                                  width={30}
+                                />
+                                <div style={{ lineHeight: "normal" }}>
+                                  <span className="ctColor">Domain Rating</span>
+                                  <br />
+                                  <span>ahrefs.com</span>
+                                </div>
+                                <div className="ml81">
+                                  <span>Ø 20+</span>
+                                </div>
+                              </div>
+                            </li>
+                            <li className="pl-2">
+                              <div className="d-flex">
+                                <img
+                                  alt="Metrics"
+                                  src={require("../../assets/images/project/moz.svg")}
+                                  className="rounded mr-2"
+                                  width={30}
+                                />
+                                <div style={{ lineHeight: "normal" }}>
+                                  <span className="ctColor">
+                                    Domain Authority
+                                  </span>
+                                  <br />
+                                  <span>moz.com</span>
+                                </div>
+                                <div className="ml72">
+                                  <span>Ø 20+</span>
+                                </div>
+                              </div>
                             </li>
                           </ul>
                         </div>
@@ -437,18 +519,14 @@ export class LinkBundles extends Component {
                     <span>
                       <Trans>Current balance</Trans>
                     </span>
-                    <span>
-                      {CurrencyFormatter.formatCurrency(currentBalance)}
-                    </span>
+                    <span>{CurrencyFormatter.formatCurrency(currentBalance)}</span>
                   </div>
                   <div className="d-flex justify-content-between mb-2">
                     <span>
                       <Trans>Link package</Trans>&nbsp;
                       {selectedPlan.name}
                     </span>
-                    <span>
-                      {CurrencyFormatter.formatCurrency(selectedPlan.price)}
-                    </span>
+                    <span>{CurrencyFormatter.formatCurrency(selectedPlan.price)}</span>
                   </div>
                   <hr />
                   <div className="d-flex justify-content-between mb-2">
@@ -459,19 +537,9 @@ export class LinkBundles extends Component {
                       {/* {newRemainingBalance < 0
                         ? `-$${Math.abs(newRemainingBalance).toFixed(2)}`
                         : `$${newRemainingBalance.toFixed(2)}`} */}
-                      {newRemainingBalance < 0 ? (
-                        <span>
-                          {CurrencyFormatter.formatCurrency(
-                            newRemainingBalance
-                          )}
-                        </span>
-                      ) : (
-                        <span>
-                          {CurrencyFormatter.formatCurrency(
-                            newRemainingBalance
-                          )}
-                        </span>
-                      )}
+                        {newRemainingBalance < 0
+                        ? <span>{CurrencyFormatter.formatCurrency(newRemainingBalance)}</span>
+                        : <span>{CurrencyFormatter.formatCurrency(newRemainingBalance)}</span>}
                     </span>
                   </div>
                 </div>
@@ -508,8 +576,7 @@ export class LinkBundles extends Component {
                 className="btn btn-block btn-rounded btn-lg"
                 onClick={() => this.checkBalanceToProcess()}
               >
-                <Trans>Order now for</Trans>{" "}
-                {CurrencyFormatter.formatCurrency(selectedPlan.price)}
+                <Trans>Order now for</Trans> {CurrencyFormatter.formatCurrency(selectedPlan.price)}
               </Button>
               <button
                 className="btn btn-cancel-ctm btn-rounded btn-block"
@@ -607,8 +674,7 @@ export class LinkBundles extends Component {
               type="button"
               onClick={this.bundlePlaceOrder}
             >
-              <Trans>Buy now for</Trans>{" "}
-              {CurrencyFormatter.formatCurrency(selectedPlan.price)}
+              <Trans>Buy now for</Trans> {CurrencyFormatter.formatCurrency(selectedPlan.price)}
             </button>
           </Modal>
         </div>
