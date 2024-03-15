@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2024 at 04:30 AM
+-- Generation Time: Mar 15, 2024 at 02:49 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.2.20
 
@@ -112,7 +112,8 @@ INSERT INTO `customer_domain_data` (`id`, `domain_id`, `traffic`, `anchor_text`,
 (4, 4, 0, NULL, NULL, NULL, NULL, '0.00', 0, '0.0', 0, 0, 0, 0, '2024-01-26 08:37:21', '2024-01-26 08:37:21'),
 (5, 5, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2024-01-31 11:43:27', '2024-01-31 11:43:27'),
 (6, 6, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2024-01-31 11:47:59', '2024-01-31 11:47:59'),
-(7, 7, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2024-02-08 10:40:52', '2024-02-08 10:40:52');
+(7, 7, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2024-02-08 10:40:52', '2024-02-08 10:40:52'),
+(8, 8, 0, NULL, NULL, NULL, NULL, '0.00', 91, '0.0', 0, 0, 0, 0, '2024-03-14 04:46:27', '2024-03-14 04:46:27');
 
 -- --------------------------------------------------------
 
@@ -145,7 +146,8 @@ INSERT INTO `domains` (`id`, `domain_name`, `tld`, `budget`, `category_id`, `sta
 (4, 'jayeshnaghera.com', 'com', '0.00', 6, 1, 0, 51, '1zkpu99s', '2024-01-26 08:37:03', '2024-01-31 12:04:58'),
 (5, 'music.com', 'com', '0.00', 31, 1, 0, 51, 'pez4cshj', '2024-01-31 11:42:54', '2024-01-31 11:46:28'),
 (6, 'javatpoint.com', 'com', '0.00', 23, 1, 0, 51, '28jp152x', '2024-01-31 11:47:09', '2024-01-31 11:47:09'),
-(7, 'www.listelligent.com', 'com/', '0.00', 16, 1, 0, 55, 'hgj216zu', '2024-02-08 10:40:15', '2024-02-08 10:40:15');
+(7, 'www.listelligent.com', 'com/', '0.00', 16, 1, 0, 55, 'hgj216zu', '2024-02-08 10:40:15', '2024-03-14 04:15:22'),
+(8, 'backlinked.com', 'com', '10.00', 31, 1, 1, 55, '5ujge9vl', '2024-03-14 04:46:05', '2024-03-14 06:34:30');
 
 -- --------------------------------------------------------
 
@@ -221,6 +223,15 @@ CREATE TABLE `domain_request` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `domain_request`
+--
+
+INSERT INTO `domain_request` (`id`, `user_id`, `publisher_id`, `domain_id`, `message`, `pmessage`, `status`, `created_at`, `updated_at`) VALUES
+(1, 55, 53, 6, 'Ich interessiere mich für den Domainnamen. Können Sie mir diesen bitte mitteilen?', NULL, 1, '2024-03-14 09:59:29', '2024-03-14 09:59:58'),
+(2, 55, 53, 4, 'Ich interessiere mich für den Domainnamen. Können Sie mir diesen bitte mitteilen?', NULL, 0, '2024-03-14 10:27:46', '2024-03-14 10:27:46'),
+(3, 55, 53, 3, 'Ich interessiere mich für den Domainnamen. Können Sie mir diesen bitte mitteilen?', NULL, 0, '2024-03-14 12:04:14', '2024-03-14 12:04:14');
 
 -- --------------------------------------------------------
 
@@ -492,7 +503,7 @@ INSERT INTO `notifications` (`id`, `user_id`, `email_message_received`, `email_o
 (1, 51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2023-12-20 04:27:15', '2023-12-20 04:54:01'),
 (2, 52, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '2023-12-20 04:29:14', '2023-12-20 04:29:14'),
 (3, 53, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '2023-12-20 04:33:08', '2023-12-20 04:33:08'),
-(5, 55, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, '2024-02-08 10:39:17', '2024-02-08 10:39:17');
+(5, 55, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '2024-02-08 10:39:17', '2024-03-14 06:36:41');
 
 -- --------------------------------------------------------
 
@@ -583,8 +594,8 @@ INSERT INTO `publisher_domains` (`id`, `domain_name`, `tld`, `price`, `category_
 (2, 'getbootstrap.com', 'com', '422.39', 10, 1, 'As desired', 11, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'sc8fw0b6', '2023-12-20 04:34:17', '2024-02-19 10:29:26'),
 (3, 'backlinked.com', 'com', '550.00', 6, 1, 'As desired', 15, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'ioq9a4xt', '2023-12-20 04:35:13', '2023-12-20 04:35:25'),
 (4, 'placeholder.com', 'com', '1050.00', 23, 1, 'As desired / No restrictions', 5, 'dofollow', 0, '20.00', 400, 0, 0, 'en', 53, '36weorau', '2023-12-20 05:01:01', '2023-12-20 05:01:30'),
-(5, 'tutorialspoint.com', 'com', '650.00', 25, 0, 'As desired', 20, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'oaun65va', '2023-12-20 05:39:49', '2024-02-19 10:29:14'),
-(6, 'chat.openai.com', 'com', '850.00', 31, 1, 'As desired', 20, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'g6cr1wux', '2023-12-20 05:41:08', '2024-02-19 12:59:22');
+(5, 'tutorialspoint.com', 'com', '655.00', 25, 0, 'As desired', 20, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'oaun65va', '2023-12-20 05:39:49', '2024-03-14 06:37:15'),
+(6, 'chat.openai.com', 'com', '850.00', 31, 1, 'As desired', 20, 'dofollow', 0, '0.00', 0, 0, 1, 'en', 53, 'g6cr1wux', '2023-12-20 05:41:08', '2024-03-14 06:33:27');
 
 -- --------------------------------------------------------
 
@@ -644,6 +655,36 @@ INSERT INTO `settings` (`id`, `vat`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `subscription`
+--
+
+CREATE TABLE `subscription` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text DEFAULT 'NULL',
+  `price` decimal(10,2) NOT NULL,
+  `stripe_product_id` varchar(55) DEFAULT NULL,
+  `stripe_price_id` varchar(55) DEFAULT NULL,
+  `validity` int(11) NOT NULL,
+  `max_request_per_day` int(11) NOT NULL COMMENT 'Per Day',
+  `max_request_per_month` int(11) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `subscription`
+--
+
+INSERT INTO `subscription` (`id`, `name`, `description`, `price`, `stripe_product_id`, `stripe_price_id`, `validity`, `max_request_per_day`, `max_request_per_month`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Basic', 'Basic plan for personal use', '25.00', NULL, NULL, 30, 2, NULL, 1, '2024-03-15 10:52:03', '2024-03-15 13:21:23'),
+(2, 'Medium', 'Medium plan for your company', '50.00', NULL, NULL, 30, 5, NULL, 1, '2024-03-15 10:52:32', '2024-03-15 10:52:32'),
+(3, 'Agency', 'Agency plan for Enterprise', '75.00', NULL, NULL, 30, 10, NULL, 1, '2024-03-15 10:53:00', '2024-03-15 11:01:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `subscription_plans`
 --
 
@@ -669,9 +710,9 @@ CREATE TABLE `subscription_plans` (
 --
 
 INSERT INTO `subscription_plans` (`id`, `name`, `description`, `price`, `cancellation_period`, `max_domains_per_month`, `max_orders`, `credits_price`, `credits_quota`, `status`, `validity`, `placement_in`, `created_at`, `updated_at`) VALUES
-(1, 'Basic', 'Basic plan for indiindividual use', 350, 30, 2, 2, '0.00', 0, 1, 30, 'Blog,Magazines,Newspapers', '2023-09-27 05:20:00', '2024-01-31 11:26:59'),
-(2, 'Medium ', 'Medium plan for indiindividual comapany use', 600, 30, 4, 25, NULL, NULL, 1, 30, 'Blog,Magazines,Newspapers', '2023-09-27 05:22:07', '2024-01-31 11:30:20'),
-(3, 'Agency', 'for Agency use', 900, 30, 6, 50, NULL, NULL, 1, 30, 'Blog,Magazines,Newspapers', '2023-09-27 05:23:28', '2024-01-31 11:30:14');
+(1, 'Basics', 'Basic plan for indiindividual use', 350, 30, 2, 2, '0.00', 0, 1, 30, 'Blog,Magazines,Newspapers', '2023-09-27 05:20:00', '2024-03-15 11:24:44'),
+(2, 'Medium s', 'Medium plan for indiindividual comapany use', 600, 30, 4, 25, NULL, NULL, 1, 30, 'Blog,Magazines,Newspapers', '2023-09-27 05:22:07', '2024-03-15 11:24:47'),
+(3, 'Agencys', 'for Agency use', 900, 30, 6, 50, NULL, NULL, 1, 30, 'Blog,Magazines,Newspapers', '2023-09-27 05:23:28', '2024-03-15 11:24:51');
 
 -- --------------------------------------------------------
 
@@ -795,7 +836,7 @@ INSERT INTO `users` (`id`, `email`, `email_verified`, `firstName`, `lastName`, `
 (51, 'urjwpwhoso@zlorkun.com', 1, 'Users', 'Sides', '$2a$11$JRvGg878F9NbRiomWLj2OOcogSgLyrKR3Q1yAfGxQ0JJViiC7NLjy', 'profileImg_1703046435122.png', '123456789', 1233, 'vrl', 'new', 'Germany', 'Bus', 'VAT123AT', 1, 'example@mail.com', 0, 0, '2023-12-20 09:57:15', '2023-12-20 11:41:07'),
 (52, 'publisher@gmail.com', 1, 'publisher', 'Side', '$2a$11$AyGO9mjpnaNiOKXhEztUo.VDBAfuXZUw6Wcx6lO3AdHiMio.jLmoi', 'profileImg_1703046553894.png', '123456789', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-20 09:59:14', '2024-01-24 12:53:35'),
 (53, 'publisher2@gmail.com', 1, 'Publisher22', 'Side 22', '$2a$11$JDIXcKDP1maRbhZvWwl.B.EMBD.ZA/RbhSPS/U1/lkcKulA0AoJou', NULL, '123456789', 0, NULL, '', 'Germany', '', NULL, 0, '', 2, 0, '2023-12-20 10:03:08', '2024-01-24 12:56:29'),
-(55, 'epys84x532@bloheyz.com', 1, 'Test', 'Dev User', '$2a$11$/IrYNKKj.wgXAtKvduVTUei1H8SNBt5zwraM1HzybjdFJ3ZKMME3m', NULL, '132345', 0, NULL, '', 'Germany', '', NULL, 0, '', 0, 0, '2024-02-08 16:09:17', '2024-02-08 16:09:32');
+(55, 'epys84x532@bloheyz.com', 1, 'Tests', 'Dev User', '$2a$11$/IrYNKKj.wgXAtKvduVTUei1H8SNBt5zwraM1HzybjdFJ3ZKMME3m', NULL, '132345', 123456, 'Test', 'Veraval', 'Germany', 'test', 'null', 0, '', 0, 0, '2024-02-08 16:09:17', '2024-03-14 12:06:11');
 
 -- --------------------------------------------------------
 
@@ -845,14 +886,22 @@ CREATE TABLE `user_subscriptions` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `plan_id` int(11) NOT NULL,
-  `start_date` datetime NOT NULL DEFAULT current_timestamp(),
-  `end_date` datetime DEFAULT NULL,
-  `cancel_date` timestamp NULL DEFAULT NULL,
+  `start_date` date NOT NULL DEFAULT current_timestamp(),
+  `end_date` date DEFAULT NULL,
+  `cancel_date` date DEFAULT NULL,
   `info` varchar(255) DEFAULT NULL,
   `credits` int(11) DEFAULT 0,
-  `transaction_id` int(11) NOT NULL,
+  `transaction_id` varchar(255) NOT NULL,
+  `payment_data` text DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 is Active Plan\r\n0 Expire '
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user_subscriptions`
+--
+
+INSERT INTO `user_subscriptions` (`id`, `user_id`, `plan_id`, `start_date`, `end_date`, `cancel_date`, `info`, `credits`, `transaction_id`, `payment_data`, `status`) VALUES
+(1, 2, 1, '2024-03-15', '2024-04-15', NULL, 'dd', 0, 'sddd', 'sss', 1);
 
 --
 -- Indexes for dumped tables
@@ -992,6 +1041,12 @@ ALTER TABLE `settings`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `subscription`
+--
+ALTER TABLE `subscription`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `subscription_plans`
 --
 ALTER TABLE `subscription_plans`
@@ -1046,13 +1101,13 @@ ALTER TABLE `contact_us`
 -- AUTO_INCREMENT for table `customer_domain_data`
 --
 ALTER TABLE `customer_domain_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `domains`
 --
 ALTER TABLE `domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `domain_categories`
@@ -1064,7 +1119,7 @@ ALTER TABLE `domain_categories`
 -- AUTO_INCREMENT for table `domain_request`
 --
 ALTER TABLE `domain_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `domain_tags`
@@ -1151,10 +1206,16 @@ ALTER TABLE `settings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `subscription`
+--
+ALTER TABLE `subscription`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `subscription_plans`
 --
 ALTER TABLE `subscription_plans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `transactions`
@@ -1178,13 +1239,13 @@ ALTER TABLE `users_wallet`
 -- AUTO_INCREMENT for table `user_cart`
 --
 ALTER TABLE `user_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `user_subscriptions`
 --
 ALTER TABLE `user_subscriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -1232,7 +1293,7 @@ ALTER TABLE `users_wallet`
 --
 ALTER TABLE `user_subscriptions`
   ADD CONSTRAINT `user_subscriptions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `user_subscriptions_ibfk_2` FOREIGN KEY (`plan_id`) REFERENCES `subscription_plans` (`id`);
+  ADD CONSTRAINT `user_subscriptions_ibfk_2` FOREIGN KEY (`plan_id`) REFERENCES `subscription` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
