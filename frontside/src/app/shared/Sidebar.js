@@ -282,7 +282,25 @@ class Sidebar extends Component {
                     </g>
                   </svg>
                   <span className="menu-title">
-                    <Trans>Notification</Trans>
+                    <Trans>Domain Request</Trans>
+                  </span>
+                </Link>
+              </li>
+              <li
+                className={
+                  this.isPathActive("/publisher/chat-list")
+                    ? "nav-item active"
+                    : "nav-item"
+                }
+              >
+                <Link className="nav-link p-0 pl-2" to="/publisher/chat-list">
+                  <i
+                    className="mdi mdi-message-outline mr-3"
+                    style={{ fontSize: "24px" }}
+                  ></i>
+
+                  <span className="menu-title">
+                    <Trans>Chat</Trans>
                   </span>
                 </Link>
               </li>

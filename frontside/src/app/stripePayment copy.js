@@ -14,8 +14,8 @@ class StripePayment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      customAmount: parseFloat(this.props.plan),
-      newAmount: parseFloat(this.props.totalAmount),
+      customAmount: 0,
+      newAmount: 0,
       paymentError: null,
     };
   }
@@ -29,18 +29,20 @@ class StripePayment extends Component {
     this.calculateTotalAmount();
   }
 
-  calculateTotalAmount = () => {
+  calculateTotalAmount = (customAmount = this.state.customAmount) => {
     const vat = parseFloat(this.props.vat);
-    const vatAmount = parseFloat(this.props.vatAmount);
-    const totalAmount = parseFloat(this.props.totalAmount);
+    const vatAmount = (customAmount * vat) / 100;
+    const totalAmount = customAmount + vatAmount;
+
     this.setState({
-      vatAmount: vatAmount,
+      customAmount: customAmount,
       newAmount: totalAmount,
     });
   };
+
   render() {
     const { vat } = this.props;
-    const shouldInitializeStripe = Boolean(this.state.totalAmount);
+    const shouldInitializeStripe = Boolean(this.state.customAmount);
     const options = {
       mode: "payment",
       amount: Math.round(this.state.newAmount * 100),
@@ -51,23 +53,31 @@ class StripePayment extends Component {
       <>
         <div className="form-group">
           <label htmlFor="customAmount">
-            <Trans>Amount</Trans>
+            <Trans>Enter Amount</Trans>
           </label>
           <input
             id="customAmount"
             type="number"
-            value={this.state.newAmount}
-            disabled
+            value={this.state.customAmount}
+            onChange={this.handleAmountChange}
+            placeholder="Enter amount"
             className="form-control"
           />
-          {/* <div className="vatInfo">
+          <div className="vatInfo">
             <div className="p-1">
+              {/* You will be credited{" "}
+              {CurrencyFormatter.formatCurrency(this.state.customAmount)}. The
+              total amount payable of{" "}
+              {CurrencyFormatter.formatCurrency(this.state.newAmount)} includes
+              applicable VAT in the amount of {vat}%. */}
               <Trans
                 i18nKey="creditMessage"
                 values={{
-                  amount: CurrencyFormatter.formatCurrency(this.state.plan_amt),
+                  amount: CurrencyFormatter.formatCurrency(
+                    this.state.customAmount
+                  ),
                   totalAmount: CurrencyFormatter.formatCurrency(
-                    this.props.totalAmount
+                    this.state.newAmount
                   ),
                   vatRate: vat,
                 }}
@@ -75,20 +85,17 @@ class StripePayment extends Component {
                 Default content if translation is missing.
               </Trans>
             </div>
-          </div> */}
+          </div>
         </div>
-        {/* {shouldInitializeStripe && ( */}
-        <Elements stripe={stripePromise} options={options}>
-          <InjectedCheckoutForm
-            amount={this.state.newAmount}
-            plan_id={this.props.plan_id}
-            plan_name={this.props.plan_name}
-            plan_amt={this.props.plan_amt}
-            history={this.props.history}
-            originalAmount={this.props.plan_amt}
-          />
-        </Elements>
-        {/* )} */}
+        {shouldInitializeStripe && (
+          <Elements stripe={stripePromise} options={options}>
+            <InjectedCheckoutForm
+              amount={this.state.newAmount}
+              history={this.props.history}
+              originalAmount={this.state.customAmount}
+            />
+          </Elements>
+        )}
       </>
     );
   }

@@ -109,7 +109,7 @@ export class DomainRevealRequest extends Component {
                 {requestData.length > 0 ? (
                   <div className="table-responsive">
                     <table className="table table-hover orderListTable">
-                      <thead>
+                      {/* <thead>
                         <tr>
                           <th>
                             <Trans>Sr</Trans>
@@ -130,77 +130,103 @@ export class DomainRevealRequest extends Component {
                             <Trans>Action</Trans>
                           </th>
                         </tr>
-                      </thead>
+                      </thead> */}
                       <tbody>
-                        {requestData.map((data, index) => {
-                          return (
-                            <tr
-                              key={index}
-                              // onClick={() => this.goToOrderViewLink(data.id)}
-                            >
-                              <td>{index + 1}</td>
-                              <td>{data.domain_name}</td>
-                              <td>{data.domainRequest[0].message}</td>
+                        {requestData.map((data, index) => (
+                          <React.Fragment key={index}>
+                            <tr>
                               <td>
-                                {data.domainRequest[0].status === 0 ? (
-                                  <span>
-                                    <Trans>Pending</Trans>
-                                  </span>
-                                ) : data.domainRequest[0].status === 1 ? (
-                                  <span>
-                                    <Trans>Accepted</Trans>
-                                  </span>
-                                ) : (
-                                  <span>
-                                    <Trans>Declined</Trans>
-                                  </span>
-                                )}
+                                <h4>
+                                  <b>{data.domain_name}</b>
+                                </h4>
                               </td>
-                              <td>
-                                <TimeAgo
-                                  datetime={data.domainRequest[0].created_at}
-                                  locale="en"
-                                />
-                              </td>
-                              <td>
-                                <div>
-                                  <i
-                                    className="mdi mdi-check-circle"
-                                    title="Accept"
-                                    style={{
-                                      color: "#ff9756",
-                                      fontWeight: "bold",
-                                      cursor: "pointer",
-                                      fontSize: "25px",
-                                    }}
-                                    onClick={() =>
-                                      this.handleAction(
-                                        data.domainRequest[0].id,
-                                        1
-                                      )
-                                    }
-                                  ></i>
-                                  <i
-                                    className="mdi mdi-close-circle"
-                                    title="Decline"
-                                    onClick={() =>
-                                      this.handleAction(
-                                        data.domainRequest[0].id,
-                                        2
-                                      )
-                                    }
-                                    style={{
-                                      color: "red",
-                                      fontWeight: "bold",
-                                      cursor: "pointer",
-                                      fontSize: "25px",
-                                    }}
-                                  ></i>
-                                </div>
-                              </td>
+                              <td colSpan="5"></td>{" "}
                             </tr>
-                          );
-                        })}
+                            <tr>
+                              <th>
+                                <Trans>Sr</Trans>
+                              </th>
+                              <th>
+                                <Trans>Messages</Trans>
+                              </th>
+                              <th>
+                                <Trans>User</Trans>
+                              </th>
+                              <th>
+                                <Trans>Time</Trans>
+                              </th>
+                              <th>
+                                <Trans>Status</Trans>
+                              </th>
+                              <th>
+                                <Trans>Action</Trans>
+                              </th>
+                            </tr>
+                            {data.domainRequest.map((Reqdata, innerIndex) => (
+                              <tr key={`${index}_${innerIndex}`}>
+                                <td>{innerIndex + 1}</td>
+                                <td>{Reqdata.message}</td>
+                                <td>{`${Reqdata.user.firstName} ${Reqdata.user.lastName}`}</td>
+                                <td>
+                                  <TimeAgo
+                                    datetime={Reqdata.created_at}
+                                    locale="en"
+                                  />
+                                </td>
+                                <td>
+                                  {Reqdata.status === 0 ? (
+                                    <span>
+                                      <Trans>Pending</Trans>
+                                    </span>
+                                  ) : Reqdata.status === 1 ? (
+                                    <span>
+                                      <Trans>Accepted</Trans>
+                                    </span>
+                                  ) : (
+                                    <span>
+                                      <Trans>Declined</Trans>
+                                    </span>
+                                  )}
+                                </td>
+                                <td>
+                                  <div>
+                                    {(Reqdata.status === 0 ||
+                                      Reqdata.status === 2) && (
+                                      <i
+                                        className="mdi mdi-check-circle"
+                                        title="Accept"
+                                        style={{
+                                          color: "#ff9756",
+                                          fontWeight: "bold",
+                                          cursor: "pointer",
+                                          fontSize: "25px",
+                                        }}
+                                        onClick={() =>
+                                          this.handleAction(Reqdata.id, 1)
+                                        }
+                                      ></i>
+                                    )}
+                                    {Reqdata.status === 1 && (
+                                      <i
+                                        className="mdi mdi-close-circle"
+                                        title="Decline"
+                                        onClick={() =>
+                                          this.handleAction(Reqdata.id, 2)
+                                        }
+                                        style={{
+                                          color: "red",
+                                          fontWeight: "bold",
+                                          cursor: "pointer",
+                                          fontSize: "25px",
+                                        }}
+                                      ></i>
+                                    )}
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </React.Fragment>
+                        ))}
                       </tbody>
                     </table>
                   </div>

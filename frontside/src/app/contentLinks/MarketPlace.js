@@ -148,6 +148,10 @@ export class MarketPlace extends Component {
     }
   };
 
+  viewContentLinks = (hash_id) => {
+    this.props.history.push(`/content/${hash_id}`);
+  };
+
   handleChangePage = (event, newPage) => {
     this.setState({ page: newPage });
   };
@@ -620,6 +624,7 @@ export class MarketPlace extends Component {
                   className="mdi mdi-message-outline"
                   style={{ fontSize: "30px", cursor: "pointer" }}
                   title="Chat"
+                  onClick={() => this.viewContentLinks(row.hash_id)}
                 ></i>
               )}
               <svg

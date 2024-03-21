@@ -9,6 +9,7 @@ import ApiServices from "../services/api.service";
 import { Trans } from "react-i18next";
 import CurrencyFormatter from "../shared/CurrencyFormatter";
 import AdminBack from "../shared/AdminBack";
+import MessageComponents from "../shared/MessageComponents";
 import RevealDomainModal from "../shared/RevealDomainModal";
 
 export class ContentLinks extends Component {
@@ -494,6 +495,17 @@ export class ContentLinks extends Component {
                   </div>
                 </div>
                 <div className="row g-2 mt-4 pl-3">
+                  <div className="col-sm-12 p-0">
+                    {contentInsideData.domain_id && domainRequest.length > 0 &&
+                      domainRequest[0].status == 1 && (
+                        <MessageComponents
+                          domain_id={contentInsideData.domain_id}
+                          hash_id={this.state.hash_id}
+                          reciever_id={contentData.user_id}
+                          isShowTypeMsg={true}
+                        />
+                      )}
+                  </div>
                   <div className="col-sm-12 warrantyClass">
                     <div className="mt-2 mb-2 p-2">
                       <span className="fontBold700">
@@ -713,15 +725,19 @@ export class ContentLinks extends Component {
                             </button>
                           ) : (
                             <>
-                              <div className="btn-group-md">
+                              {/* <div className="btn-group-md">
                                 <button
                                   className="btn btn-rounded font-weight-medium auth-form-btn"
                                   style={{ width: "100%" }}
-                                  // onClick={}
                                 >
                                   <Trans>Chat</Trans>
                                 </button>
-                              </div>
+                              </div> */}
+                              <p className="text-success">
+                                <b>
+                                  <Trans>Now you can Chat to publisher</Trans>
+                                </b>
+                              </p>
                             </>
                           )}
                         </td>

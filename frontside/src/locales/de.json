@@ -408,5 +408,13 @@
     "Subscription": "Abonnement",
     "Edit Subscription": "Abonnement bearbeiten",
     "Max request per day(in number)": "Maximale Anfragen pro Tag (in Zahl)",
-    "Update Subscription": "Abonnement aktualisieren"
+    "Update Subscription": "Abonnement aktualisieren",
+    "Purchase plan": "Kaufplan",
+    "Active Plan": "Aktiver Plan",
+    "Now you can Chat to publisher": "Jetzt können Sie mit dem Herausgeber chatten",
+    "Chat": "Chat",
+    "Domain Request": "Domain-Anfrage",
+    "Chat List": "Chat-Liste",
+    "No Chat found.":"Kein Chat gefunden",
+    "New Message":"Neue Nachricht"
 }

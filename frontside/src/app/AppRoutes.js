@@ -49,6 +49,8 @@ const PublisherPayments = lazy(() => import("./publisher/payments/Payments"));
 const DomainRevealRequest = lazy(() =>
   import("./publisher/notification/DomainRevealRequest")
 );
+const ChatList = lazy(() => import("./publisher/chat/ChatList"));
+const ChatPublisher = lazy(() => import("./publisher/chat/Chat"));
 
 const SubscriptionPlan = lazy(() => import("./admin/subscription/Subscription"));
 
@@ -413,6 +415,20 @@ class AppRoutes extends Component {
                     exact
                     path="/publisher/request-domain"
                     component={DomainRevealRequest}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  <PublisherProtected
+                    exact
+                    path="/publisher/chat-list"
+                    component={ChatList}
+                    isAuthenticated={this.state.isAuthenticated}
+                    isAdmin={this.state.isAdmin}
+                  />
+                  <PublisherProtected
+                    exact
+                    path="/publisher/chat/:domain_id/:reciever_id/:random"
+                    component={ChatPublisher}
                     isAuthenticated={this.state.isAuthenticated}
                     isAdmin={this.state.isAdmin}
                   />

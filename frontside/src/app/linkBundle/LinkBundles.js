@@ -9,19 +9,29 @@ import { Trans } from "react-i18next";
 import "../../assets/custom.css";
 import CurrencyFormatter from "../shared/CurrencyFormatter";
 import AdminBack from "../shared/AdminBack";
+import StripePayment from "../stripePayment";
 
 export class LinkBundles extends Component {
   constructor(props) {
     super(props);
     this.state = {
       planData: [],
+      userPlanActive: [],
       showModal: false,
       selectedPlan: [],
       currentBalance: 0,
       userProjects: [],
       project_id: "",
+      plan_amt: 0,
+      plan_id: null,
+      plan_name: "",
       error: "",
-      orderModal: false,
+      vat: 0,
+      customAmount: 0,
+      newAmount: 0,
+      vatAmount: 0,
+      paymentError: null,
+      paymentModal: false,
       bundleConfigure: {
         linktarget: "",
         anchortext: "",
@@ -31,6 +41,15 @@ export class LinkBundles extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
   }
+
+  handleClose = () => {
+    this.setState({ paymentModal: false });
+  };
+
+  handleShow = () => {
+    this.closeModal();
+    this.setState({ paymentModal: true });
+  };
 
   closeModal() {
     this.setState({
@@ -50,9 +69,19 @@ export class LinkBundles extends Component {
   }
 
   openModal(plans) {
+    const vat = parseFloat(this.state.vat);
+    const vatAmount = (parseFloat(plans.price) * vat) / 100;
+    const totalAmount = parseFloat(plans.price) + vatAmount;
+
     this.setState({
+      vatAmount: vatAmount,
       showModal: true,
+      customAmount: plans.price,
+      newAmount: totalAmount,
       selectedPlan: plans,
+      plan_amt: parseFloat(plans.price),
+      plan_id: plans.id,
+      plan_name: plans.name,
       orderModal: false,
     });
   }
@@ -139,7 +168,8 @@ export class LinkBundles extends Component {
           });
         } else {
           this.setState({
-            planData: res.data.data,
+            planData: res.data.data.listPlan,
+            userPlanActive: res.data.data.activePlan,
           });
         }
       })
@@ -160,24 +190,6 @@ export class LinkBundles extends Component {
             });
           }
         }
-      });
-  }
-
-  checkBalanceToProcess() {
-    const { selectedPlan } = this.state;
-    ApiServices.checkBalanceForBundle(selectedPlan.id)
-      .then((res) => {
-        if (res.status) {
-          this.setState({
-            showModal: false,
-            orderModal: true,
-          });
-        }
-      })
-      .catch((err) => {
-        this.setState({
-          error: err.response.data.message,
-        });
       });
   }
 
@@ -212,6 +224,23 @@ export class LinkBundles extends Component {
     this.getsubscriptionPlan();
     this.getUserWalletBalance();
     this.getUserProjects();
+    ApiServices.getVatPercentage()
+      .then((vat) => {
+        if (vat) {
+          this.setState({ vat: vat });
+        } else {
+          toast.error(<Trans>Something went to wrong.</Trans>, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+        }
+      })
+      .catch((error) => {
+        toast.error(<Trans>Something went to wrong.</Trans>, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      });
   }
   render() {
     const {
@@ -225,6 +254,10 @@ export class LinkBundles extends Component {
       orderModal,
       bundleConfigure,
       linkBundleData,
+      plan_amt,
+      plan_id,
+      plan_name,
+      vat,
     } = this.state;
     const { linktarget, anchortext, publication_date } =
       this.state.bundleConfigure;
@@ -350,13 +383,35 @@ export class LinkBundles extends Component {
                             </li>
                             <li>{plans.description}</li>
                             <li>
-                              <button
+                              {/* <button
                                 type="button"
                                 className="btn btn-rounded btn-fw btn-md"
                                 onClick={() => this.openModal(plans)}
                               >
                                 <Trans>Order now</Trans>
-                              </button>
+                              </button> */}
+                              {!this.state.userPlanActive ? (
+                                <button
+                                  type="button"
+                                  className="btn btn-rounded btn-fw btn-md"
+                                  onClick={() => this.openModal(plans)}
+                                >
+                                  <Trans>Order now</Trans>
+                                </button>
+                              ) : this.state.userPlanActive &&
+                                plans.id ===
+                                  this.state.userPlanActive.plan_id ? (
+                                <button className="btn btn-rounded btn-fw btn-md">
+                                  <Trans>Active Plan</Trans>
+                                </button>
+                              ) : (
+                                <button
+                                  className="btn btn-rounded btn-fw btn-md"
+                                  disabled
+                                >
+                                  <Trans>Order Now</Trans>
+                                </button>
+                              )}
                             </li>
                             <li className="psale">
                               <span className="notification-icon--fixed">
@@ -389,9 +444,7 @@ export class LinkBundles extends Component {
                             </li>
                             <li className="pl-1">
                               <i className="mdi mdi-checkbox-marked-circle fontBold500"></i>
-                              <span className="ml-1">
-                                Direct chat to owner
-                              </span>
+                              <span className="ml-1">Direct chat to owner</span>
                             </li>
                           </ul>
                         </div>
@@ -435,62 +488,29 @@ export class LinkBundles extends Component {
                 >
                   <div className="d-flex justify-content-between mb-2">
                     <span>
-                      <Trans>Current balance</Trans>
-                    </span>
-                    <span>
-                      {CurrencyFormatter.formatCurrency(currentBalance)}
-                    </span>
-                  </div>
-                  <div className="d-flex justify-content-between mb-2">
-                    <span>
-                      <Trans>Link package</Trans>&nbsp;
-                      {selectedPlan.name}
+                      <Trans>Plan </Trans>&nbsp;
+                      <b>{selectedPlan.name}</b>
                     </span>
                     <span>
                       {CurrencyFormatter.formatCurrency(selectedPlan.price)}
                     </span>
                   </div>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>
+                      <Trans>VAT</Trans> {this.state.vat}%
+                    </span>
+                    <span>
+                      {CurrencyFormatter.formatCurrency(this.state.vatAmount)}
+                    </span>
+                  </div>
                   <hr />
                   <div className="d-flex justify-content-between mb-2">
                     <span>
-                      <Trans>Remaining balance</Trans>
+                      <Trans>Total</Trans>
                     </span>
-                    <span>
-                      {/* {newRemainingBalance < 0
-                        ? `-$${Math.abs(newRemainingBalance).toFixed(2)}`
-                        : `$${newRemainingBalance.toFixed(2)}`} */}
-                      {newRemainingBalance < 0 ? (
-                        <span>
-                          {CurrencyFormatter.formatCurrency(
-                            newRemainingBalance
-                          )}
-                        </span>
-                      ) : (
-                        <span>
-                          {CurrencyFormatter.formatCurrency(
-                            newRemainingBalance
-                          )}
-                        </span>
-                      )}
-                    </span>
+                    <span>{this.state.newAmount}</span>
                   </div>
                 </div>
-                <label htmlFor="project_id" className="mt-2 fontBold600">
-                  <Trans>Project (optional)</Trans>
-                </label>
-                <select
-                  className="form-control"
-                  id="project_id"
-                  value={project_id}
-                  onChange={this.handleChangeProject}
-                >
-                  <option value="">Select project</option>
-                  {userProjects.map((option) => (
-                    <option key={option.id} value={option.hash_id}>
-                      {option.domain_name}
-                    </option>
-                  ))}
-                </select>
               </div>
             </Modal.Body>
             <Modal.Footer
@@ -506,10 +526,10 @@ export class LinkBundles extends Component {
               )}
               <Button
                 className="btn btn-block btn-rounded btn-lg"
-                onClick={() => this.checkBalanceToProcess()}
+                onClick={() => this.handleShow()}
               >
-                <Trans>Order now for</Trans>{" "}
-                {CurrencyFormatter.formatCurrency(selectedPlan.price)}
+                <Trans>Payments</Trans>{" "}
+                {CurrencyFormatter.formatCurrency(this.state.newAmount)}
               </Button>
               <button
                 className="btn btn-cancel-ctm btn-rounded btn-block"
@@ -519,97 +539,36 @@ export class LinkBundles extends Component {
               </button>
             </Modal.Footer>
           </Modal>
-
-          {/* bundle Order configure modal */}
           <Modal
-            className="orderConfigureStep1 p-2"
-            centered
+            size="md"
+            className="addBalanceModal"
+            show={this.state.paymentModal}
+            onHide={this.handleClose}
             backdrop="static"
             keyboard={false}
-            show={orderModal}
-            onHide={() => this.closeModal()}
           >
             <Modal.Header closeButton>
-              <span className="modal-title h3 font-weight-bold">
-                <Trans>Confiure your order details</Trans>
-              </span>
+              <Modal.Title>
+                <h2 className="fontBold latterSpacing">
+                  <Trans>Purchase plan</Trans> {this.state.plan_name}
+                </h2>
+              </Modal.Title>
             </Modal.Header>
-            <Modal.Body className="pt-1">
-              <div className="row">
-                <div className="col-sm-12">
-                  <label htmlFor="targetUrl">
-                    <Trans>Target URL*</Trans>
-                    <p className="customText mb-0">
-                      <Trans>Who should write your content?</Trans>
-                    </p>
-                  </label>
-
-                  <input
-                    type="text"
-                    name="linktarget"
-                    className="form-control"
-                    id="targetUrl"
-                    placeholder="Target Url"
-                    onChange={this.handleChange}
-                    value={bundleConfigure.linktarget}
-                  />
-                </div>
-              </div>
-              <div className="row mt-3">
-                <div className="col-sm-12">
-                  <label htmlFor="anchortext">
-                    <Trans>Anchor text*</Trans>
-                    <p className="customText mb-0">
-                      <Trans>
-                        Specify which anchor text to use. How to choose your
-                        anchor text correctly, you will learn here Nontheless,
-                        the publisher has the final say in the anchor text
-                        selection.
-                      </Trans>
-                    </p>
-                  </label>
-
-                  <input
-                    type="text"
-                    name="anchortext"
-                    className="form-control"
-                    id="anchortext"
-                    value={bundleConfigure.anchortext}
-                    placeholder="High quality backlinks"
-                    onChange={this.handleChange}
-                  />
-                </div>
-              </div>
-              <div className="row mt-3">
-                <div className="col-sm-12">
-                  <label htmlFor="publication_date">
-                    <Trans>Date (optional)</Trans>
-                    <p className="customText mb-0">
-                      <Trans>When should your contentlink be placed?</Trans>
-                    </p>
-                  </label>
-
-                  <input
-                    type="date"
-                    name="publication_date"
-                    className="form-control border"
-                    id="publication_date"
-                    placeholder="03/03/2024"
-                    onChange={this.handleChange}
-                    value={bundleConfigure.publication_date}
-                  />
-                </div>
-              </div>
+            <Modal.Body>
+              <StripePayment
+                vat={this.state.vat}
+                plan_amt={this.state.plan_amt}
+                plan_name={this.state.plan_name}
+                plan_id={this.state.plan_id}
+                vatAmount={this.state.vatAmount}
+                totalAmount={this.state.newAmount}
+              />
             </Modal.Body>
-            <button
-              className="btn btn-rounded btn-lg font-weight-medium mb-2"
-              disabled={isSubmitDisabled}
-              type="button"
-              onClick={this.bundlePlaceOrder}
-            >
-              <Trans>Buy now for</Trans>{" "}
-              {CurrencyFormatter.formatCurrency(selectedPlan.price)}
-            </button>
+            <img
+              src={require("../../assets/images/by-stripe.svg")}
+              alt="Success"
+              style={{ width: "auto", height: "25px", marginRight: "5px" }}
+            />
           </Modal>
         </div>
       </>

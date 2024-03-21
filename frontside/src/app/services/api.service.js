@@ -116,7 +116,7 @@ class ApiServices {
       .then((response) => {
         return response;
       });
-  }  
+  }
 
   getContentLinkList(filterdata = null) {
     const authToken = localStorage.getItem("token");
@@ -150,7 +150,7 @@ class ApiServices {
         return response;
       });
   }
-  
+
   getProjectViewData(hash_id) {
     const authToken = localStorage.getItem("token");
     return axios.get(`${this.APP_URL}user/domain/${hash_id}`, {
@@ -216,7 +216,7 @@ class ApiServices {
         return response;
       });
   }
-  
+
   publisherDomainUpdate(domain_id, formData) {
     const authToken = localStorage.getItem("token");
     const url = `${this.APP_URL}publisher/updateDomain/${domain_id}`;
@@ -231,9 +231,9 @@ class ApiServices {
       });
   }
 
-  getOrderMessageHistory(orderId) {
+  getOrderMessageHistory(domain_id) {
     const authToken = localStorage.getItem("token");
-    const url = `${this.APP_URL}message/get/${orderId}`;
+    const url = `${this.APP_URL}message/get/${domain_id}`;
     return axios
       .get(url, {
         headers: {
@@ -244,13 +244,42 @@ class ApiServices {
         return response;
       });
   }
-  orderMessageSend(orderId, message) {
+
+  getPublisherDomainMsg(domain_id, reciever_id) {
     const authToken = localStorage.getItem("token");
-    const url = `${this.APP_URL}message/send/${orderId}`;
+    const url = `${this.APP_URL}message/get/${domain_id}/${reciever_id}`;
+    return axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  publisherReadMsg(domain_id, sender_id) {
+    const authToken = localStorage.getItem("token");
+    const url = `${this.APP_URL}publisher/read/${domain_id}/${sender_id}`;
+    return axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
+
+  orderMessageSend(domain_id, message, reciever_id) {
+    const authToken = localStorage.getItem("token");
+    const url = `${this.APP_URL}message/send/${domain_id}`;
     return axios
       .post(
         url,
-        { message },
+        { message, reciever_id },
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -329,8 +358,8 @@ class ApiServices {
       });
   }
 
-  publisherUpdateRevealRequest(data){
-    const authToken = localStorage.getItem('token');
+  publisherUpdateRevealRequest(data) {
+    const authToken = localStorage.getItem("token");
     return axios
       .post(`${this.APP_URL}publisher/update/reveal-request`, data, {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -338,7 +367,18 @@ class ApiServices {
       .then((response) => {
         return response;
       });
-  }  
+  }
+
+  getPublisherChatList() {
+    const authToken = localStorage.getItem("token");
+    return axios
+      .get(`${this.APP_URL}publisher/chat-list`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })
+      .then((response) => {
+        return response;
+      });
+  }
 
   adminUserList(filterdata = null) {
     const authToken = localStorage.getItem("token");
@@ -401,7 +441,7 @@ class ApiServices {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
-  
+
   activeSubscription() {
     const authToken = localStorage.getItem("token");
     return axios.get(`${this.APP_URL}subscription/list/active`, {
@@ -443,31 +483,26 @@ class ApiServices {
 
   addSubscription(formData) {
     const authToken = localStorage.getItem("token");
-    return axios.post(
-      `${this.APP_URL}add/subscription`,
-      formData,
-      {
-        headers: { Authorization: `Bearer ${authToken}` },
-      }
-    );
+    return axios.post(`${this.APP_URL}add/subscription`, formData, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
   }
 
   updateSubscription(formData, id) {
     const authToken = localStorage.getItem("token");
-    return axios.patch(
-      `${this.APP_URL}subscription/update/${id}`,
-      formData,
-      {
-        headers: { Authorization: `Bearer ${authToken}` },
-      }
-    );
+    return axios.patch(`${this.APP_URL}subscription/update/${id}`, formData, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
   }
 
   updateSubscriptionStatus(id, status) {
     const authToken = localStorage.getItem("token");
-    return axios.get(`${this.APP_URL}admin/subscription/update/${id}/${status}`, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
+    return axios.get(
+      `${this.APP_URL}admin/subscription/update/${id}/${status}`,
+      {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }
+    );
   }
 
   subscriptionList() {
@@ -567,7 +602,7 @@ class ApiServices {
       headers: { Authorization: `Bearer ${authToken}` },
     });
   }
-  
+
   publisherPaymetnTransaction() {
     const authToken = localStorage.getItem("token");
     return axios.get(`${this.APP_URL}publisher/transactionHistory`, {
@@ -585,7 +620,7 @@ class ApiServices {
   sendPaymentResponse(paymentId, paymentData) {
     const authToken = localStorage.getItem("token");
     return axios.post(
-      `${this.APP_URL}paymentRespone/${paymentId}`,
+      `${this.APP_URL}plan-paymentRespone/${paymentId}`,
       paymentData,
       {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -652,9 +687,9 @@ class ApiServices {
       .then((response) => {
         return response;
       });
-  } 
+  }
 
-  publisherUnreadMessageCount(){
+  publisherUnreadMessageCount() {
     const authToken = localStorage.getItem("token");
     return axios
       .get(`${this.APP_URL}publisher/message/unread`, {
@@ -665,7 +700,7 @@ class ApiServices {
       });
   }
 
-  publisherReadMessage(order_id){
+  publisherReadMessage(order_id) {
     const authToken = localStorage.getItem("token");
     return axios
       .get(`${this.APP_URL}publisher/message/read/${order_id}`, {
@@ -676,7 +711,7 @@ class ApiServices {
       });
   }
 
-  getSettings(){
+  getSettings() {
     const authToken = localStorage.getItem("token");
     return axios
       .get(`${this.APP_URL}get-settings`, {
@@ -705,7 +740,7 @@ class ApiServices {
         throw error;
       });
   }
-  updateAdminSetting(formData){
+  updateAdminSetting(formData) {
     const authToken = localStorage.getItem("token");
     return axios
       .patch(`${this.APP_URL}update/settings`, formData, {

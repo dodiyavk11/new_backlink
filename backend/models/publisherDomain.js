@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "hash_id",
         as: "domainData",
       });
+      this.hasMany(models.Message, {
+        foreignKey: "domain_id",
+        as: "messageData",
+      });
       this.hasMany(models.newOrder, {
         foreignKey: "domain_id",
         as: "orderData",

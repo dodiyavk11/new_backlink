@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "domain_id",
         as: "domainRequests",
       });
+      this.belongsTo(models.Users, {
+        foreignKey: 'user_id',
+        as: 'user',
+      });
     }
   }
   DomainRequest.init(

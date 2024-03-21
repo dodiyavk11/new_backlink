@@ -88,10 +88,22 @@ exports.listSubscriptionActive = async (req, res) => {
       where: { status: 1 },
       order: [["price", "ASC"]],
     });
+    const user_id = req.userId;
+    const today = new Date();
+    const activePlan = await Models.UserSubscription.findOne({
+      where: {
+        [Op.and]: [
+          { start_date: { [Op.lte]: today } },
+          { end_date: { [Op.gte]: today } },
+        ],
+        status:1,
+        user_id,
+      },
+    });
     res.status(200).send({
       status: true,
       message: "Subscription listed successfully.",
-      data: listPlan,
+      data: {listPlan,activePlan},
     });
   } catch (err) {
     console.log(err);
@@ -224,11 +236,12 @@ exports.getActiveSubscription = async (req, res) => {
           { end_date: { [Op.gte]: today } },
         ],
         user_id,
+        status:1
       },
     });
     res.status(200).send({
       status: true,
-      message: "Status update successfully",
+      message: "Subscription data get successfully",
       data: checkData ? true : false,
     });
   } catch (err) {

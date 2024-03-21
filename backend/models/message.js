@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'order_id',
         as: 'order', 
       });
+      this.belongsTo(models.publisherDomain, {
+        foreignKey: 'domain_id',
+        as: 'domain', 
+      });
       this.belongsTo(models.Users, {
         foreignKey: 'sender_id',
         as: 'sender',
@@ -29,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     sender_id: DataTypes.INTEGER,
     receiver_id: DataTypes.INTEGER,
     order_id: DataTypes.INTEGER,
+    domain_id: DataTypes.INTEGER,
     message: DataTypes.TEXT,
     files:DataTypes.TEXT,
     isRead:DataTypes.INTEGER

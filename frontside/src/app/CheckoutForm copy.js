@@ -23,16 +23,8 @@ class CheckoutForm extends Component {
   };
   handleSubmit = async (event) => {
     event.preventDefault();
-    const {
-      stripe,
-      elements,
-      amount,
-      history,
-      originalAmount,
-      plan_id,
-      plan_name,
-      plan_amt,
-    } = this.props;
+
+    const { stripe, elements, amount, history, originalAmount } = this.props;
     if (!stripe || !elements) {
       return;
     }
@@ -49,7 +41,7 @@ class CheckoutForm extends Component {
     try {
       const authToken = localStorage.getItem("token");
       const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}plan-payment-init`,
+        `${process.env.REACT_APP_BASE_URL}paymentFrontSide`,
         {
           method: "POST",
           headers: {
@@ -59,8 +51,6 @@ class CheckoutForm extends Component {
           body: JSON.stringify({
             amount: amount,
             originalAmount: originalAmount,
-            plan_id: plan_id,
-            plan_name: plan_name,
           }),
         }
       );
@@ -86,8 +76,6 @@ class CheckoutForm extends Component {
         const paymentData = {
           amount: originalAmount,
           paymentData: paymentIntent,
-          plan_id: plan_id,
-          plan_name: plan_name,
         };
         apiService
           .sendPaymentResponse(paymentId, paymentData)
@@ -132,7 +120,9 @@ class CheckoutForm extends Component {
             {loading && stripe ? (
               <Trans>Processing, please wait</Trans>
             ) : (
-              <Trans>Pay {CurrencyFormatter.formatCurrency(amount)}</Trans>
+              <Trans>
+                Pay {CurrencyFormatter.formatCurrency(amount)}
+              </Trans>
             )}
           </button>
         </form>
@@ -150,9 +140,6 @@ const InjectedCheckoutForm = (props) => (
         amount={props.amount}
         originalAmount={props.originalAmount}
         history={props.history}
-        plan_id={props.plan_id}
-        plan_name={props.plan_name}
-        plan_amt={props.plan_amt}
       />
     )}
   </ElementsConsumer>

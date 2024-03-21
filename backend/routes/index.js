@@ -14,4 +14,5 @@ module.exports = (app) => {
   require("./subscription.routes.js")(app);
   require("./backlink.route")(app);
   require("./newOrder.routes")(app);
+  require("./message.routes.js")(app);
 };

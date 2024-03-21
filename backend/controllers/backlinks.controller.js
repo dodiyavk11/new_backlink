@@ -59,7 +59,7 @@ exports.getPublisherDomain = async (req, res) => {
         {
           model: Models.publisherDomainData,
           as: "contentData",
-        },        
+        },
       ],
     };
     const domainData = await Models.publisherDomain.findOne({
@@ -399,7 +399,8 @@ exports.getConetentLinks = async (req, res) => {
     });
     contentData.map((data, index) => {
       if (
-        (data.domainRequest.length > 0 && data.domainRequest[0].status === 0) || (data.domainRequest.length > 0 && data.domainRequest[0].status === 2) ||
+        (data.domainRequest.length > 0 && data.domainRequest[0].status === 0) ||
+        (data.domainRequest.length > 0 && data.domainRequest[0].status === 2) ||
         data.domainRequest.length === 0
       ) {
         const lastDotIndex = data.domain_name.lastIndexOf(".");
@@ -476,7 +477,8 @@ exports.getDailyDealsConetentLinks = async (req, res) => {
 
     contentData.map((data, index) => {
       if (
-        (data.domainRequest.length > 0 && data.domainRequest[0].status === 0) || (data.domainRequest.length > 0 && data.domainRequest[0].status === 2) ||
+        (data.domainRequest.length > 0 && data.domainRequest[0].status === 0) ||
+        (data.domainRequest.length > 0 && data.domainRequest[0].status === 2) ||
         data.domainRequest.length === 0
       ) {
         const lastDotIndex = data.domain_name.lastIndexOf(".");
@@ -545,8 +547,9 @@ exports.getSingleConetentLinks = async (req, res) => {
 
     if (
       (contentData.domainRequest.length > 0 &&
-        contentData.domainRequest[0].status === 0) || (contentData.domainRequest.length > 0 &&
-          contentData.domainRequest[0].status === 2) ||
+        contentData.domainRequest[0].status === 0) ||
+      (contentData.domainRequest.length > 0 &&
+        contentData.domainRequest[0].status === 2) ||
       contentData.domainRequest.length === 0
     ) {
       const lastDotIndex = contentData.domain_name.lastIndexOf(".");
@@ -750,7 +753,7 @@ exports.adminViewPublisherDomain = async (req, res) => {
         {
           model: Models.publisherDomainData,
           as: "contentData",
-        }        
+        },
       ],
     };
     const domainData = await Models.publisherDomain.findOne({
@@ -897,6 +900,28 @@ exports.ConetentLinksList = async (req, res) => {
 exports.userDomainRevealRequest = async (req, res) => {
   try {
     const user_id = req.userId;
+    const TODAY_START = new Date().setHours(0, 0, 0, 0);
+    const NOW = new Date();
+    const getCount = await Models.DomainRequest.count({
+      where: {
+        created_at: {
+          [Op.gt]: TODAY_START,
+          [Op.lt]: NOW,
+        },
+        user_id,
+      },
+    });
+    const getSubscriptionDetails = await getUserActiveSubscription(user_id);
+    const plan_id = getSubscriptionDetails.plan_id;
+    const subscriptionData = await getSubscription(plan_id);
+    const perDayReq = subscriptionData.max_request_per_day;
+    if (getCount >= perDayReq) {
+      return res.status(403).send({
+        status: false,
+        message: "Your daily domain request limit has been exceeded",
+        data: [],
+      });
+    }
     const { domain_id, message, publisher_id } = req.body;
     const requestData = {
       user_id,
@@ -926,21 +951,17 @@ exports.userDomainRevealRequest = async (req, res) => {
       const email = await emailTemplate(text);
       sendVerifyMail(publisherData.email, subject, "", email);
     }
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Request send successfully",
-        data: addRequest,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Request send successfully",
+      data: getCount,
+    });
   } catch (err) {
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something went to wrong, Please try again",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something went to wrong, Please try again",
+      error: err.message,
+    });
   }
 };
 
@@ -956,6 +977,13 @@ exports.getPublisherDomainRevealRequest = async (req, res) => {
             publisher_id: user_id,
           },
           required: true,
+          include: [
+            {
+              model: Models.Users,
+              as: "user",
+              attributes: ["firstName", "lastName", "id", "email"],
+            },
+          ],
         },
       ],
       where: {},
@@ -963,31 +991,27 @@ exports.getPublisherDomainRevealRequest = async (req, res) => {
     const contentData = await Models.publisherDomain.findAll({
       ...baseQuery,
       where: { user_id },
+      order: [["id", "DESC"]],
     });
-    res
-      .status(200)
-      .send({
-        status: true,
-        message: "Request fetch successfully",
-        data: contentData,
-      });
+    res.status(200).send({
+      status: true,
+      message: "Request fetch successfully",
+      data: contentData,
+    });
   } catch (err) {
-    res
-      .status(500)
-      .send({
-        message: "Someting went to wrong",
-        error: err.message,
-        data: [],
-      });
+    res.status(500).send({
+      message: "Someting went to wrong",
+      error: err.message,
+      data: [],
+    });
   }
 };
 
 exports.publisherRevealRequestUpdate = async (req, res) => {
   try {
     const { id, status } = req.body;
-    const getRequest =await Models.DomainRequest.findOne({ where:{ id } })
-    if(getRequest)
-    {
+    const getRequest = await Models.DomainRequest.findOne({ where: { id } });
+    if (getRequest) {
       const updateStatus = await Models.DomainRequest.update(
         { status },
         { where: { id } }
@@ -1004,14 +1028,12 @@ exports.publisherRevealRequestUpdate = async (req, res) => {
         where: { email_type: "domain_reveal_request_update" },
       });
       let statusIs;
-      if(status === 1)
-      {
+      if (status === 1) {
         statusIs = "Accepted";
-      }
-      else{
+      } else {
         statusIs = "Declined";
       }
-  
+
       let text = mailText.email_content;
       let subject = mailText.header;
       let username = userData.firstName + " " + userData.lastName;
@@ -1020,16 +1042,33 @@ exports.publisherRevealRequestUpdate = async (req, res) => {
       text = text.replace("{status}", statusIs);
       const email = await emailTemplate(text);
       sendVerifyMail(userData.email, subject, "", email);
-      res.status(200).send({ status:true, data:updateStatus})
+      res.status(200).send({ status: true, data: updateStatus });
     }
-    
   } catch (err) {
-    res
-      .status(500)
-      .send({
-        status: false,
-        message: "Something went to wrong",
-        error: err.message,
-      });
+    res.status(500).send({
+      status: false,
+      message: "Something went to wrong",
+      error: err.message,
+    });
   }
 };
+
+async function getUserActiveSubscription(user_id) {
+  const today = new Date();
+  const checkData = await Models.UserSubscription.findOne({
+    where: {
+      [Op.and]: [
+        { start_date: { [Op.lte]: today } },
+        { end_date: { [Op.gte]: today } },
+      ],
+      user_id,
+      status: 1,
+    },
+  });
+  return checkData;
+}
+
+async function getSubscription(id) {
+  const planData = await Models.Subscriptions.findOne({ where: { id } });
+  return planData;
+}
